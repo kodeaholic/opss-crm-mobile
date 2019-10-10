@@ -1,54 +1,29 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+
 import _ from 'lodash'
-
-const Wrapper = styled.div`
-  min-height: 60px;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: row;
-  border-top: 0.5px solid #8a8a8a;
-`
-
-const Item = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`
-
-const ItemCircle = styled.div`
-  width: 30px;
-  height: 30px;
-  border: 0.5px solid #d7d7d7;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`
-
-const ItemName = styled.label`
-  font-size: 12px;
-`
+import './index.css'
 
 const menuList = [
   {
     name: 'Lead',
-    classIcon: 'fa fa-list-alt'
+    classIcon: 'fa fa-list-alt',
+    path: '/lead'
   },
   {
     name: 'Contact',
-    classIcon: 'fa fa-user-o'
+    classIcon: 'fa fa-user-o',
+    path: '/contact'
   },
   {
     name: 'Opportunity',
-    classIcon: 'fa fa-file-text-o'
+    classIcon: 'fa fa-file-text-o',
+    path: '/opportunity'
   },
   {
     name: 'Ticket',
-    classIcon: 'fa fa-comment-o'
+    classIcon: 'fa fa-comment-o',
+    path: '/ticket'
   }
 ]
 
@@ -61,8 +36,8 @@ export default class Footer extends Component {
 
   renderItemMenu(item, key) {
     return (
-      <Item key={key + item.name}>
-        <ItemCircle>
+      <div className="wrapper-item-footer" key={key + item.name}>
+        <Link to={item.path} className="wrapper-circle-icon">
           <i
             className={item.classIcon}
             aria-hidden="true"
@@ -71,17 +46,17 @@ export default class Footer extends Component {
               color: '#444444',
               paddingTop: 2
             }}></i>
-        </ItemCircle>
-        <ItemName>{item.name}</ItemName>
-      </Item>
+        </Link>
+        <label>{item.name}</label>
+      </div>
     )
   }
 
   render() {
     return (
-        <Wrapper>
-          {_.map(menuList, (item, key) => this.renderItemMenu(item, key))}
-        </Wrapper>
+      <div className="wrapper-footer">
+        {_.map(menuList, (item, key) => this.renderItemMenu(item, key))}
+      </div>
     )
   }
 }

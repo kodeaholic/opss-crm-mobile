@@ -1,0 +1,32 @@
+.wrapper-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  min-height: 60px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  border-top: 0.5px solid #8a8a8a;
+}
+
+.wrapper-item-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.wrapper-circle-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 0.5px solid #d7d7d7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+label {
+    font-size: 12px;
+}
