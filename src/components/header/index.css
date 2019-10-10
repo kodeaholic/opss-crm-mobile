@@ -1,0 +1,43 @@
+input[type='text'] {
+  border: 2px solid #ccc;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  height: 30px;
+  flex: 1;
+  padding-left: 30px;
+  font-size: 20px;
+}
+input[type='text']:focus {
+  border-color: #333;
+}
+
+.wrapper-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 760px;
+  height: 50px;
+  background-color: #2296f3;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.wrapper-icon {
+  padding: 0 15px;
+}
+
+.wrapper-input {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.fa-search {
+  position: absolute;
+  font-size: 17px;
+  color: #000000;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
