@@ -1,0 +1,24 @@
+.container-addnewcust {
+    flex: 1;
+}
+
+.wrapper-button-addnewcustomer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    background-color: #ffffff;
+    height: 50px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.addnewcustomer-button {
+    padding: 0 12px;
+}
+
+.addnewcustomer-feild {
+    background-color: #fff;
+    padding-bottom: 10px;
+}

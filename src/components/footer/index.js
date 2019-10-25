@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import _ from 'lodash'
 import './index.css'
@@ -27,7 +28,37 @@ const menuList = [
   }
 ]
 
-export default class Footer extends Component {
+const functionMenu = ['customer-details', '222']
+
+const menuCustomerList = [
+  {
+    name: 'Sửa',
+    classIcon: 'fa fa-list-alt',
+    path: '/edit'
+  },
+  {
+    name: 'Convert',
+    classIcon: 'fa fa-user-o',
+    path: '/convert'
+  },
+  {
+    name: '+ Ticket',
+    classIcon: 'fa fa-comment-o',
+    path: '/ticket'
+  },
+  {
+    name: '+ Công việc',
+    classIcon: 'fa fa-tasks',
+    path: '/working'
+  },
+  {
+    name: '+ Cuộc hẹn',
+    classIcon: 'fa fa-history',
+    path: '/meeting'
+  }
+]
+
+class Footer extends Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -43,20 +74,27 @@ export default class Footer extends Component {
             aria-hidden="true"
             style={{
               fontSize: 18,
-              color: '#444444',
+              color: '#ffffff',
               paddingTop: 2
             }}></i>
         </Link>
-        <label>{item.name}</label>
+        <label className="label-menu">{item.name}</label>
       </div>
     )
   }
 
   render() {
+    const pathName = _.get(this.props, 'location.pathname').substring(1)
+    var res = pathName.split('/')[0]
+    const isFunction = !!functionMenu.find(e => e === res)
     return (
       <div className="wrapper-footer">
-        {_.map(menuList, (item, key) => this.renderItemMenu(item, key))}
+        {_.map(isFunction ? menuCustomerList : menuList, (item, key) =>
+          this.renderItemMenu(item, key)
+        )}
       </div>
     )
   }
 }
+
+export default withRouter(Footer)

@@ -1,5 +1,4 @@
-.container {
-  margin-top: 50px;
+.container-dashboard {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -26,12 +25,6 @@
   font-size: 25px;
   font-weight: 600;
   color: #2296f3;
-}
-
-label {
-  font-size: 15px;
-  color: black;
-  font-weight: 500;
 }
 
 .label-value-inside-circle {

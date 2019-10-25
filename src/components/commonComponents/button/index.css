@@ -1,0 +1,11 @@
+.btn-add-new-lead {
+    min-height: 30px;
+    min-width: 80px;
+    font-size: 13px;
+    border: 0.5px solid #d7d7d7;
+    background-color: #d7d7d7aa;
+    border-radius: 4px;
+    color: #000000;
+    font-weight: 600;
+  }
+  

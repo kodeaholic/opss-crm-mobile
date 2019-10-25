@@ -1,0 +1,26 @@
+.wrapper-input-common-component {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .label-input-common-component {
+      font-size: 17px;
+  }
+  
+  .require-input-common-component {
+    color: red;
+  }
+  
+  .input-input-common-component {
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height: 30px;
+    flex: 1;
+    padding-left: 3px;
+    margin-top: 5px;
+    font-size: 20px;
+  }
+  

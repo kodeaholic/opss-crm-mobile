@@ -12,9 +12,9 @@ code {
     monospace;
 }
 
-main {
-  flex: 1;
-  display: flex;
+.main {
+  padding-top: 50px;
+  padding-bottom: 60px;
 }
 
 .app-wrapper {

@@ -82,7 +82,7 @@ export default class Dashboard extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container-dashboard">
         {this.renderInfor()}
         {this.renderCircleChart()}
       </div>
