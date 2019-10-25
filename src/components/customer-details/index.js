@@ -100,19 +100,19 @@ class CustomerDetails extends Component {
       <div>
         <div className="cust-details-related-wrapper">
           <i
-            class="fa fa-sticky-note-o cust-details-related-icon"
+            className="fa fa-sticky-note-o cust-details-related-icon"
             aria-hidden="true"></i>
           <label className="cust-details-related-label">Ticket (3)</label>
         </div>
         <div className="cust-details-related-wrapper">
           <i
-            class="fa fa-history cust-details-related-icon"
+            className="fa fa-history cust-details-related-icon"
             aria-hidden="true"></i>
           <label className="cust-details-related-label">Activities (5)</label>
         </div>
         <div className="cust-details-related-wrapper">
           <i
-            class="fa fa-tasks cust-details-related-icon"
+            className="fa fa-tasks cust-details-related-icon"
             aria-hidden="true"></i>
           <label className="cust-details-related-label">Updates (6)</label>
         </div>

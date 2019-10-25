@@ -1,5 +1,6 @@
 import faker from 'faker/locale/vi'
 import _ from 'lodash'
+import axios from 'axios'
 
 export const types = {
   REQUEST_GET_LIST_LEAD: 'LEAD/REQUEST_GET_LIST_LEAD',
@@ -44,16 +45,44 @@ export const getListLead = payload => {
   return function action(dispatch) {
     dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
 
-    // const request = axios({
-    //     method: 'GET',
-    //     url: `${BASE_URL}/offers`,
-    //     headers: []
-    //   });
+    const bodyFormData = new FormData()
 
-    //   return request.then(
-    //     response => dispatch(fetchOffersSuccess(response)),
-    //     err => dispatch(fetchOffersError(err))
-    //   );
+    bodyFormData.append('_operation', 'login')
+    bodyFormData.append('username', 'tuyenvv')
+    bodyFormData.append('password', 1)
+
+    const request = axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_URL_KVCRM,
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+    // .then(function (response) {
+    //     //handle success
+    //     console.log(response);
+    // })
+    // .catch(function (response) {
+    //     //handle error
+    //     console.log(response);
+    // });
+
+    // const request = axios({
+    //   method: 'GET',
+    //   url: `http://kvcrm.kvpos.com:9062/modules/Mobile/api.php`,
+    //   headers: []
+    // })
+
+    // const params = new URLSearchParams()
+    // params.append('_operation', 'login')
+    // params.append('username', 'tuyenvv')
+    // params.append('password', '1')
+    // axios.post('http://kvcrm.kvpos.com:9062/modules/Mobile/api.php', params)
+
+    // return
+    request.then(
+      res => console.log('thailog res', res),
+      err => console.log('thailog err', err)
+    )
 
     const clientsSchema = {
       id: '{{random.number}}',
