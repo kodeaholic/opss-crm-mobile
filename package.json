@@ -18,7 +18,6 @@
     "styled-components": "^4.4.0"
   },
   "devDependencies": {
-    "module-alias": "^2.2.2",
     "prettier": "1.18.2",
     "react-scripts": "2.1.8"
   },
@@ -26,7 +25,7 @@
     "deploy": "now && now alias",
     "start": "react-scripts start",
     "now-start": "serve -s ./build",
-    "build": "node ./react-scripts-wrapper.js",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "pretty-quick --staged"
@@ -45,9 +44,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "_moduleAliases": {
-    "../config/paths" : "./react-scripts-wrapper-paths",
-    "./paths" : "./react-scripts-wrapper-paths"
   }
 }
