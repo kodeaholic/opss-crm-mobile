@@ -1,8 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Redirect } from 'react-router-dom';
+import _ from 'lodash'
 
-import { requestLogin } from '../../modules/loginDuck'
+import { requestLogin, getUserLoggedIn, getLoading } from '../../modules/loginDuck'
+
+const mapStateToProps = state => ({
+  loggingIn: getLoading(state),
+  userLogged: getUserLoggedIn(state)
+})
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ requestLogin }, dispatch)
@@ -38,8 +45,11 @@ class LoginPage extends React.Component {
   }
 
   render() {
-    const { loggingIn } = this.props
+    const { loggingIn, userLogged } = this.props
     const { username, password, submitted } = this.state
+    if (!_.isEmpty(userLogged)) {
+      return <Redirect to={'/'} />
+    }
     return (
       <div className="col-md-6 col-md-offset-3">
         <h2>Login</h2>
@@ -89,6 +99,6 @@ class LoginPage extends React.Component {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(LoginPage)

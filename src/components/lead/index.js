@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-
-import './index.css'
-
 import _ from 'lodash'
 import moment from 'moment'
+import compose from 'recompose/compose';
+import withAuth from '../withAuth'
+import withLayout from '../withLayout'
+
+import './index.css'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -106,7 +108,15 @@ class Lead extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Lead)
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(Lead)
+export default compose(
+  withLayout(),
+  withAuth(),
+  connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )
+)(Lead);

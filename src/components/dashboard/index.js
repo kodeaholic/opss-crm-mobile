@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import compose from 'recompose/compose';
 import withAuth from '../withAuth'
 import withLayout from '../withLayout'
 
@@ -95,4 +95,7 @@ class Dashboard extends Component {
   }
 }
 
-export default withAuth()(withLayout()(Dashboard))
+export default compose(
+  withLayout(),
+  withAuth(),
+)(Dashboard);

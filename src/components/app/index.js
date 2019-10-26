@@ -20,8 +20,6 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-wrapper">
-        {/* <Header />
-        <div className="main"> */}
           <Route exact path="/" component={Dashboard} />
           <Route path="/login" exact component={Login} />
           <Route exact path="/home" component={Home} />
@@ -35,8 +33,6 @@ class App extends React.Component {
             path="/customer-details/:custID"
             component={CustomerDetails}
           />
-        {/* </div>
-        <Footer /> */}
       </div>
     )
   }

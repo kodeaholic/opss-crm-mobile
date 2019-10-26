@@ -1,4 +1,5 @@
 import axios from 'axios'
+import _ from "lodash"
 
 export const types = {
   REQUEST_LOGIN: 'LOGIN/REQUEST_LOGIN',
@@ -7,14 +8,26 @@ export const types = {
 }
 
 // Selector
+export const getUserLoggedIn = state => state.login.userLogged
+
+export const getLoading = state => state.login.isLoading
 
 // Reducer
-const initialState = {}
+const initialState = {
+  isLoading: false,
+  userLogged: {}
+}
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case types.REQUEST_LOGIN: {
+      state['isLoading'] = true
+      return state
+    }
     case types.SUCCESS_LOGIN: {
-      return action.payload
+      state['isLoading'] = false
+      state['userLogged'] = action.payload
+      return state
     }
     default:
       return state
@@ -41,8 +54,11 @@ export const requestLogin = payload => {
     return request.then(
       res => {
         console.log('thailog success res', res)
-        // if(!res.data) return dispatch(loginFailure("null data return"))
-        localStorage.setItem('user', JSON.stringify(res.data));
+        const responseSuccess = _.get(res, "data.success") || ""
+        if(!res.data || responseSuccess !== "true") return dispatch(loginFailure("null data or failure login"))
+
+        console.log('thailog success login', res)
+        localStorage.setItem('user', JSON.stringify(res.data))
         return dispatch(loginSuccess(res.data))
       },
       err => dispatch(loginFailure(err))
