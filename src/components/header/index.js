@@ -55,7 +55,6 @@ class Header extends Component {
   }
 
   render() {
-    console.log("thailog env", process.env);
     return (
       <div className="wrapper-header">
         {this.renderIconLeft()}

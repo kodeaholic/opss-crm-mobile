@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 
+import withAuth from '../withAuth'
+import withLayout from '../withLayout'
+
 import './index.css'
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -81,6 +84,8 @@ export default class Dashboard extends Component {
   }
 
   render() {
+    console.log('thailog props dashboard', this.props)
+
     return (
       <div className="container-dashboard">
         {this.renderInfor()}
@@ -89,3 +94,5 @@ export default class Dashboard extends Component {
     )
   }
 }
+
+export default withAuth()(withLayout()(Dashboard))

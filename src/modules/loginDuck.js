@@ -25,7 +25,6 @@ export default (state = initialState, action) => {
 export const requestLogin = payload => {
   return function action(dispatch) {
     dispatch({ type: types.REQUEST_LOGIN, payload })
-    console.log('thailog payload', payload)
     const bodyFormData = new FormData()
     const { username, password } = payload
 
@@ -42,6 +41,8 @@ export const requestLogin = payload => {
     return request.then(
       res => {
         console.log('thailog success res', res)
+        // if(!res.data) return dispatch(loginFailure("null data return"))
+        localStorage.setItem('user', JSON.stringify(res.data));
         return dispatch(loginSuccess(res.data))
       },
       err => dispatch(loginFailure(err))
