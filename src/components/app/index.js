@@ -12,11 +12,13 @@ import Ticket from '../ticket'
 import AddNewCustomer from '../add-new-customer'
 import CustomerDetails from '../customer-details'
 
+import Login from '../login'
 const App = () => (
   <div className="app-wrapper">
     <Header />
     <div className="main">
       <Route exact path="/" component={Dashboard} />
+      <Route path="/login" exact component={Login} />
       <Route exact path="/home" component={Home} />
       <Route exact path="/lead" component={Lead} />
       <Route exact path="/contact" component={Contact} />
