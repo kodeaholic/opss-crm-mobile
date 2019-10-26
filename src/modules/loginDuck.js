@@ -54,8 +54,8 @@ export const requestLogin = payload => {
     return request.then(
       res => {
         console.log('thailog success res', res)
-        const responseSuccess = _.get(res, "data.success") || ""
-        if(!res.data || responseSuccess !== "true") return dispatch(loginFailure("null data or failure login"))
+        const responseSuccess = _.get(res, "data.success") || false
+        if(!res.data || !responseSuccess) return dispatch(loginFailure("null data or failure login"))
 
         console.log('thailog success login', res)
         localStorage.setItem('user', JSON.stringify(res.data))
