@@ -1,5 +1,6 @@
 import axios from 'axios'
-import _ from "lodash"
+import _ from 'lodash'
+import { toast } from 'react-toastify'
 
 export const types = {
   REQUEST_LOGIN: 'LOGIN/REQUEST_LOGIN',
@@ -9,13 +10,14 @@ export const types = {
 
 // Selector
 export const getUserLoggedIn = state => state.login.userLogged
-
 export const getLoading = state => state.login.isLoading
+export const getMessageError = state => state.login.message
 
 // Reducer
 const initialState = {
   isLoading: false,
-  userLogged: {}
+  userLogged: {},
+  message: ''
 }
 
 export default (state = initialState, action) => {
@@ -27,6 +29,12 @@ export default (state = initialState, action) => {
     case types.SUCCESS_LOGIN: {
       state['isLoading'] = false
       state['userLogged'] = action.payload
+      return state
+    }
+    case types.FAILURE_LOGIN: {
+      state['isLoading'] = false
+      state['message'] = action.error
+      toast.error(action.error)
       return state
     }
     default:
@@ -54,14 +62,18 @@ export const requestLogin = payload => {
     return request.then(
       res => {
         console.log('thailog success res', res)
-        const responseSuccess = _.get(res, "data.success") || false
-        if(!res.data || !responseSuccess) return dispatch(loginFailure("null data or failure login"))
+        const responseSuccess = _.get(res, 'data.success') || false
+        const responseErr = _.get(res, 'data.error') || false
+        if (!res.data || !responseSuccess || responseErr) {
+          const messFail = _.get(res, 'data.error.message') || 'No data return'
+          return dispatch(loginFailure(messFail))
+        }
 
         console.log('thailog success login', res)
         localStorage.setItem('user', JSON.stringify(res.data))
         return dispatch(loginSuccess(res.data))
       },
-      err => dispatch(loginFailure(err))
+      err => dispatch(loginFailure(err.message))
     )
   }
 }
@@ -75,14 +87,3 @@ export const loginFailure = error => ({
   type: types.FAILURE_LOGIN,
   error
 })
-
-export const actions = {
-  loginFailure: error => ({
-    type: types.FAILURE_LOGIN,
-    error
-  }),
-  loginSuccess: payload => ({
-    type: types.SUCCESS_LOGIN,
-    payload
-  })
-}
