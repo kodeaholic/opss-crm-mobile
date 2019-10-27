@@ -9,6 +9,8 @@ import Contact from '../contact'
 import Ticket from '../ticket'
 import AddNewCustomer from '../add-new-customer'
 import CustomerDetails from '../customer-details'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
 import Login from '../login'
 class App extends React.Component {
@@ -20,19 +22,20 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-wrapper">
-          <Route exact path="/" component={Dashboard} />
-          <Route path="/login" exact component={Login} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/lead" component={Lead} />
-          <Route exact path="/contact" component={Contact} />
-          <Route exact path="/opportunity" component={Opportunity} />
-          <Route exact path="/ticket" component={Ticket} />
-          <Route exact path="/add-new-customer" component={AddNewCustomer} />
-          <Route
-            exact
-            path="/customer-details/:custID"
-            component={CustomerDetails}
-          />
+        <ToastContainer autoClose={2000} position="top-center" hideProgressBar />
+        <Route exact path="/" component={Dashboard} />
+        <Route path="/login" exact component={Login} />
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/lead" component={Lead} />
+        <Route exact path="/contact" component={Contact} />
+        <Route exact path="/opportunity" component={Opportunity} />
+        <Route exact path="/ticket" component={Ticket} />
+        <Route exact path="/add-new-customer" component={AddNewCustomer} />
+        <Route
+          exact
+          path="/customer-details/:custID"
+          component={CustomerDetails}
+        />
       </div>
     )
   }
