@@ -69,7 +69,7 @@ class LoginPage extends React.Component {
     this.setState({ submittedReset: true })
     if (usernameReset && emailReset) {
       if (!this.validateEmail(emailReset))
-        return toast.error('Email không hợp lệ!')
+        return toast.error('Email không đúng định dạng')
       const words = emailReset.split('@')
       console.log('thailog test email', group.indexOf(words))
       if (group.indexOf(words) < 0)
