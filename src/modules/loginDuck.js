@@ -65,8 +65,7 @@ export const requestLogin = payload => {
         const responseSuccess = _.get(res, 'data.success') || false
         const responseErr = _.get(res, 'data.error') || false
         if (!res.data || !responseSuccess || responseErr) {
-          const messFail = _.get(res, 'data.error.message') || 'No data return'
-          return dispatch(loginFailure(messFail))
+          return dispatch(loginFailure('Tên đăng nhập hoặc mật khẩu chưa đúng'))
         }
 
         console.log('thailog success login', res)
