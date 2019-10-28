@@ -88,7 +88,7 @@ class LoginPage extends React.Component {
     this.setState({ submitted: true })
     const { username, password } = this.state
     if (username && password) {
-      this.props.actions.requestLogin({ username, password })
+      this.props.actions.requestLogin({ username: username.toLowerCase(), password })
     } else {
       return toast.error('Tên đăng nhập hoặc mật khẩu chưa đúng')
     }
