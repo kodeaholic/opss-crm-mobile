@@ -113,7 +113,6 @@ class LoginPage extends React.Component {
           <div className="modal-body-popup">
             <div
               className={
-                'form-group' +
                 (submittedReset && !usernameReset ? ' has-error' : '')
               }>
               <label htmlFor="usernameReset">Tên đăng nhập</label>
@@ -127,7 +126,6 @@ class LoginPage extends React.Component {
             </div>
             <div
               className={
-                'form-group' +
                 (submittedReset && !emailReset ? ' has-error' : '')
               }>
               <label htmlFor="emailReset">Email</label>
@@ -171,7 +169,7 @@ class LoginPage extends React.Component {
         <form name="form" onSubmit={this.handleSubmit}>
           <div
             className={
-              'form-group' + (submitted && !username ? ' has-error' : '')
+              (submitted && !username ? ' has-error' : '')
             }>
             <label htmlFor="username">Tên đăng nhập</label>
             <input
@@ -184,7 +182,7 @@ class LoginPage extends React.Component {
           </div>
           <div
             className={
-              'form-group' + (submitted && !password ? ' has-error' : '')
+               (submitted && !password ? ' has-error' : '')
             }>
             <label htmlFor="password">Mật khẩu</label>
             <input
@@ -195,7 +193,7 @@ class LoginPage extends React.Component {
               onChange={this.handleChange}
             />
           </div>
-          <div className="form-group btn-login-forgetPass">
+          <div className="btn-login-forgetPass">
             <button className="btn btn-primary kv-btn-login">Đăng nhập</button>
             {loggingIn && (
               <img

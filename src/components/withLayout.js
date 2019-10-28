@@ -6,7 +6,7 @@ const withLayout = () => WrappedComponent => {
   return class HOC extends Component {
     render() {
       return (
-        <div>
+        <div className="with-layout-container" >
           <Header />
           <WrappedComponent {...this.props} thai="111" />
           <Footer />

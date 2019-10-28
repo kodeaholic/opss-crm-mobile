@@ -84,7 +84,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    console.log('thailog props dashboard', this.props)
 
     return (
       <div className="container-dashboard">
