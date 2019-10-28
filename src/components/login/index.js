@@ -196,7 +196,7 @@ class LoginPage extends React.Component {
             />
           </div>
           <div className="form-group btn-login-forgetPass">
-            <button className="btn btn-primary kv-btn-login">Login</button>
+            <button className="btn btn-primary kv-btn-login">Đăng nhập</button>
             {loggingIn && (
               <img
                 alt="load"
