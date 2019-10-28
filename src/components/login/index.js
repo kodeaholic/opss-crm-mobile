@@ -88,7 +88,10 @@ class LoginPage extends React.Component {
     this.setState({ submitted: true })
     const { username, password } = this.state
     if (username && password) {
-      this.props.actions.requestLogin({ username: username.toLowerCase(), password })
+      this.props.actions.requestLogin({
+        username: username.toLowerCase(),
+        password
+      })
     } else {
       return toast.error('Tên đăng nhập hoặc mật khẩu chưa đúng')
     }
@@ -162,15 +165,15 @@ class LoginPage extends React.Component {
           <img
             alt="load"
             src={require('../../static/images/logo-kiotviet.png')}
+            className="responsive-image-logo"
           />
         </div>
-        <h2>Login</h2>
         <form name="form" onSubmit={this.handleSubmit}>
           <div
             className={
               'form-group' + (submitted && !username ? ' has-error' : '')
             }>
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Tên đăng nhập</label>
             <input
               type="text"
               className="form-control"
@@ -183,7 +186,7 @@ class LoginPage extends React.Component {
             className={
               'form-group' + (submitted && !password ? ' has-error' : '')
             }>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Mật khẩu</label>
             <input
               type="password"
               className="form-control"
@@ -193,7 +196,7 @@ class LoginPage extends React.Component {
             />
           </div>
           <div className="form-group btn-login-forgetPass">
-            <button className="btn btn-primary">Login</button>
+            <button className="btn btn-primary kv-btn-login">Login</button>
             {loggingIn && (
               <img
                 alt="load"

@@ -113,3 +113,13 @@ input[type="text"] {
   flex-direction: row;
   justify-content: center;
 }
+
+.responsive-image-logo {
+  width: 100%;
+  height: auto;
+  padding: 20px;
+}
+
+.kv-btn-login {
+  min-width: 100px;
+}
