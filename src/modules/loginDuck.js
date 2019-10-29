@@ -52,7 +52,7 @@ export default (state = initialState, action) => {
     case types.SUCCESS_FORGET_PASSWORD: {
       state['isLoadingSendForgetPassword'] = false
       state['isShowPopupResetPassword'] = false
-      toast.success('Gửi yêu cầu thành công!')
+      toast.success('Mật khẩu mới đã được gửi tới email của bạn')
       return state
     }
     case types.FAILURE_FORGET_PASSWORD: {
