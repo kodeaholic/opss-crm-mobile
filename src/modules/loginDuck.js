@@ -8,19 +8,24 @@ export const types = {
   FAILURE_LOGIN: 'LOGIN/FAILURE_LOGIN',
   REQUEST_FORGET_PASSWORD: 'LOGIN/REQUEST_FORGET_PASSWORD',
   SUCCESS_FORGET_PASSWORD: 'LOGIN/SUCCESS_FORGET_PASSWORD',
-  FAILURE_FORGET_PASSWORD: 'LOGIN/FAILURE_FORGET_PASSWORD'
+  FAILURE_FORGET_PASSWORD: 'LOGIN/FAILURE_FORGET_PASSWORD',
+  OPEN_POPUP_RESET_PASSWORD: 'LOGIN/OPEN_POPUP_RESET_PASSWORD'
 }
 
 // Selector
 export const getUserLoggedIn = state => state.login.userLogged
 export const getLoading = state => state.login.isLoading
+export const getLoadingSendPassword = state => state.login.isLoadingSendForgetPassword
 export const getMessageError = state => state.login.messageErrorLogin
+export const getIsShowPopupResetPassword = state => state.login.isShowPopupResetPassword
 
 // Reducer
 const initialState = {
   isLoading: false,
+  isLoadingSendForgetPassword: false,
   userLogged: {},
-  messageErrorLogin: ''
+  messageErrorLogin: '',
+  isShowPopupResetPassword: false
 }
 
 export default (state = initialState, action) => {
@@ -40,19 +45,37 @@ export default (state = initialState, action) => {
       toast.error(action.error)
       return state
     }
+    case types.REQUEST_FORGET_PASSWORD: {
+      state['isLoadingSendForgetPassword'] = true
+      return state
+    }
     case types.SUCCESS_FORGET_PASSWORD: {
-      // state['isLoading'] = false
-      // state['userLogged'] = action.payload
+      state['isLoadingSendForgetPassword'] = false
+      state['isShowPopupResetPassword'] = false
+      toast.success('Gửi yêu cầu thành công!')
       return state
     }
     case types.FAILURE_FORGET_PASSWORD: {
+      state['isLoadingSendForgetPassword'] = false
       toast.error('Email không hợp lệ!')
+      return state
+    }
+    
+    case types.OPEN_POPUP_RESET_PASSWORD: {
+      // toast.error('Email không hợp lệ!')
+      state['isShowPopupResetPassword'] = !state.isShowPopupResetPassword
       return state
     }
     default:
       return state
   }
 }
+
+
+export const changePopupStatus = payload => ({
+  type: types.OPEN_POPUP_RESET_PASSWORD,
+  payload
+})
 
 // Action Creators
 export const requestLogin = payload => {
@@ -118,12 +141,12 @@ export const requestSendForgetPass = payload => {
         console.log('thailog success res', res)
         const responseSuccess = _.get(res, 'data.success') || false
         if (!responseSuccess) {
-          return dispatch(loginFailure('Email không hợp lệ!'))
+          return dispatch(sendForgetPassFailure('Email không hợp lệ!'))
         }
 
-        return dispatch(loginSuccess(res.data))
+        return dispatch(sendForgetPassSuccess(res.data))
       },
-      err => dispatch(loginFailure(err.message))
+      err => dispatch(sendForgetPassFailure(err.message))
     )
   }
 }

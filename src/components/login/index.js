@@ -10,7 +10,10 @@ import {
   getUserLoggedIn,
   getLoading,
   getMessageError,
-  requestSendForgetPass
+  requestSendForgetPass,
+  changePopupStatus,
+  getIsShowPopupResetPassword,
+  getLoadingSendPassword
 } from '../../modules/loginDuck'
 
 import './login.css'
@@ -20,11 +23,16 @@ const group = ['citigo.com.vn', 'citigo.net', 'kiotviet.com', 'gmail.com']
 const mapStateToProps = state => ({
   loggingIn: getLoading(state),
   userLogged: getUserLoggedIn(state),
-  messageError: getMessageError(state)
+  messageError: getMessageError(state),
+  isShowPopupResetPassword: getIsShowPopupResetPassword(state),
+  isLoadingSendForgetPassword: getLoadingSendPassword(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ requestLogin, requestSendForgetPass }, dispatch)
+  actions: bindActionCreators(
+    { requestLogin, requestSendForgetPass, changePopupStatus },
+    dispatch
+  )
 })
 
 class LoginPage extends React.Component {
@@ -56,13 +64,15 @@ class LoginPage extends React.Component {
   }
 
   handlePopupOpen = () => {
-    var modal = document.getElementById('myModal')
-    modal.style.display = 'block'
+    // var modal = document.getElementById('myModal')
+    // modal.style.display = 'block'
+    this.props.actions.changePopupStatus()
   }
 
   handlePopupClose = () => {
-    var modal = document.getElementById('myModal')
-    modal.style.display = 'none'
+    // var modal = document.getElementById('myModal')
+    // modal.style.display = 'none'
+    this.props.actions.changePopupStatus()
   }
 
   handleSubmitForgetPass = () => {
@@ -80,8 +90,8 @@ class LoginPage extends React.Component {
         )
       }
       return this.props.actions.requestSendForgetPass({
-        username: usernameReset,
-        email: emailReset
+        username: usernameReset.toLowerCase(),
+        email: emailReset.toLowerCase()
       })
     } else {
       return toast.error('Tên đăng nhập và email không được để trống')
@@ -96,7 +106,7 @@ class LoginPage extends React.Component {
     if (username && password) {
       this.props.actions.requestLogin({
         username: username.toLowerCase(),
-        password
+        password: password.toLowerCase(),
       })
     } else {
       return toast.error('Tên đăng nhập hoặc mật khẩu chưa đúng')
@@ -105,6 +115,7 @@ class LoginPage extends React.Component {
 
   renderPopup() {
     const { usernameReset, emailReset, submittedReset } = this.state
+    const { isLoadingSendForgetPassword } = this.props
     return (
       <div id="myModal" className="modal-popup">
         <div className="modal-content-popup">
@@ -118,7 +129,11 @@ class LoginPage extends React.Component {
           </div>
           <div className="modal-body-popup">
             <div
-              className={submittedReset && !usernameReset ? ' has-error modal-body-popup-input' : 'modal-body-popup-input'}>
+              className={
+                submittedReset && !usernameReset
+                  ? ' has-error modal-body-popup-input'
+                  : 'modal-body-popup-input'
+              }>
               <label htmlFor="usernameReset">Tên đăng nhập</label>
               <input
                 type="text"
@@ -128,7 +143,12 @@ class LoginPage extends React.Component {
                 onChange={this.handleChange}
               />
             </div>
-            <div className={submittedReset && !emailReset ? ' has-error modal-body-popup-input' : 'modal-body-popup-input'}>
+            <div
+              className={
+                submittedReset && !emailReset
+                  ? ' has-error modal-body-popup-input'
+                  : 'modal-body-popup-input'
+              }>
               <label htmlFor="emailReset">Email</label>
               <input
                 type="text"
@@ -145,6 +165,9 @@ class LoginPage extends React.Component {
               onClick={() => this.handleSubmitForgetPass()}>
               Gửi yêu cầu
             </button>
+            {isLoadingSendForgetPassword && (
+              <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            )}
           </div>
         </div>
       </div>
@@ -159,7 +182,7 @@ class LoginPage extends React.Component {
     }
     return (
       <div className="col-md-6 col-md-offset-3">
-        {this.renderPopup()}
+        {this.props.isShowPopupResetPassword ? this.renderPopup() : null}
         <div className="login-header-logo">
           <img
             alt="load"
