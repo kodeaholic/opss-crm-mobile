@@ -13,6 +13,10 @@ class Dashboard extends Component {
     this.renderInfor = this.renderInfor.bind(this)
   }
 
+  componentDidMount(){
+    window.scrollTo(0, 0);
+  }
+
   renderInfor() {
     return (
       <div className="wapper-contract">

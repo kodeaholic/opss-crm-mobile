@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 
 import Login from '../login'
+import ScrollToTop from './ScrollToTop'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -22,6 +23,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-wrapper">
+        <ScrollToTop />
         <ToastContainer autoClose={2000} position="top-center" hideProgressBar />
         <Route exact path="/" component={Dashboard} />
         <Route path="/login" exact component={Login} />
