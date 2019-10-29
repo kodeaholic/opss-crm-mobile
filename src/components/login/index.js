@@ -9,12 +9,13 @@ import {
   requestLogin,
   getUserLoggedIn,
   getLoading,
-  getMessageError
+  getMessageError,
+  requestSendForgetPass
 } from '../../modules/loginDuck'
 
 import './login.css'
 
-const group = ['citigo.com.vn', 'citigo.net', 'kiotviet.com']
+const group = ['citigo.com.vn', 'citigo.net', 'kiotviet.com', 'gmail.com']
 
 const mapStateToProps = state => ({
   loggingIn: getLoading(state),
@@ -23,7 +24,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ requestLogin }, dispatch)
+  actions: bindActionCreators({ requestLogin, requestSendForgetPass }, dispatch)
 })
 
 class LoginPage extends React.Component {
@@ -68,15 +69,20 @@ class LoginPage extends React.Component {
     const { usernameReset, emailReset } = this.state
     this.setState({ submittedReset: true })
     if (usernameReset && emailReset) {
-      if (!this.validateEmail(emailReset))
+      if (!this.validateEmail(emailReset)) {
         return toast.error('Email không đúng định dạng')
+      }
       const words = emailReset.split('@')
-      console.log('thailog test email', group.indexOf(words))
-      if (group.indexOf(words) < 0)
+      if (group.indexOf(words[1]) < 0) {
+        debugger
         return toast.error(
           'Email không hợp lệ! Email phải thuộc tổ chức của Citigo, bao gồm: citigo.com.vn, citigo.net, kiotviet.com'
         )
-      // this.props.actions.requestLogin({ username, password })
+      }
+      return this.props.actions.requestSendForgetPass({
+        username: usernameReset,
+        email: emailReset
+      })
     } else {
       return toast.error('Tên đăng nhập và email không được để trống')
     }
@@ -112,9 +118,7 @@ class LoginPage extends React.Component {
           </div>
           <div className="modal-body-popup">
             <div
-              className={
-                (submittedReset && !usernameReset ? ' has-error' : '')
-              }>
+              className={submittedReset && !usernameReset ? ' has-error modal-body-popup-input' : 'modal-body-popup-input'}>
               <label htmlFor="usernameReset">Tên đăng nhập</label>
               <input
                 type="text"
@@ -124,10 +128,7 @@ class LoginPage extends React.Component {
                 onChange={this.handleChange}
               />
             </div>
-            <div
-              className={
-                (submittedReset && !emailReset ? ' has-error' : '')
-              }>
+            <div className={submittedReset && !emailReset ? ' has-error modal-body-popup-input' : 'modal-body-popup-input'}>
               <label htmlFor="emailReset">Email</label>
               <input
                 type="text"
@@ -167,10 +168,7 @@ class LoginPage extends React.Component {
           />
         </div>
         <form name="form" onSubmit={this.handleSubmit}>
-          <div
-            className={
-              (submitted && !username ? ' has-error' : '')
-            }>
+          <div className={submitted && !username ? ' has-error' : ''}>
             <label htmlFor="username">Tên đăng nhập</label>
             <input
               type="text"
@@ -180,10 +178,7 @@ class LoginPage extends React.Component {
               onChange={this.handleChange}
             />
           </div>
-          <div
-            className={
-               (submitted && !password ? ' has-error' : '')
-            }>
+          <div className={submitted && !password ? ' has-error' : ''}>
             <label htmlFor="password">Mật khẩu</label>
             <input
               type="password"

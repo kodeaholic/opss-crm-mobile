@@ -80,7 +80,7 @@
 }
 
 .modal-footer-popup {
-  padding-bottom: 10px;
+  padding: 15px;
   background-color: #ffffff;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -123,4 +123,9 @@ input[type="text"] {
 
 .kv-btn-login {
   min-width: 100px;
+  padding-bottom: 20px;
+}
+
+.modal-body-popup-input {
+  padding-top: 10px;
 }
