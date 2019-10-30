@@ -22,9 +22,9 @@ const initialState = {}
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.SUCCESS_GET_LIST_LEAD: {
-      return action.payload
-    }
+    // case types.SUCCESS_GET_LIST_LEAD: {
+    //   return action.payload
+    // }
     default:
       return state
   }
