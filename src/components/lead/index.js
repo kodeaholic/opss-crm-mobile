@@ -100,6 +100,7 @@ class Lead extends Component {
     const session = '381c27de5db93c66c6461'
     const { pageIndex } = this.props
     this.props.actions.getListLead({ session, pageIndex })
+    console.log('thailog loadmore')
   }
 
   renderLoading = () => {
@@ -113,12 +114,14 @@ class Lead extends Component {
   renderList = data => {
     const { hasMoreData } = this.props
     return (
-      <div className="wrapper-list-lead">
+      <div className="wrapper-list-lead"  id="scrollableDiv" style={{ height: '100vh', overflow: "auto"}}>
         <InfiniteScroll
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
           hasMore={hasMoreData}
-          loader={this.renderLoading()}>
+          loader={this.renderLoading()}
+          scrollableTarget="scrollableDiv"
+          >
           {data
             ? _.map(data, (item, key) => {
                 return this.renderItemList(item, key)

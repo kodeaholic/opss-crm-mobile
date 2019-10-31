@@ -3,6 +3,7 @@
   padding-bottom: 55px;
   padding-top: 50px;
   height: 100%;
+  z-index: -1;
 }
 
 .wrapper-filter-lead {
@@ -42,8 +43,9 @@
 }
 
 .wrapper-list-lead {
-  flex: 1;
   background-color: #ededed;
+  overflow-y: hidden; 
+  overflow-x: hidden;
 }
 
 .wrapper-list-lead-item {
@@ -57,7 +59,7 @@
   text-decoration: none;
 }
 
-div.wrapper-item-row {
+.wrapper-item-row {
   display: flex;
   flex-direction: column;
   word-wrap: break-word;
@@ -86,7 +88,7 @@ div.wrapper-item-row {
   font-style: italic;
 }
 
-div.loading-data {
+.loading-data {
   width: 100%;
   height: 100%;
   display: flex;

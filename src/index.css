@@ -16,7 +16,7 @@ code {
 .app-wrapper {
   background-color: #d6d6d6;
   position: relative;
-  height: 120vh;
+  height: 100vh;
   max-width: 760px;
   display: flex;
   flex-direction: column;
