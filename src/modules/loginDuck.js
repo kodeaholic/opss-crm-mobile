@@ -13,11 +13,28 @@ export const types = {
 }
 
 // Selector
-export const getUserLoggedIn = state => state.login.userLogged
+export const getUserLoggedIn = state => {
+  let userLoginData = _.isEmpty(state.login.userLogged)
+    ? localStorage.getItem('userLoggedInKV')
+    : null
+  if (_.isString(userLoginData)) {
+    userLoginData = JSON.parse(userLoginData).result.login
+  }
+  const { userid, session } = userLoginData
+  return { userid, session }
+}
 export const getLoading = state => state.login.isLoading
-export const getLoadingSendPassword = state => state.login.isLoadingSendForgetPassword
+export const getLoadingSendPassword = state =>
+  state.login.isLoadingSendForgetPassword
 export const getMessageError = state => state.login.messageErrorLogin
-export const getIsShowPopupResetPassword = state => state.login.isShowPopupResetPassword
+export const getIsShowPopupResetPassword = state =>
+  state.login.isShowPopupResetPassword
+
+export const getSessionId = state => {
+  const loggedInData = this.getUserLoggedIn(state)
+  const { session } = loggedInData
+  return session
+}
 
 // Reducer
 const initialState = {
@@ -60,7 +77,7 @@ export default (state = initialState, action) => {
       toast.error('Email không hợp lệ!')
       return state
     }
-    
+
     case types.OPEN_POPUP_RESET_PASSWORD: {
       // toast.error('Email không hợp lệ!')
       state['isShowPopupResetPassword'] = !state.isShowPopupResetPassword
@@ -70,7 +87,6 @@ export default (state = initialState, action) => {
       return state
   }
 }
-
 
 export const changePopupStatus = payload => ({
   type: types.OPEN_POPUP_RESET_PASSWORD,
@@ -101,7 +117,7 @@ export const requestLogin = payload => {
         if (!res.data || !responseSuccess || responseErr) {
           return dispatch(loginFailure('Tên đăng nhập hoặc mật khẩu chưa đúng'))
         }
-        localStorage.setItem('user', JSON.stringify(res.data))
+        localStorage.setItem('userLoggedInKV', JSON.stringify(res.data))
         return dispatch(loginSuccess(res.data))
       },
       err => dispatch(loginFailure(err.message))

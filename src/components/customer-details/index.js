@@ -2,8 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import faker from 'faker/locale/vi'
 import _ from 'lodash'
+import { bindActionCreators } from 'redux'
+import compose from 'recompose/compose'
+import withAuth from '../withAuth'
+import withLayout from '../withLayout'
 
-import { getUserDataByID } from '../../modules/userDuck'
+import { getLeadDetailsByID, getDetailsLead } from '../../modules/leadsDuck'
+import { getUserLoggedIn } from '../../modules/loginDuck'
 import Input from '../commonComponents/input'
 
 import './index.css'
@@ -11,7 +16,17 @@ import './index.css'
 const tabs = ['DETAILS', 'RELATED']
 
 const mapStateToProps = (state, ownProps) => ({
-  userDetails: getUserDataByID(state, ownProps)
+  leadDetails: getDetailsLead(state, ownProps),
+  userLoggedIn: getUserLoggedIn(state)
+})
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    {
+      getLeadDetailsByID
+    },
+    dispatch
+  )
 })
 
 class CustomerDetails extends Component {
@@ -121,7 +136,10 @@ class CustomerDetails extends Component {
   }
 
   render() {
-    // const userDetails = _.get(this.props, 'userDetails') || {}
+    const { leadDetails, userLoggedIn } = this.props
+    console.log('thailog leadDetails', leadDetails)
+    console.log('thailog userLoggedIn', userLoggedIn)
+    // const leadDetails = _.get(this.props, 'userDetails') || {}
     const userDetails = this.state.details
     // if (_.isEmpty(userDetails)) return null
     // console.log('thailog props', userDetails)
@@ -137,4 +155,12 @@ class CustomerDetails extends Component {
   }
 }
 
-export default connect(mapStateToProps)(CustomerDetails)
+// export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetails)
+export default compose(
+  withLayout(),
+  withAuth(),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(CustomerDetails)

@@ -3,7 +3,6 @@
   padding-bottom: 55px;
   padding-top: 50px;
   height: 100%;
-  z-index: -1;
 }
 
 .wrapper-filter-lead {
@@ -14,6 +13,7 @@
   background-color: #ffffff;
   margin-bottom: 10px;
   flex: 1;
+  overflow: unset;
 }
 .icon-filter-lead {
   font-size: 27px;
