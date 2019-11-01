@@ -8,7 +8,7 @@ const withLayout = () => WrappedComponent => {
       return (
         <div className="with-layout-container">
           <Header />
-          <WrappedComponent {...this.props} style={{ overflow: 'hidden' }} />
+          <WrappedComponent {...this.props} />
           <Footer />
         </div>
       )
