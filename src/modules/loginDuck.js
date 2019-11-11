@@ -16,12 +16,15 @@ export const types = {
 export const getUserLoggedIn = state => {
   let userLoginData = _.isEmpty(state.login.userLogged)
     ? localStorage.getItem('userLoggedInKV')
-    : null
+    : state.login.userLogged
   if (_.isString(userLoginData)) {
     userLoginData = JSON.parse(userLoginData).result.login
   }
-  const { userid, session } = userLoginData
-  return { userid, session }
+  if (_.isEmpty(userLoginData)) return undefined
+  else {
+    const { userid, session } = userLoginData
+    return { userid, session }
+  }
 }
 export const getLoading = state => state.login.isLoading
 export const getLoadingSendPassword = state =>
