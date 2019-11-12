@@ -100,7 +100,6 @@ class CustomerDetails extends Component {
   }
 
   renderDetails = userDetails => {
-    console.log(userDetails)
     const leadName = _.get(userDetails, 'name')
     const leadStatus = _.get(userDetails, 'status')
     const leadSource = _.get(userDetails, 'leadSource')

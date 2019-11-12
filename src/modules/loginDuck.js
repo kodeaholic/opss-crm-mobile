@@ -157,7 +157,6 @@ export const requestSendForgetPass = payload => {
     })
     return request.then(
       res => {
-        console.log('thailog success res', res)
         const responseSuccess = _.get(res, 'data.success') || false
         if (!responseSuccess) {
           return dispatch(sendForgetPassFailure('Email không hợp lệ!'))
