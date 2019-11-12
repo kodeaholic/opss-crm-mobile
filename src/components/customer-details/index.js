@@ -7,7 +7,7 @@ import compose from 'recompose/compose'
 import withAuth from '../withAuth'
 import withLayout from '../withLayout'
 
-import { getLeadDetailsByID, getDetailsLead } from '../../modules/leadsDuck'
+import { getLeadDetailsByID, getDetailsLead, getSelectedLeadId } from '../../modules/leadsDuck'
 import { getUserLoggedIn } from '../../modules/loginDuck'
 import Input from '../commonComponents/input'
 
@@ -17,7 +17,8 @@ const tabs = ['DETAILS', 'RELATED']
 
 const mapStateToProps = (state, ownProps) => ({
   leadDetails: getDetailsLead(state, ownProps),
-  userLoggedIn: getUserLoggedIn(state)
+  userLoggedIn: getUserLoggedIn(state),
+  selectedLeadId: getSelectedLeadId(state, ownProps)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -33,24 +34,34 @@ class CustomerDetails extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      activedTab: 'DETAILS',
+      activeTab: 'DETAILS',
       details: {
-        address: '54742 Steuber Falls',
-        date: 'Fri Mar 13 2020 01:14:23 GMT+0700 (Giờ Đông Dương)',
-        email: 'Casimer_Weissnat@yahoo.com',
-        id: '12197',
-        name: 'Bechtelar LLC',
-        phone: '653.756.5788 x1657',
-        transactionType: 'payment'
+        name: '',
+        status: '',
+        website: '',
+        phone: '',
+        secondaryPhone: '',
+        industry: '',
+        region: '',
+        leadSource: '',
+        assignedUser: '',
+        generalDescription: ''
       }
     }
   }
 
-  changeTab = tabName => {
-    this.setState({ activedTab: tabName })
+  componentWillMount() {
+    const { userLoggedIn, selectedLeadId } = this.props
+    const record = selectedLeadId
+    const { session } = userLoggedIn
+    this.props.actions.getLeadDetailsByID({ session, record })
   }
 
-  renderCustomerInfor = userDetails => {
+  changeTab = tabName => {
+    this.setState({ activeTab: tabName })
+  }
+
+  renderCustomerInfo = userDetails => {
     return (
       <div>
         <div className="customer-details-container-infor">
@@ -78,7 +89,7 @@ class CustomerDetails extends Component {
             key={key}
             id={item}
             className={
-              item === this.state.activedTab ? 'tab tab-active' : 'tab'
+              item === this.state.activeTab ? 'tab tab-active' : 'tab'
             }
             onClick={() => this.changeTab(item)}>
             <label className="label-tab-name">{item}</label>
@@ -89,23 +100,29 @@ class CustomerDetails extends Component {
   }
 
   renderDetails = userDetails => {
-    var randomCard = faker.helpers.createCard()
-    const custName = _.get(randomCard, 'name') || ''
-    const custStatus = _.get(randomCard, 'username') || {}
-    const custCatchPhrase = _.get(randomCard, 'company.catchPhrase') || {}
-    const custPhone = _.get(randomCard, 'phone') || {}
-    const custPhone1 = _.get(randomCard, 'username') || {}
-    const custIndustry = _.get(randomCard, 'website') || {}
-    const custLocate = _.get(randomCard, 'address.city') || {}
+    console.log(userDetails)
+    const leadName = _.get(userDetails, 'name')
+    const leadStatus = _.get(userDetails, 'status')
+    const leadSource = _.get(userDetails, 'leadSource')
+    const leadWebsite = _.get(userDetails, 'website')
+    const leadPhone = _.get(userDetails, 'phone')
+    const leadSecondaryPhone = _.get(userDetails, 'secondaryPhone')
+    const leadIndustry = _.get(userDetails, 'industry')
+    const leadRegion = _.get(userDetails, 'region')
+    const description = _.get(userDetails, 'generalDescription')
+    const assignedUser = _.get(userDetails, 'assignedUser')
     return (
-      <div className="customer-details-feild" val={custName}>
-        <Input label="Họ tên khách hàng" val={custName} readOnly />
-        <Input label="Tình trạng" val={custStatus} readOnly />
-        <Input label="So dien thoai" val={custPhone} readOnly />
-        <Input label="So dien thoai khac" val={custPhone1} readOnly />
-        <Input label="Nganh hang" val={custIndustry} readOnly />
-        <Input label="Khu vuc" val={custLocate} readOnly />
-        <Input label="Nguon khach hang" val={custCatchPhrase} readOnly />
+      <div className="customer-details-feild" val={leadName}>
+        <Input label="Họ tên khách hàng" val={leadName} readOnly />
+        <Input label="Tình trạng" val={leadStatus} readOnly />
+        <Input label="Tên gian hàng" val={leadWebsite} readOnly />
+        <Input label="Số điện thoại" val={leadPhone} readOnly />
+        <Input label="Số điện thoại khác" val={leadSecondaryPhone} readOnly />
+        <Input label="Ngành hàng" val={leadIndustry} readOnly />
+        <Input label="Khu vực" val={leadRegion} readOnly />
+        <Input label="Nguồn khách hàng" val={leadSource} readOnly />
+        <Input label="Người xử lý" val={assignedUser} readOnly />
+        <Input label="Mô tả chung" val={description} readOnly />
       </div>
     )
   }
@@ -137,19 +154,13 @@ class CustomerDetails extends Component {
 
   render() {
     const { leadDetails, userLoggedIn } = this.props
-    // console.log('thailog leadDetails', leadDetails)
-    // console.log('thailog userLoggedIn', userLoggedIn)
-    // const leadDetails = _.get(this.props, 'userDetails') || {}
-    const userDetails = this.state.details
-    // if (_.isEmpty(userDetails)) return null
-    // console.log('thailog props', userDetails)
     return (
       <div className="customer-details-container">
-        {this.renderCustomerInfor(userDetails)}
+        {this.renderCustomerInfo(leadDetails)}
         {this.renderTabBelow()}
-        {this.state.activedTab !== 'DETAILS'
-          ? this.renderRelated(userDetails)
-          : this.renderDetails(userDetails)}
+        {this.state.activeTab !== 'DETAILS'
+          ? this.renderRelated({})
+          : this.renderDetails(leadDetails)}
       </div>
     )
   }

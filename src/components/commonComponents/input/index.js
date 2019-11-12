@@ -26,7 +26,7 @@ export default class Input extends Component {
     const isRequire = _.get(this.props, 'isRequire') || false
     const isMultiLine = _.get(this.props, 'isMultiLine') || false
     const isReadOnly = _.get(this.props, 'readOnly') || false
-    const value = _.get(this.state, 'val') || ''
+    const value = _.get(this.props, 'val') || ''
     return (
       <div className="wrapper-input-common-component">
         <label className="label-input-common-component">
@@ -51,7 +51,7 @@ export default class Input extends Component {
             onChange={this.handleChange}
           />
         )}
-        <label>warning</label>
+        {/*<label>warning</label>*/}
       </div>
     )
   }

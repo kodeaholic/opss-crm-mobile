@@ -2,11 +2,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 10px;
+    padding: 10px 10px 0 10px;
   }
   
   .label-input-common-component {
-      font-size: 17px;
+      /*font-size: 17px;*/
   }
   
   .require-input-common-component {
@@ -20,7 +20,7 @@
     height: 30px;
     flex: 1;
     padding-left: 3px;
-    margin-top: 5px;
+    /*margin-top: 5px;*/
     font-size: 20px;
   }
   

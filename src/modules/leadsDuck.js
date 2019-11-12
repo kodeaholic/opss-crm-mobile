@@ -18,12 +18,8 @@ export const getLeadsPageIndex = state => _.get(state, 'leads.pageIndex') || 0
 export const getLeadsHasMoreData = state =>
   _.get(state, 'leads.hasMoreData') || false
 export const getDetailsLead = state => _.get(state, 'leads.detailsLead') || {}
-// export const getUserDataByID = (state, ownProps) => {
-//   const custID = _.get(ownProps, 'match.params.custID') || ''
-//   const usersInfor = getUserData(state)
-//   return custID ? _.find(usersInfor, ['id', custID]) : {}
-// }
 
+export const getSelectedLeadId = (state, ownProps) => ownProps.match.params.custID || null
 // Reducer
 const initialState = {
   listLeads: [],
@@ -68,7 +64,18 @@ export default (state = initialState, action) => {
       return state
     }
     case types.SUCCESS_GET_LEAD_DETAILS: {
-      state['detailsLead'] = {}
+      const details = {}
+      details.name = _.get(action, 'payload.lastname')
+      details.phone = _.get(action, 'payload.phone')
+      details.secondaryPhone = _.get(action, 'payload.mobile')
+      details.status = _.get(action, 'payload.leadstatus')
+      details.website = _.get(action, 'payload.website')
+      details.industry = _.get(action, 'payload.industry')
+      details.region = _.get(action, 'payload.cf_lead_khu_vuc')
+      details.leadSource = _.get(action, 'payload.leadsource')
+      details.assignedUser = _.get(action, 'payload.assigned_user_id.label')
+      details.generalDescription = _.get(action, 'payload.description')
+      state['detailsLead'] = details
       return state
     }
     default:
@@ -130,13 +137,11 @@ export const getListLeadFailure = error => ({
 export const getLeadDetailsByID = payload => {
   return function action(dispatch) {
     dispatch({ type: types.REQUEST_GET_LEAD_DETAILS, payload })
-
     const bodyFormData = new FormData()
-    // console.log('thailog action getlist payload', payload)
-
     const { session, record } = payload
 
-    bodyFormData.append('_operation', 'listModuleRecords')
+    /* đoạn này là thằng action creator này, nó fetch dữ liệu từ api về, kết quả trả về từ fetch chính là payload cho action SUCCESS_GET_LEAD_DETAILS. Xem đoạn cuối sẽ hiểu */
+    bodyFormData.append('_operation', 'fetchRecord')
     bodyFormData.append('_session', session)
     bodyFormData.append('record', record)
 
@@ -153,12 +158,14 @@ export const getLeadDetailsByID = payload => {
         const { result, success } = response.data
         if (success) {
           return dispatch(getDetailsLeadSuccess(result))
+          /* câu lệnh trên thực chất là: return dispatch({type: types.SUCCESS_GET_LEAD_DETAILS, result}) */
+          /* sau khi dispatch, thằng store sẽ biết được là vừa có action SUCCESS_GET_LEAD_DETAILS gửi lên, với content là result kia. Sau đó thằng Store sẽ gọi đến reducer tương ứng */
         }
         return dispatch(getDetailsLeadFailure())
       })
       .catch(err => {
         //handle error
-        console.log('thailog error', err)
+        console.log('Error', err)
         return dispatch(getDetailsLeadFailure(err))
       })
   }
