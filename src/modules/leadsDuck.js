@@ -43,7 +43,9 @@ export default (state = initialState, action) => {
 
       const lstLeads = _.get(state, 'listLeads') || []
       const newLeads = _.get(action, 'payload.records') || []
-      const other = _.concat(lstLeads, newLeads)
+      // const other = _.concat(lstLeads, newLeads)
+      const other = []
+      _.merge(other, lstLeads, newLeads)
 
       state['listLeads'] = other
       if (newLeads) {
@@ -95,7 +97,7 @@ export const getListLead = payload => {
       data: bodyFormData,
       config: { headers: { 'Content-Type': 'multipart/form-data' } }
     })
-    console.log('thailog pageIndex payload', pageIndex)
+    // console.log('thailog pageIndex payload', pageIndex)
 
     return request
       .then(response => {

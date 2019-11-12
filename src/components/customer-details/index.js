@@ -137,8 +137,8 @@ class CustomerDetails extends Component {
 
   render() {
     const { leadDetails, userLoggedIn } = this.props
-    console.log('thailog leadDetails', leadDetails)
-    console.log('thailog userLoggedIn', userLoggedIn)
+    // console.log('thailog leadDetails', leadDetails)
+    // console.log('thailog userLoggedIn', userLoggedIn)
     // const leadDetails = _.get(this.props, 'userDetails') || {}
     const userDetails = this.state.details
     // if (_.isEmpty(userDetails)) return null
