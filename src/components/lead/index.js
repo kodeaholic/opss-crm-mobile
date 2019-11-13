@@ -128,7 +128,7 @@ class Lead extends Component {
       <div
         className="wrapper-list-lead"
         id="scrollableDiv"
-        style={{ height: 'calc(100vh - 100px)', overflow: 'auto', position: 'absolute', top: '100px', width: '100%'}}>
+        style={{ height: 'calc(100vh - 105px)', overflow: 'auto', position: 'absolute', top: '100px', width: '100%'}}>
         <InfiniteScroll
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
@@ -137,6 +137,9 @@ class Lead extends Component {
           scrollableTarget="scrollableDiv"
           refreshFunction={this.refreshData}
           pullDownToRefresh
+          pullDownToRefreshContent={
+            this.renderLoading()
+          }
           releaseToRefreshContent={
             this.renderLoading()
           }>

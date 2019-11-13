@@ -39,11 +39,10 @@ export default (state = initialState, action) => {
 
       const lstLeads = _.get(state, 'listLeads') || []
       const newLeads = _.get(action, 'payload.records') || []
-      // const other = _.concat(lstLeads, newLeads)
-      const other = []
-      _.merge(other, lstLeads, newLeads)
 
-      state['listLeads'] = other
+      let merge = (a, b, p) => a.filter( aa => ! b.find ( bb => aa[p] === bb[p]) ).concat(b) // Hàm merge 2 objects array
+      let list = merge(lstLeads, newLeads, "id")
+      state['listLeads'] = _.isEmpty(list) ? [] : list
       if (newLeads) {
         // debugger;
         if (newLeads.length >= 20) {
