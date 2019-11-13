@@ -85,7 +85,7 @@ export default (state = initialState, action) => {
 // Action Creators
 export const getListLead = payload => {
   return function action(dispatch) {
-    dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
+    // dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
 
     const bodyFormData = new FormData()
     // console.log('thailog action getlist payload', payload)

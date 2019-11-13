@@ -20,8 +20,8 @@ import {
   getLeadsHasMoreData
 } from '../../modules/leadsDuck'
 import { getUserLoggedIn } from '../../modules/loginDuck'
-import InfiniteScroll from 'react-infinite-scroll-component'
-
+// import InfiniteScroll from 'react-infinite-scroll-component'
+import InfiniteScroll from 'react-infinite-scroller';
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
   leads: getLeadsData(state),
@@ -130,25 +130,38 @@ class Lead extends Component {
         id="scrollableDiv"
         style={{ height: 'calc(100vh - 105px)', overflow: 'auto', position: 'absolute', top: '100px', width: '100%'}}>
         <InfiniteScroll
-          dataLength={data.length} //This is important field to render the next data
-          next={this.fetchMoreData}
+          pageStart={0}
           hasMore={hasMoreData}
+          loadMore={this.fetchMoreData}
           loader={this.renderLoading()}
-          scrollableTarget="scrollableDiv"
-          refreshFunction={this.refreshData}
-          pullDownToRefresh
-          pullDownToRefreshContent={
-            this.renderLoading()
-          }
-          releaseToRefreshContent={
-            this.renderLoading()
-          }>
+          useWindow={false}
+        >
           {data
             ? _.map(data, (item, key) => {
-                return this.renderItemList(item, key)
-              })
+              return this.renderItemList(item, key)
+            })
             : null}
         </InfiniteScroll>
+        {/*<InfiniteScroll*/}
+        {/*  dataLength={data.length} //This is important field to render the next data*/}
+        {/*  next={this.fetchMoreData}*/}
+        {/*  hasMore={hasMoreData}*/}
+        {/*  loader={this.renderLoading()}*/}
+        {/*  scrollableTarget="scrollableDiv"*/}
+        {/*  refreshFunction={this.refreshData}*/}
+        {/*  pullDownToRefresh*/}
+        {/*  pullDownToRefreshContent={*/}
+        {/*    this.renderLoading()*/}
+        {/*  }*/}
+        {/*  releaseToRefreshContent={*/}
+        {/*    this.renderLoading()*/}
+        {/*  }>*/}
+        {/*  {data*/}
+        {/*    ? _.map(data, (item, key) => {*/}
+        {/*        return this.renderItemList(item, key)*/}
+        {/*      })*/}
+        {/*    : null}*/}
+        {/*</InfiniteScroll>*/}
       </div>
     )
   }
