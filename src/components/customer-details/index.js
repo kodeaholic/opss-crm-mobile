@@ -53,7 +53,12 @@ class CustomerDetails extends Component {
   componentWillMount() {
     const { userLoggedIn, selectedLeadId } = this.props
     const record = selectedLeadId
-    const { session } = userLoggedIn
+    let { session } = userLoggedIn
+    if(!session) {
+      let userLoginData = localStorage.getItem('userLoggedInKV')
+      userLoginData = JSON.parse(userLoginData).result.login
+      session = userLoginData.session
+    }
     this.props.actions.getLeadDetailsByID({ session, record })
   }
 
