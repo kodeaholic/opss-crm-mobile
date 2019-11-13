@@ -124,7 +124,7 @@ class Lead extends Component {
       <div
         className="wrapper-list-lead"
         id="scrollableDiv"
-        style={{ height: '100vh', overflow: 'auto' }}>
+        style={{ height: 'calc(100vh - 100px)', overflow: 'auto', position: 'absolute', top: '100px', width: '100%'}}>
         <InfiniteScroll
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
