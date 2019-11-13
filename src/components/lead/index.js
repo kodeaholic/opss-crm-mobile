@@ -102,12 +102,16 @@ class Lead extends Component {
     )
   }
 
+  refreshData = () => {
+    const { userLoggedIn } = this.props
+    const { session } = userLoggedIn
+    this.props.actions.getListLead({ session })
+  }
+
   fetchMoreData = () => {
-    // const session = '381c27de5db93c66c6461'
     const { pageIndex, userLoggedIn } = this.props
     const { session } = userLoggedIn
     this.props.actions.getListLead({ session, pageIndex })
-    console.log('thailog loadmore')
   }
 
   renderLoading = () => {
@@ -130,7 +134,12 @@ class Lead extends Component {
           next={this.fetchMoreData}
           hasMore={hasMoreData}
           loader={this.renderLoading()}
-          scrollableTarget="scrollableDiv">
+          scrollableTarget="scrollableDiv"
+          refreshFunction={this.refreshData}
+          pullDownToRefresh
+          releaseToRefreshContent={
+            this.renderLoading()
+          }>
           {data
             ? _.map(data, (item, key) => {
                 return this.renderItemList(item, key)
