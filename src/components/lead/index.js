@@ -46,10 +46,13 @@ class Lead extends Component {
   }
 
   componentWillMount() {
-    // const session = '381c27de5db93c66c6461'
-    
-    const { userLoggedIn } = this.props
-    const { session } = userLoggedIn
+    let { userLoggedIn } = this.props
+    let { session } = userLoggedIn
+    if(!session) {
+      let userLoginData = localStorage.getItem('userLoggedInKV')
+      userLoginData = JSON.parse(userLoginData).result.login
+      session = userLoginData.session
+    }
     this.props.actions.getListLead({ session })
   }
 
