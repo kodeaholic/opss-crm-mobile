@@ -178,7 +178,16 @@ class Lead extends Component {
 
   render() {
     const dataLeads = _.get(this.props, 'leads') || {}
-    return (
+    if(dataLeads.length === 0) {
+      return (
+        <div className="wrapper-lead">
+          <div className="loading-data">
+            <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+          </div>
+        </div>
+      )
+    }
+    else return (
       <div className="wrapper-lead">
         {this.renderFilter()}
         {dataLeads ? this.renderList(dataLeads) : this.renderLoading()}
