@@ -24,7 +24,7 @@ export const getSelectedLeadId = (state, ownProps) => ownProps.match.params.cust
 // Reducer
 const initialState = {
   listLeads: [],
-  pageIndex: 0,
+  pageIndex: 1,
   isLoading: false,
   hasMoreData: false,
   detailsLead: {}
