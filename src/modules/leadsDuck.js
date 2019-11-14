@@ -1,6 +1,5 @@
 import axios from 'axios'
 import _ from 'lodash'
-import { forEach } from 'react-bootstrap/cjs/utils/ElementChildren'
 
 export const types = {
   REQUEST_GET_LIST_LEAD: 'LEAD/REQUEST_GET_LIST_LEAD',
@@ -8,19 +7,20 @@ export const types = {
   FAILURE_GET_LIST_LEAD: 'LEAD/FAILURE_GET_LIST_LEAD',
   REQUEST_GET_LEAD_DETAILS: 'LEAD/REQUEST_GET_LEAD_DETAILS',
   SUCCESS_GET_LEAD_DETAILS: 'LEAD/SUCCESS_GET_LEAD_DETAILS',
-  FAILURE_GET_LEAD_DETAILS: 'LEAD/FAILURE_GET_LEAD_DETAILS'
+  FAILURE_GET_LEAD_DETAILS: 'LEAD/FAILURE_GET_LEAD_DETAILS',
+  REQUEST_CHECK_LEAD_IS_DELETED: 'LEAD/REQUEST_CHECK_LEAD_IS_DELETED',
+  REQUEST_CHECK_LEAD_IS_DELETED_SUCCESS: 'LEAD/REQUEST_CHECK_LEAD_IS_DELETED_SUCCESS'
 }
 
 // Selector
-
 export const getLeadsData = state => _.get(state, 'leads.listLeads') || []
 export const getLeadsLoading = state => _.get(state, 'leads.isLoading') || false
 export const getLeadsPageIndex = state => _.get(state, 'leads.pageIndex') || 0
 export const getLeadsHasMoreData = state =>
   _.get(state, 'leads.hasMoreData') || false
 export const getDetailsLead = state => _.get(state, 'leads.detailsLead') || {}
-
 export const getSelectedLeadId = (state, ownProps) => ownProps.match.params.custID || null
+
 // Reducer
 const initialState = {
   listLeads: [],
@@ -91,6 +91,10 @@ export default (state = initialState, action) => {
       state['detailsLead'] = details
       return state
     }
+
+    case types.REQUEST_CHECK_LEAD_IS_DELETED:
+      console.log(action.payload)
+      return state
     default:
       return state
   }
@@ -134,18 +138,6 @@ export const getListLead = payload => {
       })
   }
 }
-
-export const getListLeadSuccess = payload => ({
-  type: types.SUCCESS_GET_LIST_LEAD,
-  payload
-})
-
-export const getListLeadFailure = error => ({
-  type: types.FAILURE_GET_LIST_LEAD,
-  error
-})
-
-// Action Creators
 export const getLeadDetailsByID = payload => {
   return function action(dispatch) {
     dispatch({ type: types.REQUEST_GET_LEAD_DETAILS, payload })
@@ -182,6 +174,91 @@ export const getLeadDetailsByID = payload => {
       })
   }
 }
+export const actionCheckDeletedItems = payload => {
+  return function action(dispatch) {
+    dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
+    const bodyFormData = new FormData()
+    // console.log('thailog action getlist payload', payload)
+
+    const { session, pageIndex } = payload
+
+    bodyFormData.append('_operation', 'listModuleRecords')
+    bodyFormData.append('_session', session)
+    bodyFormData.append('module', 'Leads')
+    bodyFormData.append('page', pageIndex)
+
+    const request = axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_URL_KVCRM,
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+    // console.log('thailog pageIndex payload', pageIndex)
+
+    return request
+      .then(response => {
+        //handle success
+        const { result, success } = response.data
+        if (success) {
+          return dispatch(getListLeadSuccess(result))
+        }
+        return dispatch(getListLeadFailure())
+      })
+      .catch(err => {
+        //handle error
+        console.log('thailog error', err)
+        return dispatch(getListLeadFailure(err))
+      })
+  }
+}
+export const actionRemoveDeletedItemsFromList = payload => {
+  return function action(dispatch) {
+    dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
+    const bodyFormData = new FormData()
+    // console.log('thailog action getlist payload', payload)
+
+    const { session, pageIndex } = payload
+
+    bodyFormData.append('_operation', 'listModuleRecords')
+    bodyFormData.append('_session', session)
+    bodyFormData.append('module', 'Leads')
+    bodyFormData.append('page', pageIndex)
+
+    const request = axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_URL_KVCRM,
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+    // console.log('thailog pageIndex payload', pageIndex)
+
+    return request
+      .then(response => {
+        //handle success
+        const { result, success } = response.data
+        if (success) {
+          return dispatch(getListLeadSuccess(result))
+        }
+        return dispatch(getListLeadFailure())
+      })
+      .catch(err => {
+        //handle error
+        console.log('thailog error', err)
+        return dispatch(getListLeadFailure(err))
+      })
+  }
+}
+
+/* action definition */
+export const getListLeadSuccess = payload => ({
+  type: types.SUCCESS_GET_LIST_LEAD,
+  payload
+})
+
+export const getListLeadFailure = error => ({
+  type: types.FAILURE_GET_LIST_LEAD,
+  error
+})
 
 export const getDetailsLeadSuccess = payload => ({
   type: types.SUCCESS_GET_LEAD_DETAILS,
@@ -191,4 +268,14 @@ export const getDetailsLeadSuccess = payload => ({
 export const getDetailsLeadFailure = error => ({
   type: types.FAILURE_GET_LIST_LEAD,
   error
+})
+
+export const pingCheckDeletedRecords = payload => ({
+  type: types.REQUEST_CHECK_LEAD_IS_DELETED,
+  payload
+})
+
+export const checkDeletedRecordsCompleted = payload => ({
+  type: types.REQUEST_CHECK_LEAD_IS_DELETED_SUCCESS,
+  payload
 })

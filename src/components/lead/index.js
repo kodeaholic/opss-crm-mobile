@@ -17,7 +17,8 @@ import {
   getLeadsData,
   getLeadsLoading,
   getLeadsPageIndex,
-  getLeadsHasMoreData
+  getLeadsHasMoreData,
+  actionCheckDeletedItems
 } from '../../modules/leadsDuck'
 import { getUserLoggedIn } from '../../modules/loginDuck'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -33,7 +34,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      getListLead
+      getListLead,
+      actionCheckDeletedItems
     },
     dispatch
   )
@@ -110,6 +112,8 @@ class Lead extends Component {
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
+    let itemsToCheck = this.props.leads
+    this.props.actions.actionCheckDeletedItems({itemsToCheck})
     this.props.actions.getListLead({ session })
   }
 
