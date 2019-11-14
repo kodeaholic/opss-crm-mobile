@@ -104,13 +104,23 @@ class Lead extends Component {
 
   refreshData = () => {
     const { userLoggedIn } = this.props
-    const { session } = userLoggedIn
+    let { session } = userLoggedIn
+    if(!session) {
+      let userLoginData = localStorage.getItem('userLoggedInKV')
+      userLoginData = JSON.parse(userLoginData).result.login
+      session = userLoginData.session
+    }
     this.props.actions.getListLead({ session })
   }
 
   fetchMoreData = () => {
     const { pageIndex, userLoggedIn } = this.props
-    const { session } = userLoggedIn
+    let { session } = userLoggedIn
+    if(!session) {
+      let userLoginData = localStorage.getItem('userLoggedInKV')
+      userLoginData = JSON.parse(userLoginData).result.login
+      session = userLoginData.session
+    }
     this.props.actions.getListLead({ session, pageIndex })
   }
 
