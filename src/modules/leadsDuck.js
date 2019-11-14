@@ -41,9 +41,22 @@ export default (state = initialState, action) => {
       const lstLeads = _.get(state, 'listLeads') || []
       const newLeads = _.get(action, 'payload.records') || []
 
-      let merge = (a, b, p) => a.filter( aa => ! b.find ( bb => aa[p] === bb[p]) ).concat(b) // Hàm merge 2 objects array
-      let list = merge(lstLeads, newLeads, "id")
-      // list.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
+      // let merge = (a, b, p) => a.filter( aa => ! b.find ( bb => aa[p] === bb[p]) ).concat(b) // Hàm merge 2 objects array
+      // let list = merge(lstLeads, newLeads, "id")
+      let list = []
+      if(lstLeads.length > 0) {
+        // update hoac push them item moi vao list
+        _.each(newLeads, function(item) {
+          let index = lstLeads.findIndex(found => found.id === item.id)
+          if (index !== -1) lstLeads[index] = item
+          else lstLeads.push(item)
+        })
+        list = lstLeads
+      }
+      else list = newLeads
+      list.sort(function(a,b){
+        return a.id > b.id ? -1 : ( a.id < b.id ? 1 : 0)
+      });
       state['listLeads'] = _.isEmpty(list) ? [] : list
       if (newLeads) {
         if (newLeads.length >= 20) {
