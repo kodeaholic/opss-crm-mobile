@@ -1,5 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
+import { forEach } from 'react-bootstrap/cjs/utils/ElementChildren'
 
 export const types = {
   REQUEST_GET_LIST_LEAD: 'LEAD/REQUEST_GET_LIST_LEAD',
@@ -42,9 +43,9 @@ export default (state = initialState, action) => {
 
       let merge = (a, b, p) => a.filter( aa => ! b.find ( bb => aa[p] === bb[p]) ).concat(b) // Hàm merge 2 objects array
       let list = merge(lstLeads, newLeads, "id")
+      // list.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
       state['listLeads'] = _.isEmpty(list) ? [] : list
       if (newLeads) {
-        // debugger;
         if (newLeads.length >= 20) {
           state['pageIndex'] = state.pageIndex + 1
           state['hasMoreData'] = true
@@ -85,8 +86,7 @@ export default (state = initialState, action) => {
 // Action Creators
 export const getListLead = payload => {
   return function action(dispatch) {
-    // dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
-
+    dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
     const bodyFormData = new FormData()
     // console.log('thailog action getlist payload', payload)
 
