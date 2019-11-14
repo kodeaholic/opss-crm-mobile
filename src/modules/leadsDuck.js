@@ -8,8 +8,10 @@ export const types = {
   REQUEST_GET_LEAD_DETAILS: 'LEAD/REQUEST_GET_LEAD_DETAILS',
   SUCCESS_GET_LEAD_DETAILS: 'LEAD/SUCCESS_GET_LEAD_DETAILS',
   FAILURE_GET_LEAD_DETAILS: 'LEAD/FAILURE_GET_LEAD_DETAILS',
-  REQUEST_CHECK_LEAD_IS_DELETED: 'LEAD/REQUEST_CHECK_LEAD_IS_DELETED',
-  REQUEST_CHECK_LEAD_IS_DELETED_SUCCESS: 'LEAD/REQUEST_CHECK_LEAD_IS_DELETED_SUCCESS'
+  REQUEST_CHECK_IF_LEAD_IS_DELETED: 'LEAD/REQUEST_CHECK_IF_LEAD_IS_DELETED',
+  LEAD_IS_DELETED: 'LEAD/LEAD_IS_DELETED',
+  LEAD_IS_NOT_DELETED: 'LEAD/LEAD_IS_NOT_DELETED',
+  REQUEST_CHECK_IF_LEAD_IS_DELETED_FAILED: 'LEAD/REQUEST_CHECK_IF_LEAD_IS_DELETED_FAILED',
 }
 
 // Selector
@@ -20,6 +22,7 @@ export const getLeadsHasMoreData = state =>
   _.get(state, 'leads.hasMoreData') || false
 export const getDetailsLead = state => _.get(state, 'leads.detailsLead') || {}
 export const getSelectedLeadId = (state, ownProps) => ownProps.match.params.custID || null
+export const getDetailsLeadLoadingStatus = state => _.get(state, 'leads.isLoadingDetail') || false
 
 // Reducer
 const initialState = {
@@ -73,6 +76,7 @@ export default (state = initialState, action) => {
     }
 
     case types.REQUEST_GET_LEAD_DETAILS: {
+      state['isLoadingDetail'] = true
       state['detailsLead'] = {}
       return state
     }
@@ -88,12 +92,19 @@ export default (state = initialState, action) => {
       details.leadSource = _.get(action, 'payload.leadsource')
       details.assignedUser = _.get(action, 'payload.assigned_user_id.label')
       details.generalDescription = _.get(action, 'payload.description')
+      state['isLoadingDetail'] = false
       state['detailsLead'] = details
       return state
     }
 
-    case types.REQUEST_CHECK_LEAD_IS_DELETED:
-      console.log(action.payload)
+    case types.LEAD_IS_DELETED:
+      let id = _.get(action, 'payload')
+      let list = state['listLeads']
+      let index = list.findIndex(found => found.id === id)
+      list.splice(index, 1)
+      state['listLeads'] = list
+      return state
+    case types.LEAD_IS_NOT_DELETED:
       return state
     default:
       return state
@@ -105,7 +116,6 @@ export const getListLead = payload => {
   return function action(dispatch) {
     dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
     const bodyFormData = new FormData()
-    // console.log('thailog action getlist payload', payload)
 
     const { session, pageIndex } = payload
 
@@ -120,7 +130,6 @@ export const getListLead = payload => {
       data: bodyFormData,
       config: { headers: { 'Content-Type': 'multipart/form-data' } }
     })
-    // console.log('thailog pageIndex payload', pageIndex)
 
     return request
       .then(response => {
@@ -132,8 +141,6 @@ export const getListLead = payload => {
         return dispatch(getListLeadFailure())
       })
       .catch(err => {
-        //handle error
-        console.log('thailog error', err)
         return dispatch(getListLeadFailure(err))
       })
   }
@@ -168,24 +175,22 @@ export const getLeadDetailsByID = payload => {
         return dispatch(getDetailsLeadFailure())
       })
       .catch(err => {
-        //handle error
-        console.log('Error', err)
+        console.log(err)
         return dispatch(getDetailsLeadFailure(err))
       })
   }
 }
-export const actionCheckDeletedItems = payload => {
+export const actionCheckDeletedItem = payload => {
   return function action(dispatch) {
-    dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
+    dispatch({ type: types.REQUEST_CHECK_IF_LEAD_IS_DELETED, payload })
     const bodyFormData = new FormData()
-    // console.log('thailog action getlist payload', payload)
 
-    const { session, pageIndex } = payload
-
-    bodyFormData.append('_operation', 'listModuleRecords')
+    const { session, item } = payload
+    let record_id = item ? item.id : '-1x-1'
+    bodyFormData.append('_operation', 'fetchRecord')
     bodyFormData.append('_session', session)
     bodyFormData.append('module', 'Leads')
-    bodyFormData.append('page', pageIndex)
+    bodyFormData.append('record', record_id)
 
     const request = axios({
       method: 'POST',
@@ -193,58 +198,18 @@ export const actionCheckDeletedItems = payload => {
       data: bodyFormData,
       config: { headers: { 'Content-Type': 'multipart/form-data' } }
     })
-    // console.log('thailog pageIndex payload', pageIndex)
-
     return request
       .then(response => {
-        //handle success
-        const { result, success } = response.data
-        if (success) {
-          return dispatch(getListLeadSuccess(result))
+        const { success } = response.data
+        if (!success) {
+          return dispatch(removeItemFromList(item.id))
         }
-        return dispatch(getListLeadFailure())
+        else {
+          return dispatch(keepItemInList(item.id))
+        }
       })
       .catch(err => {
-        //handle error
-        console.log('thailog error', err)
-        return dispatch(getListLeadFailure(err))
-      })
-  }
-}
-export const actionRemoveDeletedItemsFromList = payload => {
-  return function action(dispatch) {
-    dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
-    const bodyFormData = new FormData()
-    // console.log('thailog action getlist payload', payload)
-
-    const { session, pageIndex } = payload
-
-    bodyFormData.append('_operation', 'listModuleRecords')
-    bodyFormData.append('_session', session)
-    bodyFormData.append('module', 'Leads')
-    bodyFormData.append('page', pageIndex)
-
-    const request = axios({
-      method: 'POST',
-      url: process.env.REACT_APP_API_URL_KVCRM,
-      data: bodyFormData,
-      config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    })
-    // console.log('thailog pageIndex payload', pageIndex)
-
-    return request
-      .then(response => {
-        //handle success
-        const { result, success } = response.data
-        if (success) {
-          return dispatch(getListLeadSuccess(result))
-        }
-        return dispatch(getListLeadFailure())
-      })
-      .catch(err => {
-        //handle error
-        console.log('thailog error', err)
-        return dispatch(getListLeadFailure(err))
+        return dispatch(pingCheckDeletedRecordFailed(err))
       })
   }
 }
@@ -270,12 +235,22 @@ export const getDetailsLeadFailure = error => ({
   error
 })
 
-export const pingCheckDeletedRecords = payload => ({
-  type: types.REQUEST_CHECK_LEAD_IS_DELETED,
+export const pingCheckDeletedRecord = payload => ({
+  type: types.REQUEST_CHECK_IF_LEAD_IS_DELETED,
   payload
 })
 
-export const checkDeletedRecordsCompleted = payload => ({
-  type: types.REQUEST_CHECK_LEAD_IS_DELETED_SUCCESS,
+export const removeItemFromList = payload => ({
+  type: types.LEAD_IS_DELETED,
+  payload
+})
+
+export const keepItemInList = payload => ({
+  type: types.LEAD_IS_NOT_DELETED,
+  payload
+})
+
+export const pingCheckDeletedRecordFailed = payload => ({
+  type: types.REQUEST_CHECK_IF_LEAD_IS_DELETED_FAILED,
   payload
 })

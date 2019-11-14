@@ -18,7 +18,8 @@ const tabs = ['DETAILS', 'RELATED']
 const mapStateToProps = (state, ownProps) => ({
   leadDetails: getDetailsLead(state, ownProps),
   userLoggedIn: getUserLoggedIn(state),
-  selectedLeadId: getSelectedLeadId(state, ownProps)
+  selectedLeadId: getSelectedLeadId(state, ownProps),
+  isLoadingDetail: state => state.leads.isLoadingDetail
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -157,7 +158,17 @@ class CustomerDetails extends Component {
   }
 
   render() {
-    const { leadDetails, userLoggedIn } = this.props
+    const { leadDetails } = this.props
+    if(this.state.isLoadingDetail) {
+      return (
+        <div className="wrapper-lead">
+          <div className="loading-data">
+            <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+          </div>
+        </div>
+      )
+    }
+    else
     return (
       <div className="customer-details-container">
         {this.renderCustomerInfo(leadDetails)}
