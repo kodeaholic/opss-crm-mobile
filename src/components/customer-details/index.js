@@ -121,8 +121,8 @@ class CustomerDetails extends Component {
         <Input label="Họ tên khách hàng" val={leadName} readOnly />
         <Input label="Tình trạng" val={leadStatus} readOnly />
         <Input label="Tên gian hàng" val={leadWebsite} readOnly />
-        <Input label="Số điện thoại" val={leadPhone} readOnly />
-        <Input label="Số điện thoại khác" val={leadSecondaryPhone} readOnly />
+        <Input label="Số điện thoại" val={leadSecondaryPhone} readOnly />
+        <Input label="Số điện thoại khác" val={leadPhone} readOnly />
         <Input label="Ngành hàng" val={leadIndustry} readOnly />
         <Input label="Khu vực" val={leadRegion} readOnly />
         <Input label="Nguồn khách hàng" val={leadSource} readOnly />
