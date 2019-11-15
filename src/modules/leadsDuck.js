@@ -1,6 +1,5 @@
 import axios from 'axios'
 import _ from 'lodash'
-import { forEach } from 'react-bootstrap/cjs/utils/ElementChildren'
 
 export const types = {
   REQUEST_GET_LIST_LEAD: 'LEAD/REQUEST_GET_LIST_LEAD',
@@ -8,19 +7,23 @@ export const types = {
   FAILURE_GET_LIST_LEAD: 'LEAD/FAILURE_GET_LIST_LEAD',
   REQUEST_GET_LEAD_DETAILS: 'LEAD/REQUEST_GET_LEAD_DETAILS',
   SUCCESS_GET_LEAD_DETAILS: 'LEAD/SUCCESS_GET_LEAD_DETAILS',
-  FAILURE_GET_LEAD_DETAILS: 'LEAD/FAILURE_GET_LEAD_DETAILS'
+  FAILURE_GET_LEAD_DETAILS: 'LEAD/FAILURE_GET_LEAD_DETAILS',
+  REQUEST_CHECK_IF_LEAD_IS_DELETED: 'LEAD/REQUEST_CHECK_IF_LEAD_IS_DELETED',
+  LEAD_IS_DELETED: 'LEAD/LEAD_IS_DELETED',
+  LEAD_IS_NOT_DELETED: 'LEAD/LEAD_IS_NOT_DELETED',
+  REQUEST_CHECK_IF_LEAD_IS_DELETED_FAILED: 'LEAD/REQUEST_CHECK_IF_LEAD_IS_DELETED_FAILED',
 }
 
 // Selector
-
 export const getLeadsData = state => _.get(state, 'leads.listLeads') || []
 export const getLeadsLoading = state => _.get(state, 'leads.isLoading') || false
 export const getLeadsPageIndex = state => _.get(state, 'leads.pageIndex') || 0
 export const getLeadsHasMoreData = state =>
   _.get(state, 'leads.hasMoreData') || false
 export const getDetailsLead = state => _.get(state, 'leads.detailsLead') || {}
-
 export const getSelectedLeadId = (state, ownProps) => ownProps.match.params.custID || null
+export const getDetailsLeadLoadingStatus = state => _.get(state, 'leads.isLoadingDetail') || false
+
 // Reducer
 const initialState = {
   listLeads: [],
@@ -41,9 +44,22 @@ export default (state = initialState, action) => {
       const lstLeads = _.get(state, 'listLeads') || []
       const newLeads = _.get(action, 'payload.records') || []
 
-      let merge = (a, b, p) => a.filter( aa => ! b.find ( bb => aa[p] === bb[p]) ).concat(b) // Hàm merge 2 objects array
-      let list = merge(lstLeads, newLeads, "id")
-      // list.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
+      // let merge = (a, b, p) => a.filter( aa => ! b.find ( bb => aa[p] === bb[p]) ).concat(b) // Hàm merge 2 objects array
+      // let list = merge(lstLeads, newLeads, "id")
+      let list = []
+      if(lstLeads.length > 0) {
+        // update hoac push them item moi vao list
+        _.each(newLeads, function(item) {
+          let index = lstLeads.findIndex(found => found.id === item.id)
+          if (index !== -1) lstLeads[index] = item
+          else lstLeads.push(item)
+        })
+        list = lstLeads
+      }
+      else list = newLeads
+      list.sort(function(a,b){
+        return a.id > b.id ? -1 : ( a.id < b.id ? 1 : 0)
+      });
       state['listLeads'] = _.isEmpty(list) ? [] : list
       if (newLeads) {
         if (newLeads.length >= 20) {
@@ -60,6 +76,7 @@ export default (state = initialState, action) => {
     }
 
     case types.REQUEST_GET_LEAD_DETAILS: {
+      state['isLoadingDetail'] = true
       state['detailsLead'] = {}
       return state
     }
@@ -75,9 +92,20 @@ export default (state = initialState, action) => {
       details.leadSource = _.get(action, 'payload.leadsource')
       details.assignedUser = _.get(action, 'payload.assigned_user_id.label')
       details.generalDescription = _.get(action, 'payload.description')
+      state['isLoadingDetail'] = false
       state['detailsLead'] = details
       return state
     }
+
+    case types.LEAD_IS_DELETED:
+      let id = _.get(action, 'payload')
+      let list = state['listLeads']
+      let index = list.findIndex(found => found.id === id)
+      list.splice(index, 1)
+      state['listLeads'] = list
+      return state
+    case types.LEAD_IS_NOT_DELETED:
+      return state
     default:
       return state
   }
@@ -88,7 +116,6 @@ export const getListLead = payload => {
   return function action(dispatch) {
     dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
     const bodyFormData = new FormData()
-    // console.log('thailog action getlist payload', payload)
 
     const { session, pageIndex } = payload
 
@@ -103,7 +130,6 @@ export const getListLead = payload => {
       data: bodyFormData,
       config: { headers: { 'Content-Type': 'multipart/form-data' } }
     })
-    // console.log('thailog pageIndex payload', pageIndex)
 
     return request
       .then(response => {
@@ -115,24 +141,10 @@ export const getListLead = payload => {
         return dispatch(getListLeadFailure())
       })
       .catch(err => {
-        //handle error
-        console.log('thailog error', err)
         return dispatch(getListLeadFailure(err))
       })
   }
 }
-
-export const getListLeadSuccess = payload => ({
-  type: types.SUCCESS_GET_LIST_LEAD,
-  payload
-})
-
-export const getListLeadFailure = error => ({
-  type: types.FAILURE_GET_LIST_LEAD,
-  error
-})
-
-// Action Creators
 export const getLeadDetailsByID = payload => {
   return function action(dispatch) {
     dispatch({ type: types.REQUEST_GET_LEAD_DETAILS, payload })
@@ -163,12 +175,55 @@ export const getLeadDetailsByID = payload => {
         return dispatch(getDetailsLeadFailure())
       })
       .catch(err => {
-        //handle error
-        console.log('Error', err)
+        console.log(err)
         return dispatch(getDetailsLeadFailure(err))
       })
   }
 }
+export const actionCheckDeletedItem = payload => {
+  return function action(dispatch) {
+    dispatch({ type: types.REQUEST_CHECK_IF_LEAD_IS_DELETED, payload })
+    const bodyFormData = new FormData()
+
+    const { session, item } = payload
+    let record_id = item ? item.id : '-1x-1'
+    bodyFormData.append('_operation', 'fetchRecord')
+    bodyFormData.append('_session', session)
+    bodyFormData.append('module', 'Leads')
+    bodyFormData.append('record', record_id)
+
+    const request = axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_URL_KVCRM,
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+    return request
+      .then(response => {
+        const { success } = response.data
+        if (!success) {
+          return dispatch(removeItemFromList(item.id))
+        }
+        else {
+          return dispatch(keepItemInList(item.id))
+        }
+      })
+      .catch(err => {
+        return dispatch(pingCheckDeletedRecordFailed(err))
+      })
+  }
+}
+
+/* action definition */
+export const getListLeadSuccess = payload => ({
+  type: types.SUCCESS_GET_LIST_LEAD,
+  payload
+})
+
+export const getListLeadFailure = error => ({
+  type: types.FAILURE_GET_LIST_LEAD,
+  error
+})
 
 export const getDetailsLeadSuccess = payload => ({
   type: types.SUCCESS_GET_LEAD_DETAILS,
@@ -178,4 +233,24 @@ export const getDetailsLeadSuccess = payload => ({
 export const getDetailsLeadFailure = error => ({
   type: types.FAILURE_GET_LIST_LEAD,
   error
+})
+
+export const pingCheckDeletedRecord = payload => ({
+  type: types.REQUEST_CHECK_IF_LEAD_IS_DELETED,
+  payload
+})
+
+export const removeItemFromList = payload => ({
+  type: types.LEAD_IS_DELETED,
+  payload
+})
+
+export const keepItemInList = payload => ({
+  type: types.LEAD_IS_NOT_DELETED,
+  payload
+})
+
+export const pingCheckDeletedRecordFailed = payload => ({
+  type: types.REQUEST_CHECK_IF_LEAD_IS_DELETED_FAILED,
+  payload
 })

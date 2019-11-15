@@ -17,7 +17,8 @@ import {
   getLeadsData,
   getLeadsLoading,
   getLeadsPageIndex,
-  getLeadsHasMoreData
+  getLeadsHasMoreData,
+  actionCheckDeletedItem
 } from '../../modules/leadsDuck'
 import { getUserLoggedIn } from '../../modules/loginDuck'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -33,7 +34,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      getListLead
+      getListLead,
+      actionCheckDeletedItem
     },
     dispatch
   )
@@ -78,28 +80,30 @@ class Lead extends Component {
   }
 
   renderItemList = (item, key) => {
-    const { assigned_user_id, website, mobile, leadstatus, createdtime } = item
-    const { label } = assigned_user_id
-    return (
-      <Link
-        className="link-on-lead-list"
-        key={key}
-        to={'/customer-details/' + item.id}>
-        <div className="wrapper-list-lead-item">
-          <div className="wrapper-item-row">
-            <label className="label-item-list lead-item-name">{mobile}</label>
-            <label className="label-item-list">{website}</label>
-            <label className="label-item-list">{leadstatus}</label>
+    if (item){
+      const { assigned_user_id, website, mobile, leadstatus, createdtime } = item
+      const { label } = assigned_user_id
+      return (
+        <Link
+          className="link-on-lead-list"
+          key={key}
+          to={'/customer-details/' + item.id}>
+          <div className="wrapper-list-lead-item">
+            <div className="wrapper-item-row">
+              <label className="label-item-list lead-item-name">{mobile}</label>
+              <label className="label-item-list">{website}</label>
+              <label className="label-item-list">{leadstatus}</label>
+            </div>
+            <div className="wrapper-item-row">
+              <label className="label-item-list">{label}</label>
+              <label className="lead-item-status label-item-list">
+                {createdtime}
+              </label>
+            </div>
           </div>
-          <div className="wrapper-item-row">
-            <label className="label-item-list">{label}</label>
-            <label className="lead-item-status label-item-list">
-              {createdtime}
-            </label>
-          </div>
-        </div>
-      </Link>
-    )
+        </Link>
+      )
+    }
   }
 
   refreshData = () => {
@@ -110,6 +114,12 @@ class Lead extends Component {
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
+    /* Cập nhật danh sách nếu có item bị xóa ở backend */
+    let itemsToCheck = this.props.leads
+    let action = this.props.actions.actionCheckDeletedItem
+    _.each(itemsToCheck, function(item) {
+      action({session, item})
+    })
     this.props.actions.getListLead({ session })
   }
 
@@ -178,12 +188,23 @@ class Lead extends Component {
 
   render() {
     const dataLeads = _.get(this.props, 'leads') || {}
-    return (
-      <div className="wrapper-lead">
-        {this.renderFilter()}
-        {dataLeads ? this.renderList(dataLeads) : this.renderLoading()}
-      </div>
-    )
+    if(dataLeads.length === 0) {
+      return (
+        <div className="wrapper-lead">
+          <div className="loading-data">
+            <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+          </div>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="wrapper-lead">
+          {this.renderFilter()}
+          {dataLeads ? this.renderList(dataLeads) : this.renderLoading()}
+        </div>
+      )
+    }
   }
 }
 
