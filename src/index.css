@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   /* Thêm vào để chặn tính năng pull to refresh ở các trình duyệt*/
-  overscroll-behavior: contain;
+  /*overscroll-behavior: contain;*/
 }
 
 code {

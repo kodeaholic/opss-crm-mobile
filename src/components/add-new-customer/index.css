@@ -1,5 +1,10 @@
 .container-addnewcust {
     flex: 1;
+    height: calc(100vh - 105px);
+    overflow: auto;
+    position: absolute;
+    top: 50px;
+    width: 100%;
 }
 
 .wrapper-button-addnewcustomer {
@@ -11,7 +16,7 @@
     background-color: #ffffff;
     height: 50px;
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 1px;
 }
 
 .addnewcustomer-button {

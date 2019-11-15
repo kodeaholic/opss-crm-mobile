@@ -43,7 +43,8 @@ const mapStateToProps = state => ({
   industries: getIndustries(state),
   leadSource: getLeadSources(state),
   assignableUsers: getAssignableUsers(state),
-  isLoading: getLoadingStatus(state)
+  isLoading: getLoadingStatus(state),
+  region: getRegion(state)
 })
 
 class AddNewCustomer extends Component {
@@ -79,7 +80,6 @@ class AddNewCustomer extends Component {
   }
 
   renderForm = () => {
-    const selectedOption = null
     return (
       <div className="addnewcustomer-feild">
         <Input label="Họ tên khách hàng" isRequire />
@@ -91,8 +91,7 @@ class AddNewCustomer extends Component {
             Ngành hàng<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
-          value={selectedOption}
-          options={options}
+            options={this.props.industries}
           />
         </div>
         <div className="wrapper-input-common-component">
@@ -100,8 +99,7 @@ class AddNewCustomer extends Component {
             Khu vực<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
-            value={selectedOption}
-            options={options}
+            options={this.props.region}
           />
         </div>
         <div className="wrapper-input-common-component">
@@ -109,8 +107,7 @@ class AddNewCustomer extends Component {
             Nguồn khách hàng<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
-            value={selectedOption}
-            options={options}
+            options={this.props.leadSource}
           />
         </div>
         <div className="wrapper-input-common-component">
@@ -118,7 +115,6 @@ class AddNewCustomer extends Component {
             Người xử lý<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
-            value={selectedOption}
             options={options}
           />
         </div>

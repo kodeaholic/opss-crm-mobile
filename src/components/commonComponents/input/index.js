@@ -49,6 +49,7 @@ export default class Input extends Component {
             readOnly={isReadOnly}
             value={value}
             onChange={this.handleChange}
+            style={isReadOnly ? {border: 'transparent', fontSize: '1em', color: 'grey'} : {}}
           />
         )}
         {/*<label>warning</label>*/}
