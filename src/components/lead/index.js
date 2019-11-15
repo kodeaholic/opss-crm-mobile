@@ -120,7 +120,7 @@ class Lead extends Component {
     // _.each(itemsToCheck, function(item) {
     //   action({session, item})
     // })
-    // this.props.actions.getListLead({ session })
+    this.props.actions.getListLead({ session })
   }
 
   fetchMoreData = () => {
