@@ -79,7 +79,7 @@ class CustomerDetails extends Component {
               {userDetails.name}
             </label>
             <label className="customer-details-informations-phone">
-              {userDetails.phone}
+              {userDetails.secondaryPhone}
             </label>
           </div>
         </div>
@@ -170,7 +170,7 @@ class CustomerDetails extends Component {
     }
     else
     return (
-      <div className="customer-details-container">
+      <div className="customer-details-container" style={{ height: 'calc(100vh)', overflow: 'auto', position: 'absolute', top: '0', width: '100%'}}>
         {this.renderCustomerInfo(leadDetails)}
         {this.renderTabBelow()}
         {this.state.activeTab !== 'DETAILS'

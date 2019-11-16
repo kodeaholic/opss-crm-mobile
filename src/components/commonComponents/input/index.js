@@ -27,6 +27,7 @@ export default class Input extends Component {
     const isMultiLine = _.get(this.props, 'isMultiLine') || false
     const isReadOnly = _.get(this.props, 'readOnly') || false
     const value = _.get(this.props, 'val') || ''
+    const name = _.get(this.props, 'name') || ''
     return (
       <div className="wrapper-input-common-component">
         <label className="label-input-common-component">
@@ -40,14 +41,16 @@ export default class Input extends Component {
             className="input-input-common-component"
             rows="5"
             readOnly={isReadOnly}
-            value={value}
+            defaultValue={value}
             onChange={this.handleChange}
           />
         ) : (
           <input
+            name={name}
+            type="text"
             className="input-input-common-component"
             readOnly={isReadOnly}
-            value={value}
+            defaultValue={value}
             onChange={this.handleChange}
             style={isReadOnly ? {border: 'transparent', fontSize: '1em', color: 'grey'} : {}}
           />

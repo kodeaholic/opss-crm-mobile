@@ -82,7 +82,7 @@ class AddNewCustomer extends Component {
   renderForm = () => {
     return (
       <div className="addnewcustomer-feild">
-        <Input label="Họ tên khách hàng" isRequire />
+        <Input label="Họ tên khách hàng" isRequire name="leadName"/>
         <Input label="Tên gian hàng" />
         <Input label="Số điện thoại" isRequire />
         <Input label="Số điện thoại khác" />
