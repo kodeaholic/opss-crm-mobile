@@ -114,13 +114,8 @@ class Lead extends Component {
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
-    /* Cập nhật danh sách nếu có item bị xóa ở backend */
-    // let itemsToCheck = this.props.leads
-    // let action = this.props.actions.actionCheckDeletedItem
-    // _.each(itemsToCheck, function(item) {
-    //   action({session, item})
-    // })
-    this.props.actions.getListLead({ session })
+    let refresh = true
+    this.props.actions.getListLead({ session, refresh })
   }
 
   fetchMoreData = () => {

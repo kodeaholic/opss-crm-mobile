@@ -42,25 +42,16 @@ export default (state = initialState, action) => {
       state['isLoading'] = false
 
       const lstLeads = _.get(state, 'listLeads') || []
-      const newLeads = _.get(action, 'payload.records') || []
-
-      // let merge = (a, b, p) => a.filter( aa => ! b.find ( bb => aa[p] === bb[p]) ).concat(b) // Hàm merge 2 objects array
-      // let list = merge(lstLeads, newLeads, "id")
+      const newLeads = _.get(action, 'payload.result.records') || []
+      const refresh = _.get(action, 'payload.refresh') || undefined
+      console.log("Refresh = " + refresh)
       let list = []
-      if(lstLeads.length > 0) {
-        // update hoac push them item moi vao list
-        _.each(newLeads, function(item) {
-          let index = lstLeads.findIndex(found => found.id === item.id)
-          if (index !== -1) lstLeads[index] = item
-          else lstLeads.push(item)
-        })
-        list = lstLeads
+      if(refresh === undefined){
+        list = _.concat(list, lstLeads)
+        list = _.concat(list, newLeads)
       }
       else list = newLeads
-      list.sort(function(a,b){
-        return a.id > b.id ? -1 : ( a.id < b.id ? 1 : 0)
-      });
-      state['listLeads'] = _.isEmpty(list) ? [] : list
+      state['listLeads'] = list
       if (newLeads) {
         if (newLeads.length >= 20) {
           state['pageIndex'] = state.pageIndex + 1
@@ -117,12 +108,11 @@ export const getListLead = payload => {
     dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
     const bodyFormData = new FormData()
 
-    const { session, pageIndex } = payload
-
+    const { session, pageIndex, refresh } = payload
     bodyFormData.append('_operation', 'listModuleRecords')
     bodyFormData.append('_session', session)
     bodyFormData.append('module', 'Leads')
-    bodyFormData.append('page', pageIndex)
+    if (pageIndex) bodyFormData.append('page', pageIndex)
 
     const request = axios({
       method: 'POST',
@@ -136,7 +126,7 @@ export const getListLead = payload => {
         //handle success
         const { result, success } = response.data
         if (success) {
-          return dispatch(getListLeadSuccess(result))
+          return dispatch(getListLeadSuccess({result, refresh}))
         }
         return dispatch(getListLeadFailure())
       })
