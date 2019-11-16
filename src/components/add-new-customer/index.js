@@ -115,7 +115,7 @@ class AddNewCustomer extends Component {
             Người xử lý<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
-            options={options}
+            options={this.props.assignableUsers}
           />
         </div>
         <Input label="Số điện thoại khác" />

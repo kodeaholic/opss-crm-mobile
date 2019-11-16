@@ -45,11 +45,13 @@ export default (state = initialState, action) => {
       let industries = fields.find( x => x.name === 'industry')
       industries = _.get(industries, 'type.picklistValues') || []
 
+      let assignableUsers = _.get(describe, 'available_users') || []
       return {
         ...state,
         leadSources,
         region,
-        industries
+        industries,
+        assignableUsers
       }
     default:
       return state
