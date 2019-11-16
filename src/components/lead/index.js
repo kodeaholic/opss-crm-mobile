@@ -56,6 +56,13 @@ class Lead extends Component {
       session = userLoginData.session
     }
     this.props.actions.getListLead({ session })
+
+    /* Prevent browser's default pull to refresh behavior*/
+    document.body.style.overscrollBehavior= 'contain'
+  }
+
+  componentWillUnmount() {
+    document.body.style.overscrollBehavior= 'auto'
   }
 
   renderFilter = () => {
