@@ -49,11 +49,16 @@ class Lead extends Component {
 
   componentWillMount() {
     let { userLoggedIn } = this.props
-    let { session } = userLoggedIn
+    let { session } = userLoggedIn || {}
     if(!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
-      userLoginData = JSON.parse(userLoginData).result.login
-      session = userLoginData.session
+      if(userLoginData) {
+        userLoginData = JSON.parse(userLoginData).result.login
+        session = userLoginData.session
+      }
+      else {
+        this.props.history.push('/login')
+      }
     }
     this.props.actions.getListLead({ session })
 
