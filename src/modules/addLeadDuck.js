@@ -10,7 +10,7 @@ export const types = {
 // Selector
 export const getIndustries = state => _.get(state, 'addLead.industries') || []
 export const getRegion = state => _.get(state, 'addLead.region') || []
-export const getLoadingStatus = state => _.get(state, 'addLead.isLoading') || []
+export const getLoadingStatus = state => _.get(state, 'addLead.isLoading') || false
 export const getLeadSources = state => _.get(state, 'addLead.leadSources') || []
 export const getAssignableUsers = state => _.get(state, 'addLead.assignableUsers') || []
 
@@ -46,13 +46,11 @@ export default (state = initialState, action) => {
       industries = _.get(industries, 'type.picklistValues') || []
 
       let assignableUsers = _.get(describe, 'available_users') || []
-      return {
-        ...state,
-        leadSources,
-        region,
-        industries,
-        assignableUsers
-      }
+      state['leadSources'] = leadSources
+      state['region'] = region
+      state['industries'] = industries
+      state['assignableUsers'] = assignableUsers
+      return state
     default:
       return state
   }

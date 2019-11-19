@@ -85,6 +85,10 @@ class AddNewCustomer extends Component {
   }
 
   renderForm = () => {
+    let {userid} = this.props.userLoggedIn
+    let defaultSelectedUser = this.props.assignableUsers.find(function(item) {
+      return item.value === userid
+    })
     return (
       <div className="addnewcustomer-feild">
         <Input label="Họ tên khách hàng" isRequire name="leadName"/>
@@ -120,6 +124,7 @@ class AddNewCustomer extends Component {
             Người xử lý<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
+            value={defaultSelectedUser}
             options={this.props.assignableUsers}
           />
         </div>
@@ -130,12 +135,23 @@ class AddNewCustomer extends Component {
   }
 
   render() {
-    return (
-      <div className="container-addnewcust">
-        {this.renderButton()}
-        {this.renderForm()}
-      </div>
-    )
+    if (this.props.isLoading){
+      return (
+        <div className="wrapper-lead">
+          <div className="loading-data">
+            <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+          </div>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="container-addnewcust">
+          {this.renderButton()}
+          {this.renderForm()}
+        </div>
+      )
+    }
   }
 }
 
