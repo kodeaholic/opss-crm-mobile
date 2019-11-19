@@ -60,7 +60,7 @@ class Header extends Component {
         {this.renderIconLeft()}
         <div className="wrapper-input">
           <i className="fa fa-search" aria-hidden="true"></i>
-          <input type="text" className="input-search-header" />
+          <input type="text" className="input-search-header" style={{fontSize: 'inherit'}}/>
         </div>
         <div className="wrapper-icon">
           <i

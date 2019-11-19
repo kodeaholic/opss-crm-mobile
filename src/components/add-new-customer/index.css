@@ -27,3 +27,6 @@
     background-color: #fff;
     padding-bottom: 10px;
 }
+input.input-input-common-component {
+    height: 100px;
+}

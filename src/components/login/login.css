@@ -105,9 +105,9 @@
   padding-top: 10px;
 }
 
-input[type="text"] {
-  font-size: inherit;
-}
+/*input[type="text"] {*/
+/*  font-size: inherit;*/
+/*}*/
 
 .login-header-logo {
   width: 100%;
