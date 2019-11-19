@@ -62,7 +62,8 @@ class Lead extends Component {
         this.props.history.push('/login')
       }
     }
-    this.props.actions.getListLead({ session })
+    let refresh = true
+    this.props.actions.getListLead({ session, refresh })
 
     /* Prevent browser's default pull to refresh behavior*/
     document.body.style.overscrollBehavior= 'contain'
