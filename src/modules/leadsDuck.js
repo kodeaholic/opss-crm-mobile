@@ -1,5 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
+import {expireSession} from './sessionDuck'
 
 export const types = {
   REQUEST_GET_LIST_LEAD: 'LEAD/REQUEST_GET_LIST_LEAD',
@@ -128,6 +129,12 @@ export const getListLead = payload => {
         if (success) {
           return dispatch(getListLeadSuccess({result, refresh}))
         }
+        else {
+          const { error } = response.data
+          if (error.code === 1501) {
+            return dispatch(expireSession())
+          }
+        }
         return dispatch(getListLeadFailure())
       })
       .catch(err => {
@@ -170,39 +177,6 @@ export const getLeadDetailsByID = payload => {
       })
   }
 }
-export const actionCheckDeletedItem = payload => {
-  return function action(dispatch) {
-    dispatch({ type: types.REQUEST_CHECK_IF_LEAD_IS_DELETED, payload })
-    const bodyFormData = new FormData()
-
-    const { session, item } = payload
-    let record_id = item ? item.id : '-1x-1'
-    bodyFormData.append('_operation', 'fetchRecord')
-    bodyFormData.append('_session', session)
-    bodyFormData.append('module', 'Leads')
-    bodyFormData.append('record', record_id)
-
-    const request = axios({
-      method: 'POST',
-      url: process.env.REACT_APP_API_URL_KVCRM,
-      data: bodyFormData,
-      config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    })
-    return request
-      .then(response => {
-        const { success } = response.data
-        if (!success) {
-          return dispatch(removeItemFromList(item.id))
-        }
-        else {
-          return dispatch(keepItemInList(item.id))
-        }
-      })
-      .catch(err => {
-        return dispatch(pingCheckDeletedRecordFailed(err))
-      })
-  }
-}
 
 /* action definition */
 export const getListLeadSuccess = payload => ({
@@ -223,24 +197,4 @@ export const getDetailsLeadSuccess = payload => ({
 export const getDetailsLeadFailure = error => ({
   type: types.FAILURE_GET_LIST_LEAD,
   error
-})
-
-export const pingCheckDeletedRecord = payload => ({
-  type: types.REQUEST_CHECK_IF_LEAD_IS_DELETED,
-  payload
-})
-
-export const removeItemFromList = payload => ({
-  type: types.LEAD_IS_DELETED,
-  payload
-})
-
-export const keepItemInList = payload => ({
-  type: types.LEAD_IS_NOT_DELETED,
-  payload
-})
-
-export const pingCheckDeletedRecordFailed = payload => ({
-  type: types.REQUEST_CHECK_IF_LEAD_IS_DELETED_FAILED,
-  payload
 })

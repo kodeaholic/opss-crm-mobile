@@ -18,8 +18,10 @@ import {
   getLeadsLoading,
   getLeadsPageIndex,
   getLeadsHasMoreData,
-  actionCheckDeletedItem
 } from '../../modules/leadsDuck'
+import {
+  getSessionStatus
+} from '../../modules/sessionDuck'
 import { getUserLoggedIn } from '../../modules/loginDuck'
 import InfiniteScroll from 'react-infinite-scroll-component'
 // import InfiniteScroll from 'react-infinite-scroller';
@@ -28,14 +30,14 @@ const mapStateToProps = state => ({
   leads: getLeadsData(state),
   pageIndex: getLeadsPageIndex(state),
   isLoading: getLeadsLoading(state),
-  hasMoreData: getLeadsHasMoreData(state)
+  hasMoreData: getLeadsHasMoreData(state),
+  expired: getSessionStatus(state)
 })
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       getListLead,
-      actionCheckDeletedItem
     },
     dispatch
   )
@@ -195,11 +197,22 @@ class Lead extends Component {
 
   render() {
     const dataLeads = _.get(this.props, 'leads') || {}
-    if(dataLeads.length === 0) {
+    if(dataLeads.length === 0 && !this.props.expired) {
       return (
         <div className="wrapper-lead">
           <div className="loading-data">
             <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+          </div>
+        </div>
+      )
+    }
+    else if(this.props.expired){
+      document.body.style.overscrollBehavior= 'contain'
+      localStorage.removeItem('userLoggedInKV')
+      return (
+        <div className="wrapper-lead">
+          <div className="loading-data">
+            Session is expired. Refresh the page to login
           </div>
         </div>
       )

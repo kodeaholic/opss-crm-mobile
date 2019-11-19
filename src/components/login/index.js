@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Redirect } from 'react-router-dom'
 import _ from 'lodash'
 import { toast } from 'react-toastify'
-
+import { activateSession} from '../../modules/sessionDuck'
 import {
   requestLogin,
   getUserLoggedIn,
@@ -30,7 +30,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { requestLogin, requestSendForgetPass, changePopupStatus },
+    { requestLogin, requestSendForgetPass, changePopupStatus, activateSession },
     dispatch
   )
 })
@@ -178,6 +178,7 @@ class LoginPage extends React.Component {
     const { loggingIn, userLogged } = this.props
     const { username, password, submitted } = this.state
     if (!_.isEmpty(userLogged)) {
+      this.props.actions.activateSession({undefined})
       return <Redirect to={'/'} />
     }
     return (
