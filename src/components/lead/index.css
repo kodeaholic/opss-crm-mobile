@@ -99,3 +99,6 @@
   align-items: flex-start;
   justify-content: center;
 }
+textarea.input-input-common-component {
+  font-size: 14px;
+}

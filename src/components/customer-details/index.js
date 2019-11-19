@@ -132,7 +132,7 @@ class CustomerDetails extends Component {
         <Input label="Khu vực" val={leadRegion} readOnly />
         <Input label="Nguồn khách hàng" val={leadSource} readOnly />
         <Input label="Người xử lý" val={assignedUser} readOnly />
-        <Input label="Mô tả chung" val={description} readOnly />
+        <Input label="Mô tả chung" val={description} readOnly isMultiLine/>
       </div>
     )
   }
@@ -175,7 +175,7 @@ class CustomerDetails extends Component {
     }
     else
     return (
-      <div className="customer-details-container" style={{ height: 'calc(100vh)', overflow: 'auto', position: 'absolute', top: '0', width: '100%'}}>
+      <div className="customer-details-container" style={{ height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}>
         {this.renderCustomerInfo(leadDetails)}
         {this.renderTabBelow()}
         {this.state.activeTab !== 'DETAILS'
