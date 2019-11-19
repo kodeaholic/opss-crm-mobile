@@ -9,10 +9,6 @@ export const types = {
   REQUEST_GET_LEAD_DETAILS: 'LEAD/REQUEST_GET_LEAD_DETAILS',
   SUCCESS_GET_LEAD_DETAILS: 'LEAD/SUCCESS_GET_LEAD_DETAILS',
   FAILURE_GET_LEAD_DETAILS: 'LEAD/FAILURE_GET_LEAD_DETAILS',
-  REQUEST_CHECK_IF_LEAD_IS_DELETED: 'LEAD/REQUEST_CHECK_IF_LEAD_IS_DELETED',
-  LEAD_IS_DELETED: 'LEAD/LEAD_IS_DELETED',
-  LEAD_IS_NOT_DELETED: 'LEAD/LEAD_IS_NOT_DELETED',
-  REQUEST_CHECK_IF_LEAD_IS_DELETED_FAILED: 'LEAD/REQUEST_CHECK_IF_LEAD_IS_DELETED_FAILED',
 }
 
 // Selector
@@ -31,7 +27,8 @@ const initialState = {
   pageIndex: 1,
   isLoading: false,
   hasMoreData: false,
-  detailsLead: {}
+  detailsLead: {},
+  isLoadingDetail: false
 }
 
 export default (state = initialState, action) => {
@@ -89,15 +86,6 @@ export default (state = initialState, action) => {
       return state
     }
 
-    case types.LEAD_IS_DELETED:
-      let id = _.get(action, 'payload')
-      let list = state['listLeads']
-      let index = list.findIndex(found => found.id === id)
-      list.splice(index, 1)
-      state['listLeads'] = list
-      return state
-    case types.LEAD_IS_NOT_DELETED:
-      return state
     default:
       return state
   }

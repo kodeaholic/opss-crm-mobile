@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import faker from 'faker/locale/vi'
 import _ from 'lodash'
 import { bindActionCreators } from 'redux'
 import compose from 'recompose/compose'
 import withAuth from '../withAuth'
 import withLayout from '../withLayout'
 
-import { getLeadDetailsByID, getDetailsLead, getSelectedLeadId } from '../../modules/leadsDuck'
+import { getLeadDetailsByID, getDetailsLead, getSelectedLeadId, getDetailsLeadLoadingStatus } from '../../modules/leadsDuck'
 import { getUserLoggedIn } from '../../modules/loginDuck'
 import Input from '../commonComponents/input'
 
@@ -19,7 +18,7 @@ const mapStateToProps = (state, ownProps) => ({
   leadDetails: getDetailsLead(state, ownProps),
   userLoggedIn: getUserLoggedIn(state),
   selectedLeadId: getSelectedLeadId(state, ownProps),
-  isLoadingDetail: state => state.leads.isLoadingDetail
+  isLoadingDetail: getDetailsLeadLoadingStatus(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -164,7 +163,7 @@ class CustomerDetails extends Component {
 
   render() {
     const { leadDetails } = this.props
-    if(this.state.isLoadingDetail) {
+    if(this.props.isLoadingDetail) {
       return (
         <div className="wrapper-lead">
           <div className="loading-data">
