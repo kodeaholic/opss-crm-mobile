@@ -24,11 +24,6 @@ import withAuth from '../withAuth'
 import { connect } from 'react-redux'
 import { getUserLoggedIn } from '../../modules/loginDuck'
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
@@ -91,10 +86,50 @@ class AddNewCustomer extends Component {
     })
     return (
       <div className="addnewcustomer-feild">
-        <Input label="Họ tên khách hàng" isRequire name="leadName"/>
-        <Input label="Tên gian hàng" />
-        <Input label="Số điện thoại" isRequire />
-        <Input label="Số điện thoại khác" />
+        <div className="wrapper-input-common-component">
+          <label className="label-input-common-component">
+            Họ tên khách hàng<span className="require-input-common-component"> (*)</span>
+          </label>
+          <input
+            name="leadName"
+            type="text"
+            className="input-input-common-component"
+            defaultValue=""
+          />
+        </div>
+        <div className="wrapper-input-common-component">
+          <label className="label-input-common-component">
+            Tên gian hàng
+          </label>
+          <input
+            name="leadWebsite"
+            type="text"
+            className="input-input-common-component"
+            defaultValue=""
+          />
+        </div>
+        <div className="wrapper-input-common-component">
+          <label className="label-input-common-component">
+            Số điện thoại<span className="require-input-common-component"> (*)</span>
+          </label>
+          <input
+            name="leadPhone"
+            type="text"
+            className="input-input-common-component"
+            defaultValue=""
+          />
+        </div>
+        <div className="wrapper-input-common-component">
+          <label className="label-input-common-component">
+            Số điện thoại khác
+          </label>
+          <input
+            name="leadSecondaryPhone"
+            type="text"
+            className="input-input-common-component"
+            defaultValue=""
+          />
+        </div>
         <div className="wrapper-input-common-component">
           <label className="label-input-common-component">
             Ngành hàng<span className="require-input-common-component"> (*)</span>
@@ -128,8 +163,16 @@ class AddNewCustomer extends Component {
             options={this.props.assignableUsers}
           />
         </div>
-        <Input label="Số điện thoại khác" />
-        <Input label="Mô tả chung" isMultiLine/>
+        <div className="wrapper-input-common-component">
+          <label className="label-input-common-component">
+            Mô tả chung
+          </label>
+          <textarea
+            name="leadGeneralDescription"
+            className="input-input-common-component"
+            rows="5"
+          />
+        </div>
       </div>
     )
   }
