@@ -207,7 +207,7 @@ class AddNewCustomer extends Component {
             Người xử lý<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
-            value={defaultSelectedUser}
+            defaultValue={defaultSelectedUser}
             options={this.props.assignableUsers}
             onChange={this.onSelectChange.bind(this, 'assigned_user_id')}
           />
