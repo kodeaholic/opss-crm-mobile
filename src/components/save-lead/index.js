@@ -17,7 +17,8 @@ import {
   getAssignableUsers,
   getIndustries,
   getRegion,
-  getSaveLeadStatus
+  getSaveLeadStatus,
+  getLog
 } from '../../modules/saveLeadDuck'
 import { bindActionCreators } from 'redux'
 import compose from 'recompose/compose'
@@ -45,7 +46,8 @@ const mapStateToProps = state => ({
   assignableUsers: getAssignableUsers(state),
   isLoading: getLoadingStatus(state),
   region: getRegion(state),
-  saveLeadStatus: getSaveLeadStatus(state)
+  saveLeadStatus: getSaveLeadStatus(state),
+  log: getLog(state)
 })
 
 class AddNewCustomer extends Component {
@@ -253,6 +255,7 @@ class AddNewCustomer extends Component {
       }
       else if (this.props.saveLeadStatus === "failed") {
         toast.error("Failed!")
+        toast.error(this.props.log) // remove when going production
         this.props.actions.reinitializeSaveLeadStatus({})
         return (
           <div className="container-addnewcust">

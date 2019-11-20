@@ -18,6 +18,7 @@ export const getLoadingStatus = state => _.get(state, 'saveLead.isLoading') || f
 export const getLeadSources = state => _.get(state, 'saveLead.leadSources') || []
 export const getAssignableUsers = state => _.get(state, 'saveLead.assignableUsers') || []
 export const getSaveLeadStatus = state => _.get(state, 'saveLead.saveLeadStatus') || "initial"
+export const getLog = state => _.get(state, 'saveLead.log') || ''
 
 // Reducer
 const initialState = {
@@ -27,7 +28,8 @@ const initialState = {
   leadSources: [],
   assignableUsers: [],
   lead: {},
-  saveLeadStatus: "initial"
+  saveLeadStatus: "initial",
+  log: ''
 }
 
 export default (state = initialState, action) => {
@@ -65,6 +67,7 @@ export default (state = initialState, action) => {
       state['saveLeadStatus'] = "success"
       return state
     case types.REQUEST_SAVE_LEAD_FAILED:
+      state['log'] = JSON.stringify(action.payload)
       state['isLoading'] = false
       state['saveLeadStatus'] = "failed"
       return state
@@ -132,7 +135,7 @@ export const requestSaveLead = payload => {
           return dispatch(saveLeadSuccess(result))
         }
         else {
-          return dispatch(saveLeadFailed())
+          return dispatch(saveLeadFailed(response.data))
         }
       })
       .catch(err => {
