@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import Button from '../commonComponents/button'
-import Input from '../commonComponents/input'
 import Select from 'react-select';
 import './index.css'
 
 /* import action creators */
 import  {
   fetchDropdownData,
-  requestAddLead
-} from '../../modules/addLeadDuck'
+  requestSaveLead,
+  reinitializeSaveLeadStatus
+} from '../../modules/saveLeadDuck'
 
 /* import selector */
 import {
@@ -17,8 +17,8 @@ import {
   getAssignableUsers,
   getIndustries,
   getRegion,
-  getAddLeadStatus
-} from '../../modules/addLeadDuck'
+  getSaveLeadStatus
+} from '../../modules/saveLeadDuck'
 import { bindActionCreators } from 'redux'
 import compose from 'recompose/compose'
 import withLayout from '../withLayout'
@@ -26,13 +26,13 @@ import withAuth from '../withAuth'
 import { connect } from 'react-redux'
 import { getUserLoggedIn } from '../../modules/loginDuck'
 import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       fetchDropdownData,
-      requestAddLead
+      requestSaveLead,
+      reinitializeSaveLeadStatus
     },
     dispatch
   )
@@ -45,7 +45,7 @@ const mapStateToProps = state => ({
   assignableUsers: getAssignableUsers(state),
   isLoading: getLoadingStatus(state),
   region: getRegion(state),
-  addLeadStatus: getAddLeadStatus(state)
+  saveLeadStatus: getSaveLeadStatus(state)
 })
 
 class AddNewCustomer extends Component {
@@ -84,7 +84,7 @@ class AddNewCustomer extends Component {
     this.setState({ submitted: true })
     let data = this.state
     let session = this.props.userLoggedIn.session
-    this.props.actions.requestAddLead({session, data})
+    this.props.actions.requestSaveLead({session, data})
   }
 
   componentWillMount() {
@@ -242,15 +242,32 @@ class AddNewCustomer extends Component {
       )
     }
     else {
-      if (this.props.addLeadStatus){
+      if (this.props.saveLeadStatus === "success"){
         toast.success("Success!")
+        this.props.actions.reinitializeSaveLeadStatus({})
+        return (
+          <div className="container-addnewcust">
+            {this.renderButton()}
+          </div>
+        )
       }
-      return (
-        <div className="container-addnewcust">
-          {this.renderButton()}
-          {this.renderForm()}
-        </div>
-      )
+      else if (this.props.saveLeadStatus === "failed") {
+        toast.error("Failed!")
+        this.props.actions.reinitializeSaveLeadStatus({})
+        return (
+          <div className="container-addnewcust">
+            {this.renderButton()}
+          </div>
+        )
+      }
+      else {
+        return (
+          <div className="container-addnewcust">
+            {this.renderButton()}
+            {this.renderForm()}
+          </div>
+        )
+      }
     }
   }
 }

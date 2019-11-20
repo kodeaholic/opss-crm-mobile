@@ -2,21 +2,22 @@ import axios from 'axios'
 import _ from 'lodash'
 
 export const types = {
-  REQUEST_FETCH_DROPDOWN_DATA: 'ADD_LEAD/REQUEST_FETCH_DROPDOWN_DATA',
-  FETCH_DROPDOWN_DATA_SUCCESS: 'ADD_LEAD/FETCH_DROPDOWN_DATA_SUCCESS',
-  FETCH_DROPDOWN_DATA_FAILED: 'ADD_LEAD/FETCH_DROPDOWN_DATA_FAILED',
-  REQUEST_ADD_LEAD: 'ADD_LEAD/SEND_REQUEST_ADD_LEAD',
-  REQUEST_ADD_LEAD_SUCCESS: 'ADD_LEAD/REQUEST_ADD_LEAD_SUCCESS',
-  REQUEST_ADD_LEAD_FAILED: 'ADD_LEAD/REQUEST_ADD_LEAD_FAILED'
+  REQUEST_FETCH_DROPDOWN_DATA: 'SAVE_LEAD/REQUEST_FETCH_DROPDOWN_DATA',
+  FETCH_DROPDOWN_DATA_SUCCESS: 'SAVE_LEAD/FETCH_DROPDOWN_DATA_SUCCESS',
+  FETCH_DROPDOWN_DATA_FAILED: 'SAVE_LEAD/FETCH_DROPDOWN_DATA_FAILED',
+  REQUEST_SAVE_LEAD: 'SAVE_LEAD/SEND_REQUEST_SAVE_LEAD',
+  REQUEST_SAVE_LEAD_SUCCESS: 'SAVE_LEAD/REQUEST_SAVE_LEAD_SUCCESS',
+  REQUEST_SAVE_LEAD_FAILED: 'SAVE_LEAD/REQUEST_SAVE_LEAD_FAILED',
+  REINITIALIZE: 'SAVE_LEAD/REFRESH'
 }
 
 // Selector
-export const getIndustries = state => _.get(state, 'addLead.industries') || []
-export const getRegion = state => _.get(state, 'addLead.region') || []
-export const getLoadingStatus = state => _.get(state, 'addLead.isLoading') || false
-export const getLeadSources = state => _.get(state, 'addLead.leadSources') || []
-export const getAssignableUsers = state => _.get(state, 'addLead.assignableUsers') || []
-export const getAddLeadStatus = state => _.get(state, 'addLead.addLeadStatus') || false
+export const getIndustries = state => _.get(state, 'saveLead.industries') || []
+export const getRegion = state => _.get(state, 'saveLead.region') || []
+export const getLoadingStatus = state => _.get(state, 'saveLead.isLoading') || false
+export const getLeadSources = state => _.get(state, 'saveLead.leadSources') || []
+export const getAssignableUsers = state => _.get(state, 'saveLead.assignableUsers') || []
+export const getSaveLeadStatus = state => _.get(state, 'saveLead.saveLeadStatus') || "initial"
 
 // Reducer
 const initialState = {
@@ -26,7 +27,7 @@ const initialState = {
   leadSources: [],
   assignableUsers: [],
   lead: {},
-  addLeadStatus: false
+  saveLeadStatus: "initial"
 }
 
 export default (state = initialState, action) => {
@@ -56,11 +57,19 @@ export default (state = initialState, action) => {
       state['industries'] = industries
       state['assignableUsers'] = assignableUsers
       return state
-    case types.REQUEST_ADD_LEAD:
+    case types.REQUEST_SAVE_LEAD:
       state['isLoading'] = true
       return state
-    case types.REQUEST_ADD_LEAD_SUCCESS:
+    case types.REQUEST_SAVE_LEAD_SUCCESS:
       state['isLoading'] = false
+      state['saveLeadStatus'] = "success"
+      return state
+    case types.REQUEST_SAVE_LEAD_FAILED:
+      state['isLoading'] = false
+      state['saveLeadStatus'] = "failed"
+      return state
+    case types.REINITIALIZE:
+      state['saveLeadStatus'] = "initial"
       return state
     default:
       return state
@@ -99,9 +108,9 @@ export const fetchDropdownData = payload => {
       })
   }
 }
-export const requestAddLead = payload => {
+export const requestSaveLead = payload => {
   return function action(dispatch) {
-    dispatch({ type: types.REQUEST_ADD_LEAD, payload })
+    dispatch({ type: types.REQUEST_SAVE_LEAD, payload })
     let {session, data} = payload
     const bodyFormData = new FormData()
     bodyFormData.append("_operation", 'saveRecord')
@@ -120,15 +129,15 @@ export const requestAddLead = payload => {
         //handle success
         const { result, success } = response.data
         if (success) {
-          return dispatch(addLeadSuccess(result))
+          return dispatch(saveLeadSuccess(result))
         }
         else {
-          return dispatch(addLeadFailed())
+          return dispatch(saveLeadFailed())
         }
       })
       .catch(err => {
         //handle error
-        return dispatch(addLeadFailed(err))
+        return dispatch(saveLeadFailed(err))
       })
 
   }
@@ -142,11 +151,17 @@ export const fetchDropdownDataFailed = payload => ({
   type: types.FETCH_DROPDOWN_DATA_FAILED,
   payload
 })
-export const addLeadSuccess = payload => ({
-  type: types.REQUEST_ADD_LEAD_SUCCESS,
+export const saveLeadSuccess = payload => ({
+  type: types.REQUEST_SAVE_LEAD_SUCCESS,
   payload
 })
-export const addLeadFailed = payload => ({
-  type: types.REQUEST_ADD_LEAD_SUCCESS,
+export const saveLeadFailed = payload => ({
+  type: types.REQUEST_SAVE_LEAD_FAILED,
   payload
 })
+
+export const reinitializeSaveLeadStatus = payload => {
+  return function action(dispatch) {
+    dispatch({ type: types.REINITIALIZE, payload })
+  }
+}

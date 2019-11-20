@@ -7,7 +7,7 @@ import Lead from '../lead'
 import Opportunity from '../opportunity'
 import Contact from '../contact'
 import Ticket from '../ticket'
-import AddNewCustomer from '../add-new-customer'
+import AddNewCustomer from '../save-lead'
 import CustomerDetails from '../customer-details'
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
