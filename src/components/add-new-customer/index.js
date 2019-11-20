@@ -180,6 +180,7 @@ class AddNewCustomer extends Component {
             Ngành hàng<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
+            placeholder="Ngành hàng"
             options={this.props.industries}
             onChange={this.onSelectChange.bind(this, 'industry')}
           />
@@ -189,6 +190,7 @@ class AddNewCustomer extends Component {
             Khu vực<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
+            placeholder="Khu vực"
             options={this.props.region}
             onChange={this.onSelectChange.bind(this, 'cf_lead_khu_vuc')}
           />
@@ -198,6 +200,7 @@ class AddNewCustomer extends Component {
             Nguồn khách hàng<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
+            placeholder="Nguồn khách hàng"
             options={this.props.leadSource}
             onChange={this.onSelectChange.bind(this, 'leadsource')}
           />
@@ -207,6 +210,7 @@ class AddNewCustomer extends Component {
             Người xử lý<span className="require-input-common-component"> (*)</span>
           </label>
           <Select
+            placeholder="Người xử lý"
             defaultValue={defaultSelectedUser}
             options={this.props.assignableUsers}
             onChange={this.onSelectChange.bind(this, 'assigned_user_id')}
