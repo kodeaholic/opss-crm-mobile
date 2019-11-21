@@ -26,6 +26,7 @@ class Header extends Component {
   constructor(props) {
     super(props)
     this.state = {}
+    this._handleSearchEnter = this._handleSearchEnter.bind(this)
   }
 
   routeChange = pathBack => {
@@ -54,13 +55,19 @@ class Header extends Component {
     )
   }
 
+  _handleSearchEnter = (e) => {
+    if (e.key === 'Enter') {
+      this.props.history.push('/search/' + e.target.value)
+    }
+  }
+
   render() {
     return (
       <div className="wrapper-header">
         {this.renderIconLeft()}
         <div className="wrapper-input">
           <i className="fa fa-search" aria-hidden="true"></i>
-          <input type="text" className="input-search-header" style={{fontSize: 'inherit'}}/>
+          <input type="text" className="input-search-header" style={{fontSize: 'inherit'}} onKeyPress={this._handleSearchEnter}  />
         </div>
         <div className="wrapper-icon">
           <i

@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 
 import _ from 'lodash'
 import compose from 'recompose/compose'
@@ -8,31 +8,30 @@ import withLayout from '../withLayout'
 
 import './index.css'
 
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 
 import Button from '../commonComponents/button'
 import {
-  getListLead,
-  getLeadsData,
-  getLeadsLoading,
-  getLeadsPageIndex,
-  getLeadsHasMoreData,
+  getSearchResult,
+  getSRData,
+  getSRLoading,
+  getSRPageIndex,
+  getSRHasMoreData,
   getKeyword,
 } from '../../modules/searchDuck'
 import {
   getSessionStatus
 } from '../../modules/sessionDuck'
-import { getUserLoggedIn } from '../../modules/loginDuck'
+import {getUserLoggedIn} from '../../modules/loginDuck'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import {getSelectedLeadId} from "../../modules/leadsDuck";
-// import InfiniteScroll from 'react-infinite-scroller';
+
 const mapStateToProps = (state, ownProps) => ({
   userLoggedIn: getUserLoggedIn(state),
-  leads: getLeadsData(state),
-  pageIndex: getLeadsPageIndex(state),
-  isLoading: getLeadsLoading(state),
-  hasMoreData: getLeadsHasMoreData(state),
+  listSR: getSRData(state),
+  pageIndex: getSRPageIndex(state),
+  isLoading: getSRLoading(state),
+  hasMoreData: getSRHasMoreData(state),
   expired: getSessionStatus(state),
   keyword: getKeyword(state, ownProps),
 })
@@ -40,7 +39,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      getListLead,
+      getSearchResult,
     },
     dispatch
   )
@@ -53,27 +52,44 @@ class Lead extends Component {
   }
 
   componentWillMount() {
-    let { userLoggedIn, keyword } = this.props
-    let { session } = userLoggedIn || {}
-    if(!session) {
+    let {userLoggedIn, keyword} = this.props
+    let {session} = userLoggedIn || {}
+    if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
-      if(userLoginData) {
+      if (userLoginData) {
         userLoginData = JSON.parse(userLoginData).result.login
         session = userLoginData.session
-      }
-      else {
+      } else {
         this.props.history.push('/login')
       }
     }
     let refresh = true
-    this.props.actions.getListLead({ session, refresh, keyword })
+    this.props.actions.getSearchResult({session, refresh, keyword})
 
     /* Prevent browser's default pull to refresh behavior*/
-    document.body.style.overscrollBehavior= 'contain'
+    document.body.style.overscrollBehavior = 'contain'
+  }
+
+  componentWillReceiveProps(newProps) {
+    if(newProps.keyword != this.props.keyword) {
+      let {userLoggedIn, keyword} = newProps
+      let {session} = userLoggedIn || {}
+      if (!session) {
+        let userLoginData = localStorage.getItem('userLoggedInKV')
+        if (userLoginData) {
+          userLoginData = JSON.parse(userLoginData).result.login
+          session = userLoginData.session
+        } else {
+          this.props.history.push('/login')
+        }
+      }
+      let refresh = true
+      this.props.actions.getSearchResult({session, refresh, keyword})
+    }
   }
 
   componentWillUnmount() {
-    document.body.style.overscrollBehavior= 'auto'
+    document.body.style.overscrollBehavior = 'auto'
   }
 
   renderFilter = () => {
@@ -91,7 +107,7 @@ class Lead extends Component {
             aria-hidden="true"></i>
         </div>
         <div className="filter-lead-result">
-          <Button label="+ Thêm mới" path="/add-new-customer" />
+          <Button label="+ Thêm mới" path="/add-new-customer"/>
         </div>
       </div>
     )
@@ -99,8 +115,8 @@ class Lead extends Component {
 
   renderItemList = (item, key) => {
     item = item._source
-    if (item){
-      const { label, s_website, s_mobile, status, createdtime } = item
+    if (item) {
+      const {label, s_website, s_mobile, status, createdtime} = item
       return (
         <Link
           className="link-on-lead-list"
@@ -125,26 +141,26 @@ class Lead extends Component {
   }
 
   refreshData = () => {
-    const { userLoggedIn } = this.props
-    let { session } = userLoggedIn
-    if(!session) {
+    const {userLoggedIn} = this.props
+    let {session} = userLoggedIn
+    if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
     let refresh = true
-    this.props.actions.getListLead({ session, refresh })
+    this.props.actions.getSearchResult({session, refresh})
   }
 
   fetchMoreData = () => {
-    const { pageIndex, userLoggedIn } = this.props
-    let { session } = userLoggedIn
-    if(!session) {
+    const {pageIndex, userLoggedIn} = this.props
+    let {session} = userLoggedIn
+    if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
-    this.props.actions.getListLead({ session, pageIndex })
+    this.props.actions.getSearchResult({session, pageIndex})
   }
 
   renderLoading = () => {
@@ -156,25 +172,17 @@ class Lead extends Component {
   }
 
   renderList = data => {
-    const { hasMoreData } = this.props
+    const {hasMoreData} = this.props
     return (
       <div
         className="wrapper-list-lead"
         id="scrollableDiv"
-        style={{ height: 'calc(100vh - 105px)', overflow: 'auto', position: 'absolute', /*top: '100px',*/ width: '100%'}}>
-        {/*<InfiniteScroll*/}
-        {/*  pageStart={0}*/}
-        {/*  hasMore={hasMoreData}*/}
-        {/*  loadMore={this.fetchMoreData}*/}
-        {/*  loader={this.renderLoading()}*/}
-        {/*  useWindow={false}*/}
-        {/*>*/}
-        {/*  {data*/}
-        {/*    ? _.map(data, (item, key) => {*/}
-        {/*      return this.renderItemList(item, key)*/}
-        {/*    })*/}
-        {/*    : null}*/}
-        {/*</InfiniteScroll>*/}
+        style={{
+          height: 'calc(100vh - 105px)',
+          overflow: 'auto',
+          position: 'absolute', /*top: '100px',*/
+          width: '100%'
+        }}>
         <InfiniteScroll
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
@@ -191,8 +199,8 @@ class Lead extends Component {
           }>
           {data
             ? _.map(data, (item, key) => {
-                return this.renderItemList(item, key)
-              })
+              return this.renderItemList(item, key)
+            })
             : null}
         </InfiniteScroll>
       </div>
@@ -200,18 +208,18 @@ class Lead extends Component {
   }
 
   render() {
-    const dataLeads = _.get(this.props, 'leads') || {}
-    if(dataLeads.length === 0 && !this.props.expired) {
+    const dataLeads = _.get(this.props, 'listSR') || {}
+    if (dataLeads.length === 0 && !this.props.expired) {
       return (
         <div className="wrapper-lead">
           <div className="loading-data">
-            <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+            <i className="fa fa-spinner fa-pulse fa-3x fa-fw"
+               style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
           </div>
         </div>
       )
-    }
-    else if(this.props.expired){
-      document.body.style.overscrollBehavior= 'contain'
+    } else if (this.props.expired) {
+      document.body.style.overscrollBehavior = 'contain'
       localStorage.removeItem('userLoggedInKV')
       return (
         <div className="wrapper-lead">
@@ -220,8 +228,7 @@ class Lead extends Component {
           </div>
         </div>
       )
-    }
-    else {
+    } else {
       return (
         <div className="wrapper-lead">
           {/*{this.renderFilter()}*/}
