@@ -8,6 +8,7 @@ import Opportunity from '../opportunity'
 import Contact from '../contact'
 import Ticket from '../ticket'
 import AddNewCustomer from '../save-lead'
+import Search from '../search'
 import CustomerDetails from '../customer-details'
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
@@ -34,6 +35,7 @@ class App extends React.Component {
         <Route exact path="/ticket" component={Ticket} />
         <Route exact path="/add-new-customer" component={AddNewCustomer} />
         <Route exact path="/edit" component={AddNewCustomer} />
+        <Route exact path="/search/:keyword" component={Search} />
         <Route
           exact
           path="/customer-details/:custID"
