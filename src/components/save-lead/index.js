@@ -78,19 +78,17 @@ class AddNewCustomer extends Component {
     else {
       let assignedUserId = props.detailLead.assignedUserId
       this.state = {
-        leadInfo: {
-          leadstatus: props.detailLead.status,
-          lastname: props.detailLead.name,
-          phone: props.detailLead.secondaryPhone,
-          mobile: props.detailLead.phone,
-          website: props.detailLead.website,
-          cf_lead_khu_vuc: props.detailLead.region,
-          leadsource: props.detailLead.leadSource,
-          industry: props.detailLead.industry,
-          description: props.detailLead.generalDescription,
-          assigned_user_id: assignedUserId,
-          assigned_user: props.detailLead.assignedUser
-        }
+        leadstatus: props.detailLead.status,
+        lastname: props.detailLead.name,
+        phone: props.detailLead.secondaryPhone,
+        mobile: props.detailLead.phone,
+        website: props.detailLead.website,
+        cf_lead_khu_vuc: props.detailLead.region,
+        leadsource: props.detailLead.leadSource,
+        industry: props.detailLead.industry,
+        description: props.detailLead.generalDescription,
+        assigned_user_id: assignedUserId,
+        assigned_user: props.detailLead.assignedUser
       }
     }
     this.handleChange = this.handleChange.bind(this)
@@ -112,13 +110,25 @@ class AddNewCustomer extends Component {
 
     this.setState({ submitted: true })
     let data = this.state
-    data.record = _.get(this.props, "location.state.id")
+    data.record = _.get(this.props, "location.state.id") || undefined
     let session = this.props.userLoggedIn.session
     if(!session){
       let userLoginData = localStorage.getItem('userLoggedInKV')
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
+    let isRegionChanged = this.props.region.find(function(item) {
+      return item.value === data.cf_lead_khu_vuc
+    })
+    if(!isRegionChanged) delete data.cf_lead_khu_vuc
+    let isLeadSourceChanged = this.props.leadSource.find(function(item) {
+      return item.value === data.leadsource
+    })
+    if(!isLeadSourceChanged) delete data.leadsource
+    let isIndustryChanged = this.props.industries.find(function(item) {
+      return item.value === data.industry
+    })
+    if(!isIndustryChanged) delete data.industry
     this.props.actions.requestSaveLead({session, data})
   }
 
@@ -268,11 +278,11 @@ class AddNewCustomer extends Component {
       )
     }
     else {
-      let industryLabel = this.state.leadInfo.industry
-      let leadSourceLabel = this.state.leadInfo.leadsource
-      let regionLabel = this.state.leadInfo.cf_lead_khu_vuc
-      let assignedUserLabel = this.state.leadInfo.assigned_user
-      let assigned_user_id = this.state.leadInfo.assignedUserId
+      let industryLabel = this.state.industry
+      let leadSourceLabel = this.state.leadsource
+      let regionLabel = this.state.cf_lead_khu_vuc
+      let assignedUserLabel = this.state.assigned_user
+      let assigned_user_id = this.state.assignedUserId
       let user = {label: assignedUserLabel, value: assigned_user_id}
       let defaultSelectedIndustry = this.props.industries.find(function(item) {
         return item.label === industryLabel
@@ -296,7 +306,7 @@ class AddNewCustomer extends Component {
               name="lastname"
               type="text"
               className="input-input-common-component"
-              defaultValue={this.state.leadInfo.lastname}
+              defaultValue={this.state.lastname}
               onChange={this.handleChange}
             />
           </div>
@@ -308,7 +318,7 @@ class AddNewCustomer extends Component {
               name="website"
               type="text"
               className="input-input-common-component"
-              defaultValue={this.state.leadInfo.website}
+              defaultValue={this.state.website}
               onChange={this.handleChange}
             />
           </div>
@@ -320,7 +330,7 @@ class AddNewCustomer extends Component {
               name="mobile"
               type="text"
               className="input-input-common-component"
-              defaultValue={this.state.leadInfo.mobile}
+              defaultValue={this.state.mobile}
               onChange={this.handleChange}
             />
           </div>
@@ -332,7 +342,7 @@ class AddNewCustomer extends Component {
               name="phone"
               type="text"
               className="input-input-common-component"
-              defaultValue={this.state.leadInfo.phone}
+              defaultValue={this.state.phone}
               onChange={this.handleChange}
             />
           </div>
@@ -385,7 +395,7 @@ class AddNewCustomer extends Component {
               Mô tả chung
             </label>
             <textarea
-              defaultValue={this.state.leadInfo.description}
+              defaultValue={this.state.description}
               name="description"
               className="input-input-common-component"
               rows="5"

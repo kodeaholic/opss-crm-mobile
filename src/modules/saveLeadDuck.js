@@ -124,6 +124,7 @@ export const requestSaveLead = payload => {
     bodyFormData.append("_operation", 'saveRecord')
     bodyFormData.append("_session", session)
     bodyFormData.append("module", 'Leads')
+    if (data.record) bodyFormData.append("record", data.record)
     bodyFormData.append("values", JSON.stringify(data))
     const request = axios({
       method: 'POST',
@@ -131,7 +132,6 @@ export const requestSaveLead = payload => {
       data: bodyFormData,
       config: { headers: { 'Content-Type': 'multipart/form-data' } }
     })
-
     return request
       .then(response => {
         //handle success
