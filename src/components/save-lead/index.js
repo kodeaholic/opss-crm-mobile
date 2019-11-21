@@ -421,6 +421,7 @@ class AddNewCustomer extends Component {
       if (this.props.saveLeadStatus === "success"){
         toast.success("Success!")
         this.props.actions.reinitializeSaveLeadStatus({})
+        this.props.history.push('/lead')
         return (
           <div className="container-addnewcust">
             {this.renderButton()}
