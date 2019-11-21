@@ -18,6 +18,7 @@ export const getLoadingStatus = state => _.get(state, 'saveLead.isLoading') || f
 export const getLeadSources = state => _.get(state, 'saveLead.leadSources') || []
 export const getAssignableUsers = state => _.get(state, 'saveLead.assignableUsers') || []
 export const getSaveLeadStatus = state => _.get(state, 'saveLead.saveLeadStatus') || "initial"
+export const getLeadStatus = state => _.get(state, 'saveLead.statuses') || []
 export const getLog = state => _.get(state, 'saveLead.log') || ''
 
 // Reducer
@@ -53,11 +54,15 @@ export default (state = initialState, action) => {
       let industries = fields.find( x => x.name === 'industry')
       industries = _.get(industries, 'type.picklistValues') || []
 
+      let statuses = fields.find( x => x.name === 'leadstatus')
+      statuses = _.get(statuses, 'type.picklistValues') || []
+
       let assignableUsers = _.get(describe, 'available_users') || []
       state['leadSources'] = leadSources
       state['region'] = region
       state['industries'] = industries
       state['assignableUsers'] = assignableUsers
+      state['statuses'] = statuses
       return state
     case types.REQUEST_SAVE_LEAD:
       state['isLoading'] = true

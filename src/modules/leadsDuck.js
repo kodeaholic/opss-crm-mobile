@@ -80,6 +80,7 @@ export default (state = initialState, action) => {
       details.region = _.get(action, 'payload.cf_lead_khu_vuc')
       details.leadSource = _.get(action, 'payload.leadsource')
       details.assignedUser = _.get(action, 'payload.assigned_user_id.label')
+      details.assignedUserId = _.get(action, 'payload.assigned_user_id.value')
       details.generalDescription = _.get(action, 'payload.description')
       state['isLoadingDetail'] = false
       state['detailsLead'] = details

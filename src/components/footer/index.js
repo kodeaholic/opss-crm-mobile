@@ -65,10 +65,10 @@ class Footer extends Component {
     this.renderItemMenu = this.renderItemMenu.bind(this)
   }
 
-  renderItemMenu(item, key) {
+  renderItemMenu(item, key, id) {
     return (
       <div className="wrapper-item-footer" key={key + item.name}>
-        <Link to={item.path} className="wrapper-circle-icon">
+        <Link to={{ pathname: item.path, state: { id } }} className="wrapper-circle-icon">
           <i
             className={item.classIcon}
             aria-hidden="true"
@@ -76,7 +76,7 @@ class Footer extends Component {
               fontSize: 18,
               color: '#ffffff',
               paddingTop: 2
-            }}></i>
+            }}/>
         </Link>
         <label className="label-menu">{item.name}</label>
       </div>
@@ -84,13 +84,15 @@ class Footer extends Component {
   }
 
   render() {
+    // console.log('mylog', this.props)
     const pathName = _.get(this.props, 'location.pathname').substring(1)
-    var res = pathName.split('/')[0]
-    const isFunction = !!functionMenu.find(e => e === res)
+    var res = pathName.split('/')
+    const isFunction = !!functionMenu.find(e => e === res[0])
+    const itemId = res[1]
     return (
       <div className="wrapper-footer">
         {_.map(isFunction ? menuCustomerList : menuList, (item, key) =>
-          this.renderItemMenu(item, key)
+          this.renderItemMenu(item, key, itemId)
         )}
       </div>
     )

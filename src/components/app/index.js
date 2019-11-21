@@ -33,6 +33,7 @@ class App extends React.Component {
         <Route exact path="/opportunity" component={Opportunity} />
         <Route exact path="/ticket" component={Ticket} />
         <Route exact path="/add-new-customer" component={AddNewCustomer} />
+        <Route exact path="/edit" component={AddNewCustomer} />
         <Route
           exact
           path="/customer-details/:custID"
