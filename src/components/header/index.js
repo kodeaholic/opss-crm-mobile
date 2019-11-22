@@ -19,6 +19,9 @@ const router = {
   },
   'add-new-customer': {
     back: 'lead'
+  },
+  'lead-view': {
+    back: 'lead'
   }
 }
 

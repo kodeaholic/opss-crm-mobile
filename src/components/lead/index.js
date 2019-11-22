@@ -102,7 +102,7 @@ class Lead extends Component {
         <Link
           className="link-on-lead-list"
           key={key}
-          to={'/customer-details/' + item.id}>
+          to={'/lead-view/' + item.id}>
           <div className="wrapper-list-lead-item">
             <div className="wrapper-item-row">
               <label className="label-item-list lead-item-name">{mobile}</label>

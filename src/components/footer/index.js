@@ -28,7 +28,7 @@ const menuList = [
   }
 ]
 
-const functionMenu = ['customer-details', '222']
+const functionMenu = ['customer-details', '222', 'lead-view', 'lead-edit']
 
 const menuCustomerList = [
   {
