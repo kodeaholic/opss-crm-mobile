@@ -28,9 +28,9 @@ const menuList = [
   }
 ]
 
-const functionMenu = ['customer-details', '222', 'lead-view']
+const functionMenu = ['lead-view']
 
-const menuCustomerList = [
+const menuLeadFunction = [
   {
     name: 'Sửa',
     classIcon: 'fa fa-list-alt',
@@ -79,7 +79,7 @@ class Footer extends Component {
                 paddingTop: 2
               }}/>
           </Link>
-        ) : (<Link to={{ pathname: item.path, state: { id } }} className="wrapper-circle-icon">
+        ) : (<Link to={item.path} className="wrapper-circle-icon">
           <i
             className={item.classIcon}
             aria-hidden="true"
@@ -99,10 +99,11 @@ class Footer extends Component {
     const pathName = _.get(this.props, 'location.pathname').substring(1)
     var res = pathName.split('/')
     const isFunction = !!functionMenu.find(e => e === res[0])
-    const itemId = res[1]
+    let itemId = undefined
+    if(res.length >= 2 && isFunction) itemId = res[1]
     return (
       <div className="wrapper-footer">
-        {_.map(isFunction ? menuCustomerList : menuList, (item, key) =>
+        {_.map(isFunction ? menuLeadFunction : menuList, (item, key) =>
           this.renderItemMenu(item, key, itemId)
         )}
       </div>

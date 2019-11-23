@@ -96,7 +96,7 @@ class Lead extends Component {
 
   renderItemList = (item, key) => {
     if (item){
-      const { assigned_user_id, website, mobile, leadstatus, createdtime } = item
+      const { assigned_user_id, website, mobile, leadstatus, createdtime, modifiedtime } = item
       const { label } = assigned_user_id
       return (
         <Link
@@ -112,7 +112,7 @@ class Lead extends Component {
             <div className="wrapper-item-row">
               <label className="label-item-list">{label}</label>
               <label className="lead-item-status label-item-list">
-                {createdtime}
+                {modifiedtime}
               </label>
             </div>
           </div>

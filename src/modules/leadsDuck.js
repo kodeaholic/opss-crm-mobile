@@ -42,7 +42,6 @@ export default (state = initialState, action) => {
       const lstLeads = _.get(state, 'listLeads') || []
       const newLeads = _.get(action, 'payload.result.records') || []
       const refresh = _.get(action, 'payload.refresh') || undefined
-      console.log("Refresh = " + refresh)
       let list = []
       if(refresh === undefined){
         list = _.concat(list, lstLeads)
