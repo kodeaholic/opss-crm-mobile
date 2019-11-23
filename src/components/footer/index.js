@@ -28,13 +28,13 @@ const menuList = [
   }
 ]
 
-const functionMenu = ['customer-details', '222', 'lead-view', 'lead-edit']
+const functionMenu = ['customer-details', '222', 'lead-view']
 
 const menuCustomerList = [
   {
     name: 'Sửa',
     classIcon: 'fa fa-list-alt',
-    path: '/edit'
+    path: '/lead-edit'
   },
   {
     name: 'Convert',
@@ -68,7 +68,18 @@ class Footer extends Component {
   renderItemMenu(item, key, id) {
     return (
       <div className="wrapper-item-footer" key={key + item.name}>
-        <Link to={{ pathname: item.path, state: { id } }} className="wrapper-circle-icon">
+        { id ? (
+          <Link to={item.path + '/' + id} className="wrapper-circle-icon">
+            <i
+              className={item.classIcon}
+              aria-hidden="true"
+              style={{
+                fontSize: 18,
+                color: '#ffffff',
+                paddingTop: 2
+              }}/>
+          </Link>
+        ) : (<Link to={{ pathname: item.path, state: { id } }} className="wrapper-circle-icon">
           <i
             className={item.classIcon}
             aria-hidden="true"
@@ -77,7 +88,7 @@ class Footer extends Component {
               color: '#ffffff',
               paddingTop: 2
             }}/>
-        </Link>
+        </Link>)}
         <label className="label-menu">{item.name}</label>
       </div>
     )

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import {toast} from 'react-toastify'
+import { Redirect } from 'react-router-dom'
 
 /* react-redux */
 import { bindActionCreators } from 'redux'
@@ -14,23 +15,26 @@ import withLayout from '../withLayout'
 
 /* predefined actions and selectors for mapStateToProps and mapDispatchToProps */
 import { getUserLoggedIn } from '../../modules/loginDuck'
-import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus } from '../../modules/leadDuck'
+import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus } from '../../modules/leadDuck'
 import { getSessionStatus } from '../../modules/sessionDuck'
 
 /* import child views */
 import LeadView from './view/view'
+import LeadForm from './view/form'
 const mapStateToProps = (state, ownProps) => ({
   expired: getSessionStatus(state),
   currentUser: getUserLoggedIn(state),
   leadData: getLeadData(state),
   option: getCurrentOption(state),
-  loading: getLoadingStatus(state)
+  loading: getLoadingStatus(state),
+  formSubmitResponseStatus: getFormSubmitResponseStatus(state)
 })
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      fetchLeadRecord
+      fetchLeadRecord,
+      requestSaveLead
     },
     dispatch
   )
@@ -56,10 +60,12 @@ class LeadComponent extends Component {
         cf_lead_khu_vuc: undefined,
         leadsource: undefined,
         assigned_user_id: undefined,
-        description: undefined
+        description: undefined,
+        record: array.length > 2 ? array[2] : undefined
       },
       viewOrCreateOrUpdate: option, // default,
-      recordId: array.length > 2 ? array[2] : undefined
+      recordId: array.length > 2 ? array[2] : undefined,
+      session: undefined
     }
   }
 
@@ -72,17 +78,20 @@ class LeadComponent extends Component {
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
+    this.setState({session: session})
     let record = this.state.recordId
     console.log("WillMount: current session - " + session)
     console.log("WillMount: current option - " + this.state.viewOrCreateOrUpdate)
     console.log("WillMount: record: " + record)
+    let option = this.state.viewOrCreateOrUpdate
     switch (this.state.viewOrCreateOrUpdate) {
       case 'view':
-        this.props.actions.fetchLeadRecord({session, record})
+        this.props.actions.fetchLeadRecord({session, record, option})
         break;
       case 'create':
         break;
       case 'edit':
+        this.props.actions.fetchLeadRecord({session, record, option})
         break;
       default:
         break;
@@ -90,11 +99,10 @@ class LeadComponent extends Component {
   }
 
   render() {
-    console.log(this.props)
     /* check if view, create, or update */
     if(this.props.expired) {
       localStorage.removeItem('userLoggedInKV')
-      this.props.history.push('/lead')
+      return <Redirect to={'/login'} />
     }
     if(this.props.loading) {
       return (
@@ -106,9 +114,21 @@ class LeadComponent extends Component {
       )
     }
     else {
+      if (this.props.formSubmitResponseStatus && (this.props.location.pathname.indexOf('view') === -1)) {
+        toast.success("Success", {
+          autoClose: 2000,
+          draggable: false,
+        })
+        return <Redirect to={'/lead-view/' + this.props.leadData.record} />
+      }
       if (this.props.option === 'view') {
         return (
           <LeadView data={this.props.leadData}/>
+        )
+      }
+      else if (this.props.option === 'edit' || this.props.option === 'create') {
+        return (
+          <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option} submit={this.props.actions.requestSaveLead}/>
         )
       }
     }

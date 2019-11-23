@@ -142,8 +142,8 @@ class Field extends Component {
           isMultiLine ? (<textarea
             className="input-field"
             rows="5"
-            defaultValue={value}
-            readOnly={readOnly}/>) : (!phoneCard ? (<p className="input-field">{value}</p>) : (<a className="phoneCard" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"></i> {value}
+            readOnly={readOnly}
+            defaultValue={value}/>) : (!phoneCard ? (<p className="input-field">{value}</p>) : (<a className="phoneCard" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"></i> {value}
           </a>))
         }
       </div>

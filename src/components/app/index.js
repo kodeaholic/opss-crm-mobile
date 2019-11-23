@@ -9,7 +9,6 @@ import Contact from '../contact'
 import Ticket from '../ticket'
 import AddNewCustomer from '../save-lead'
 import Search from '../search'
-import CustomerDetails from '../customer-details'
 import LeadComponent from '../lead-detail'
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
@@ -40,6 +39,11 @@ class App extends React.Component {
         <Route
           exact
           path="/lead-view/:id"
+          component={LeadComponent}
+        />
+        <Route
+          exact
+          path="/lead-edit/:id"
           component={LeadComponent}
         />
       </div>
