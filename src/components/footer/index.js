@@ -65,7 +65,14 @@ class Footer extends Component {
     this.renderItemMenu = this.renderItemMenu.bind(this)
   }
 
+  clickToReloadPage = (e) => {
+    e.preventDefault()
+    document.location.reload()
+  }
+
   renderItemMenu(item, key, id) {
+    let currentPath = this.props.location.pathname
+
     return (
       <div className="wrapper-item-footer" key={key + item.name}>
         { id ? (
@@ -79,7 +86,7 @@ class Footer extends Component {
                 paddingTop: 2
               }}/>
           </Link>
-        ) : (<Link to={item.path} className="wrapper-circle-icon">
+        ) : (<Link to={item.path} className="wrapper-circle-icon" onClick={item.path === currentPath ? this.clickToReloadPage : () => {return true}}>
           <i
             className={item.classIcon}
             aria-hidden="true"
@@ -95,9 +102,8 @@ class Footer extends Component {
   }
 
   render() {
-    // console.log('mylog', this.props)
     const pathName = _.get(this.props, 'location.pathname').substring(1)
-    var res = pathName.split('/')
+    let res = pathName.split('/')
     const isFunction = !!functionMenu.find(e => e === res[0])
     let itemId = undefined
     if(res.length >= 2 && isFunction) itemId = res[1]
