@@ -3,7 +3,6 @@ import counter from './counter'
 import  userDuck from './userDuck'
 import  loginDuck from './loginDuck'
 import  leadsDuck from './leadsDuck'
-import saveLeadDuck from './saveLeadDuck'
 import searchDuck from './searchDuck'
 import sessionDuck from './sessionDuck'
 import leadDuck from './leadDuck'
@@ -13,7 +12,6 @@ export default combineReducers({
   user: userDuck,
   login: loginDuck,
   leads: leadsDuck,
-  saveLead: saveLeadDuck,
   search: searchDuck,
   session: sessionDuck,
   lead: leadDuck

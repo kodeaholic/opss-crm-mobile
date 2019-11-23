@@ -7,7 +7,6 @@ import Lead from '../lead'
 import Opportunity from '../opportunity'
 import Contact from '../contact'
 import Ticket from '../ticket'
-import AddNewCustomer from '../save-lead'
 import Search from '../search'
 import LeadComponent from '../lead-detail'
 import { ToastContainer } from 'react-toastify'
@@ -33,8 +32,6 @@ class App extends React.Component {
         <Route exact path="/contact" component={Contact} />
         <Route exact path="/opportunity" component={Opportunity} />
         <Route exact path="/ticket" component={Ticket} />
-        <Route exact path="/add-new-customer" component={AddNewCustomer} />
-        <Route exact path="/edit" component={AddNewCustomer} />
         <Route exact path="/search/:keyword" component={Search} />
         <Route
           exact

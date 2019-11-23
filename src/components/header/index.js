@@ -14,12 +14,6 @@ const router = {
   lead: {
     back: ''
   },
-  'customer-details': {
-    back: 'lead'
-  },
-  'add-new-customer': {
-    back: 'lead'
-  },
   'lead-view': {
     back: 'lead'
   }
