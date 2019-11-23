@@ -15,7 +15,7 @@ import withLayout from '../withLayout'
 
 /* predefined actions and selectors for mapStateToProps and mapDispatchToProps */
 import { getUserLoggedIn } from '../../modules/loginDuck'
-import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus } from '../../modules/leadDuck'
+import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus, showFormAddLead } from '../../modules/leadDuck'
 import { getSessionStatus } from '../../modules/sessionDuck'
 
 /* import child views */
@@ -34,7 +34,8 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       fetchLeadRecord,
-      requestSaveLead
+      requestSaveLead,
+      showFormAddLead
     },
     dispatch
   )
@@ -89,6 +90,7 @@ class LeadComponent extends Component {
         this.props.actions.fetchLeadRecord({session, record, option})
         break;
       case 'create':
+        this.props.actions.showFormAddLead({session, option})
         break;
       case 'edit':
         this.props.actions.fetchLeadRecord({session, record, option})

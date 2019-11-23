@@ -43,6 +43,11 @@ class App extends React.Component {
           path="/lead-edit/:id"
           component={LeadComponent}
         />
+        <Route
+          exact
+          path="/lead-create"
+          component={LeadComponent}
+        />
       </div>
     )
   }

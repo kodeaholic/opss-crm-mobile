@@ -88,7 +88,7 @@ class Lead extends Component {
             aria-hidden="true"></i>
         </div>
         <div className="filter-lead-result">
-          <Button label="+ Thêm mới" path="/add-new-customer" />
+          <Button label="+ Thêm mới" path="/lead-create" />
         </div>
       </div>
     )

@@ -9,6 +9,7 @@ export const types = {
   SEND_REQUEST_SAVE_RECORD: 'LEAD/SAVE_RECORD',
   SAVE_RECORD_SUCCESS: 'LEAD/SAVE_RECORD_SUCCESS',
   SAVE_RECORD_FAILED: 'LEAD/SAVE_RECORD_FAILED',
+  SHOW_FORM_ADD_LEAD: 'SHOW_FORM_ADD_LEAD',
 }
 
 /* Selectors */
@@ -35,7 +36,7 @@ export default (state = initialState, action) => {
       return state
     case types.GET_LEAD_SUCCESS:
       state['loading'] = false
-      if (state['option'] === 'view') state['formSubmitResponseStatus'] = false
+      state['formSubmitResponseStatus'] = false
       let data = {}
       let result = _.get(action, 'payload')
       data.lastname = result.lastname
@@ -68,6 +69,10 @@ export default (state = initialState, action) => {
     case types.SAVE_RECORD_FAILED:
       state['loading'] = true
       state['formSubmitResponseStatus'] = false
+      return state
+    case types.SHOW_FORM_ADD_LEAD:
+      state = initialState
+      state['option'] = _.get(action, 'payload.option')
       return state
     default:
       return state
@@ -138,8 +143,10 @@ export const requestSaveLead = payload => {
     })
     return request
       .then(response => {
-        const { success } = response.data
+        const { success, result } = response.data
         if (success) {
+          let record = _.get(result, 'record_id')
+          if (record) data["record"] = record
           return dispatch(saveLeadSuccess(data))
         }
         else {
@@ -154,7 +161,11 @@ export const requestSaveLead = payload => {
 
   }
 }
-
+export const showFormAddLead = payload => {
+  return function action(dispatch) {
+    dispatch({ type: types.SHOW_FORM_ADD_LEAD, payload })
+  }
+}
 
 
 
