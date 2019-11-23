@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import React, {Component} from 'react'
+import {withRouter} from 'react-router-dom'
 import _ from 'lodash'
-import { getPathName } from '../../modules/routerDuck'
+import {getPathName} from '../../modules/routerDuck'
 
 import './index.css'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 
 const mapStateToProps = (state, ownProps) => ({
   path: getPathName(state, ownProps)
@@ -64,7 +64,11 @@ class Header extends Component {
         {this.renderIconLeft()}
         <div className="wrapper-input">
           <i className="fa fa-search" aria-hidden="true"></i>
-          <input type="text" className="input-search-header" style={{fontSize: 'inherit'}} onKeyPress={this._handleSearchEnter}  />
+          <input type="text" className="input-search-header" style={{fontSize: 'inherit'}}
+                 placeholder="Seach..."
+                 defaultValue={this.props.match.params.keyword}
+                 onKeyPress={this._handleSearchEnter}
+          />
         </div>
         <div className="wrapper-icon">
           <i

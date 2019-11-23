@@ -85,6 +85,10 @@
   color: blue;
 }
 
+.closedwon-sale {
+  color: red;
+}
+
 .lead-item-status {
   color: #555454;
   font-weight: 500;

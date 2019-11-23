@@ -71,7 +71,7 @@ class Lead extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if(newProps.keyword != this.props.keyword) {
+    if(newProps.keyword !== this.props.keyword) {
       let {userLoggedIn, keyword} = newProps
       let {session} = userLoggedIn || {}
       if (!session) {
@@ -113,23 +113,37 @@ class Lead extends Component {
     )
   }
 
+  renderSection = (name) => {
+    return (
+      <div>{name}
+      </div>
+    )
+  }
+
   renderItemList = (item, key) => {
     item = item._source
     if (item) {
-      const {label, s_website, s_mobile, status, createdtime} = item
+      const {label, s_website, crmid, status, createdtime, sales_user, asssignto, setype} = item
+      let to_url = '/lead-view/10x' + crmid;
+      if(setype === 'Contacts') {
+        to_url = '/contact-view/12x' + crmid;
+      } else if(setype === 'Potentials') {
+        to_url = '/opportunity-view/13x' + crmid;
+      }
       return (
         <Link
           className="link-on-lead-list"
           key={key}
-          to={'/customer-details/' + item.id}>
+          to={to_url}>
           <div className="wrapper-list-lead-item">
             <div className="wrapper-item-row">
-              <label className="label-item-list lead-item-name">{s_mobile}</label>
+              <label className="label-item-list lead-item-name">{label}</label>
               <label className="label-item-list">{s_website}</label>
               <label className="label-item-list">{status}</label>
             </div>
             <div className="wrapper-item-row">
-              <label className="label-item-list">{label}</label>
+              <label className="label-item-list">{asssignto}</label>
+              <label className="label-item-list closedwon-sale">{sales_user}</label>
               <label className="lead-item-status label-item-list">
                 {createdtime}
               </label>
@@ -186,7 +200,7 @@ class Lead extends Component {
         <InfiniteScroll
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
-          hasMore={hasMoreData}
+          hasMore={false}
           loader={this.renderLoading()}
           scrollableTarget="scrollableDiv"
           refreshFunction={this.refreshData}

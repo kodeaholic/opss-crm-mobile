@@ -1,0 +1,134 @@
+.lead-view-container {
+    width: 100%;
+    padding-bottom: 55px;
+    padding-top: 50px;
+    height: 100%;
+}
+.lead-view-container-info{
+    display: flex;
+    flex-direction: row;
+    background-color: #ffffff;
+    align-items: center;
+    /*padding: 15px 0;*/
+}
+
+.lead-view-wrapper-info{
+    display: flex;
+    flex-direction: column;
+    /*padding: 10 15px;*/
+}
+
+.lead-view-information-name {
+    font-size: 18px;
+}
+
+.lead-view-information-phone {
+    font-size: 13px;
+}
+
+.icon-lead-view {
+    font-size: 27px;
+    padding: 0 15px;
+}
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+    background-color: #ffffff;
+}
+.tab {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    background-color: #70aaf8;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.tab-active {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    background-color: #0d65dd;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.label-tab-name {
+    color: #ffffff;
+}
+
+.lead-view-related-wrapper {
+    padding: 15px;
+    background-color: #ffffff;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.lead-view-related-icon {
+    font-size: 25px;
+    padding-right: 10px;
+}
+
+.lead-view-related-label {
+    font-size: 15px;
+}
+
+.lead-view-field {
+    background-color: #ffffff;
+}
+
+
+
+.wrapper-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 5px;
+    padding: 0 10px 0 10px;
+}
+
+.label-field {
+    /*font-size: 17px;*/
+}
+
+.require-field {
+    color: red;
+}
+
+.input-field {
+    background-color: white;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height: 30px;
+    flex: 1;
+    width: auto;
+    padding-left: 3px;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+a.phoneCard {
+    border: 1px solid #ccc;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height: 30px;
+    flex: 1;
+    width: auto;
+    padding-left: 3px;
+    margin-bottom: 5px;
+    font-size: 15px;
+    color: black;
+    text-decoration: none;
+}
+
+textarea {
+    -webkit-appearance: textfield;
+}

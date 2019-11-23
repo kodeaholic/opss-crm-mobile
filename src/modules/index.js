@@ -1,11 +1,13 @@
-import { combineReducers } from 'redux'
+import {combineReducers} from 'redux'
 import counter from './counter'
-import  userDuck from './userDuck'
-import  loginDuck from './loginDuck'
-import  leadsDuck from './leadsDuck'
+import userDuck from './userDuck'
+import loginDuck from './loginDuck'
+import leadsDuck from './leadsDuck'
 import searchDuck from './searchDuck'
 import sessionDuck from './sessionDuck'
 import leadDuck from './leadDuck'
+import contactDuck from './contactDuck'
+import opportunityDuck from './opportunityDuck'
 
 export default combineReducers({
   counter,
@@ -14,5 +16,7 @@ export default combineReducers({
   leads: leadsDuck,
   search: searchDuck,
   session: sessionDuck,
-  lead: leadDuck
+  lead: leadDuck,
+  contact: contactDuck,
+  opportunity: opportunityDuck
 })
