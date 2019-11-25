@@ -48,7 +48,9 @@ const mapDispatchToProps = dispatch => ({
 class Lead extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      sectionTitle: ''
+    }
   }
 
   componentWillMount() {
@@ -130,11 +132,14 @@ class Lead extends Component {
       } else if(setype === 'Potentials') {
         to_url = '/opportunity-view/13x' + crmid;
       }
+      let currentSectionTitle = this.state.sectionTitle
+      this.state.sectionTitle = setype
       return (
         <Link
           className="link-on-lead-list"
           key={key}
           to={to_url}>
+          {currentSectionTitle !== setype ? (<div className="wrapper-list-lead-item section-title">{setype}</div>) : ''}
           <div className="wrapper-list-lead-item">
             <div className="wrapper-item-row">
               <label className="label-item-list lead-item-name">{label}</label>
