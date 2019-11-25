@@ -124,12 +124,18 @@ class LeadComponent extends Component {
       )
     }
     else {
-      if (this.props.formSubmitResponseStatus && (this.props.location.pathname.indexOf('view') === -1)) {
+      if (this.props.formSubmitResponseStatus === 'success' && (this.props.location.pathname.indexOf('view') === -1)) {
         toast.success("Success", {
           autoClose: 2000,
           draggable: false,
         })
         return <Redirect to={'/lead-view/' + this.props.leadData.record} />
+      }
+      if (this.props.formSubmitResponseStatus === 'failed' && (this.props.location.pathname.indexOf('view') === -1)) {
+        toast.error("Failed", {
+          autoClose: 2000,
+          draggable: false,
+        })
       }
       if (this.props.option === 'view') {
         return (

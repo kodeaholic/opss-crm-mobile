@@ -33,8 +33,8 @@ class Header extends Component {
   }
 
   routeChange = pathBack => {
-    // if (pathBack) this.props.history.push('/' + pathBack)
-    this.props.history.goBack()
+    if (pathBack) this.props.history.push('/' + pathBack)
+    // this.props.history.goBack()
   }
 
   renderIconLeft = () => {

@@ -23,7 +23,7 @@ const initialState = {
   option: undefined, /* view, create, or update */
   loading: false,
   data: {},
-  formSubmitResponseStatus: false
+  formSubmitResponseStatus: undefined
 }
 
 /* Reducer */
@@ -33,10 +33,11 @@ export default (state = initialState, action) => {
       let option = _.get(action, 'payload.option') || undefined
       state['loading'] = true
       state['option'] = option
+      state['formSubmitResponseStatus'] = undefined
       return state
     case types.GET_LEAD_SUCCESS:
       state['loading'] = false
-      state['formSubmitResponseStatus'] = false
+      state['formSubmitResponseStatus'] = undefined
       let data = {}
       let result = _.get(action, 'payload')
       data.lastname = result.lastname
@@ -57,25 +58,25 @@ export default (state = initialState, action) => {
       return state
     case types.SEND_REQUEST_SAVE_RECORD:
       state['loading'] = true
-      state['formSubmitResponseStatus'] = false
+      state['formSubmitResponseStatus'] = undefined
       return state
     case types.SAVE_RECORD_SUCCESS:
       state['loading'] = false
       let newState = _.get(action, 'payload')
       newState = { ...state['data'], ...newState}
-      state['formSubmitResponseStatus'] = true
+      state['formSubmitResponseStatus'] = 'success'
       state['data'] = newState
       return state
     case types.SAVE_RECORD_FAILED:
-      state['loading'] = true
-      state['formSubmitResponseStatus'] = false
+      state['loading'] = false
+      state['formSubmitResponseStatus'] = 'failed'
       return state
     case types.SHOW_FORM_ADD_LEAD:
       state = initialState
       state['option'] = _.get(action, 'payload.option')
       state['data'] = {}
       state['loading'] = false
-      state['formSubmitResponseStatus'] = false
+      state['formSubmitResponseStatus'] = undefined
       return state
     default:
       return state
