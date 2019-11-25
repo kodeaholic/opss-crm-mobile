@@ -76,8 +76,10 @@ class LeadComponent extends Component {
     if (currentUser) session = currentUser.session
     if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
-      userLoginData = JSON.parse(userLoginData).result.login
-      session = userLoginData.session
+      if(userLoginData) {
+        userLoginData = JSON.parse(userLoginData).result.login
+        session = userLoginData.session
+      }
     }
     this.setState({session: session})
     let record = this.state.recordId
