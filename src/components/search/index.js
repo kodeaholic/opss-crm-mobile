@@ -139,7 +139,7 @@ class Lead extends Component {
           className="link-on-lead-list"
           key={key}
           to={to_url}>
-          {currentSectionTitle !== setype ? (<div className="wrapper-list-lead-item section-title">{setype}</div>) : ''}
+          {currentSectionTitle !== setype ? (<div className="wrapper-list-lead-item section-title">{setype} ({item._count})</div>) : ''}
           <div className="wrapper-list-lead-item">
             <div className="wrapper-item-row">
               <label className="label-item-list lead-item-name">{label}</label>
@@ -209,13 +209,14 @@ class Lead extends Component {
           loader={this.renderLoading()}
           scrollableTarget="scrollableDiv"
           refreshFunction={this.refreshData}
-          pullDownToRefresh
+          /*pullDownToRefresh
           pullDownToRefreshContent={
             this.renderLoading()
-          }
-          releaseToRefreshContent={
+          }*/
+          /*releaseToRefreshContent={
             this.renderLoading()
-          }>
+          }*/
+        >
           {data
             ? _.map(data, (item, key) => {
               return this.renderItemList(item, key)
