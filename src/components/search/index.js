@@ -126,11 +126,13 @@ class Lead extends Component {
     item = item._source
     if (item) {
       const {label, s_website, crmid, status, createdtime, sales_user, asssignto, setype} = item
+      let setypeLabel = setype
       let to_url = '/lead-view/10x' + crmid;
       if(setype === 'Contacts') {
         to_url = '/contact-view/12x' + crmid;
       } else if(setype === 'Potentials') {
         to_url = '/opportunity-view/13x' + crmid;
+        setypeLabel = 'Opportunities'
       }
       let currentSectionTitle = this.state.sectionTitle
       this.state.sectionTitle = setype
@@ -139,7 +141,7 @@ class Lead extends Component {
           className="link-on-lead-list"
           key={key}
           to={to_url}>
-          {currentSectionTitle !== setype ? (<div className="wrapper-list-lead-item section-title">{setype} ({item._count})</div>) : ''}
+          {currentSectionTitle !== setype ? (<div className="wrapper-list-lead-item section-title">{setypeLabel} ({item._count})</div>) : ''}
           <div className="wrapper-list-lead-item">
             <div className="wrapper-item-row">
               <label className="label-item-list lead-item-name">{label}</label>
