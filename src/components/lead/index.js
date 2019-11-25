@@ -24,6 +24,7 @@ import {
 } from '../../modules/sessionDuck'
 import { getUserLoggedIn } from '../../modules/loginDuck'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import AsyncSelect from 'react-select/async/dist/react-select.esm'
 // import InfiniteScroll from 'react-infinite-scroller';
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
@@ -80,12 +81,17 @@ class Lead extends Component {
           <i
             className="fa fa-address-book-o filter-header-item-padding icon-filter-lead"
             aria-hidden="true"></i>
-          <label className="label-filter-option filter-header-item-padding">
-            Hen lien he sau
-          </label>
-          <i
-            className="fa fa-caret-down filter-header-item-padding"
-            aria-hidden="true"></i>
+          <div className="wrapper-filter-status">
+            <AsyncSelect
+              cacheOptions
+              defaultOptions
+              defaultValue={{label: 'Tất cả', value: 'All'}}
+              // loadOptions={this.fetchLeadStatus}
+              placeholder="Tình trạng"
+              // onChange={this.onSelectChange.bind(this, 'leadstatus')}
+              isSearchable={false}
+            />
+          </div>
         </div>
         <div className="filter-lead-result">
           <Button label="+ Thêm mới" path="/lead-create" />
