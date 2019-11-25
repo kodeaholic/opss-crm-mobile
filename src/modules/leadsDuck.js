@@ -14,7 +14,10 @@ export const getLeadsLoading = state => _.get(state, 'leads.isLoading') || false
 export const getLeadsPageIndex = state => _.get(state, 'leads.pageIndex') || 0
 export const getLeadsHasMoreData = state =>
   _.get(state, 'leads.hasMoreData') || false
-
+export const getFilterStatus = state => _.get(state, 'leads.filterStatus') || {
+  label: 'Tất cả',
+  value: 'All'
+}
 // Reducer
 const initialState = {
   listLeads: [],
@@ -22,13 +25,19 @@ const initialState = {
   isLoading: false,
   hasMoreData: false,
   detailsLead: {},
-  isLoadingDetail: false
+  isLoadingDetail: false,
+  filterStatus: {
+    label: 'Tất cả',
+    value: 'All'
+  }
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case types.REQUEST_GET_LIST_LEAD:
       state['isLoading'] = true
+      let filterStatus = _.get(action, 'payload.filterStatus')
+      if(filterStatus) state['filterStatus'] = filterStatus
       return state
     case types.SUCCESS_GET_LIST_LEAD: {
       state['isLoading'] = false
@@ -68,11 +77,17 @@ export const getListLead = payload => {
     dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
     const bodyFormData = new FormData()
 
-    const { session, pageIndex, refresh } = payload
+    const { session, pageIndex, refresh, filterStatus } = payload
     bodyFormData.append('_operation', 'listModuleRecords')
     bodyFormData.append('_session', session)
     bodyFormData.append('module', 'Leads')
     if (pageIndex) bodyFormData.append('page', pageIndex)
+    if (filterStatus) {
+      let option = {
+        leadstatus: filterStatus.value
+      }
+      bodyFormData.append("option", JSON.stringify(option))
+    }
 
     const request = axios({
       method: 'POST',

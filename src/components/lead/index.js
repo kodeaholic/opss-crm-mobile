@@ -18,6 +18,7 @@ import {
   getLeadsLoading,
   getLeadsPageIndex,
   getLeadsHasMoreData,
+  getFilterStatus
 } from '../../modules/leadsDuck'
 import {
   getSessionStatus
@@ -32,7 +33,8 @@ const mapStateToProps = state => ({
   pageIndex: getLeadsPageIndex(state),
   isLoading: getLeadsLoading(state),
   hasMoreData: getLeadsHasMoreData(state),
-  expired: getSessionStatus(state)
+  expired: getSessionStatus(state),
+  filterStatus: getFilterStatus(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -48,20 +50,26 @@ class Lead extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      filterStatus: {
-        label: 'Tất cả',
-        value: 'All'
-      }
     }
     this.fetchLeadStatus = this.fetchLeadStatus.bind(this)
     this.onFilterChange = this.onFilterChange.bind(this)
   }
   onFilterChange(value) {
-    console.log(value)
-    this.setState({filterStatus: value});
+    let filterStatus = value
+    let refresh = true
+    let session = this.props.userLoggedIn.session
+    this.props.actions.getListLead({ session, refresh, filterStatus })
   }
   fetchLeadStatus = (inputValue) => {
     let session = this.props.userLoggedIn.session
+    if(!session) {
+      let userLoginData = localStorage.getItem('userLoggedInKV')
+      if(userLoginData) {
+        userLoginData = JSON.parse(userLoginData).result.login
+        session = userLoginData.session
+      }
+    }
+
     const bodyFormData = new FormData()
     bodyFormData.append('_operation', 'fetchDataList')
     bodyFormData.append('_session', session)
@@ -104,7 +112,8 @@ class Lead extends Component {
       }
     }
     let refresh = true
-    this.props.actions.getListLead({ session, refresh })
+    let filterStatus = this.props.filterStatus
+    this.props.actions.getListLead({ session, refresh, filterStatus })
 
     /* Prevent browser's default pull to refresh behavior*/
     document.body.style.overscrollBehavior= 'contain'
@@ -125,7 +134,7 @@ class Lead extends Component {
             <AsyncSelect
               cacheOptions
               defaultOptions
-              defaultValue={this.state.filterStatus}
+              defaultValue={this.props.filterStatus}
               loadOptions={this.fetchLeadStatus}
               placeholder="Tình trạng"
               onChange={this.onFilterChange}
@@ -176,7 +185,8 @@ class Lead extends Component {
       session = userLoginData.session
     }
     let refresh = true
-    this.props.actions.getListLead({ session, refresh })
+    let filterStatus = this.props.filterStatus
+    this.props.actions.getListLead({ session, refresh, filterStatus })
   }
 
   fetchMoreData = () => {
@@ -187,7 +197,8 @@ class Lead extends Component {
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
-    this.props.actions.getListLead({ session, pageIndex })
+    let filterStatus = this.props.filterStatus
+    this.props.actions.getListLead({ session, pageIndex, filterStatus })
   }
 
   renderLoading = () => {
@@ -205,19 +216,6 @@ class Lead extends Component {
         className="wrapper-list-lead"
         id="scrollableDiv"
         style={{ height: 'calc(100vh - 105px)', overflow: 'auto', position: 'absolute', top: '100px', width: '100%'}}>
-        {/*<InfiniteScroll*/}
-        {/*  pageStart={0}*/}
-        {/*  hasMore={hasMoreData}*/}
-        {/*  loadMore={this.fetchMoreData}*/}
-        {/*  loader={this.renderLoading()}*/}
-        {/*  useWindow={false}*/}
-        {/*>*/}
-        {/*  {data*/}
-        {/*    ? _.map(data, (item, key) => {*/}
-        {/*      return this.renderItemList(item, key)*/}
-        {/*    })*/}
-        {/*    : null}*/}
-        {/*</InfiniteScroll>*/}
         <InfiniteScroll
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
