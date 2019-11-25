@@ -66,26 +66,32 @@ class LeadComponent extends Component {
       },
       viewOrCreateOrUpdate: option, // default,
       recordId: array.length > 2 ? array[2] : undefined,
-      session: undefined
+      session: undefined,
+      isAdmin: false
     }
   }
 
   componentWillMount() {
     const {currentUser} = this.props
     let session = undefined
-    if (currentUser) session = currentUser.session
+    let isAdmin = false
+    if (currentUser) {
+      session = currentUser.session
+      isAdmin = currentUser.is_admin
+    }
     if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
       if(userLoginData) {
         userLoginData = JSON.parse(userLoginData).result.login
         session = userLoginData.session
+        isAdmin = userLoginData.is_admin
       }
     }
-    this.setState({session: session})
+    this.setState({session: session, isAdmin: isAdmin})
     let record = this.state.recordId
     console.log("WillMount: current session - " + session)
     console.log("WillMount: current option - " + this.state.viewOrCreateOrUpdate)
-    console.log("WillMount: record: " + record)
+    console.log("WillMount: record - " + record)
     let option = this.state.viewOrCreateOrUpdate
     switch (this.state.viewOrCreateOrUpdate) {
       case 'view':
@@ -131,8 +137,9 @@ class LeadComponent extends Component {
         )
       }
       else if (this.props.option === 'edit' || this.props.option === 'create') {
+        console.log("isAdmin - " + this.state.isAdmin)
         return (
-          <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option} submit={this.props.actions.requestSaveLead}/>
+          <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option} submit={this.props.actions.requestSaveLead} allowedToEditPhone={this.state.isAdmin}/>
         )
       }
     }
