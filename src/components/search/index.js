@@ -48,7 +48,9 @@ const mapDispatchToProps = dispatch => ({
 class Lead extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      sectionTitle: ''
+    }
   }
 
   componentWillMount() {
@@ -130,11 +132,14 @@ class Lead extends Component {
       } else if(setype === 'Potentials') {
         to_url = '/opportunity-view/13x' + crmid;
       }
+      let currentSectionTitle = this.state.sectionTitle
+      this.state.sectionTitle = setype
       return (
         <Link
           className="link-on-lead-list"
           key={key}
           to={to_url}>
+          {currentSectionTitle !== setype ? (<div className="wrapper-list-lead-item section-title">{setype} ({item._count})</div>) : ''}
           <div className="wrapper-list-lead-item">
             <div className="wrapper-item-row">
               <label className="label-item-list lead-item-name">{label}</label>
@@ -204,13 +209,14 @@ class Lead extends Component {
           loader={this.renderLoading()}
           scrollableTarget="scrollableDiv"
           refreshFunction={this.refreshData}
-          pullDownToRefresh
+          /*pullDownToRefresh
           pullDownToRefreshContent={
             this.renderLoading()
-          }
-          releaseToRefreshContent={
+          }*/
+          /*releaseToRefreshContent={
             this.renderLoading()
-          }>
+          }*/
+        >
           {data
             ? _.map(data, (item, key) => {
               return this.renderItemList(item, key)
@@ -227,8 +233,7 @@ class Lead extends Component {
       return (
         <div className="wrapper-lead">
           <div className="loading-data">
-            <i className="fa fa-spinner fa-pulse fa-3x fa-fw"
-               style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+            Search not found
           </div>
         </div>
       )

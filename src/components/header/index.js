@@ -16,6 +16,12 @@ const router = {
   },
   'lead-view': {
     back: 'lead'
+  },
+  'contact-view': {
+    back: 'contact'
+  },
+  'opportunity-view': {
+    back: 'opprtunity'
   }
 }
 
@@ -23,11 +29,12 @@ class Header extends Component {
   constructor(props) {
     super(props)
     this.state = {}
-    this._handleSearchEnter = this._handleSearchEnter.bind(this)
+    // this._handleSearchEnter = this._handleSearchEnter.bind(this)
   }
 
   routeChange = pathBack => {
-    if (pathBack) this.props.history.push('/' + pathBack)
+    // if (pathBack) this.props.history.push('/' + pathBack)
+    this.props.history.goBack()
   }
 
   renderIconLeft = () => {

@@ -70,6 +70,10 @@
   justify-content: space-around;
 }
 
+.section-title {
+    background-color: white;
+}
+
 .label-item-list {
   font-size: 14px;
   font-weight: 400;
