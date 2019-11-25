@@ -233,8 +233,7 @@ class Lead extends Component {
       return (
         <div className="wrapper-lead">
           <div className="loading-data">
-            <i className="fa fa-spinner fa-pulse fa-3x fa-fw"
-               style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+            Search not found
           </div>
         </div>
       )
