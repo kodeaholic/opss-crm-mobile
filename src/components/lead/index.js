@@ -58,6 +58,13 @@ class Lead extends Component {
     let filterStatus = value
     let refresh = true
     let session = this.props.userLoggedIn.session
+    if(!session) {
+      let userLoginData = localStorage.getItem('userLoggedInKV')
+      if(userLoginData) {
+        userLoginData = JSON.parse(userLoginData).result.login
+        session = userLoginData.session
+      }
+    }
     this.props.actions.getListLead({ session, refresh, filterStatus })
   }
   fetchLeadStatus = (inputValue) => {
@@ -202,6 +209,14 @@ class Lead extends Component {
   }
 
   renderLoading = () => {
+    if (this.props.leads.length === 0) {
+      return (
+        <div className="wrapper-list-lead"
+             style={{ height: '100%', overflow: 'auto', position: 'absolute', top: '50%', width: '100%', textAlign: "center", backgroundColor: 'transparent'}}>
+          Not found
+        </div>
+      )
+    }
     return (
       <div className="loading-data">
         <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
@@ -242,7 +257,7 @@ class Lead extends Component {
 
   render() {
     const dataLeads = _.get(this.props, 'leads') || {}
-    if(dataLeads.length === 0 && !this.props.expired) {
+    if(this.props.isLoading && !this.props.expired) {
       return (
         <div className="wrapper-lead">
           <div className="loading-data">
@@ -266,7 +281,7 @@ class Lead extends Component {
       return (
         <div className="wrapper-lead">
           {this.renderFilter()}
-          {dataLeads ? this.renderList(dataLeads) : this.renderLoading()}
+          {dataLeads.length !== 0 ? this.renderList(dataLeads) : this.renderLoading()}
         </div>
       )
     }
