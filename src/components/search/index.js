@@ -191,7 +191,7 @@ class Lead extends Component {
   }
 
   renderList = data => {
-    const {hasMoreData} = this.props
+    // const {hasMoreData} = this.props
     return (
       <div
         className="wrapper-list-lead"
@@ -252,6 +252,7 @@ class Lead extends Component {
         <div className="wrapper-lead">
           {/*{this.renderFilter()}*/}
           {dataLeads ? this.renderList(dataLeads) : this.renderLoading()}
+          {this.state.sectionTitle = ''}
         </div>
       )
     }
