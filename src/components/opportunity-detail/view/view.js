@@ -110,15 +110,21 @@ class ContactView extends Component {
 
 
   render() {
-    return (
-      <div className="lead-view-container" style={{ height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}>
-        {this.renderCustomerInfo(this.props.data)}
-        {this.renderTabBelow()}
-        {this.state.activeTab !== 'DETAILS'
-          ? this.renderRelated({})
-          : this.renderDetails(this.props.data)}
-      </div>
-    )
+    if(_.isEmpty(this.props.data, true)) {
+      return (<div className="lead-view-container"
+                   style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}><div className="loading-data">Permission Denied</div></div>)
+    } else {
+      return (
+        <div className="lead-view-container"
+             style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}>
+          {this.renderCustomerInfo(this.props.data)}
+          {this.renderTabBelow()}
+          {this.state.activeTab !== 'DETAILS'
+            ? this.renderRelated({})
+            : this.renderDetails(this.props.data)}
+        </div>
+      )
+    }
   }
 }
 

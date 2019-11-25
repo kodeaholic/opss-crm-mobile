@@ -20,7 +20,7 @@ const router = {
   'contact-view': {
     back: 'contact'
   },
-  'opprtunity-view': {
+  'opportunity-view': {
     back: 'opprtunity'
   }
 }
