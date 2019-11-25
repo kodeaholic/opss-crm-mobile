@@ -73,6 +73,9 @@ export default (state = initialState, action) => {
     case types.SHOW_FORM_ADD_LEAD:
       state = initialState
       state['option'] = _.get(action, 'payload.option')
+      state['data'] = {}
+      state['loading'] = false
+      state['formSubmitResponseStatus'] = false
       return state
     default:
       return state
