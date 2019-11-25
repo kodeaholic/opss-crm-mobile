@@ -25,7 +25,7 @@ import {
 import { getUserLoggedIn } from '../../modules/loginDuck'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import AsyncSelect from 'react-select/async/dist/react-select.esm'
-// import InfiniteScroll from 'react-infinite-scroller';
+import axios from 'axios'
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
   leads: getLeadsData(state),
@@ -47,9 +47,49 @@ const mapDispatchToProps = dispatch => ({
 class Lead extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      filterStatus: {
+        label: 'Tất cả',
+        value: 'All'
+      }
+    }
+    this.fetchLeadStatus = this.fetchLeadStatus.bind(this)
+    this.onFilterChange = this.onFilterChange.bind(this)
   }
+  onFilterChange(value) {
+    console.log(value)
+    this.setState({filterStatus: value});
+  }
+  fetchLeadStatus = (inputValue) => {
+    let session = this.props.userLoggedIn.session
+    const bodyFormData = new FormData()
+    bodyFormData.append('_operation', 'fetchDataList')
+    bodyFormData.append('_session', session)
+    bodyFormData.append('source', 'leadstatus')
+    bodyFormData.append('search', inputValue)
 
+    const request = axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_URL_KVCRM,
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+
+    return request
+      .then(response => {
+        const { success, result } = response.data
+        if (success) {
+          result.unshift({label: 'Tất cả', value: 'All'})
+          return result
+        }
+        else {
+          return []
+        }
+      })
+      .catch(err => {
+        return []
+      })
+  }
   componentWillMount() {
     let { userLoggedIn } = this.props
     let { session } = userLoggedIn || {}
@@ -85,10 +125,10 @@ class Lead extends Component {
             <AsyncSelect
               cacheOptions
               defaultOptions
-              defaultValue={{label: 'Tất cả', value: 'All'}}
-              // loadOptions={this.fetchLeadStatus}
+              defaultValue={this.state.filterStatus}
+              loadOptions={this.fetchLeadStatus}
               placeholder="Tình trạng"
-              // onChange={this.onSelectChange.bind(this, 'leadstatus')}
+              onChange={this.onFilterChange}
               isSearchable={false}
             />
           </div>
