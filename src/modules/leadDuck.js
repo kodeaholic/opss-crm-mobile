@@ -22,7 +22,9 @@ export const getFormSubmitResponseStatus = state => _.get(state, 'lead.formSubmi
 const initialState = {
   option: undefined, /* view, create, or update */
   loading: false,
-  data: {},
+  data: {
+    defaultAssignedUser: {}
+  },
   formSubmitResponseStatus: undefined
 }
 
@@ -74,7 +76,7 @@ export default (state = initialState, action) => {
     case types.SHOW_FORM_ADD_LEAD:
       state = initialState
       state['option'] = _.get(action, 'payload.option')
-      state['data'] = {}
+      state['data'] = {defaultAssignedUser: _.get(action, 'payload.defaultAssignedUser')}
       state['loading'] = false
       state['formSubmitResponseStatus'] = undefined
       return state

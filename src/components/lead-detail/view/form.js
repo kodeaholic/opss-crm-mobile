@@ -121,6 +121,11 @@ class LeadForm extends Component {
   }
 
   renderForm = () => {
+    let defaultAssignedUser = this.props.data.assigned_user_id
+    if (!defaultAssignedUser) {
+      // option = 'create'
+      defaultAssignedUser = this.props.data.defaultAssignedUser
+    }
       return (
         <div className="form-create-or-update-field">
           <Field label="Họ tên khách hàng" isRequired name="lastname" val={this.props.data.lastname} changeHandler={this.handleChange}/>
@@ -136,7 +141,7 @@ class LeadForm extends Component {
               loadOptions={this.fetchLeadStatus}
               placeholder="Tình trạng"
               onChange={this.onSelectChange.bind(this, 'leadstatus')}
-              isSearchable={false}
+              isSearchable={true}
             />
           </div>
           <Field label="Số điện thoại" name="mobile" val={this.props.data.mobile} isRequired changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>
@@ -166,7 +171,7 @@ class LeadForm extends Component {
               loadOptions={this.fetchRegions}
               placeholder="Khu vực"
               onChange={this.onSelectChange.bind(this, 'cf_lead_khu_vuc')}
-              isSearchable={false}
+              isSearchable={true}
             />
           </div>
           <div className="wrapper-field">
@@ -190,7 +195,7 @@ class LeadForm extends Component {
             <AsyncSelect
               cacheOptions
               defaultOptions
-              defaultValue={this.props.data.assigned_user_id}
+              defaultValue={defaultAssignedUser}
               loadOptions={this.fetchUsers}
               placeholder="Người xử lý"
               onChange={this.onSelectChange.bind(this, 'assigned_user_id')}

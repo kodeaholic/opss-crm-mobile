@@ -75,9 +75,13 @@ class LeadComponent extends Component {
     const {currentUser} = this.props
     let session = undefined
     let isAdmin = false
+    let userId = undefined
+    let lastName = undefined
     if (currentUser) {
       session = currentUser.session
       isAdmin = currentUser.is_admin
+      userId = currentUser.userid
+      lastName = currentUser.lastname
     }
     if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
@@ -85,6 +89,8 @@ class LeadComponent extends Component {
         userLoginData = JSON.parse(userLoginData).result.login
         session = userLoginData.session
         isAdmin = userLoginData.is_admin
+        userId = userLoginData.userid
+        lastName = userLoginData.lastname
       }
     }
     this.setState({session: session, isAdmin: isAdmin})
@@ -98,7 +104,11 @@ class LeadComponent extends Component {
         this.props.actions.fetchLeadRecord({session, record, option})
         break;
       case 'create':
-        this.props.actions.showFormAddLead({session, option})
+        let defaultAssignedUser = {
+          label: lastName,
+          value: userId
+        }
+        this.props.actions.showFormAddLead({session, option, defaultAssignedUser})
         break;
       case 'edit':
         this.props.actions.fetchLeadRecord({session, record, option})

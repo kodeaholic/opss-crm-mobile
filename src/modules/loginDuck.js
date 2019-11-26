@@ -22,8 +22,8 @@ export const getUserLoggedIn = state => {
   }
   if (_.isEmpty(userLoginData)) return undefined
   else {
-    const { userid, session, is_admin } = userLoginData
-    return { userid, session,is_admin }
+    const { userid, session, is_admin, lastname } = userLoginData
+    return { userid, session,is_admin, lastname }
   }
 }
 export const getLoading = state => state.login.isLoading
