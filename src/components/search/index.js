@@ -115,17 +115,10 @@ class Lead extends Component {
     )
   }
 
-  renderSection = (name) => {
-    return (
-      <div>{name}
-      </div>
-    )
-  }
-
   renderItemList = (item, key) => {
     item = item._source
     if (item) {
-      const {label, s_website, crmid, status, createdtime, sales_user, asssignto, setype} = item
+      const {label, s_website, crmid, status, _createdtime, sales_user, asssignto, setype} = item
       let setypeLabel = setype
       let to_url = '/lead-view/10x' + crmid;
       if(setype === 'Contacts') {
@@ -152,7 +145,7 @@ class Lead extends Component {
               <label className="label-item-list">{asssignto}</label>
               <label className="label-item-list closedwon-sale">{sales_user}</label>
               <label className="lead-item-status label-item-list">
-                {createdtime}
+                {_createdtime}
               </label>
             </div>
           </div>
@@ -230,16 +223,8 @@ class Lead extends Component {
   }
 
   render() {
-    const dataLeads = _.get(this.props, 'listSR') || {}
-    if (dataLeads.length === 0 && !this.props.expired) {
-      return (
-        <div className="wrapper-lead">
-          <div className="loading-data">
-            Search not found
-          </div>
-        </div>
-      )
-    } else if (this.props.expired) {
+    const dataLeads = _.get(this.props, 'listSR') || []
+    if (this.props.expired) {
       document.body.style.overscrollBehavior = 'contain'
       localStorage.removeItem('userLoggedInKV')
       return (
@@ -250,13 +235,33 @@ class Lead extends Component {
         </div>
       )
     } else {
-      return (
-        <div className="wrapper-lead">
-          {/*{this.renderFilter()}*/}
-          {dataLeads ? this.renderList(dataLeads) : this.renderLoading()}
-          {this.state.sectionTitle = ''}
-        </div>
-      )
+      if (this.props.isLoading) {
+        return (
+          <div className="wrapper-lead">
+            <div className="loading-data">
+              <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+            </div>
+          </div>
+        )
+      } else {
+        if (dataLeads.length === 0) {
+          return (
+            <div className="wrapper-lead">
+              <div className="loading-data">
+                Search not found
+              </div>
+            </div>
+          )
+        } else {
+          return (
+            <div className="wrapper-lead">
+              {/*{this.renderFilter()}*/}
+              {dataLeads ? this.renderList(dataLeads) : this.renderLoading()}
+              {this.state.sectionTitle = ''}
+            </div>
+          )
+        }
+      }
     }
   }
 }
