@@ -217,7 +217,7 @@ class Lead extends Component {
         </div>
       )
     }
-    return (
+    else return (
       <div className="loading-data">
         <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
       </div>
@@ -257,7 +257,7 @@ class Lead extends Component {
 
   render() {
     const dataLeads = _.get(this.props, 'leads') || {}
-    if(this.props.isLoading && !this.props.expired) {
+    if(dataLeads.length === 0 && !this.props.expired && this.props.isLoading) {
       return (
         <div className="wrapper-lead">
           <div className="loading-data">
@@ -281,7 +281,7 @@ class Lead extends Component {
       return (
         <div className="wrapper-lead">
           {this.renderFilter()}
-          {dataLeads.length !== 0 ? this.renderList(dataLeads) : this.renderLoading()}
+          {dataLeads ? this.renderList(dataLeads) : this.renderLoading()}
         </div>
       )
     }
