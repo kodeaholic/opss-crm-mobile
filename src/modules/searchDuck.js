@@ -31,11 +31,9 @@ export default (state = initialState, action) => {
       return state
     case types.SUCCESS_GET_SEARCH_RESULT: {
       state['isLoading'] = false
-
       const lstLeads = _.get(state, 'listSearchResult') || []
       const newLeads = _.get(action, 'payload.result.records') || []
       const refresh = _.get(action, 'payload.refresh') || undefined
-      console.log("Refresh = " + refresh)
       let list = []
       if (refresh === undefined) {
         list = _.concat(list, lstLeads)
