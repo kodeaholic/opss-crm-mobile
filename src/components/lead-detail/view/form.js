@@ -30,6 +30,9 @@ class LeadForm extends Component {
     e.preventDefault()
     let session = this.props.session
     let formData = this.state.formData
+    if(this.props.option === 'create') {
+      if (!this.state.formData.assigned_user_id) formData.assigned_user_id = this.props.data.defaultAssignedUser
+    }
     this.props.submit({session, data: formData})
   }
   handleChange(e) {

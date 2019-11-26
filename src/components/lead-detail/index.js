@@ -106,7 +106,7 @@ class LeadComponent extends Component {
       case 'create':
         let defaultAssignedUser = {
           label: lastName,
-          value: userId
+          value: "19x" + userId
         }
         this.props.actions.showFormAddLead({session, option, defaultAssignedUser})
         break;
