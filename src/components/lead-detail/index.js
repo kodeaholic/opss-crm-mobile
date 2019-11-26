@@ -144,8 +144,13 @@ class LeadComponent extends Component {
       }
       else if (this.props.option === 'edit' || this.props.option === 'create') {
         console.log("isAdmin - " + this.state.isAdmin)
+        let allowed = false
+        if(!this.state.isAdmin && this.props.location.pathname.indexOf('create') !== -1) allowed = true
+        else if (this.state.isAdmin) {
+          allowed = true
+        }
         return (
-          <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option} submit={this.props.actions.requestSaveLead} allowedToEditPhone={this.state.isAdmin}/>
+          <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option} submit={this.props.actions.requestSaveLead} allowedToEditPhone={allowed}/>
         )
       }
     }
