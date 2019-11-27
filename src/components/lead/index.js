@@ -18,7 +18,8 @@ import {
   getLeadsLoading,
   getLeadsPageIndex,
   getLeadsHasMoreData,
-  getFilterStatus
+  getFilterStatus,
+  fetchListLeadElastic
 } from '../../modules/leadsDuck'
 import {
   getSessionStatus
@@ -41,6 +42,7 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       getListLead,
+      fetchListLeadElastic
     },
     dispatch
   )
@@ -65,7 +67,9 @@ class Lead extends Component {
         session = userLoginData.session
       }
     }
-    this.props.actions.getListLead({ session, refresh, filterStatus })
+    // this.props.actions.getListLead({ session, refresh, filterStatus })
+    this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
+
   }
   fetchLeadStatus = (inputValue) => {
     let session = this.props.userLoggedIn.session
@@ -120,7 +124,8 @@ class Lead extends Component {
     }
     let refresh = true
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListLead({ session, refresh, filterStatus })
+    this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
+    // this.props.actions.getListLead({ session, refresh, filterStatus })
 
     /* Prevent browser's default pull to refresh behavior*/
     document.body.style.overscrollBehavior= 'contain'
@@ -184,6 +189,7 @@ class Lead extends Component {
   }
 
   refreshData = () => {
+    console.log("Refresh")
     const { userLoggedIn } = this.props
     let { session } = userLoggedIn
     if(!session) {
@@ -193,10 +199,12 @@ class Lead extends Component {
     }
     let refresh = true
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListLead({ session, refresh, filterStatus })
+    // this.props.actions.getListLead({ session, refresh, filterStatus })
+    this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
   }
 
   fetchMoreData = () => {
+    console.log("Loadmore")
     const { pageIndex, userLoggedIn } = this.props
     let { session } = userLoggedIn
     if(!session) {
@@ -205,7 +213,8 @@ class Lead extends Component {
       session = userLoginData.session
     }
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListLead({ session, pageIndex, filterStatus })
+    // this.props.actions.getListLead({ session, pageIndex, filterStatus })
+    this.props.actions.fetchListLeadElastic({ session, pageIndex, filterStatus })
   }
 
   renderLoading = () => {

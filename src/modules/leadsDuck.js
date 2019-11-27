@@ -6,6 +6,9 @@ export const types = {
   REQUEST_GET_LIST_LEAD: 'LEAD/REQUEST_GET_LIST_LEAD',
   SUCCESS_GET_LIST_LEAD: 'LEAD/SUCCESS_GET_LIST_LEAD',
   FAILURE_GET_LIST_LEAD: 'LEAD/FAILURE_GET_LIST_LEAD',
+  REQUEST_GET_LIST_LEAD_ELASTIC: 'LEAD/REQUEST_GET_LIST_LEAD_ELASTIC',
+  SUCCESS_GET_LIST_LEAD_ELASTIC: 'LEAD/SUCCESS_GET_LIST_LEAD_ELASTIC',
+  FAILURE_GET_LIST_LEAD_ELASTIC: 'LEAD/FAILURE_GET_LIST_LEAD_ELASTIC',
 }
 
 // Selector
@@ -117,6 +120,72 @@ export const getListLead = payload => {
   }
 }
 
+/* Elastic */
+export const fetchListLeadElastic = payload => {
+  return function action(dispatch) {
+    dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
+    const bodyFormData = new FormData()
+
+    const { session, pageIndex, refresh, filterStatus } = payload
+    bodyFormData.append('_operation', 'fetchLeadsElastic')
+    bodyFormData.append('_session', session)
+    bodyFormData.append('module', 'Leads')
+    if (pageIndex) {
+      let actualIndex = pageIndex - 1
+      let size = 20;
+      bodyFormData.append('from', actualIndex * size)
+    }
+    else {
+      if (refresh) bodyFormData.append('from', '0')
+    }
+    if (filterStatus) {
+      bodyFormData.append('status', filterStatus.value)
+    }
+
+    const request = axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_URL_KVCRM,
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+
+    return request
+      .then(response => {
+        //handle success
+        const { result, success } = response.data
+        let records = result.result.records
+        let total = result.total
+        let array = []
+        if (success) {
+          if (total > 0) {
+            // console.log(records)
+            array = records.map(item => ({
+              "assigned_user_id": {"value": '19x' + item._source.smownerid, "label": item._source.asssignto},
+              "createdtime": item._source.createdtime,
+              "id": '10x' + item._source.crmid,
+              "lastname": item._source.label,
+              "leadstatus": item._source.status,
+              "modifiedtime": item._source.modifiedtime,
+              "website": item._source.s_website,
+              "mobile": item._source.s_office_phone
+            }))
+            // console.log(array)
+          }
+          return dispatch(getListLeadSuccess({result: {records: array, total: total}, refresh}))
+        }
+        else {
+          const { error } = response.data
+          if (error.code === 1501) {
+            return dispatch(expireSession())
+          }
+        }
+        return dispatch(getListLeadFailure())
+      })
+      .catch(err => {
+        return dispatch(getListLeadFailure(err))
+      })
+  }
+}
 /* action definition */
 export const getListLeadSuccess = payload => ({
   type: types.SUCCESS_GET_LIST_LEAD,
