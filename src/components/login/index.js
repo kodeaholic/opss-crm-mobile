@@ -179,7 +179,7 @@ class LoginPage extends React.Component {
     const { username, password, submitted } = this.state
     if (!_.isEmpty(userLogged)) {
       this.props.actions.activateSession({undefined})
-      return <Redirect to={'/'} />
+      return <Redirect to={'/lead'} />
     }
     return (
       <div className="col-md-6 col-md-offset-3">
