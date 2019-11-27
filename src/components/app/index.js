@@ -31,7 +31,7 @@ class App extends React.Component {
         <ScrollToTop/>
         <ToastContainer autoClose={2000} position="top-center" hideProgressBar/>
         <Route exact path="/logout" component={LogoutComponent}/>
-        <Route exact path="/" component={Dashboard}/>
+        <Route exact path="/" component={Lead}/>
         <Route path="/login" exact component={Login}/>
         <Route exact path="/home" component={Home}/>
         <Route exact path="/lead" component={Lead}/>
