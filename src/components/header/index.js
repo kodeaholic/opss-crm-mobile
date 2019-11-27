@@ -66,16 +66,21 @@ class Header extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="wrapper-header">
         {this.renderIconLeft()}
         <div className="wrapper-input">
-          <i className="fa fa-search" aria-hidden="true"></i>
-          <input type="text" className="input-search-header" style={{fontSize: 'inherit'}}
-                 placeholder="Seach..."
-                 defaultValue={this.props.match.params.keyword}
-                 onKeyPress={this._handleSearchEnter}
-          />
+          {this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 ? (''):
+            (
+              <div className="wrapper-input">
+              <i className="fa fa-search" aria-hidden="true"></i>
+              <input type="text" className="input-search-header" style={{fontSize: 'inherit'}}
+            placeholder="Seach..."
+            defaultValue={this.props.match.params.keyword}
+            onKeyPress={this._handleSearchEnter}
+              /></div>
+          )}
         </div>
         <div className="wrapper-icon">
           <i
