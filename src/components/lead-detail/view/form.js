@@ -150,9 +150,10 @@ class LeadForm extends Component {
           {this.props.allowedToEditPhone ? (
             <Field label="Số điện thoại" name="mobile" val={this.props.data.mobile} isRequired changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>
           ) : ('')}
-          {this.props.allowedToEditPhone ? (
-            <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>
-          ) : ('')}
+          {/*{this.props.allowedToEditPhone ? (*/}
+          {/*  <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>*/}
+          {/*) : ('')}*/}
+          <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} />
           <div className="wrapper-field">
             <label className="label-field">
               Ngành hàng<span className="require-field"> (*)</span>
