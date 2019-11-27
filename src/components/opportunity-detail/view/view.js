@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import './view.css'
 import _ from 'lodash'
 
-const tabs = ['DETAILS', 'RELATED']
+const tabs = ['DETAILS'/*, 'RELATED'*/]
 
 class ContactView extends Component {
   constructor(props) {
