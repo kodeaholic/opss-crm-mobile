@@ -179,7 +179,7 @@ class Lead extends Component {
             <div className="wrapper-item-row">
               <label className="label-item-list">{label}</label>
               <label className="lead-item-status label-item-list">
-                {modifiedtime}
+                {createdtime}
               </label>
             </div>
           </div>
