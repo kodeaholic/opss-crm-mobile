@@ -35,6 +35,9 @@ class Header extends Component {
   routeChange = pathBack => {
     if (pathBack) this.props.history.push('/' + pathBack)
     // this.props.history.goBack()
+    else {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
   }
 
   renderIconLeft = () => {
@@ -55,6 +58,11 @@ class Header extends Component {
             color: '#ffffff'
           }}
         />
+        <div id="myDropdown" className="dropdown-content">
+          <a href="/lead"><i className="fa fa-user" aria-hidden="true"></i> &nbsp;Profile</a>
+          <a href="/lead"><i className="fa fa-cog" aria-hidden="true"></i>&nbsp;Settings</a>
+          <a href="/logout"><i className="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Logout</a>
+        </div>
       </div>
     )
   }
@@ -66,9 +74,8 @@ class Header extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
-      <div className="wrapper-header">
+      <div className="wrapper-header" style={{zIndex: 2}}>
         {this.renderIconLeft()}
         <div className="wrapper-input">
           {this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 ? (''):
