@@ -15,6 +15,7 @@ import {ToastContainer} from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 
 import Login from '../login'
+import LogoutComponent from '../logout'
 import ScrollToTop from './ScrollToTop'
 
 class App extends React.Component {
@@ -29,6 +30,7 @@ class App extends React.Component {
       <div className="app-wrapper">
         <ScrollToTop/>
         <ToastContainer autoClose={2000} position="top-center" hideProgressBar/>
+        <Route exact path="/logout" component={LogoutComponent}/>
         <Route exact path="/" component={Dashboard}/>
         <Route path="/login" exact component={Login}/>
         <Route exact path="/home" component={Home}/>
