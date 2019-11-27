@@ -17,6 +17,7 @@ export const getLoadingStatus = state => _.get(state, 'lead.loading') || false
 export const getCurrentOption = state => _.get(state, 'lead.option') || undefined
 export const getLeadData = state => _.get(state, 'lead.data') || {}
 export const getFormSubmitResponseStatus = state => _.get(state, 'lead.formSubmitResponseStatus')
+export const getViewPermission = state => _.get(state, 'lead.view_permission')
 
 /* Initial state */
 const initialState = {
@@ -25,7 +26,8 @@ const initialState = {
   data: {
     defaultAssignedUser: {}
   },
-  formSubmitResponseStatus: undefined
+  formSubmitResponseStatus: undefined,
+  view_permission: undefined
 }
 
 /* Reducer */
@@ -36,10 +38,12 @@ export default (state = initialState, action) => {
       state['loading'] = true
       state['option'] = option
       state['formSubmitResponseStatus'] = undefined
+      state['view_permission'] = undefined
       return state
     case types.GET_LEAD_SUCCESS:
       state['loading'] = false
       state['formSubmitResponseStatus'] = undefined
+      state['view_permission'] = undefined
       let data = {}
       let result = _.get(action, 'payload')
       data.lastname = result.lastname
@@ -58,12 +62,15 @@ export default (state = initialState, action) => {
       return state
     case types.GET_LEAD_FAILED:
       state['loading'] = false
+      state['view_permission'] = _.get(action, 'payload')
       return state
     case types.SEND_REQUEST_SAVE_RECORD:
       state['loading'] = true
       state['formSubmitResponseStatus'] = undefined
+      state['view_permission'] = undefined
       return state
     case types.SAVE_RECORD_SUCCESS:
+      state['view_permission'] = undefined
       state['loading'] = false
       let newState = _.get(action, 'payload')
       newState = { ...state['data'], ...newState}
@@ -71,10 +78,12 @@ export default (state = initialState, action) => {
       state['data'] = newState
       return state
     case types.SAVE_RECORD_FAILED:
+      state['view_permission'] = undefined
       state['loading'] = false
       state['formSubmitResponseStatus'] = 'failed'
       return state
     case types.SHOW_FORM_ADD_LEAD:
+      state['view_permission'] = undefined
       state = initialState
       state['option'] = _.get(action, 'payload.option')
       state['data'] = {defaultAssignedUser: _.get(action, 'payload.defaultAssignedUser')}

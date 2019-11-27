@@ -15,7 +15,7 @@ import withLayout from '../withLayout'
 
 /* predefined actions and selectors for mapStateToProps and mapDispatchToProps */
 import { getUserLoggedIn } from '../../modules/loginDuck'
-import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus, showFormAddLead } from '../../modules/leadDuck'
+import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus, showFormAddLead, getViewPermission } from '../../modules/leadDuck'
 import { getSessionStatus } from '../../modules/sessionDuck'
 
 /* import child views */
@@ -27,7 +27,8 @@ const mapStateToProps = (state, ownProps) => ({
   leadData: getLeadData(state),
   option: getCurrentOption(state),
   loading: getLoadingStatus(state),
-  formSubmitResponseStatus: getFormSubmitResponseStatus(state)
+  formSubmitResponseStatus: getFormSubmitResponseStatus(state),
+  viewPermission: getViewPermission(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -148,6 +149,9 @@ class LeadComponent extends Component {
         })
       }
       if (this.props.option === 'view') {
+        if (this.props.viewPermission !== undefined && this.props.viewPermission.code === 'ACCESS_DENIED') {
+          return (<div className="lead-view-container" style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}><div className="loading-data">Permission Denied</div></div>)
+        }
         return (
           <LeadView data={this.props.leadData}/>
         )
