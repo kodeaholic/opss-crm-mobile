@@ -172,8 +172,8 @@ class Lead extends Component {
           to={'/lead-view/' + item.id}>
           <div className="wrapper-list-lead-item">
             <div className="wrapper-item-row">
-              <label className="label-item-list lead-item-name">{mobile}</label>
-              <label className="label-item-list">{website}</label>
+              {/*<label className="label-item-list lead-item-name">{mobile}</label>*/}
+              <label className="label-item-list lead-item-name">{website}</label>
               <label className="label-item-list">{leadstatus}</label>
             </div>
             <div className="wrapper-item-row">
