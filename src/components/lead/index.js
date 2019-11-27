@@ -72,7 +72,7 @@ class Lead extends Component {
 
   }
   fetchLeadStatus = (inputValue) => {
-    let session = this.props.userLoggedIn.session
+    let session = this.props.userLoggedIn ? this.props.userLoggedIn.session : undefined
     if(!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
       if(userLoginData) {
