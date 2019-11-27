@@ -147,8 +147,12 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>
-          <Field label="Số điện thoại" name="mobile" val={this.props.data.mobile} isRequired changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>
-          <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>
+          {this.props.allowedToEditPhone ? (
+            <Field label="Số điện thoại" name="mobile" val={this.props.data.mobile} isRequired changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>
+          ) : ('')}
+          {this.props.allowedToEditPhone ? (
+            <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>
+          ) : ('')}
           <div className="wrapper-field">
             <label className="label-field">
               Ngành hàng<span className="require-field"> (*)</span>
@@ -177,7 +181,7 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>
-          <div className="wrapper-field">
+          {this.props.data.allowed_to_edit_lead_source || this.props.option === 'create' ? (<div className="wrapper-field">
             <label className="label-field">
               Nguồn khách hàng<span className="require-field"> (*)</span>
             </label>
@@ -190,7 +194,7 @@ class LeadForm extends Component {
               onChange={this.onSelectChange.bind(this, 'leadsource')}
               isSearchable={true}
             />
-          </div>
+          </div>) : ('')}
           <div className="wrapper-field">
             <label className="label-field">
               Người xử lý<span className="require-field"> (*)</span>

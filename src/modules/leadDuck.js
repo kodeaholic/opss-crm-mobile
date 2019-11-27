@@ -52,6 +52,7 @@ export default (state = initialState, action) => {
       data.leadsource = result.leadsource
       data.assigned_user_id = result.assigned_user_id
       data.description = result.description
+      data.allowed_to_edit_lead_source = result.allowed_to_edit_lead_source
       data.record = result.id
       state['data'] = data
       return state
