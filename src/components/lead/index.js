@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import _ from 'lodash'
 import compose from 'recompose/compose'
@@ -21,13 +21,14 @@ import {
   getFilterStatus,
   fetchListLeadElastic
 } from '../../modules/leadsDuck'
-import {
-  getSessionStatus
-} from '../../modules/sessionDuck'
-import { getUserLoggedIn } from '../../modules/loginDuck'
+// import {
+//   getSessionStatus
+// } from '../../modules/sessionDuck'
+import { getUserLoggedIn, getSessionStatus } from '../../modules/loginDuck'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import AsyncSelect from 'react-select/async/dist/react-select.esm'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
   leads: getLeadsData(state),
@@ -276,14 +277,13 @@ class Lead extends Component {
       )
     }
     else if(this.props.expired){
-      document.body.style.overscrollBehavior= 'contain'
       localStorage.removeItem('userLoggedInKV')
+      toast.error("Session expired", {
+        autoClose: 1500,
+        draggable: false,
+      })
       return (
-        <div className="wrapper-lead">
-          <div className="loading-data">
-            Session is expired. Refresh the page to login
-          </div>
-        </div>
+        <Redirect to={'/login'} />
       )
     }
     else {

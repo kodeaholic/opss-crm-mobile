@@ -1,6 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
-import {expireSession} from './sessionDuck'
+import {expireSession} from './loginDuck'
 
 export const types = {
   SEND_REQUEST_GET_LEAD_DETAIL_BY_RECORD_ID: 'LEAD/FETCH',
@@ -57,6 +57,7 @@ export default (state = initialState, action) => {
       data.assigned_user_id = result.assigned_user_id
       data.description = result.description
       data.allowed_to_edit_lead_source = result.allowed_to_edit_lead_source
+      data.allowed_to_edit_lead = result.allowed_to_edit_lead
       data.record = result.id
       state['data'] = data
       return state

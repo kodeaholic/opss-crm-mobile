@@ -1,6 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
-import {expireSession} from './sessionDuck'
+import {expireSession} from './loginDuck'
 
 export const types = {
   REQUEST_GET_LIST_LEAD: 'LEAD/REQUEST_GET_LIST_LEAD',

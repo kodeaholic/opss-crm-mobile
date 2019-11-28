@@ -15,7 +15,7 @@ export default combineReducers({
   login: loginDuck,
   leads: leadsDuck,
   search: searchDuck,
-  session: sessionDuck,
+  // session: sessionDuck,
   lead: leadDuck,
   contact: contactDuck,
   opportunity: opportunityDuck

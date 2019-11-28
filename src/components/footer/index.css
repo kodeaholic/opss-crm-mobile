@@ -22,3 +22,8 @@
     font-size: 12px;
     color: #ffffff;
 }
+@media (max-height: 500px) {
+  .wrapper-footer {
+    z-index: -1000;
+  }
+}

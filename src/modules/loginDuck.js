@@ -9,7 +9,10 @@ export const types = {
   REQUEST_FORGET_PASSWORD: 'LOGIN/REQUEST_FORGET_PASSWORD',
   SUCCESS_FORGET_PASSWORD: 'LOGIN/SUCCESS_FORGET_PASSWORD',
   FAILURE_FORGET_PASSWORD: 'LOGIN/FAILURE_FORGET_PASSWORD',
-  OPEN_POPUP_RESET_PASSWORD: 'LOGIN/OPEN_POPUP_RESET_PASSWORD'
+  OPEN_POPUP_RESET_PASSWORD: 'LOGIN/OPEN_POPUP_RESET_PASSWORD',
+  EXPIRE_SESSION: 'EXPIRE_SESSION',
+  ACTIVATE_SESSION: 'ACTIVATE_SESSION',
+  LOGOUT: 'LOGOUT'
 }
 
 // Selector
@@ -38,14 +41,21 @@ export const getSessionId = state => {
   const { session } = loggedInData
   return session
 }
-
+export const getSessionStatus = state => {
+  let status =  _.get(state, 'login.sessionStatus')
+  /* get expired status */
+  if(status === 'active') return false
+  else if (status === 'expired') return true
+  else return status
+}
 // Reducer
 const initialState = {
   isLoading: false,
   isLoadingSendForgetPassword: false,
   userLogged: {},
   messageErrorLogin: '',
-  isShowPopupResetPassword: false
+  isShowPopupResetPassword: false,
+  sessionStatus: undefined
 }
 
 export default (state = initialState, action) => {
@@ -57,6 +67,7 @@ export default (state = initialState, action) => {
     case types.SUCCESS_LOGIN: {
       state['isLoading'] = false
       state['userLogged'] = action.payload
+      state['sessionStatus'] = 'active'
       return state
     }
     case types.FAILURE_LOGIN: {
@@ -86,6 +97,12 @@ export default (state = initialState, action) => {
       state['isShowPopupResetPassword'] = !state.isShowPopupResetPassword
       return state
     }
+    case types.LOGOUT: {
+      return initialState
+    }
+    case types.EXPIRE_SESSION:
+      state['sessionStatus'] = 'expired'
+      return state
     default:
       return state
   }
@@ -127,6 +144,18 @@ export const requestLogin = payload => {
     )
   }
 }
+
+export const requestLogout = payload => {
+  return function action(dispatch) {
+    return dispatch({ type: types.LOGOUT, payload })
+  }
+}
+export const expireSession = payload => {
+  return function action(dispatch) {
+    dispatch({ type: types.EXPIRE_SESSION, payload })
+  }
+}
+
 
 export const loginSuccess = payload => ({
   type: types.SUCCESS_LOGIN,

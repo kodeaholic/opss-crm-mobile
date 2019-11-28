@@ -4,7 +4,8 @@ import Input from '../../commonComponents/input'
 import './view.css'
 import _ from 'lodash'
 
-const tabs = ['DETAILS', 'RELATED']
+// const tabs = ['DETAILS', 'RELATED']
+const tabs = ['DETAILS']
 
 class LeadView extends Component {
   constructor(props) {
@@ -78,7 +79,17 @@ class LeadView extends Component {
         <Field label="Khu vực" val={leadRegion} />
         <Field label="Nguồn khách hàng" val={leadSource} />
         <Field label="Người xử lý" val={assignedUser} />
-        <Field label="Mô tả chung" val={description} isMultiLine/>
+        {/*<Field label="Mô tả chung" val={description} isMultiLine/>*/}
+        <div className="wrapper-field-description">
+          <p><b className="label-description">
+            Mô tả chung
+          </b></p>
+          <textarea
+            className="description-field"
+            rows="5"
+            readOnly={true}
+            defaultValue={description}/>
+        </div>
       </div>
     )
   }
@@ -86,12 +97,12 @@ class LeadView extends Component {
   renderRelated = () => {
     return (
       <div>
-        <div className="lead-view-related-wrapper">
-          <i
-            className="fa fa-sticky-note-o lead-view-related-icon"
-            aria-hidden="true"></i>
-          <label className="lead-view-related-label">Ticket (3)</label>
-        </div>
+        {/*<div className="lead-view-related-wrapper">*/}
+        {/*  <i*/}
+        {/*    className="fa fa-sticky-note-o lead-view-related-icon"*/}
+        {/*    aria-hidden="true"></i>*/}
+        {/*  <label className="lead-view-related-label">Ticket (3)</label>*/}
+        {/*</div>*/}
         <div className="lead-view-related-wrapper">
           <i
             className="fa fa-history lead-view-related-icon"

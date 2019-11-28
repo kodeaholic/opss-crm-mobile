@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Link } from 'react-router-dom'
+import { Link, Redirect, withRouter } from 'react-router-dom'
 
 /* Form components */
 import Select from 'react-select';
@@ -9,6 +9,7 @@ import AsyncSelect from 'react-select/async';
 /* CSS */
 import './form.css'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 class LeadForm extends Component {
   constructor(props) {
     super(props)
@@ -26,10 +27,82 @@ class LeadForm extends Component {
     this.fetchLeadStatus = this.fetchLeadStatus.bind(this)
     this.fetchUsers = this.fetchUsers.bind(this)
   }
+  addError = (name, content) => {
+    if(!document.getElementById(name + "-error")){
+      let nameField = document.getElementById(name + "-wrapper")
+      let error = document.createElement("label")
+      error.setAttribute("class", "form-create-or-update-label-error");
+      error.setAttribute("id", name + "-error")
+      let node = document.createTextNode(content)
+      error.appendChild(node);
+      nameField.appendChild(error)
+    }
+    return false
+  }
+  clearError = (name) => {
+    let labelError = document.getElementById(name + "-error")
+    if(labelError) labelError.remove()
+  }
   handleSubmit(e) {
     e.preventDefault()
+    if(!this.props.allowedToEditLead && this.props.option === 'edit') {
+      toast.error("Permission denied", {
+        autoClose: 1500,
+        draggable: false,
+      })
+      return false
+    }
     let session = this.props.session
     let formData = this.state.formData
+    /* validation - edit */
+    let phoneRegex = /^[0-9]{10,12}$/g
+    let error = 0
+    if(this.props.option === 'edit') {
+      let mobile = formData.mobile
+      let phone = formData.phone
+      let lastname = formData.lastname
+      if (lastname === "") return this.addError("lastname", "Required")
+      if(mobile !== undefined && (!mobile.match(phoneRegex) || _.isEmpty(mobile))) {
+        error++
+        this.addError("mobile", "Invalid")
+      }
+      if(!_.isEmpty(phone) && !phone.match(phoneRegex)) {
+        error++
+        this.addError("phone", "Invalid")
+      }
+    }
+    else if(this.props.option === 'create') {
+      if (_.isEmpty(formData.lastname)) {
+        error++
+        this.addError("lastname", "Required")
+      }
+      if (_.isEmpty(formData.leadstatus)) {
+        error++
+        this.addError("leadstatus", "Required")
+      }
+      if (_.isEmpty(formData.mobile) || !formData.mobile.match(phoneRegex)) {
+        error++
+        this.addError("mobile", "Invalid")
+      }
+      if (!_.isEmpty(formData.phone) && !formData.phone.match(phoneRegex)) {
+        error++
+        this.addError("phone", "Invalid")
+      }
+      if (_.isEmpty(formData.industry)) {
+        error++
+        this.addError("industry", "Required")
+      }
+      if (_.isEmpty(formData.cf_lead_khu_vuc)) {
+        error++
+        this.addError("cf_lead_khu_vuc", "Required")
+      }
+      if (_.isEmpty(formData.leadsource)) {
+        error++
+        this.addError("leadsource", "Required")
+      }
+    }
+
+    if (error > 0) return false
     if(this.props.option === 'create') {
       if (!this.state.formData.assigned_user_id) formData.assigned_user_id = this.props.data.defaultAssignedUser
     }
@@ -39,11 +112,13 @@ class LeadForm extends Component {
     const { name, value } = e.target
     let data = this.state.formData
     data[name] = value
+    this.clearError(name)
     this.setState({ formData: data })
   }
   onSelectChange(name, value) {
     let data = this.state.formData
     data[name] = value
+    this.clearError(name)
     this.setState({formData: data});
   }
   renderButton = () => {
@@ -131,10 +206,10 @@ class LeadForm extends Component {
     }
       return (
         <div className="form-create-or-update-field">
-          <Field label="Họ tên khách hàng" isRequired name="lastname" val={this.props.data.lastname} changeHandler={this.handleChange}/>
+          <Field label="Họ tên khách hàng" isRequired name="lastname" val={this.props.data.lastname} changeHandler={this.handleChange} />
           <Field label="Tên gian hàng" name="website" val={this.props.data.website} changeHandler={this.handleChange}/>
-          <div className="wrapper-field">
-            <label className="label-field">
+          <div className="form-create-or-update-wrapper-field" id="leadstatus-wrapper">
+            <label className="form-create-or-update-label-field">
               Tình trạng<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -154,8 +229,8 @@ class LeadForm extends Component {
           {/*  <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>*/}
           {/*) : ('')}*/}
           <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} />
-          <div className="wrapper-field">
-            <label className="label-field">
+          <div className="form-create-or-update-wrapper-field" id="industry-wrapper">
+            <label className="form-create-or-update-label-field">
               Ngành hàng<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -168,8 +243,8 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>
-          <div className="wrapper-field">
-            <label className="label-field">
+          <div className="form-create-or-update-wrapper-field" id="cf_lead_khu_vuc-wrapper">
+            <label className="form-create-or-update-label-field">
               Khu vực<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -182,8 +257,8 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>
-          {this.props.data.allowed_to_edit_lead_source || this.props.option === 'create' ? (<div className="wrapper-field">
-            <label className="label-field">
+          {this.props.data.allowed_to_edit_lead_source || this.props.option === 'create' ? (<div className="form-create-or-update-wrapper-field" id="leadsource-wrapper">
+            <label className="form-create-or-update-label-field">
               Nguồn khách hàng<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -196,8 +271,8 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>) : ('')}
-          <div className="wrapper-field">
-            <label className="label-field">
+          <div className="form-create-or-update-wrapper-field" id="assigned_user_id-wrapper">
+            <label className="form-create-or-update-label-field">
               Người xử lý<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -225,7 +300,7 @@ class LeadForm extends Component {
   }
 }
 
-export default LeadForm
+export default withRouter(LeadForm)
 
 /* Child component */
 class Field extends Component {
@@ -240,24 +315,26 @@ class Field extends Component {
     const isRequired = _.get(this.props, 'isRequired') || false
     const handler = _.get(this.props, 'changeHandler')
     return (
-      <div className="wrapper-field">
-        <label className="label-field">
+      <div className="form-create-or-update-wrapper-field" id={this.props.name + "-wrapper"}>
+        <label className="form-create-or-update-label-field">
           {label} {isRequired ? (<span className="require-input-common-component"> (*)</span>) : null}
         </label>
         {
           isMultiLine ? (<textarea
             name={name}
-            className="input-field"
+            className="form-create-or-update-input-field"
             rows="5" defaultValue={value}
             onChange={handler}/>) :
             (<input
             name={name}
             type="text"
-            className="input-field"
+            className="form-create-or-update-input-field"
             defaultValue={value}
             onChange={handler}
             readOnly={readOnly}/>)
         }
+        {/*<label className="form-create-or-update-label-error">Không được để trống</label>*/}
+        {/*<label className="form-create-or-update-label-error">Không đúng định dạng</label>*/}
       </div>
     )
   }

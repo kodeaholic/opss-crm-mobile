@@ -16,16 +16,16 @@ const menuList = [
     classIcon: 'fa fa-user-o',
     path: '/contact'
   },
-  {
-    name: 'Opportunity',
-    classIcon: 'fa fa-file-text-o',
-    path: '/opportunity'
-  },
-  {
-    name: 'Ticket',
-    classIcon: 'fa fa-comment-o',
-    path: '/ticket'
-  }
+  // {
+  //   name: 'Opportunity',
+  //   classIcon: 'fa fa-file-text-o',
+  //   path: '/opportunity'
+  // },
+  // {
+  //   name: 'Ticket',
+  //   classIcon: 'fa fa-comment-o',
+  //   path: '/ticket'
+  // }
 ]
 
 const functionMenu = ['lead-view']
@@ -41,21 +41,21 @@ const menuLeadFunction = [
     classIcon: 'fa fa-user-o',
     path: '/convert'
   },
-  {
-    name: '+ Ticket',
-    classIcon: 'fa fa-comment-o',
-    path: '/ticket'
-  },
-  {
-    name: '+ Công việc',
-    classIcon: 'fa fa-tasks',
-    path: '/working'
-  },
-  {
-    name: '+ Cuộc hẹn',
-    classIcon: 'fa fa-history',
-    path: '/meeting'
-  }
+  // {
+  //   name: '+ Ticket',
+  //   classIcon: 'fa fa-comment-o',
+  //   path: '/ticket'
+  // },
+  // {
+  //   name: '+ Công việc',
+  //   classIcon: 'fa fa-tasks',
+  //   path: '/working'
+  // },
+  // {
+  //   name: '+ Cuộc hẹn',
+  //   classIcon: 'fa fa-history',
+  //   path: '/meeting'
+  // }
 ]
 
 class Footer extends Component {

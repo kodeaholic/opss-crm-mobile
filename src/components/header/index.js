@@ -59,8 +59,8 @@ class Header extends Component {
           }}
         />
         <div id="myDropdown" className="dropdown-content">
-          <a href="/lead"><i className="fa fa-user" aria-hidden="true"></i> &nbsp;Profile</a>
-          <a href="/lead"><i className="fa fa-cog" aria-hidden="true"></i>&nbsp;Settings</a>
+          {/*<a href="/lead"><i className="fa fa-user" aria-hidden="true"></i> &nbsp;Profile</a>*/}
+          {/*<a href="/lead"><i className="fa fa-cog" aria-hidden="true"></i>&nbsp;Settings</a>*/}
           <a href="/logout"><i className="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Logout</a>
         </div>
       </div>
@@ -82,7 +82,7 @@ class Header extends Component {
             (
               <div className="wrapper-input">
               <i className="fa fa-search" aria-hidden="true"></i>
-              <input type="text" className="input-search-header" style={{fontSize: 'inherit'}}
+              <input type="search" className="input-search-header" style={{fontSize: 'inherit'}}
             placeholder="Seach..."
             defaultValue={this.props.match.params.keyword}
             onKeyPress={this._handleSearchEnter}
