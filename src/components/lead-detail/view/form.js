@@ -27,6 +27,22 @@ class LeadForm extends Component {
     this.fetchLeadStatus = this.fetchLeadStatus.bind(this)
     this.fetchUsers = this.fetchUsers.bind(this)
   }
+  addError = (name, content) => {
+    if(!document.getElementById(name + "-error")){
+      let nameField = document.getElementById(name + "-wrapper")
+      let error = document.createElement("label")
+      error.setAttribute("class", "form-create-or-update-label-error");
+      error.setAttribute("id", name + "-error")
+      let node = document.createTextNode(content)
+      error.appendChild(node);
+      nameField.appendChild(error)
+    }
+    return false
+  }
+  clearError = (name) => {
+    let labelError = document.getElementById(name + "-error")
+    if(labelError) labelError.remove()
+  }
   handleSubmit(e) {
     e.preventDefault()
     if(!this.props.allowedToEditLead && this.props.option === 'edit') {
@@ -44,44 +60,12 @@ class LeadForm extends Component {
       let mobile = formData.mobile
       let phone = formData.phone
       let lastname = formData.lastname
-      if (lastname === ""){
-        if(!document.getElementById("lastname-error")){
-          let nameField = document.getElementById("lastname-wrapper")
-          let error = document.createElement("label")
-          error.setAttribute("class", "form-create-or-update-label-error");
-          error.setAttribute("id", "lastname-error")
-          let node = document.createTextNode("Required")
-          error.appendChild(node);
-          nameField.appendChild(error)
-        }
-        return false
+      if (lastname === "") return this.addError("lastname", "Required")
+      if(mobile !== undefined && (!mobile.match(phoneRegex) || _.isEmpty(mobile))) {
+        return this.addError("mobile", "Invalid")
       }
-      if (mobile) {
-        let mobileField = document.getElementById("mobile-wrapper")
-        if(!mobile.match(phoneRegex) || mobile === "") {
-          let error = document.createElement("label")
-          error.setAttribute("class", "form-create-or-update-label-error");
-          error.setAttribute("id", "mobile-error")
-          let node = document.createTextNode("Invalid format")
-          error.appendChild(node);
-          mobileField.appendChild(error)
-          return false
-        }
-
-      }
-      if (phone) {
-        let phoneField = document.getElementById("phone-wrapper")
-        if(!phone.match(phoneRegex) || phone === "") {
-          if(!document.getElementById("phone-error")){
-            let error = document.createElement("label")
-            error.setAttribute("class", "form-create-or-update-label-error");
-            error.setAttribute("id", "phone-error")
-            let node = document.createTextNode("Invalid format")
-            error.appendChild(node);
-            phoneField.appendChild(error)
-          }
-          return false
-        }
+      if(!phone.match(phoneRegex) && !_.isEmpty(phone)) {
+        return this.addError("phone", "Invalid")
       }
     }
 
@@ -94,8 +78,7 @@ class LeadForm extends Component {
     const { name, value } = e.target
     let data = this.state.formData
     data[name] = value
-    let labelError = document.getElementById(name + "-error")
-    if(labelError) labelError.remove()
+    this.clearError(name)
     this.setState({ formData: data })
   }
   onSelectChange(name, value) {
