@@ -4,7 +4,8 @@ import Input from '../../commonComponents/input'
 import './view.css'
 import _ from 'lodash'
 
-const tabs = ['DETAILS', 'RELATED']
+// const tabs = ['DETAILS', 'RELATED']
+const tabs = ['DETAILS']
 
 class LeadView extends Component {
   constructor(props) {
