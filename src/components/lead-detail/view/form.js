@@ -56,19 +56,53 @@ class LeadForm extends Component {
     let formData = this.state.formData
     /* validation - edit */
     let phoneRegex = /^[0-9]{10,12}$/g
+    let error = 0
     if(this.props.option === 'edit') {
       let mobile = formData.mobile
       let phone = formData.phone
       let lastname = formData.lastname
       if (lastname === "") return this.addError("lastname", "Required")
       if(mobile !== undefined && (!mobile.match(phoneRegex) || _.isEmpty(mobile))) {
-        return this.addError("mobile", "Invalid")
+        error++
+        this.addError("mobile", "Invalid")
       }
       if(!_.isEmpty(phone) && !phone.match(phoneRegex)) {
-        return this.addError("phone", "Invalid")
+        error++
+        this.addError("phone", "Invalid")
+      }
+    }
+    else if(this.props.option === 'create') {
+      if (_.isEmpty(formData.lastname)) {
+        error++
+        this.addError("lastname", "Required")
+      }
+      if (_.isEmpty(formData.leadstatus)) {
+        error++
+        this.addError("leadstatus", "Required")
+      }
+      if (_.isEmpty(formData.mobile) || !formData.mobile.match(phoneRegex)) {
+        error++
+        this.addError("mobile", "Invalid")
+      }
+      if (!_.isEmpty(formData.phone) && !formData.phone.match(phoneRegex)) {
+        error++
+        this.addError("phone", "Invalid")
+      }
+      if (_.isEmpty(formData.industry)) {
+        error++
+        this.addError("industry", "Required")
+      }
+      if (_.isEmpty(formData.cf_lead_khu_vuc)) {
+        error++
+        this.addError("cf_lead_khu_vuc", "Required")
+      }
+      if (_.isEmpty(formData.leadsource)) {
+        error++
+        this.addError("leadsource", "Required")
       }
     }
 
+    if (error > 0) return false
     if(this.props.option === 'create') {
       if (!this.state.formData.assigned_user_id) formData.assigned_user_id = this.props.data.defaultAssignedUser
     }
@@ -84,6 +118,7 @@ class LeadForm extends Component {
   onSelectChange(name, value) {
     let data = this.state.formData
     data[name] = value
+    this.clearError(name)
     this.setState({formData: data});
   }
   renderButton = () => {
@@ -173,7 +208,7 @@ class LeadForm extends Component {
         <div className="form-create-or-update-field">
           <Field label="Họ tên khách hàng" isRequired name="lastname" val={this.props.data.lastname} changeHandler={this.handleChange} />
           <Field label="Tên gian hàng" name="website" val={this.props.data.website} changeHandler={this.handleChange}/>
-          <div className="form-create-or-update-wrapper-field">
+          <div className="form-create-or-update-wrapper-field" id="leadstatus-wrapper">
             <label className="form-create-or-update-label-field">
               Tình trạng<span className="require-field"> (*)</span>
             </label>
@@ -194,7 +229,7 @@ class LeadForm extends Component {
           {/*  <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>*/}
           {/*) : ('')}*/}
           <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} />
-          <div className="form-create-or-update-wrapper-field">
+          <div className="form-create-or-update-wrapper-field" id="industry-wrapper">
             <label className="form-create-or-update-label-field">
               Ngành hàng<span className="require-field"> (*)</span>
             </label>
@@ -208,7 +243,7 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>
-          <div className="form-create-or-update-wrapper-field">
+          <div className="form-create-or-update-wrapper-field" id="cf_lead_khu_vuc-wrapper">
             <label className="form-create-or-update-label-field">
               Khu vực<span className="require-field"> (*)</span>
             </label>
@@ -222,7 +257,7 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>
-          {this.props.data.allowed_to_edit_lead_source || this.props.option === 'create' ? (<div className="form-create-or-update-wrapper-field">
+          {this.props.data.allowed_to_edit_lead_source || this.props.option === 'create' ? (<div className="form-create-or-update-wrapper-field" id="leadsource-wrapper">
             <label className="form-create-or-update-label-field">
               Nguồn khách hàng<span className="require-field"> (*)</span>
             </label>
@@ -236,7 +271,7 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>) : ('')}
-          <div className="form-create-or-update-wrapper-field">
+          <div className="form-create-or-update-wrapper-field" id="assigned_user_id-wrapper">
             <label className="form-create-or-update-label-field">
               Người xử lý<span className="require-field"> (*)</span>
             </label>
