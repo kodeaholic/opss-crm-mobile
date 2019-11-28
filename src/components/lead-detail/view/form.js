@@ -64,7 +64,7 @@ class LeadForm extends Component {
       if(mobile !== undefined && (!mobile.match(phoneRegex) || _.isEmpty(mobile))) {
         return this.addError("mobile", "Invalid")
       }
-      if(!phone.match(phoneRegex) && !_.isEmpty(phone)) {
+      if(!_.isEmpty(phone) && !phone.match(phoneRegex)) {
         return this.addError("phone", "Invalid")
       }
     }
