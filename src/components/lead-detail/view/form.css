@@ -28,7 +28,7 @@
     padding-bottom: 10px;
 }
 
-.wrapper-field {
+.form-create-or-update-wrapper-field {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -36,21 +36,30 @@
     padding: 5px 10px 0 10px;
 }
 
-.label-field {
+.form-create-or-update-label-field {
     /*font-size: 17px;*/
 }
 
-.require-field {
+.form-create-or-update-require-field {
     color: red;
 }
 
-.input-field {
+input.form-create-or-update-input-field {
     background-color: white;
     border: 1px solid #ccc;
     -webkit-border-radius: 5px;
     border-radius: 5px;
     height: 30px;
-    flex: 1;
+    width: auto;
+    padding-left: 3px;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+textarea.form-create-or-update-input-field {
+    background-color: white;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
     width: auto;
     padding-left: 3px;
     margin-bottom: 5px;

@@ -141,8 +141,8 @@ class LeadForm extends Component {
         <div className="form-create-or-update-field">
           <Field label="Họ tên khách hàng" isRequired name="lastname" val={this.props.data.lastname} changeHandler={this.handleChange}/>
           <Field label="Tên gian hàng" name="website" val={this.props.data.website} changeHandler={this.handleChange}/>
-          <div className="wrapper-field">
-            <label className="label-field">
+          <div className="form-create-or-update-wrapper-field">
+            <label className="form-create-or-update-label-field">
               Tình trạng<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -162,8 +162,8 @@ class LeadForm extends Component {
           {/*  <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} isReadOnly={!this.props.allowedToEditPhone}/>*/}
           {/*) : ('')}*/}
           <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange} />
-          <div className="wrapper-field">
-            <label className="label-field">
+          <div className="form-create-or-update-wrapper-field">
+            <label className="form-create-or-update-label-field">
               Ngành hàng<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -176,8 +176,8 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>
-          <div className="wrapper-field">
-            <label className="label-field">
+          <div className="form-create-or-update-wrapper-field">
+            <label className="form-create-or-update-label-field">
               Khu vực<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -190,8 +190,8 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>
-          {this.props.data.allowed_to_edit_lead_source || this.props.option === 'create' ? (<div className="wrapper-field">
-            <label className="label-field">
+          {this.props.data.allowed_to_edit_lead_source || this.props.option === 'create' ? (<div className="form-create-or-update-wrapper-field">
+            <label className="form-create-or-update-label-field">
               Nguồn khách hàng<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -204,8 +204,8 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>) : ('')}
-          <div className="wrapper-field">
-            <label className="label-field">
+          <div className="form-create-or-update-wrapper-field">
+            <label className="form-create-or-update-label-field">
               Người xử lý<span className="require-field"> (*)</span>
             </label>
             <AsyncSelect
@@ -248,20 +248,20 @@ class Field extends Component {
     const isRequired = _.get(this.props, 'isRequired') || false
     const handler = _.get(this.props, 'changeHandler')
     return (
-      <div className="wrapper-field">
-        <label className="label-field">
+      <div className="form-create-or-update-wrapper-field">
+        <label className="form-create-or-update-label-field">
           {label} {isRequired ? (<span className="require-input-common-component"> (*)</span>) : null}
         </label>
         {
           isMultiLine ? (<textarea
             name={name}
-            className="input-field"
+            className="form-create-or-update-input-field"
             rows="5" defaultValue={value}
             onChange={handler}/>) :
             (<input
             name={name}
             type="text"
-            className="input-field"
+            className="form-create-or-update-input-field"
             defaultValue={value}
             onChange={handler}
             readOnly={readOnly}/>)
