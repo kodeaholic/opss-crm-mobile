@@ -59,8 +59,8 @@ class Header extends Component {
           }}
         />
         <div id="myDropdown" className="dropdown-content">
-          <a href="/lead"><i className="fa fa-user" aria-hidden="true"></i> &nbsp;Profile</a>
-          <a href="/lead"><i className="fa fa-cog" aria-hidden="true"></i>&nbsp;Settings</a>
+          {/*<a href="/lead"><i className="fa fa-user" aria-hidden="true"></i> &nbsp;Profile</a>*/}
+          {/*<a href="/lead"><i className="fa fa-cog" aria-hidden="true"></i>&nbsp;Settings</a>*/}
           <a href="/logout"><i className="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Logout</a>
         </div>
       </div>

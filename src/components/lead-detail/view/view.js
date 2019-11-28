@@ -86,12 +86,12 @@ class LeadView extends Component {
   renderRelated = () => {
     return (
       <div>
-        <div className="lead-view-related-wrapper">
-          <i
-            className="fa fa-sticky-note-o lead-view-related-icon"
-            aria-hidden="true"></i>
-          <label className="lead-view-related-label">Ticket (3)</label>
-        </div>
+        {/*<div className="lead-view-related-wrapper">*/}
+        {/*  <i*/}
+        {/*    className="fa fa-sticky-note-o lead-view-related-icon"*/}
+        {/*    aria-hidden="true"></i>*/}
+        {/*  <label className="lead-view-related-label">Ticket (3)</label>*/}
+        {/*</div>*/}
         <div className="lead-view-related-wrapper">
           <i
             className="fa fa-history lead-view-related-icon"
