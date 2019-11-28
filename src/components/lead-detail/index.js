@@ -16,7 +16,7 @@ import withLayout from '../withLayout'
 /* predefined actions and selectors for mapStateToProps and mapDispatchToProps */
 import { getUserLoggedIn } from '../../modules/loginDuck'
 import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus, showFormAddLead, getViewPermission } from '../../modules/leadDuck'
-import { getSessionStatus } from '../../modules/sessionDuck'
+import { getSessionStatus } from '../../modules/loginDuck'
 
 /* import child views */
 import LeadView from './view/view'
@@ -121,9 +121,15 @@ class LeadComponent extends Component {
 
   render() {
     /* check if view, create, or update */
-    if(this.props.expired) {
+    if(this.props.expired){
       localStorage.removeItem('userLoggedInKV')
-      return <Redirect to={'/login'} />
+      toast.error("Session expired", {
+        autoClose: 1500,
+        draggable: false,
+      })
+      return (
+        <Redirect to={'/login'} />
+      )
     }
     if(this.props.loading) {
       return (

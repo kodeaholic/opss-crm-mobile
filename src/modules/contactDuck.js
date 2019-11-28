@@ -1,6 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
-import {expireSession} from './sessionDuck'
+import {expireSession} from './loginDuck'
 
 export const types = {
   SEND_REQUEST_GET_CONTACT_DETAIL_BY_RECORD_ID: 'CONTACT/FETCH',

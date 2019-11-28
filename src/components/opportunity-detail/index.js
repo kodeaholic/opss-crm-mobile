@@ -24,7 +24,7 @@ import {
   // getFormSubmitResponseStatus,
   // showFormAddLead
 } from '../../modules/opportunityDuck'
-import {getSessionStatus} from '../../modules/sessionDuck'
+import {getSessionStatus} from '../../modules/loginDuck'
 
 /* import child views */
 import OpportunityView from './view/view'
@@ -111,9 +111,15 @@ class OpportunityComponent extends Component {
 
   render() {
     /* check if view, create, or update */
-    if (this.props.expired) {
+    if(this.props.expired){
       localStorage.removeItem('userLoggedInKV')
-      return <Redirect to={'/login'}/>
+      toast.error("Session expired", {
+        autoClose: 1500,
+        draggable: false,
+      })
+      return (
+        <Redirect to={'/login'} />
+      )
     }
     if (this.props.loading) {
       return (
