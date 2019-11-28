@@ -87,7 +87,7 @@ class LeadView extends Component {
           <textarea
             className="description-field"
             rows="5"
-            readOnly="true"
+            readOnly={true}
             defaultValue={description}/>
         </div>
       </div>

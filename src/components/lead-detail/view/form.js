@@ -38,6 +38,53 @@ class LeadForm extends Component {
     }
     let session = this.props.session
     let formData = this.state.formData
+    /* validation - edit */
+    let phoneRegex = /^[0-9]{10,12}$/g
+    if(this.props.option === 'edit') {
+      let mobile = formData.mobile
+      let phone = formData.phone
+      let lastname = formData.lastname
+      if (lastname === ""){
+        if(!document.getElementById("lastname-error")){
+          let nameField = document.getElementById("lastname-wrapper")
+          let error = document.createElement("label")
+          error.setAttribute("class", "form-create-or-update-label-error");
+          error.setAttribute("id", "lastname-error")
+          let node = document.createTextNode("Required")
+          error.appendChild(node);
+          nameField.appendChild(error)
+        }
+        return false
+      }
+      if (mobile) {
+        let mobileField = document.getElementById("mobile-wrapper")
+        if(!mobile.match(phoneRegex) || mobile === "") {
+          let error = document.createElement("label")
+          error.setAttribute("class", "form-create-or-update-label-error");
+          error.setAttribute("id", "mobile-error")
+          let node = document.createTextNode("Invalid format")
+          error.appendChild(node);
+          mobileField.appendChild(error)
+          return false
+        }
+
+      }
+      if (phone) {
+        let phoneField = document.getElementById("phone-wrapper")
+        if(!phone.match(phoneRegex) || phone === "") {
+          if(!document.getElementById("phone-error")){
+            let error = document.createElement("label")
+            error.setAttribute("class", "form-create-or-update-label-error");
+            error.setAttribute("id", "phone-error")
+            let node = document.createTextNode("Invalid format")
+            error.appendChild(node);
+            phoneField.appendChild(error)
+          }
+          return false
+        }
+      }
+    }
+
     if(this.props.option === 'create') {
       if (!this.state.formData.assigned_user_id) formData.assigned_user_id = this.props.data.defaultAssignedUser
     }
@@ -47,6 +94,8 @@ class LeadForm extends Component {
     const { name, value } = e.target
     let data = this.state.formData
     data[name] = value
+    let labelError = document.getElementById(name + "-error")
+    if(labelError) labelError.remove()
     this.setState({ formData: data })
   }
   onSelectChange(name, value) {
@@ -139,7 +188,7 @@ class LeadForm extends Component {
     }
       return (
         <div className="form-create-or-update-field">
-          <Field label="Họ tên khách hàng" isRequired name="lastname" val={this.props.data.lastname} changeHandler={this.handleChange}/>
+          <Field label="Họ tên khách hàng" isRequired name="lastname" val={this.props.data.lastname} changeHandler={this.handleChange} />
           <Field label="Tên gian hàng" name="website" val={this.props.data.website} changeHandler={this.handleChange}/>
           <div className="form-create-or-update-wrapper-field">
             <label className="form-create-or-update-label-field">
@@ -248,7 +297,7 @@ class Field extends Component {
     const isRequired = _.get(this.props, 'isRequired') || false
     const handler = _.get(this.props, 'changeHandler')
     return (
-      <div className="form-create-or-update-wrapper-field">
+      <div className="form-create-or-update-wrapper-field" id={this.props.name + "-wrapper"}>
         <label className="form-create-or-update-label-field">
           {label} {isRequired ? (<span className="require-input-common-component"> (*)</span>) : null}
         </label>
@@ -266,6 +315,8 @@ class Field extends Component {
             onChange={handler}
             readOnly={readOnly}/>)
         }
+        {/*<label className="form-create-or-update-label-error">Không được để trống</label>*/}
+        {/*<label className="form-create-or-update-label-error">Không đúng định dạng</label>*/}
       </div>
     )
   }
