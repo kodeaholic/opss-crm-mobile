@@ -82,7 +82,7 @@ class Header extends Component {
             (
               <div className="wrapper-input">
               <i className="fa fa-search" aria-hidden="true"></i>
-              <input type="text" className="input-search-header" style={{fontSize: 'inherit'}}
+              <input type="search" className="input-search-header" style={{fontSize: 'inherit'}}
             placeholder="Seach..."
             defaultValue={this.props.match.params.keyword}
             onKeyPress={this._handleSearchEnter}
