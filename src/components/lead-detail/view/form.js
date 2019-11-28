@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Link } from 'react-router-dom'
+import { Link, Redirect, withRouter } from 'react-router-dom'
 
 /* Form components */
 import Select from 'react-select';
@@ -9,6 +9,7 @@ import AsyncSelect from 'react-select/async';
 /* CSS */
 import './form.css'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 class LeadForm extends Component {
   constructor(props) {
     super(props)
@@ -28,6 +29,13 @@ class LeadForm extends Component {
   }
   handleSubmit(e) {
     e.preventDefault()
+    if(!this.props.allowedToEditLead && this.props.option === 'edit') {
+      toast.error("Permission denied", {
+        autoClose: 1500,
+        draggable: false,
+      })
+      return false
+    }
     let session = this.props.session
     let formData = this.state.formData
     if(this.props.option === 'create') {
@@ -225,7 +233,7 @@ class LeadForm extends Component {
   }
 }
 
-export default LeadForm
+export default withRouter(LeadForm)
 
 /* Child component */
 class Field extends Component {

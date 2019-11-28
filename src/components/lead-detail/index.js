@@ -170,7 +170,7 @@ class LeadComponent extends Component {
           allowed = true
         }
         return (
-          <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option} submit={this.props.actions.requestSaveLead} allowedToEditPhone={allowed}/>
+          <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option} submit={this.props.actions.requestSaveLead} allowedToEditPhone={allowed} allowedToEditLead={this.props.leadData.allowed_to_edit_lead}/>
         )
       }
     }

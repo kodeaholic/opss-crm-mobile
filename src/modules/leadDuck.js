@@ -57,6 +57,7 @@ export default (state = initialState, action) => {
       data.assigned_user_id = result.assigned_user_id
       data.description = result.description
       data.allowed_to_edit_lead_source = result.allowed_to_edit_lead_source
+      data.allowed_to_edit_lead = result.allowed_to_edit_lead
       data.record = result.id
       state['data'] = data
       return state
