@@ -86,7 +86,7 @@ class Header extends Component {
             placeholder="Seach..."
             defaultValue={this.props.match.params.keyword}
             onKeyPress={this._handleSearchEnter}
-              /></div>
+              name="search" id="search"/></div>
           )}
         </div>
         <div className="wrapper-icon">
