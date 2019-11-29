@@ -135,11 +135,13 @@ class LeadForm extends Component {
     return (
       <div className="wrapper-button-form-create-or-update">
         <div className="form-create-or-update-button">
-          <Link to={pathToGoBack}>
-            <button type="button" className="btn-add-new-lead">
+          {/*<Link to={pathToGoBack}>*/}
+            <button type="button" className="btn-add-new-lead" onClick={() => {
+              window.history.back()
+            }}>
               Back
             </button>
-          </Link>
+          {/*</Link>*/}
         </div>
         <div className="form-create-or-update-button">
           <button type="button" className="btn-add-new-lead" onClick={this.handleSubmit}>

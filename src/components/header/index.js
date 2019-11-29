@@ -1,10 +1,11 @@
-import React, {Component} from 'react'
-import {withRouter} from 'react-router-dom'
+import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
-import {getPathName} from '../../modules/routerDuck'
+import { getPathName } from '../../modules/routerDuck'
 
 import './index.css'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import { toast } from 'react-toastify'
 
 const mapStateToProps = (state, ownProps) => ({
   path: getPathName(state, ownProps)
@@ -21,7 +22,7 @@ const router = {
     back: 'contact'
   },
   'opportunity-view': {
-    back: 'opprtunity'
+    back: 'opportunity'
   }
 }
 
@@ -33,10 +34,13 @@ class Header extends Component {
   }
 
   routeChange = pathBack => {
-    if (pathBack) this.props.history.push('/' + pathBack)
+    if (pathBack) {
+      // this.props.history.push('/' + pathBack)
+      window.history.back()
+    }
     // this.props.history.goBack()
     else {
-      document.getElementById("myDropdown").classList.toggle("show");
+      document.getElementById('myDropdown').classList.toggle('show')
     }
   }
 
@@ -69,25 +73,30 @@ class Header extends Component {
 
   _handleSearchEnter = (e) => {
     if (e.key === 'Enter') {
-      this.props.history.push('/search/' + e.target.value)
+      if (e.target.value && e.target.value != '' && e.target.value.length >= 3) {
+        this.props.history.push('/search/' + e.target.value)
+      }
     }
   }
 
   render() {
     return (
-      <div className="wrapper-header" style={{zIndex: 2}}>
+      <div className="wrapper-header" style={{ zIndex: 2 }}>
         {this.renderIconLeft()}
         <div className="wrapper-input">
-          {this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 ? (''):
+          {this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 ? ('') :
             (
               <div className="wrapper-input">
-              <i className="fa fa-search" aria-hidden="true"></i>
-              <input type="search" className="input-search-header" style={{fontSize: 'inherit'}}
-            placeholder="Seach..."
-            defaultValue={this.props.match.params.keyword}
-            onKeyPress={this._handleSearchEnter}
-              /></div>
-          )}
+                <i className="fa fa-search" aria-hidden="true"></i>
+                <form className="form-search" action="#" id="search-form" onSubmit={ e => { e.preventDefault() }} autoComplete="off">
+                  <input type="search" className="input-search-header" style={{ fontSize: 'inherit' }}
+                         placeholder="Search ..."
+                         defaultValue={this.props.match.params.keyword}
+                         onKeyPress={this._handleSearchEnter}
+                         name="search" id="search"/>
+                </form>
+              </div>
+            )}
         </div>
         <div className="wrapper-icon">
           <i

@@ -4,10 +4,11 @@ import userDuck from './userDuck'
 import loginDuck from './loginDuck'
 import leadsDuck from './leadsDuck'
 import searchDuck from './searchDuck'
-import sessionDuck from './sessionDuck'
+// import sessionDuck from './sessionDuck'
 import leadDuck from './leadDuck'
 import contactDuck from './contactDuck'
 import opportunityDuck from './opportunityDuck'
+import contactsDuck from './contactsDuck'
 
 export default combineReducers({
   counter,
@@ -18,5 +19,6 @@ export default combineReducers({
   // session: sessionDuck,
   lead: leadDuck,
   contact: contactDuck,
-  opportunity: opportunityDuck
+  opportunity: opportunityDuck,
+  contacts: contactsDuck,
 })
