@@ -22,7 +22,7 @@ const router = {
     back: 'contact'
   },
   'opportunity-view': {
-    back: 'opprtunity'
+    back: 'opportunity'
   }
 }
 
@@ -34,7 +34,10 @@ class Header extends Component {
   }
 
   routeChange = pathBack => {
-    if (pathBack) this.props.history.push('/' + pathBack)
+    if (pathBack) {
+      // this.props.history.push('/' + pathBack)
+      window.history.back()
+    }
     // this.props.history.goBack()
     else {
       document.getElementById('myDropdown').classList.toggle('show')
