@@ -73,7 +73,7 @@ class Header extends Component {
 
   _handleSearchEnter = (e) => {
     if (e.key === 'Enter') {
-      if (e.target.value && e.target.value.length >= 3) {
+      if (e.target.value && e.target.value != '' && e.target.value.length >= 3) {
         this.props.history.push('/search/' + e.target.value)
       }
     }
