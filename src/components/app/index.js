@@ -51,6 +51,11 @@ class App extends React.Component {
         />
         <Route
           exact
+          path="/lead-convert/:id"
+          component={LeadComponent}
+        />
+        <Route
+          exact
           path="/lead-create"
           component={LeadComponent}
         />
