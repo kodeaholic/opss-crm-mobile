@@ -59,6 +59,13 @@ export default (state = initialState, action) => {
       data.allowed_to_edit_lead_source = result.allowed_to_edit_lead_source
       data.allowed_to_edit_lead = result.allowed_to_edit_lead
       data.record = result.id
+      /*additional info for converting lead*/
+      if (state['option'] === 'convert') {
+        data['email'] = result.email
+        data['cf_city'] = result.city ? {label: result.city, value: result.city} : {label: "Hà Nội", value: "Hà Nội"}
+        data['cf_state'] = result.state ? {label: result.state, value: result.state} : {label: "Ba Đình", value: "Ba Đình"}
+        data['cf_contact_street'] = result.lane
+      }
       state['data'] = data
       return state
     case types.GET_LEAD_FAILED:
