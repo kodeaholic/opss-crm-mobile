@@ -30,7 +30,11 @@ class LeadConvertForm extends Component {
         cf_contact_street: _.get(props, 'data.cf_contact_street'),
         cf_city: _.get(props, 'data.cf_city'),
         cf_state: _.get(props, 'data.cf_state'),
-      }
+      },
+      currentCity: _.get(props, 'data.cf_city'),
+      currentState: _.get(props, 'data.cf_state'),
+      cities: _.get(props, 'data.cities'),
+      mapCityState: _.get(props, 'data.mapCityState')
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -98,7 +102,12 @@ class LeadConvertForm extends Component {
     let data = this.state.formData
     data[name] = value
     this.clearError(name)
-    this.setState({ formData: data })
+    if (name === 'cf_city') {
+      this.setState({ formData: data, currentCity: value, currentState: null })
+    }
+    else if (name === 'cf_state') {
+      this.setState({ formData: data, currentState: value })
+    }
   }
 
   renderButton = () => {
@@ -184,7 +193,12 @@ class LeadConvertForm extends Component {
     return this.getOptions('customer_type', inputValue)
   }
   renderForm = () => {
+    let cityOptions = this.state.cities
+    let filteredMap = this.state.mapCityState.filter((map) => map.city === this.state.currentCity.value)[0]
+    let filteredStateOptions = filteredMap.states
     let defaultAssignedUser = this.props.data.assigned_user_id
+    let currentCity = this.state.currentCity
+    let currentState = this.state.currentState
     if (!defaultAssignedUser) {
       // option = 'create'
       defaultAssignedUser = this.props.data.defaultAssignedUser
@@ -266,25 +280,21 @@ class LeadConvertForm extends Component {
             <label className="form-convert-label-field">
               Tỉnh/Thành phố<span className="require-field"> (*)</span>
             </label>
-            <AsyncSelect
-              cacheOptions
-              defaultOptions
-              defaultValue={this.props.data.cf_city}
-              loadOptions={this.fetchCities}
+            <Select
+              value={currentCity}
+              options={cityOptions}
               placeholder="Tỉnh/Thành phố"
               onChange={this.onSelectChange.bind(this, 'cf_city')}
               isSearchable={true}
             />
           </div>
-          <div className="form-convert-wrapper-field" id="state-wrapper">
+          <div className="form-convert-wrapper-field" id="cf_state-wrapper">
             <label className="form-convert-label-field">
               Quận/ Huyện<span className="require-field"> (*)</span>
             </label>
-            <AsyncSelect
-              cacheOptions
-              defaultOptions
-              defaultValue={this.props.data.cf_state}
-              loadOptions={this.fetchCities}
+            <Select
+              value={currentState}
+              options={filteredStateOptions}
               placeholder="Quận/ Huyện"
               onChange={this.onSelectChange.bind(this, 'cf_state')}
               isSearchable={true}

@@ -65,6 +65,8 @@ export default (state = initialState, action) => {
         data['cf_city'] = result.city ? {label: result.city, value: result.city} : {label: "Hà Nội", value: "Hà Nội"}
         data['cf_state'] = result.state ? {label: result.state, value: result.state} : {label: "Ba Đình", value: "Ba Đình"}
         data['cf_contact_street'] = result.lane
+        data['cities'] = result.cities
+        data['mapCityState'] = result.mapCityState
       }
       state['data'] = data
       return state
