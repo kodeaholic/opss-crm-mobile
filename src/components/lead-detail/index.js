@@ -15,12 +15,13 @@ import withLayout from '../withLayout'
 
 /* predefined actions and selectors for mapStateToProps and mapDispatchToProps */
 import { getUserLoggedIn } from '../../modules/loginDuck'
-import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus, showFormAddLead, getViewPermission } from '../../modules/leadDuck'
+import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus, showFormAddLead, getViewPermission, requestConvertLead } from '../../modules/leadDuck'
 import { getSessionStatus } from '../../modules/loginDuck'
 
 /* import child views */
 import LeadView from './view/view'
 import LeadForm from './view/form'
+import LeadConvertForm from './view/convert'
 const mapStateToProps = (state, ownProps) => ({
   expired: getSessionStatus(state),
   currentUser: getUserLoggedIn(state),
@@ -36,7 +37,8 @@ const mapDispatchToProps = dispatch => ({
     {
       fetchLeadRecord,
       requestSaveLead,
-      showFormAddLead
+      showFormAddLead,
+      requestConvertLead
     },
     dispatch
   )
@@ -49,7 +51,8 @@ class LeadComponent extends Component {
     let pathName = props.location.pathname
     if (pathName.indexOf('view') !== -1) option = 'view'
     else if (pathName.indexOf('edit') !== -1) option = 'edit'
-    else option = 'create'
+    else if (pathName.indexOf('create') !== -1) option = 'create'
+    else if (pathName.indexOf('convert') !== -1) option = 'convert'
     let array = pathName.split('/')
     this.state = {
       leadData: {
@@ -114,6 +117,9 @@ class LeadComponent extends Component {
       case 'edit':
         this.props.actions.fetchLeadRecord({session, record, option})
         break;
+      case 'convert':
+        this.props.actions.fetchLeadRecord({session, record, option})
+        break;
       default:
         break;
     }
@@ -163,7 +169,6 @@ class LeadComponent extends Component {
         )
       }
       else if (this.props.option === 'edit' || this.props.option === 'create') {
-        console.log("isAdmin - " + this.state.isAdmin)
         let allowed = false
         if(!this.state.isAdmin && this.props.location.pathname.indexOf('create') !== -1) allowed = true
         else if (this.state.isAdmin) {
@@ -171,6 +176,11 @@ class LeadComponent extends Component {
         }
         return (
           <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option} submit={this.props.actions.requestSaveLead} allowedToEditPhone={allowed} allowedToEditLead={this.props.leadData.allowed_to_edit_lead}/>
+        )
+      }
+      else if (this.props.option === 'convert') {
+        return (
+          <LeadConvertForm data={this.props.leadData} session={this.state.session} submit={this.props.actions.requestConvertLead} currentUserId={this.props.currentUser.userid}/>
         )
       }
     }

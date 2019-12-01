@@ -10,6 +10,9 @@ export const types = {
   SAVE_RECORD_SUCCESS: 'LEAD/SAVE_RECORD_SUCCESS',
   SAVE_RECORD_FAILED: 'LEAD/SAVE_RECORD_FAILED',
   SHOW_FORM_ADD_LEAD: 'SHOW_FORM_ADD_LEAD',
+  SEND_REQUEST_CONVERT_LEAD: 'LEAD/REQUEST_CONVERT',
+  CONVERT_LEAD_SUCCESS: 'LEAD/CONVERT_LEAD_SUCCESS',
+  CONVERT_LEAD_FAILED: 'LEAD/CONVERT_LEAD_FAILED'
 }
 
 /* Selectors */
@@ -40,6 +43,13 @@ export default (state = initialState, action) => {
       state['formSubmitResponseStatus'] = undefined
       state['view_permission'] = undefined
       return state
+    case types.SEND_REQUEST_CONVERT_LEAD:
+      option = _.get(action, 'payload.option') || undefined
+      state['loading'] = true
+      state['option'] = option
+      state['formSubmitResponseStatus'] = undefined
+      state['view_permission'] = undefined
+      return state
     case types.GET_LEAD_SUCCESS:
       state['loading'] = false
       state['formSubmitResponseStatus'] = undefined
@@ -59,6 +69,19 @@ export default (state = initialState, action) => {
       data.allowed_to_edit_lead_source = result.allowed_to_edit_lead_source
       data.allowed_to_edit_lead = result.allowed_to_edit_lead
       data.record = result.id
+      /*additional info for converting lead*/
+      if (state['option'] === 'convert') {
+        data['email'] = result.email
+        data['cf_city'] = result.city ? {label: result.city, value: result.city} : {label: "Hà Nội", value: "Hà Nội"}
+        data['cf_state'] = result.state ? {label: result.state, value: result.state} : {label: "Ba Đình", value: "Ba Đình"}
+        data['potentialname'] = result.potentialname ? {label: result.potentialname, value: result.potentialname} : {label: "Hợp đồng phần mềm", value: "Hợp đồng phần mềm"}
+        data['industry'] = result.industry ? result.industry : {label: "Thời trang", value: "77"}
+        data['cf_pot_khu_vuc'] = result.cf_lead_khu_vuc ? result.cf_lead_khu_vuc : {label: "Hà Nội", value: "10"}
+        data['customer_type'] = result.customer_type ? {label: result.customer_type, value: result.customer_type} : {label: "Cá nhân", value: "Cá nhân"}
+        data['cf_contact_street'] = result.lane
+        data['cities'] = result.cities
+        data['mapCityState'] = result.mapCityState
+      }
       state['data'] = data
       return state
     case types.GET_LEAD_FAILED:
@@ -90,6 +113,14 @@ export default (state = initialState, action) => {
       state['data'] = {defaultAssignedUser: _.get(action, 'payload.defaultAssignedUser')}
       state['loading'] = false
       state['formSubmitResponseStatus'] = undefined
+      return state
+    case types.CONVERT_LEAD_SUCCESS:
+      state['loading'] = false
+      console.log(_.get(action, 'payload'))
+      return state
+    case types.CONVERT_LEAD_FAILED:
+      state['loading'] = false
+      console.log(_.get(action, 'payload'))
       return state
     default:
       return state
@@ -178,6 +209,54 @@ export const requestSaveLead = payload => {
 
   }
 }
+export const requestConvertLead = payload => {
+  return function action(dispatch) {
+    dispatch({ type: types.SEND_REQUEST_CONVERT_LEAD, payload })
+    let {session, data, option} = payload
+    let formData = {...data}
+    if (formData.cf_pot_khu_vuc) formData.cf_pot_khu_vuc = formData.cf_pot_khu_vuc.value
+    if (formData.potentialname) formData.potentialname = formData.potentialname.value
+    if (formData.cf_pot_nganh_hang) formData.cf_pot_nganh_hang = formData.cf_pot_nganh_hang.value
+    if (formData.customer_type) formData.customer_type = formData.customer_type.value
+    if (formData.cf_city) formData.cf_city = formData.cf_city.value
+    if (formData.cf_state) formData.cf_state = formData.cf_state.value
+    if (formData.cf_pot_industry) formData.cf_pot_industry = formData.cf_pot_industry.value
+    if (formData.assigned_user_id) {
+      let assigned_user_id = formData.assigned_user_id.value
+      formData.assigned_user_id = assigned_user_id.split('x')[1]
+    }
+    const bodyFormData = new FormData()
+    bodyFormData.append("_operation", 'convertLead')
+    bodyFormData.append("_session", session)
+    let values = JSON.stringify(formData)
+    bodyFormData.append("values", values)
+    const request = axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_URL_KVCRM,
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+    return request
+      .then(response => {
+        const { success, result } = response.data
+        console.log(response.data)
+        if (success) {
+          let record = _.get(result, 'record_id')
+          if (record) data["record"] = record
+          return dispatch(convertLeadSuccess(data))
+        }
+        else {
+          // console.log(response.data)
+          return dispatch(convertLeadFailed(response.data))
+        }
+      })
+      .catch(err => {
+        //handle error
+        return dispatch(convertLeadFailed(err))
+      })
+
+  }
+}
 export const showFormAddLead = payload => {
   return function action(dispatch) {
     dispatch({ type: types.SHOW_FORM_ADD_LEAD, payload })
@@ -204,5 +283,13 @@ export const saveLeadSuccess = payload => ({
 
 export const saveLeadFailed = payload => ({
   type: types.SAVE_RECORD_FAILED,
+  payload
+})
+export const convertLeadSuccess = payload => ({
+  type: types.CONVERT_LEAD_SUCCESS,
+  payload
+})
+export const convertLeadFailed = payload => ({
+  type: types.CONVERT_LEAD_FAILED,
   payload
 })

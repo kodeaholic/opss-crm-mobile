@@ -39,7 +39,7 @@ const menuLeadFunction = [
   {
     name: 'Convert',
     classIcon: 'fa fa-user-o',
-    path: '/convert'
+    path: '/lead-convert'
   },
   // {
   //   name: '+ Ticket',
