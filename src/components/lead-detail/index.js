@@ -15,7 +15,7 @@ import withLayout from '../withLayout'
 
 /* predefined actions and selectors for mapStateToProps and mapDispatchToProps */
 import { getUserLoggedIn } from '../../modules/loginDuck'
-import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus, showFormAddLead, getViewPermission } from '../../modules/leadDuck'
+import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus, showFormAddLead, getViewPermission, requestConvertLead } from '../../modules/leadDuck'
 import { getSessionStatus } from '../../modules/loginDuck'
 
 /* import child views */
@@ -37,7 +37,8 @@ const mapDispatchToProps = dispatch => ({
     {
       fetchLeadRecord,
       requestSaveLead,
-      showFormAddLead
+      showFormAddLead,
+      requestConvertLead
     },
     dispatch
   )
@@ -179,7 +180,7 @@ class LeadComponent extends Component {
       }
       else if (this.props.option === 'convert') {
         return (
-          <LeadConvertForm data={this.props.leadData} session={this.state.session} submit={this.props.actions.requestSaveLead}/>
+          <LeadConvertForm data={this.props.leadData} session={this.state.session} submit={this.props.actions.requestConvertLead} currentUserId={this.props.currentUser.userid}/>
         )
       }
     }

@@ -30,6 +30,7 @@ class LeadConvertForm extends Component {
         cf_contact_street: _.get(props, 'data.cf_contact_street'),
         cf_city: _.get(props, 'data.cf_city'),
         cf_state: _.get(props, 'data.cf_state'),
+        current_user_id: _.get(props, 'currentUserId')
       },
       currentCity: _.get(props, 'data.cf_city'),
       currentState: _.get(props, 'data.cf_state'),
@@ -85,9 +86,20 @@ class LeadConvertForm extends Component {
       this.addError('cf_mobile', 'Invalid')
     }
     if (_.isEmpty(formData.cf_email)) return this.addError('cf_email', 'Required')
-    console.log(formData)
-    if (error > 0) return false
-    // this.props.submit({ session, data: formData })
+    if (_.isEmpty(formData.cf_pot_khu_vuc)) return this.addError('cf_pot_khu_vuc', 'Required')
+    if (_.isEmpty(formData.potentialname)) return this.addError('potentialname', 'Required')
+    if (_.isEmpty(formData.customer_type)) return this.addError('customer_type', 'Required')
+    if (_.isEmpty(formData.cf_contact_street)) return this.addError('cf_contact_street', 'Required')
+    if (_.isEmpty(formData.cf_city)) return this.addError('cf_city', 'Required')
+    if (_.isEmpty(formData.cf_state)) return this.addError('cf_state', 'Required')
+    if (error > 0) {
+      toast.error("Fill all required fields before saving!", {
+        autoClose: 1500,
+        draggable: false
+      })
+      return false
+    }
+    this.props.submit({ session, data: formData, option: "convert" })
   }
 
   handleChange(e) {
@@ -103,6 +115,7 @@ class LeadConvertForm extends Component {
     data[name] = value
     this.clearError(name)
     if (name === 'cf_city') {
+      data.cf_state = undefined
       this.setState({ formData: data, currentCity: value, currentState: null })
     }
     else if (name === 'cf_state') {
