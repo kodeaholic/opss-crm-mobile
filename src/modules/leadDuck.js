@@ -114,6 +114,14 @@ export default (state = initialState, action) => {
       state['loading'] = false
       state['formSubmitResponseStatus'] = undefined
       return state
+    case types.CONVERT_LEAD_SUCCESS:
+      state['loading'] = false
+      console.log(_.get(action, 'payload'))
+      return state
+    case types.CONVERT_LEAD_FAILED:
+      state['loading'] = false
+      console.log(_.get(action, 'payload'))
+      return state
     default:
       return state
   }
@@ -231,20 +239,20 @@ export const requestConvertLead = payload => {
     return request
       .then(response => {
         const { success, result } = response.data
+        console.log(response.data)
         if (success) {
           let record = _.get(result, 'record_id')
           if (record) data["record"] = record
-          // return dispatch(saveLeadSuccess(data))
+          return dispatch(convertLeadSuccess(data))
         }
         else {
           // console.log(response.data)
-          // return dispatch(saveLeadFailed(response.data))
+          return dispatch(convertLeadFailed(response.data))
         }
-        console.log(response.data)
       })
       .catch(err => {
         //handle error
-        return dispatch(saveLeadFailed(err))
+        return dispatch(convertLeadFailed(err))
       })
 
   }
@@ -275,5 +283,13 @@ export const saveLeadSuccess = payload => ({
 
 export const saveLeadFailed = payload => ({
   type: types.SAVE_RECORD_FAILED,
+  payload
+})
+export const convertLeadSuccess = payload => ({
+  type: types.CONVERT_LEAD_SUCCESS,
+  payload
+})
+export const convertLeadFailed = payload => ({
+  type: types.CONVERT_LEAD_FAILED,
   payload
 })
