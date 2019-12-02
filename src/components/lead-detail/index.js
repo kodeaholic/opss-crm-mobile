@@ -141,6 +141,8 @@ class LeadComponent extends Component {
   }
 
   render() {
+    let userLoginData = localStorage.getItem('userLoggedInKV')
+    let currentUserId = userLoginData.userid
     /* check if view, create, or update */
     if (this.props.expired) {
       localStorage.removeItem('userLoggedInKV')
@@ -218,7 +220,7 @@ class LeadComponent extends Component {
         return (
           <LeadConvertForm data={this.props.leadData} session={this.state.session}
                            submit={this.props.actions.requestConvertLead}
-                           currentUserId={this.props.currentUser.userid}/>
+                           currentUserId={currentUserId}/>
         )
       } else if (this.props.option === 'convert' && this.props.leadData.phoneExists === true) {
         return (<div className="lead-view-container" style={{
