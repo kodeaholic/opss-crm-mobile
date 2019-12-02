@@ -98,6 +98,10 @@ class LeadConvertForm extends Component {
       error++
       this.addError('cf_email', 'Invalid email format')
     }
+    if (!_.isEmpty(formData.email) && !this.validateEmail(formData.email)) {
+      error++
+      this.addError('email', 'Invalid email format')
+    }
     if (_.isEmpty(formData.cf_pot_khu_vuc)) {
       error++
       this.addError('cf_pot_khu_vuc', 'Required')
