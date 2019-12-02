@@ -25,7 +25,8 @@ import {
   showFormAddLead,
   getViewPermission,
   requestConvertLead,
-  getPhoneExists
+  getPhoneExists,
+  getErrorMsg
 } from '../../modules/leadDuck'
 import { getSessionStatus } from '../../modules/loginDuck'
 
@@ -42,7 +43,8 @@ const mapStateToProps = (state, ownProps) => ({
   loading: getLoadingStatus(state),
   formSubmitResponseStatus: getFormSubmitResponseStatus(state),
   viewPermission: getViewPermission(state),
-  phoneExists: getPhoneExists(state)
+  phoneExists: getPhoneExists(state),
+  errorMsg: getErrorMsg(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -172,10 +174,19 @@ class LeadComponent extends Component {
         }
       }
       if (this.props.formSubmitResponseStatus === 'failed' && (this.props.location.pathname.indexOf('view') === -1)) {
-        toast.error('Failed', {
-          autoClose: 2000,
-          draggable: false
-        })
+        if (this.props.errorMsg !== undefined) {
+          let msg = this.props.errorMsg
+          toast.error(msg, {
+            autoClose: 2000,
+            draggable: false
+          })
+        }
+        else {
+          toast.error('Failed', {
+            autoClose: 2000,
+            draggable: false
+          })
+        }
       }
       if (this.props.option === 'view') {
         if (this.props.viewPermission !== undefined && this.props.viewPermission.code === 'ACCESS_DENIED') {

@@ -22,6 +22,7 @@ export const getLeadData = state => _.get(state, 'lead.data') || {}
 export const getFormSubmitResponseStatus = state => _.get(state, 'lead.formSubmitResponseStatus')
 export const getViewPermission = state => _.get(state, 'lead.view_permission')
 export const getPhoneExists = state => _.get(state, 'lead.phoneExists') || undefined
+export const getErrorMsg = state => _.get(state, 'lead.errorMsg') || undefined
 
 /* Initial state */
 const initialState = {
@@ -32,7 +33,8 @@ const initialState = {
     phoneExists: undefined
   },
   formSubmitResponseStatus: undefined,
-  view_permission: undefined
+  view_permission: undefined,
+  errorMsg: undefined
 }
 
 /* Reducer */
@@ -126,7 +128,9 @@ export default (state = initialState, action) => {
       return state
     case types.CONVERT_LEAD_FAILED:
       state['loading'] = false
-      console.log(_.get(action, 'payload'))
+      let response = _.get(action, 'payload')
+      let errorMsg = _.get(response, 'error.message')
+      state['errorMsg'] = errorMsg
       state['formSubmitResponseStatus'] = 'failed'
       return state
     default:
@@ -254,6 +258,13 @@ export const requestConvertLead = payload => {
         }
         else {
           // console.log(response.data)
+          // {
+          //   "success": false,
+          //   "error": {
+          //   "code": 1501,
+          //     "message": "Values cannot be empty!"
+          // }
+          // }
           return dispatch(convertLeadFailed(response.data))
         }
       })
