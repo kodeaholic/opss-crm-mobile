@@ -322,14 +322,21 @@ class LeadConvertForm extends Component {
             <label className="form-convert-label-field">
               Người xử lý<span className="require-field"> (*)</span>
             </label>
-            <AsyncSelect
-              cacheOptions
-              defaultOptions
-              defaultValue={defaultAssignedUser}
-              loadOptions={this.fetchUsers}
+            {/*<AsyncSelect*/}
+            {/*  cacheOptions*/}
+            {/*  defaultOptions*/}
+            {/*  defaultValue={defaultAssignedUser}*/}
+            {/*  loadOptions={this.fetchUsers}*/}
+            {/*  placeholder="Người xử lý"*/}
+            {/*  onChange={this.onSelectChange.bind(this, 'assigned_user_id')}*/}
+            {/*  isSearchable={true}*/}
+            {/*/>*/}
+            <Select
+              value={defaultAssignedUser}
+              // options={filteredStateOptions}
               placeholder="Người xử lý"
               onChange={this.onSelectChange.bind(this, 'assigned_user_id')}
-              isSearchable={true}
+              isSearchable={false}
             />
           </div>
         </fieldset>
