@@ -132,3 +132,18 @@ a.phoneCard {
 textarea {
     -webkit-appearance: textfield;
 }
+.wrapper-field-description {
+    justify-content: center;
+    margin-top: 5px;
+    padding: 0 10px 0 10px;
+}
+.description-field {
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding-left: 3px;
+    margin-bottom: 5px;
+    font-size: 15px;
+}

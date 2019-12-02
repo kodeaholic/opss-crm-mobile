@@ -78,7 +78,17 @@ class ContactView extends Component {
         <Field label="Khu vực" val={leadRegion} />
         <Field label="Nguồn khách hàng" val={leadSource} />
         <Field label="Người xử lý" val={assignedUser} />
-        <Field label="Mô tả chung" val={description} isMultiLine/>
+        {/*<Field label="Mô tả chung" val={description} isMultiLine/>*/}
+        <div className="wrapper-field-description">
+          <p><b className="label-description">
+            Mô tả chung
+          </b></p>
+          <textarea
+            className="description-field"
+            rows="5"
+            readOnly={true}
+            defaultValue={description}/>
+        </div>
       </div>
     )
   }
