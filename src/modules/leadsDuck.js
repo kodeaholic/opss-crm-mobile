@@ -40,7 +40,8 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case types.REQUEST_GET_LIST_LEAD:
-      state['isLoading'] = true
+      let isLoading = _.get(action, 'payload.isLoading')
+      state['isLoading'] = isLoading
       let filterStatus = _.get(action, 'payload.filterStatus')
       if(filterStatus) state['filterStatus'] = filterStatus
       return state

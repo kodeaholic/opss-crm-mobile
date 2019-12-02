@@ -129,7 +129,7 @@ class Lead extends Component {
     let refresh = true
     let filterStatus = this.props.filterStatus
     // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
-    this.props.actions.getListLead({ session, refresh, filterStatus })
+    this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true })
 
     /* Prevent browser's default pull to refresh behavior*/
     document.body.style.overscrollBehavior= 'contain'
