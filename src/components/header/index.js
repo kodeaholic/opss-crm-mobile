@@ -24,6 +24,9 @@ const router = {
   'lead-edit': {
     back: 'lead-view'
   },
+  'lead-create': {
+    back: 'lead'
+  },
   'contact-view': {
     back: 'contact'
   },
