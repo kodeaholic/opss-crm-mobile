@@ -47,6 +47,10 @@ class LeadConvertForm extends Component {
     this.fetchState = this.fetchState.bind(this)
   }
 
+  validateEmail = email => {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(email)
+  }
   addError = (name, content) => {
     if (!document.getElementById(name + '-error')) {
       let nameField = document.getElementById(name + '-wrapper')
@@ -86,6 +90,7 @@ class LeadConvertForm extends Component {
       this.addError('cf_mobile', 'Invalid')
     }
     if (_.isEmpty(formData.cf_email)) return this.addError('cf_email', 'Required')
+    if (!this.validateEmail(formData.cf_email)) return this.addError('cf_email', 'Invalid email format')
     if (_.isEmpty(formData.cf_pot_khu_vuc)) return this.addError('cf_pot_khu_vuc', 'Required')
     if (_.isEmpty(formData.potentialname)) return this.addError('potentialname', 'Required')
     if (_.isEmpty(formData.customer_type)) return this.addError('customer_type', 'Required')
