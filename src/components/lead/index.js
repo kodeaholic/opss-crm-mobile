@@ -19,7 +19,8 @@ import {
   getLeadsPageIndex,
   getLeadsHasMoreData,
   getFilterStatus,
-  fetchListLeadElastic
+  fetchListLeadElastic,
+  getFilters
 } from '../../modules/leadsDuck'
 // import {
 //   getSessionStatus
@@ -29,6 +30,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import AsyncSelect from 'react-select/async/dist/react-select.esm'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import Select from 'react-select'
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
   leads: getLeadsData(state),
@@ -36,7 +38,8 @@ const mapStateToProps = state => ({
   isLoading: getLeadsLoading(state),
   hasMoreData: getLeadsHasMoreData(state),
   expired: getSessionStatus(state),
-  filterStatus: getFilterStatus(state)
+  filterStatus: getFilterStatus(state),
+  filters: getFilters(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -137,6 +140,8 @@ class Lead extends Component {
   }
 
   renderFilter = () => {
+    let filters = this.props.filters
+    let defaultValue = this.props.filterStatus
     return (
       <div className="wrapper-filter-lead">
         <div className="filter-lead-option">
@@ -144,11 +149,18 @@ class Lead extends Component {
             className="fa fa-address-book-o filter-header-item-padding icon-filter-lead"
             aria-hidden="true"></i>
           <div className="wrapper-filter-status">
-            <AsyncSelect
-              cacheOptions
-              defaultOptions
-              defaultValue={this.props.filterStatus}
-              loadOptions={this.fetchLeadStatus}
+            {/*<AsyncSelect*/}
+            {/*  cacheOptions*/}
+            {/*  defaultOptions*/}
+            {/*  defaultValue={this.props.filterStatus}*/}
+            {/*  loadOptions={this.fetchLeadStatus}*/}
+            {/*  placeholder="Tình trạng"*/}
+            {/*  onChange={this.onFilterChange}*/}
+            {/*  isSearchable={false}*/}
+            {/*/>*/}
+            <Select
+              value={defaultValue}
+              options={filters}
               placeholder="Tình trạng"
               onChange={this.onFilterChange}
               isSearchable={false}

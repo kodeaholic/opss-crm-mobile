@@ -21,6 +21,7 @@ export const getFilterStatus = state => _.get(state, 'leads.filterStatus') || {
   label: 'Tất cả',
   value: 'All'
 }
+export const getFilters = state => _.get(state, 'leads.filters') || []
 // Reducer
 const initialState = {
   listLeads: [],
@@ -32,7 +33,8 @@ const initialState = {
   filterStatus: {
     label: 'Tất cả',
     value: 'All'
-  }
+  },
+  filters: []
 }
 
 export default (state = initialState, action) => {
@@ -62,6 +64,9 @@ export default (state = initialState, action) => {
         } else {
         }
       }
+      let filters = _.get(action, 'payload.result.filters') || []
+      filters.unshift({label: 'Tất cả', value: 'All'})
+      state['filters'] = filters
       return state
     }
     case types.FAILURE_GET_LIST_LEAD: {
