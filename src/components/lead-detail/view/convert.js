@@ -127,7 +127,7 @@ class LeadConvertForm extends Component {
       this.addError('cf_state', 'Required')
     }
     if (error > 0) {
-      toast.error("Fill all required fields before saving!", {
+      toast.error("Vui lòng hoàn thiện các trường chưa đúng", {
         autoClose: 1500,
         draggable: false
       })
