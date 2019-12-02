@@ -21,7 +21,7 @@ export const getFilterStatus = state => _.get(state, 'contacts.filterStatus') ||
   label: 'Tất cả',
   value: 'All'
 }
-export const getFilters = state => _.get(state, 'leads.filters') || []
+export const getFilters = state => _.get(state, 'contacts.filters') || []
 // Reducer
 const initialState = {
   listContacts: [],
