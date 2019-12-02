@@ -142,6 +142,7 @@ class LeadComponent extends Component {
 
   render() {
     let userLoginData = localStorage.getItem('userLoggedInKV')
+    userLoginData = JSON.parse(userLoginData).result.login
     let currentUserId = userLoginData.userid
     /* check if view, create, or update */
     if (this.props.expired) {

@@ -18,6 +18,12 @@ const router = {
   'lead-view': {
     back: 'lead'
   },
+  'lead-convert': {
+    back: 'lead-view'
+  },
+  'lead-edit': {
+    back: 'lead-view'
+  },
   'contact-view': {
     back: 'contact'
   },
