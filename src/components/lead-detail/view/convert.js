@@ -89,14 +89,38 @@ class LeadConvertForm extends Component {
       error++
       this.addError('cf_mobile', 'Invalid')
     }
-    if (_.isEmpty(formData.cf_email)) return this.addError('cf_email', 'Required')
-    if (!this.validateEmail(formData.cf_email)) return this.addError('cf_email', 'Invalid email format')
-    if (_.isEmpty(formData.cf_pot_khu_vuc)) return this.addError('cf_pot_khu_vuc', 'Required')
-    if (_.isEmpty(formData.potentialname)) return this.addError('potentialname', 'Required')
-    if (_.isEmpty(formData.customer_type)) return this.addError('customer_type', 'Required')
-    if (_.isEmpty(formData.cf_contact_street)) return this.addError('cf_contact_street', 'Required')
-    if (_.isEmpty(formData.cf_city)) return this.addError('cf_city', 'Required')
-    if (_.isEmpty(formData.cf_state)) return this.addError('cf_state', 'Required')
+    if (_.isEmpty(formData.cf_email)) {
+      error++
+      this.addError('cf_email', 'Required')
+    }
+    if (!this.validateEmail(formData.cf_email)) {
+      error++
+      this.addError('cf_email', 'Invalid email format')
+    }
+    if (_.isEmpty(formData.cf_pot_khu_vuc)) {
+      error++
+      this.addError('cf_pot_khu_vuc', 'Required')
+    }
+    if (_.isEmpty(formData.potentialname)) {
+      error++
+      this.addError('potentialname', 'Required')
+    }
+    if (_.isEmpty(formData.customer_type)) {
+      error++
+      this.addError('customer_type', 'Required')
+    }
+    if (_.isEmpty(formData.cf_contact_street)) {
+      error++
+      this.addError('cf_contact_street', 'Required')
+    }
+    if (_.isEmpty(formData.cf_city)) {
+      error++
+      this.addError('cf_city', 'Required')
+    }
+    if (_.isEmpty(formData.cf_state)) {
+      error++
+      this.addError('cf_state', 'Required')
+    }
     if (error > 0) {
       toast.error("Fill all required fields before saving!", {
         autoClose: 1500,

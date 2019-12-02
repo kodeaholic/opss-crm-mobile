@@ -160,7 +160,7 @@ class Field extends Component {
             className="input-field"
             rows="5"
             readOnly={readOnly}
-            defaultValue={value}/>) : (!phoneCard ? (<p className="input-field">{value}</p>) : ( value? (<a className="phoneCard" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"></i> {value}
+            defaultValue={value}/>) : (!phoneCard ? (!_.isEmpty(value) ? (<p className="input-field">{value}</p>) : (<p className="input-field">&nbsp;</p>)) : ( value? (<a className="phoneCard" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"></i> {value}
           </a>) : (<p className="input-field">&nbsp;</p>)))
         }
       </div>
