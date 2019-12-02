@@ -246,6 +246,14 @@ class Contact extends Component {
 
   renderList = data => {
     const { hasMoreData } = this.props
+    if(data.length === 0) {
+      return (
+        <div className="wrapper-list-lead"
+             style={{ height: '100%', overflow: 'auto', position: 'absolute', top: '50%', width: '100%', textAlign: "center", backgroundColor: 'transparent'}}>
+          Empty
+        </div>
+      )
+    }
     return (
       <div
         className="wrapper-list-lead"
@@ -277,7 +285,7 @@ class Contact extends Component {
 
   render() {
     const dataContacts = _.get(this.props, 'leads') || {}
-    if(dataContacts.length === 0 && !this.props.expired && this.props.isLoading) {
+    if(!this.props.expired && this.props.isLoading) {
       return (
         <div className="wrapper-lead">
           <div className="loading-data">
@@ -296,11 +304,11 @@ class Contact extends Component {
         <Redirect to={'/login'} />
       )
     }
-    else {
+    else if (!this.props.isLoading){
       return (
         <div className="wrapper-lead">
           {this.renderFilter()}
-          {dataContacts ? this.renderList(dataContacts) : this.renderLoading()}
+          {this.renderList(dataContacts)}
         </div>
       )
     }
