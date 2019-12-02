@@ -75,6 +75,8 @@ class Header extends Component {
     if (e.key === 'Enter') {
       if (e.target.value && e.target.value != '' && e.target.value.length >= 3) {
         this.props.history.push('/search/' + e.target.value)
+      } else {
+        return toast.error('Bạn phải nhập giá trị để tìm kiếm')
       }
     }
   }
