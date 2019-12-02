@@ -70,7 +70,7 @@ class Contact extends Component {
         session = userLoginData.session
       }
     }
-    this.props.actions.getListContact({ session, refresh, filterStatus })
+    this.props.actions.getListContact({ session, refresh, filterStatus, isLoading: true })
     // this.props.actions.fetchListContactElastic({ session, refresh, filterStatus })
 
   }

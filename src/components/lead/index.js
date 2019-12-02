@@ -71,7 +71,7 @@ class Lead extends Component {
         session = userLoginData.session
       }
     }
-    this.props.actions.getListLead({ session, refresh, filterStatus })
+    this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true })
     // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
 
   }

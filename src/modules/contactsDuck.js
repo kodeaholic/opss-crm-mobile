@@ -41,7 +41,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case types.REQUEST_GET_LIST_CONTACT:
       let isLoading = _.get(action, 'payload.isLoading')
-      state['isLoading'] = isLoading
+      if (isLoading !== undefined) state['isLoading'] = isLoading
       let filterStatus = _.get(action, 'payload.filterStatus')
       if(filterStatus) state['filterStatus'] = filterStatus
       return state
