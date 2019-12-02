@@ -116,11 +116,15 @@ export default (state = initialState, action) => {
       return state
     case types.CONVERT_LEAD_SUCCESS:
       state['loading'] = false
-      console.log(_.get(action, 'payload'))
+      newState = _.get(action, 'payload')
+      newState = { ...state['data'], ...newState}
+      state['data'] = newState
+      state['formSubmitResponseStatus'] = 'success'
       return state
     case types.CONVERT_LEAD_FAILED:
       state['loading'] = false
       console.log(_.get(action, 'payload'))
+      state['formSubmitResponseStatus'] = 'failed'
       return state
     default:
       return state

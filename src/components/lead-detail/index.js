@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import { Redirect } from 'react-router-dom'
 
 /* react-redux */
@@ -15,13 +15,24 @@ import withLayout from '../withLayout'
 
 /* predefined actions and selectors for mapStateToProps and mapDispatchToProps */
 import { getUserLoggedIn } from '../../modules/loginDuck'
-import { fetchLeadRecord, getCurrentOption, getLeadData, getLoadingStatus, requestSaveLead, getFormSubmitResponseStatus, showFormAddLead, getViewPermission, requestConvertLead } from '../../modules/leadDuck'
+import {
+  fetchLeadRecord,
+  getCurrentOption,
+  getLeadData,
+  getLoadingStatus,
+  requestSaveLead,
+  getFormSubmitResponseStatus,
+  showFormAddLead,
+  getViewPermission,
+  requestConvertLead
+} from '../../modules/leadDuck'
 import { getSessionStatus } from '../../modules/loginDuck'
 
 /* import child views */
 import LeadView from './view/view'
 import LeadForm from './view/form'
 import LeadConvertForm from './view/convert'
+
 const mapStateToProps = (state, ownProps) => ({
   expired: getSessionStatus(state),
   currentUser: getUserLoggedIn(state),
@@ -76,7 +87,7 @@ class LeadComponent extends Component {
   }
 
   componentWillMount() {
-    const {currentUser} = this.props
+    const { currentUser } = this.props
     let session = undefined
     let isAdmin = false
     let userId = undefined
@@ -89,7 +100,7 @@ class LeadComponent extends Component {
     }
     if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
-      if(userLoginData) {
+      if (userLoginData) {
         userLoginData = JSON.parse(userLoginData).result.login
         session = userLoginData.session
         isAdmin = userLoginData.is_admin
@@ -97,90 +108,104 @@ class LeadComponent extends Component {
         lastName = userLoginData.lastname
       }
     }
-    this.setState({session: session, isAdmin: isAdmin})
+    this.setState({ session: session, isAdmin: isAdmin })
     let record = this.state.recordId
-    console.log("WillMount: current session - " + session)
-    console.log("WillMount: current option - " + this.state.viewOrCreateOrUpdate)
-    console.log("WillMount: record - " + record)
+    console.log('WillMount: current session - ' + session)
+    console.log('WillMount: current option - ' + this.state.viewOrCreateOrUpdate)
+    console.log('WillMount: record - ' + record)
     let option = this.state.viewOrCreateOrUpdate
     switch (this.state.viewOrCreateOrUpdate) {
       case 'view':
-        this.props.actions.fetchLeadRecord({session, record, option})
-        break;
+        this.props.actions.fetchLeadRecord({ session, record, option })
+        break
       case 'create':
         let defaultAssignedUser = {
           label: lastName,
-          value: "19x" + userId
+          value: '19x' + userId
         }
-        this.props.actions.showFormAddLead({session, option, defaultAssignedUser})
-        break;
+        this.props.actions.showFormAddLead({ session, option, defaultAssignedUser })
+        break
       case 'edit':
-        this.props.actions.fetchLeadRecord({session, record, option})
-        break;
+        this.props.actions.fetchLeadRecord({ session, record, option })
+        break
       case 'convert':
-        this.props.actions.fetchLeadRecord({session, record, option})
-        break;
+        this.props.actions.fetchLeadRecord({ session, record, option })
+        break
       default:
-        break;
+        break
     }
   }
 
   render() {
     /* check if view, create, or update */
-    if(this.props.expired){
+    if (this.props.expired) {
       localStorage.removeItem('userLoggedInKV')
-      toast.error("Session expired", {
+      toast.error('Session expired', {
         autoClose: 1500,
-        draggable: false,
+        draggable: false
       })
       return (
-        <Redirect to={'/login'} />
+        <Redirect to={'/login'}/>
       )
     }
-    if(this.props.loading) {
+    if (this.props.loading) {
       return (
         <div className="wrapper-lead">
           <div className="loading-data">
-            <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+            <i className="fa fa-spinner fa-pulse fa-3x fa-fw"
+               style={{ position: 'fixed', top: 'calc(50vh - 50.25px)' }}></i>
           </div>
         </div>
       )
-    }
-    else {
+    } else {
       if (this.props.formSubmitResponseStatus === 'success' && (this.props.location.pathname.indexOf('view') === -1)) {
-        toast.success("Success", {
+        toast.success('Success', {
           autoClose: 2000,
-          draggable: false,
+          draggable: false
         })
-        return <Redirect to={'/lead-view/' + this.props.leadData.record} />
+        if (this.props.location.pathname.indexOf('edit') !== -1) {
+          return <Redirect to={'/lead-view/' + this.props.leadData.record}/>
+        } else if (this.props.location.pathname.indexOf('convert') !== -1) {
+          return <Redirect to={'/contact-view/' + this.props.leadData.record}/>
+        }
       }
       if (this.props.formSubmitResponseStatus === 'failed' && (this.props.location.pathname.indexOf('view') === -1)) {
-        toast.error("Failed", {
+        toast.error('Failed', {
           autoClose: 2000,
-          draggable: false,
+          draggable: false
         })
       }
       if (this.props.option === 'view') {
         if (this.props.viewPermission !== undefined && this.props.viewPermission.code === 'ACCESS_DENIED') {
-          return (<div className="lead-view-container" style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}><div className="loading-data">Permission Denied</div></div>)
+          return (<div className="lead-view-container" style={{
+            height: 'calc(100vh)',
+            overflow: 'scroll',
+            position: 'absolute',
+            top: '0',
+            width: '100%'
+          }}>
+            <div className="loading-data">Permission Denied</div>
+          </div>)
         }
         return (
           <LeadView data={this.props.leadData}/>
         )
-      }
-      else if (this.props.option === 'edit' || this.props.option === 'create') {
+      } else if (this.props.option === 'edit' || this.props.option === 'create') {
         let allowed = false
-        if(!this.state.isAdmin && this.props.location.pathname.indexOf('create') !== -1) allowed = true
+        if (!this.state.isAdmin && this.props.location.pathname.indexOf('create') !== -1) allowed = true
         else if (this.state.isAdmin) {
           allowed = true
         }
         return (
-          <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option} submit={this.props.actions.requestSaveLead} allowedToEditPhone={allowed} allowedToEditLead={this.props.leadData.allowed_to_edit_lead}/>
+          <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option}
+                    submit={this.props.actions.requestSaveLead} allowedToEditPhone={allowed}
+                    allowedToEditLead={this.props.leadData.allowed_to_edit_lead}/>
         )
-      }
-      else if (this.props.option === 'convert') {
+      } else if (this.props.option === 'convert') {
         return (
-          <LeadConvertForm data={this.props.leadData} session={this.state.session} submit={this.props.actions.requestConvertLead} currentUserId={this.props.currentUser.userid}/>
+          <LeadConvertForm data={this.props.leadData} session={this.state.session}
+                           submit={this.props.actions.requestConvertLead}
+                           currentUserId={this.props.currentUser.userid}/>
         )
       }
     }

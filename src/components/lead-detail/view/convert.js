@@ -80,12 +80,13 @@ class LeadConvertForm extends Component {
     let session = this.props.session
     let formData = this.state.formData
     /* validation - edit */
-    let phoneRegex = /^[0-9]{10,12}$/g
+    let phoneRegex = /^[0-9]{1,255}$/g
     let error = 0
     let mobile = formData.cf_mobile
     let lastname = formData.lastname
     if (lastname === '') return this.addError('lastname', 'Required')
     if (mobile !== undefined && (!mobile.match(phoneRegex) || _.isEmpty(mobile))) {
+    // if (_.isEmpty(mobile)) {
       error++
       this.addError('cf_mobile', 'Invalid')
     }

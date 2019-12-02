@@ -55,7 +55,7 @@ class LeadForm extends Component {
     let session = this.props.session
     let formData = this.state.formData
     /* validation - edit */
-    let phoneRegex = /^[0-9]{10,12}$/g
+    let phoneRegex = /^[0-9]{1,255}$/g
     let error = 0
     if(this.props.option === 'edit') {
       let mobile = formData.mobile
