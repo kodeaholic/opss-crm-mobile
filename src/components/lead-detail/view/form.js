@@ -102,7 +102,13 @@ class LeadForm extends Component {
       }
     }
 
-    if (error > 0) return false
+    if (error > 0) {
+      toast.error("Fill all required fields before saving!", {
+        autoClose: 1500,
+        draggable: false
+      })
+      return false
+    }
     if(this.props.option === 'create') {
       if (!this.state.formData.assigned_user_id) formData.assigned_user_id = this.props.data.defaultAssignedUser
     }
