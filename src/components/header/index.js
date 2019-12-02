@@ -56,11 +56,12 @@ class Header extends Component {
   renderIconLeft = () => {
     const namePath = _.get(this.props, 'path') || ''
     const objPathOnRouter = _.get(router, [namePath])
-    const pathBack = !_.isEmpty(objPathOnRouter)
+    let pathBack = !_.isEmpty(objPathOnRouter)
       ? _.get(objPathOnRouter, 'back')
       : ''
-    const isAllowBack = !!_.get(objPathOnRouter, 'back')
-
+    let inSearch = namePath.indexOf('search') !== -1
+    const isAllowBack = !!_.get(objPathOnRouter, 'back') || inSearch
+    if(inSearch) pathBack = true
     return (
       <div className="wrapper-icon" onClick={() => this.routeChange(pathBack)}>
         <i

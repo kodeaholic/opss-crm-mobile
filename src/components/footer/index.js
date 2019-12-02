@@ -72,8 +72,6 @@ class Footer extends Component {
 
   renderItemMenu(item, key, id) {
     let currentPath = this.props.location.pathname
-    console.log(currentPath)
-    console.log(item.path)
     return (
       <div className={currentPath.indexOf(item.path) !== -1 ? 'wrapper-item-footer active' : "wrapper-item-footer"} key={key + item.name}>
         { id ? (
