@@ -7,7 +7,7 @@
   background-color: #38a6fe;
   display: flex;
   flex-direction: row;
-  padding-top: 10px;
+  /*padding-top: 10px;*/
 }
 
 .wrapper-item-footer {
@@ -26,4 +26,7 @@
   .wrapper-footer {
     z-index: -1000;
   }
+}
+.active {
+  background-color: #0d65dd;
 }
