@@ -24,7 +24,8 @@ import {
   getFormSubmitResponseStatus,
   showFormAddLead,
   getViewPermission,
-  requestConvertLead
+  requestConvertLead,
+  getPhoneExists
 } from '../../modules/leadDuck'
 import { getSessionStatus } from '../../modules/loginDuck'
 
@@ -40,7 +41,8 @@ const mapStateToProps = (state, ownProps) => ({
   option: getCurrentOption(state),
   loading: getLoadingStatus(state),
   formSubmitResponseStatus: getFormSubmitResponseStatus(state),
-  viewPermission: getViewPermission(state)
+  viewPermission: getViewPermission(state),
+  phoneExists: getPhoneExists(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -201,12 +203,22 @@ class LeadComponent extends Component {
                     submit={this.props.actions.requestSaveLead} allowedToEditPhone={allowed}
                     allowedToEditLead={this.props.leadData.allowed_to_edit_lead}/>
         )
-      } else if (this.props.option === 'convert') {
+      } else if (this.props.option === 'convert' && this.props.leadData.phoneExists === false) {
         return (
           <LeadConvertForm data={this.props.leadData} session={this.state.session}
                            submit={this.props.actions.requestConvertLead}
                            currentUserId={this.props.currentUser.userid}/>
         )
+      } else if (this.props.option === 'convert' && this.props.leadData.phoneExists === true) {
+        return (<div className="lead-view-container" style={{
+          height: 'calc(100vh)',
+          overflow: 'scroll',
+          position: 'absolute',
+          top: '0',
+          width: '100%'
+        }}>
+          <div className="loading-data">Lead is converted</div>
+        </div>)
       }
     }
     return (

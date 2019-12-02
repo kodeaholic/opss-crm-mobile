@@ -21,13 +21,15 @@ export const getCurrentOption = state => _.get(state, 'lead.option') || undefine
 export const getLeadData = state => _.get(state, 'lead.data') || {}
 export const getFormSubmitResponseStatus = state => _.get(state, 'lead.formSubmitResponseStatus')
 export const getViewPermission = state => _.get(state, 'lead.view_permission')
+export const getPhoneExists = state => _.get(state, 'lead.phoneExists') || undefined
 
 /* Initial state */
 const initialState = {
   option: undefined, /* view, create, or update */
   loading: false,
   data: {
-    defaultAssignedUser: {}
+    defaultAssignedUser: {},
+    phoneExists: undefined
   },
   formSubmitResponseStatus: undefined,
   view_permission: undefined
@@ -81,6 +83,7 @@ export default (state = initialState, action) => {
         data['cf_contact_street'] = result.lane
         data['cities'] = result.cities
         data['mapCityState'] = result.mapCityState
+        data['phoneExists'] = result.phoneExists
       }
       state['data'] = data
       return state
