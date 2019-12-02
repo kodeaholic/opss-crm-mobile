@@ -165,7 +165,7 @@ class LeadComponent extends Component {
           autoClose: 2000,
           draggable: false
         })
-        if (this.props.location.pathname.indexOf('edit') !== -1) {
+        if (this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('create') !== -1) {
           return <Redirect to={'/lead-view/' + this.props.leadData.record}/>
         } else if (this.props.location.pathname.indexOf('convert') !== -1) {
           return <Redirect to={'/contact-view/' + this.props.leadData.record}/>
