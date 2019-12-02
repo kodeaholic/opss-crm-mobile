@@ -142,6 +142,7 @@ class LeadConvertForm extends Component {
     data[name] = value
     this.clearError(name)
     this.setState({ formData: data })
+    this.addChangeToURL()
   }
 
   onSelectChange(name, value) {
@@ -155,8 +156,30 @@ class LeadConvertForm extends Component {
     else if (name === 'cf_state') {
       this.setState({ formData: data, currentState: value })
     }
+    this.addChangeToURL()
   }
-
+  addChangeToURL = () => {
+    // CMB-81
+    let href = window.location.href
+    if (href.indexOf('form-changed') === -1) window.location.href = href + '#form-changed';
+  }
+  removeChangeFromURL = () => {
+    // CMB-81
+    window.location.href = window.location.href.replace('#form-changed', '');
+  }
+  conditionalBack = () => {
+    // CMB-81
+    if (window.location.href.indexOf('form-changed') !== -1) {
+      let r = window.confirm("Bạn có muốn rời đi?");
+      if (r === true) {
+        window.history.go(-2)
+      } else {
+        return false
+      }
+    } else {
+      window.history.back()
+    }
+  }
   renderButton = () => {
     /* create -> back to lead list */
     /* update -> back to lead-view */
@@ -172,7 +195,8 @@ class LeadConvertForm extends Component {
         <div className="form-convert-button">
           {/*<Link to={pathToGoBack}>*/}
           <button type="button" className="btn-add-new-lead" onClick={() => {
-            window.history.back()
+            // window.history.back()
+            this.conditionalBack()
           }}>
             Back
           </button>

@@ -114,9 +114,9 @@ class LeadComponent extends Component {
     }
     this.setState({ session: session, isAdmin: isAdmin })
     let record = this.state.recordId
-    console.log('WillMount: current session - ' + session)
-    console.log('WillMount: current option - ' + this.state.viewOrCreateOrUpdate)
-    console.log('WillMount: record - ' + record)
+    // console.log('WillMount: current session - ' + session)
+    // console.log('WillMount: current option - ' + this.state.viewOrCreateOrUpdate)
+    // console.log('WillMount: record - ' + record)
     let option = this.state.viewOrCreateOrUpdate
     switch (this.state.viewOrCreateOrUpdate) {
       case 'view':

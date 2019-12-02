@@ -42,10 +42,23 @@ class Header extends Component {
     // this._handleSearchEnter = this._handleSearchEnter.bind(this)
   }
 
+  conditionalBack = () => {
+    // CMB-81
+    if (window.location.href.indexOf('form-changed') !== -1) {
+      let r = window.confirm("Bạn có muốn rời đi?");
+      if (r === true) {
+        window.history.go(-2)
+      } else {
+        return false
+      }
+    } else {
+      window.history.back()
+    }
+  }
   routeChange = pathBack => {
     if (pathBack) {
       // this.props.history.push('/' + pathBack)
-      window.history.back()
+      this.conditionalBack()
     }
     // this.props.history.goBack()
     else {
@@ -59,7 +72,7 @@ class Header extends Component {
     let pathBack = !_.isEmpty(objPathOnRouter)
       ? _.get(objPathOnRouter, 'back')
       : ''
-    let inSearch = namePath.indexOf('search') !== -1
+    let inSearch = !_.isEmpty(namePath) ? namePath.indexOf('search') !== -1 : false
     const isAllowBack = !!_.get(objPathOnRouter, 'back') || inSearch
     if(inSearch) pathBack = true
     return (

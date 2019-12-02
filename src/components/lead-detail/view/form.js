@@ -114,18 +114,42 @@ class LeadForm extends Component {
     }
     this.props.submit({session, data: formData})
   }
+  conditionalBack = () => {
+    // CMB-81
+    if (window.location.href.indexOf('form-changed') !== -1) {
+      let r = window.confirm("Bạn có muốn rời đi?");
+      if (r === true) {
+        window.history.go(-2)
+      } else {
+        return false
+      }
+    } else {
+      window.history.back()
+    }
+  }
+  addChangeToURL = () => {
+    // CMB-81
+    let href = window.location.href
+    if (href.indexOf('form-changed') === -1) window.location.href = href + '#form-changed';
+  }
+  removeChangeFromURL = () => {
+    // CMB-81
+    window.location.href = window.location.href.replace('#form-changed', '');
+  }
   handleChange(e) {
     const { name, value } = e.target
     let data = this.state.formData
     data[name] = value
     this.clearError(name)
     this.setState({ formData: data })
+    this.addChangeToURL()
   }
   onSelectChange(name, value) {
     let data = this.state.formData
     data[name] = value
     this.clearError(name)
     this.setState({formData: data});
+    this.addChangeToURL()
   }
   renderButton = () => {
     /* create -> back to lead list */
@@ -143,7 +167,8 @@ class LeadForm extends Component {
         <div className="form-create-or-update-button">
           {/*<Link to={pathToGoBack}>*/}
             <button type="button" className="btn-add-new-lead" onClick={() => {
-              window.history.back()
+              // window.history.back()
+              this.conditionalBack()
             }}>
               Back
             </button>
