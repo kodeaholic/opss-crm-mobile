@@ -126,7 +126,7 @@ class Header extends Component {
             )}
         </div>
         <div className="wrapper-icon">
-          {namePath.indexOf('create') !== -1 || namePath.indexOf('edit') !== -1 || namePath.indexOf('convert') !== -1 ? (<button id="globalSaveButton" type="button" className="btn-add-new-lead" onClick={this.handleSubmit} style={{backgroundColor: "white"}} disabled>
+          {!_.isEmpty(namePath) && (namePath.indexOf('create') !== -1 || namePath.indexOf('edit') !== -1 || namePath.indexOf('convert') !== -1) ? (<button id="globalSaveButton" type="button" className="btn-add-new-lead" onClick={this.handleSubmit} style={{backgroundColor: "white"}} disabled>
             Lưu
           </button>) : (
             <i

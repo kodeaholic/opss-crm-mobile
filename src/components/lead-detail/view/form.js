@@ -170,7 +170,7 @@ class LeadForm extends Component {
 
   renderSaveButton = () => {
     let saveBtn = document.getElementById('globalSaveButton');
-    if (saveBtn !== undefined) {
+    if (!_.isEmpty(saveBtn)) {
       saveBtn.disabled = false;
       saveBtn.onclick = this.handleSubmit
     }
