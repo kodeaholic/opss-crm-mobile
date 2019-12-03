@@ -106,7 +106,7 @@ class LoginPage extends React.Component {
     if (username && password) {
       this.props.actions.requestLogin({
         username: username.toLowerCase(),
-        password: password.toLowerCase()
+        password: password
       })
     } else {
       return toast.error('Tên đăng nhập hoặc mật khẩu chưa đúng')
