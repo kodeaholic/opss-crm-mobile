@@ -37,6 +37,17 @@ const initialState = {
   filters: []
 }
 
+function arrayUnique(array) {
+  let a = array.concat();
+  for(let i=0; i<a.length; ++i) {
+    for(let j=i+1; j<a.length; ++j) {
+      if(a[i].id === a[j].id)
+        a.splice(j--, 1);
+    }
+  }
+  return a;
+}
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case types.REQUEST_GET_LIST_CONTACT:
@@ -52,19 +63,28 @@ export default (state = initialState, action) => {
       const newContacts = _.get(action, 'payload.result.records') || []
       const refresh = _.get(action, 'payload.refresh') || undefined
       let list = []
-      if(refresh === undefined){
+      if (refresh === undefined) {
+        // loadmore
         list = _.concat(list, lstContacts)
         list = _.concat(list, newContacts)
-      }
-      else list = newContacts
-      state['listContacts'] = list
-      if (newContacts) {
-        if (newContacts.length >= 20) {
-          state['pageIndex'] = state.pageIndex + 1
+        if (newContacts && newContacts.length >= 20) {
           state['hasMoreData'] = true
+          state['pageIndex'] = state.pageIndex + 1
         } else {
+          state['hasMoreData'] = false
+        }
+      } else {
+        // refresh: append old list to the end of new list
+        if (newContacts && newContacts.length > 0) {
+          let temp = []
+          temp = _.concat(temp, newContacts)
+          temp = _.concat(temp, lstContacts)
+          list = _.concat([], temp)
+          list = arrayUnique(list)
+          state['hasMoreData'] = newContacts.length >= 20;
         }
       }
+      state['listContacts'] = list
       let filters = _.get(action, 'payload.result.filters') || []
       filters.unshift({label: 'Tất cả', value: 'All'})
       state['filters'] = filters

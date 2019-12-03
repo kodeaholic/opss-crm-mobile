@@ -204,7 +204,6 @@ class Lead extends Component {
   }
 
   refreshData = () => {
-    console.log("Refresh")
     const { userLoggedIn } = this.props
     let { session } = userLoggedIn
     if(!session) {
@@ -214,12 +213,11 @@ class Lead extends Component {
     }
     let refresh = true
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListLead({ session, refresh, filterStatus })
+    this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true })
     // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
   }
 
   fetchMoreData = () => {
-    console.log("Loadmore")
     const { pageIndex, userLoggedIn } = this.props
     let { session } = userLoggedIn
     if(!session) {
@@ -228,25 +226,25 @@ class Lead extends Component {
       session = userLoginData.session
     }
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListLead({ session, pageIndex, filterStatus })
+    this.props.actions.getListLead({ session, pageIndex, filterStatus, isLoading: true })
     // this.props.actions.fetchListLeadElastic({ session, pageIndex, filterStatus })
   }
 
-  renderLoading = () => {
-    if (this.props.leads.length === 0) {
-      return (
-        <div className="wrapper-list-lead"
-             style={{ height: '100%', overflow: 'auto', position: 'absolute', top: '50%', width: '100%', textAlign: "center", backgroundColor: 'transparent'}}>
-          Not found
-        </div>
-      )
-    }
-    else return (
-      <div className="loading-data">
-        <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-      </div>
-    )
-  }
+  // renderLoading = () => {
+  //   if (this.props.leads.length === 0) {
+  //     return (
+  //       <div className="wrapper-list-lead"
+  //            style={{ height: '100%', overflow: 'auto', position: 'absolute', top: '50%', width: '100%', textAlign: "center", backgroundColor: 'transparent'}}>
+  //         Not found
+  //       </div>
+  //     )
+  //   }
+  //   else return (
+  //     <div className="loading-data">
+  //       <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+  //     </div>
+  //   )
+  // }
 
   renderList = data => {
     const { hasMoreData } = this.props
@@ -267,16 +265,28 @@ class Lead extends Component {
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
           hasMore={hasMoreData}
-          loader={this.renderLoading()}
+          // loader={<h4>Loading...</h4>}
+          endMessage={
+            <p style={{textAlign: 'center'}}>
+              <b>Nothing left</b>
+            </p>
+          }
           scrollableTarget="scrollableDiv"
           refreshFunction={this.refreshData}
           pullDownToRefresh
+          // pullDownToRefreshContent={
+          //   this.renderLoading()
+          // }
+          // releaseToRefreshContent={
+          //   this.renderLoading()
+          // }
           pullDownToRefreshContent={
-            this.renderLoading()
+            <h3 style={{textAlign: 'center'}}>&#8595; Pull down & release to refresh</h3>
           }
           releaseToRefreshContent={
-            this.renderLoading()
-          }>
+            <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
+          }
+        >
           {data
             ? _.map(data, (item, key) => {
                 return this.renderItemList(item, key)
@@ -289,16 +299,7 @@ class Lead extends Component {
 
   render() {
     const dataLeads = _.get(this.props, 'leads') || {}
-    if(!this.props.expired && this.props.isLoading) {
-      return (
-        <div className="wrapper-lead">
-          <div className="loading-data">
-            <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
-          </div>
-        </div>
-      )
-    }
-    else if(this.props.expired){
+    if(this.props.expired){
       localStorage.removeItem('userLoggedInKV')
       toast.error("Session expired", {
         autoClose: 1500,
@@ -308,14 +309,13 @@ class Lead extends Component {
         <Redirect to={'/login'} />
       )
     }
-    else if (!this.props.isLoading){
-      return (
-        <div className="wrapper-lead">
-          {this.renderFilter()}
-          {this.renderList(dataLeads)}
-        </div>
-      )
-    }
+    return (
+      <div className="wrapper-lead">
+        <div className="loading" style={{display: this.props.isLoading ? '' : 'none'}}>Loading&#8230;</div>
+        {this.renderFilter()}
+        {this.renderList(dataLeads)}
+      </div>
+    )
   }
 }
 
