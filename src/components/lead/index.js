@@ -252,7 +252,7 @@ class Lead extends Component {
       return (
         <div className="wrapper-list-lead"
              style={{ height: '100%', overflow: 'auto', position: 'absolute', top: '50%', width: '100%', textAlign: "center", backgroundColor: 'transparent'}}>
-          Empty
+          &nbsp;
         </div>
       )
     }

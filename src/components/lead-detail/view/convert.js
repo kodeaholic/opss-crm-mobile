@@ -84,47 +84,47 @@ class LeadConvertForm extends Component {
     let error = 0
     let mobile = formData.cf_mobile
     let lastname = formData.lastname
-    if (lastname === '') return this.addError('lastname', 'Required')
+    if (lastname === '') return this.addError('lastname', 'Vui lòng không để trống')
     if (mobile !== undefined && (!mobile.match(phoneRegex) || _.isEmpty(mobile))) {
     // if (_.isEmpty(mobile)) {
       error++
-      this.addError('cf_mobile', 'Invalid')
+      this.addError('cf_mobile', 'Vui lòng nhập đúng định dạng')
     }
     if (_.isEmpty(formData.cf_email)) {
       error++
-      this.addError('cf_email', 'Required')
+      this.addError('cf_email', 'Vui lòng không để trống')
     }
     if (!this.validateEmail(formData.cf_email)) {
       error++
-      this.addError('cf_email', 'Invalid email format')
+      this.addError('cf_email', 'Vui lòng nhập đúng định dạng email')
     }
     if (!_.isEmpty(formData.email) && !this.validateEmail(formData.email)) {
       error++
-      this.addError('email', 'Invalid email format')
+      this.addError('email', 'Vui lòng nhập đúng định dạng email')
     }
     if (_.isEmpty(formData.cf_pot_khu_vuc)) {
       error++
-      this.addError('cf_pot_khu_vuc', 'Required')
+      this.addError('cf_pot_khu_vuc', 'Vui lòng không để trống')
     }
     if (_.isEmpty(formData.potentialname)) {
       error++
-      this.addError('potentialname', 'Required')
+      this.addError('potentialname', 'Vui lòng không để trống')
     }
     if (_.isEmpty(formData.customer_type)) {
       error++
-      this.addError('customer_type', 'Required')
+      this.addError('customer_type', 'Vui lòng không để trống')
     }
     if (_.isEmpty(formData.cf_contact_street)) {
       error++
-      this.addError('cf_contact_street', 'Required')
+      this.addError('cf_contact_street', 'Vui lòng không để trống')
     }
     if (_.isEmpty(formData.cf_city)) {
       error++
-      this.addError('cf_city', 'Required')
+      this.addError('cf_city', 'Vui lòng không để trống')
     }
     if (_.isEmpty(formData.cf_state)) {
       error++
-      this.addError('cf_state', 'Required')
+      this.addError('cf_state', 'Vui lòng không để trống')
     }
     if (error > 0) {
       toast.error("Vui lòng hoàn thiện các trường chưa đúng", {
@@ -180,35 +180,12 @@ class LeadConvertForm extends Component {
       window.history.back()
     }
   }
-  renderButton = () => {
-    /* create -> back to lead list */
-    /* update -> back to lead-view */
-    let pathToGoBack = '/lead'
-    if (this.props.option === 'edit') {
-      // back to view
-      pathToGoBack += '-view/' + this.state.formData.record
-    } else {
-      pathToGoBack = '/lead'
+  renderSaveButton = () => {
+    let saveBtn = document.getElementById('globalSaveButton');
+    if (saveBtn !== undefined) {
+      saveBtn.disabled = false;
+      saveBtn.onclick = this.handleSubmit
     }
-    return (
-      <div className="wrapper-button-form-convert">
-        <div className="form-convert-button">
-          {/*<Link to={pathToGoBack}>*/}
-          <button type="button" className="btn-add-new-lead" onClick={() => {
-            // window.history.back()
-            this.conditionalBack()
-          }}>
-            Back
-          </button>
-          {/*</Link>*/}
-        </div>
-        <div className="form-convert-button">
-          <button type="button" className="btn-add-new-lead" onClick={this.handleSubmit}>
-            Lưu
-          </button>
-        </div>
-      </div>
-    )
   }
   /*
   * Fetch data from API for dropdown select
@@ -400,7 +377,7 @@ class LeadConvertForm extends Component {
   render() {
     return (
       <div className="container-form-convert">
-        {this.renderButton()}
+        {this.renderSaveButton()}
         {this.renderForm()}
       </div>
     )

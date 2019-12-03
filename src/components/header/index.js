@@ -106,11 +106,12 @@ class Header extends Component {
   }
 
   render() {
+    let namePath = _.get(this.props, 'path') || ''
     return (
       <div className="wrapper-header" style={{ zIndex: 2 }}>
         {this.renderIconLeft()}
         <div className="wrapper-input">
-          {this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 ? ('') :
+          {this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 || this.props.match.path.indexOf('convert') !== -1 ? ('') :
             (
               <div className="wrapper-input">
                 <i className="fa fa-search" aria-hidden="true"></i>
@@ -125,13 +126,17 @@ class Header extends Component {
             )}
         </div>
         <div className="wrapper-icon">
-          <i
-            className="fa fa-bell"
-            aria-hidden="true"
-            style={{
-              fontSize: 26,
-              color: '#ffffff'
-            }}></i>
+          {namePath.indexOf('create') !== -1 || namePath.indexOf('edit') !== -1 || namePath.indexOf('convert') !== -1 ? (<button id="globalSaveButton" type="button" className="btn-add-new-lead" onClick={this.handleSubmit} style={{backgroundColor: "white"}} disabled>
+            Lưu
+          </button>) : (
+            <i
+              className="fa fa-bell"
+              aria-hidden="true"
+              style={{
+                fontSize: 26,
+                color: '#ffffff'
+              }}></i>
+          )}
         </div>
       </div>
     )

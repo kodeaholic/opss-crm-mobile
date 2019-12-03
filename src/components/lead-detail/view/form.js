@@ -71,46 +71,50 @@ class LeadForm extends Component {
       let mobile = formData.mobile
       let phone = formData.phone
       let lastname = formData.lastname
-      if (lastname === '') return this.addError('lastname', 'Required')
+      if (lastname === '') return this.addError('lastname', 'Vui lòng không để trống')
       if (mobile !== undefined && (!mobile.match(phoneRegex) || _.isEmpty(mobile))) {
         error++
-        this.addError('mobile', 'Invalid')
+        this.addError('mobile', 'Vui lòng nhập đúng định dạng')
       }
       if (!_.isEmpty(phone) && !phone.match(phoneRegex)) {
         error++
-        this.addError('phone', 'Invalid')
+        this.addError('phone', 'Vui lòng nhập đúng định dạng')
       }
     } else if (this.props.option === 'create') {
       if (_.isEmpty(formData.lastname)) {
         error++
-        this.addError('lastname', 'Required')
+        this.addError('lastname', 'Vui lòng không để trống')
       }
       if (_.isEmpty(formData.leadstatus)) {
         error++
-        this.addError('leadstatus', 'Required')
+        this.addError('leadstatus', 'Vui lòng không để trống')
       }
       if (_.isEmpty(formData.mobile) || !formData.mobile.match(phoneRegex)) {
         error++
-        this.addError('mobile', 'Invalid')
+        this.addError('mobile', 'Vui lòng nhập đúng định dạng')
       }
       if (!_.isEmpty(formData.phone) && !formData.phone.match(phoneRegex)) {
         error++
-        this.addError('phone', 'Invalid')
+        this.addError('phone', 'Vui lòng nhập đúng định dạng')
       }
       if (_.isEmpty(formData.industry)) {
         error++
-        this.addError('industry', 'Required')
+        this.addError('industry', 'Vui lòng không để trống')
       }
       if (_.isEmpty(formData.cf_lead_khu_vuc)) {
         error++
-        this.addError('cf_lead_khu_vuc', 'Required')
+        this.addError('cf_lead_khu_vuc', 'Vui lòng không để trống')
       }
       if (_.isEmpty(formData.leadsource)) {
         error++
-        this.addError('leadsource', 'Required')
+        this.addError('leadsource', 'Vui lòng không để trống')
       }
     }
-
+    let websiteRegex = /[^a-zA-Z0-9]/g
+    if (!_.isEmpty(formData.website) && websiteRegex.test(formData.website)) {
+      error++
+      this.addError('website', 'Vui lòng không nhập khoảng trắng và kí tự đặc biệt')
+    }
     if (error > 0) {
       toast.error('Vui lòng hoàn thiện các trường chưa đúng', {
         autoClose: 1500,
@@ -164,35 +168,12 @@ class LeadForm extends Component {
     this.addChangeToURL()
   }
 
-  renderButton = () => {
-    /* create -> back to lead list */
-    /* update -> back to lead-view */
-    let pathToGoBack = '/lead'
-    if (this.props.option === 'edit') {
-      // back to view
-      pathToGoBack += '-view/' + this.state.formData.record
-    } else {
-      pathToGoBack = '/lead'
+  renderSaveButton = () => {
+    let saveBtn = document.getElementById('globalSaveButton');
+    if (saveBtn !== undefined) {
+      saveBtn.disabled = false;
+      saveBtn.onclick = this.handleSubmit
     }
-    return (
-      <div className="wrapper-button-form-create-or-update">
-        <div className="form-create-or-update-button">
-          {/*<Link to={pathToGoBack}>*/}
-          <button type="button" className="btn-add-new-lead" onClick={() => {
-            // window.history.back()
-            this.conditionalBack()
-          }}>
-            Back
-          </button>
-          {/*</Link>*/}
-        </div>
-        <div className="form-create-or-update-button">
-          <button type="button" className="btn-add-new-lead" onClick={this.handleSubmit}>
-            Lưu
-          </button>
-        </div>
-      </div>
-    )
   }
   /*
   * Fetch data from API for dropdown select
@@ -344,7 +325,7 @@ class LeadForm extends Component {
   render() {
     return (
       <div className="container-form-create-or-update">
-        {this.renderButton()}
+        {this.renderSaveButton()}
         {this.renderForm()}
       </div>
     )
