@@ -211,7 +211,7 @@ class Contact extends Component {
     }
     let refresh = true
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListContact({ session, refresh, filterStatus, isLoading: true })
+    this.props.actions.getListContact({ session, refresh, filterStatus })
     // this.props.actions.fetchListContactElastic({ session, refresh, filterStatus })
   }
 
@@ -224,7 +224,7 @@ class Contact extends Component {
       session = userLoginData.session
     }
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListContact({ session, pageIndex, filterStatus, isLoading: true })
+    this.props.actions.getListContact({ session, pageIndex, filterStatus })
     // this.props.actions.fetchListContactElastic({ session, pageIndex, filterStatus })
   }
 
@@ -262,7 +262,7 @@ class Contact extends Component {
         <InfiniteScroll
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
-          hasMore={hasMoreData}
+          hasMore={hasMoreData && !this.props.isLoading}
           // loader={this.renderLoading()}
           endMessage={
             <p style={{textAlign: 'center'}}>
@@ -307,9 +307,14 @@ class Contact extends Component {
         <Redirect to={'/login'} />
       )
     }
+    if (this.props.isLoading){
+      return (
+        <div className="loading">Loading&#8230;</div>
+      )
+    }
+    else
     return (
       <div className="wrapper-lead">
-        <div className="loading" style={{display: this.props.isLoading ? '' : 'none'}}>Loading&#8230;</div>
         {this.renderFilter()}
         {this.renderList(dataContacts)}
       </div>

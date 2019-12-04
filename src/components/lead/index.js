@@ -213,7 +213,8 @@ class Lead extends Component {
     }
     let refresh = true
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true })
+    this.props.actions.getListLead({ session, refresh, filterStatus })
+    // this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true })
     // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
   }
 
@@ -226,7 +227,7 @@ class Lead extends Component {
       session = userLoginData.session
     }
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListLead({ session, pageIndex, filterStatus, isLoading: true })
+    this.props.actions.getListLead({ session, pageIndex, filterStatus})
     // this.props.actions.fetchListLeadElastic({ session, pageIndex, filterStatus })
   }
 
@@ -264,7 +265,7 @@ class Lead extends Component {
         <InfiniteScroll
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
-          hasMore={hasMoreData}
+          hasMore={hasMoreData && !this.props.isLoading}
           // loader={<h4>Loading...</h4>}
           endMessage={
             <p style={{textAlign: 'center'}}>
@@ -308,10 +309,14 @@ class Lead extends Component {
       return (
         <Redirect to={'/login'} />
       )
+    } else if (this.props.isLoading) {
+      return (
+        <div className="loading">Loading&#8230;</div>
+      )
     }
+    else
     return (
       <div className="wrapper-lead">
-        <div className="loading" style={{display: this.props.isLoading ? '' : 'none'}}>Loading&#8230;</div>
         {this.renderFilter()}
         {this.renderList(dataLeads)}
       </div>
