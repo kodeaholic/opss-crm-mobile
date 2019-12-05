@@ -38,14 +38,14 @@ const initialState = {
 }
 
 function arrayUnique(array) {
-  let a = array.concat();
-  for(let i=0; i<a.length; ++i) {
-    for(let j=i+1; j<a.length; ++j) {
-      if(a[i].id === a[j].id)
-        a.splice(j--, 1);
+  let a = array.concat()
+  for (let i = 0; i < a.length; ++i) {
+    for (let j = i + 1; j < a.length; ++j) {
+      if (a[i].id === a[j].id)
+        a.splice(j--, 1)
     }
   }
-  return a;
+  return a
 }
 
 export default (state = initialState, action) => {
@@ -75,13 +75,19 @@ export default (state = initialState, action) => {
         }
       } else {
         // refresh: append old list to the end of new list
-        if (newLeads && newLeads.length > 0) {
+        let filterChanged = _.get(action, 'payload.filterChanged')
+        if (newLeads && newLeads.length > 0 && filterChanged === undefined) {
           let temp = []
           temp = _.concat(temp, newLeads)
           temp = _.concat(temp, lstLeads)
           list = _.concat([], temp)
           list = arrayUnique(list)
-          state['hasMoreData'] = newLeads.length >= 20;
+          state['hasMoreData'] = newLeads.length >= 20
+        } else if (newLeads && newLeads.length > 0 && filterChanged === true) {
+          list = _.concat([], newLeads)
+          state['hasMoreData'] = newLeads.length >= 20
+        } else {
+          list = state['listleads']
         }
       }
       state['listLeads'] = list
@@ -106,7 +112,7 @@ export const getListLead = payload => {
     dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
     const bodyFormData = new FormData()
 
-    const { session, pageIndex, refresh, filterStatus } = payload
+    const { session, pageIndex, refresh, filterStatus, filterChanged } = payload
     bodyFormData.append('_operation', 'listModuleRecords')
     bodyFormData.append('_session', session)
     bodyFormData.append('module', 'Leads')
@@ -130,7 +136,7 @@ export const getListLead = payload => {
         //handle success
         const { result, success } = response.data
         if (success) {
-          return dispatch(getListLeadSuccess({ result, refresh }))
+          return dispatch(getListLeadSuccess({ result, refresh, filterChanged }))
         } else {
           const { error } = response.data
           if (error.code === 1501) {
