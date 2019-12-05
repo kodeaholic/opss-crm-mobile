@@ -178,7 +178,7 @@ class Contact extends Component {
 
   renderItemList = (item, key) => {
     if (item){
-      const { assigned_user_id, cf_contact_website, cf_887, createdtime } = item
+      const { assigned_user_id, cf_contact_website, cf_887, createdtime, lastname } = item
       const { label } = assigned_user_id
       return (
         <Link
@@ -188,6 +188,7 @@ class Contact extends Component {
           <div className="wrapper-list-lead-item">
             <div className="wrapper-item-row">
               <label className="label-item-list lead-item-name">{cf_contact_website}</label>
+              <label className="label-item-list">{lastname}</label>
               <label className="label-item-list">{cf_887}</label>
             </div>
             <div className="wrapper-item-row">
