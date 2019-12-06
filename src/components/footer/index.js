@@ -7,15 +7,31 @@ import './index.css'
 
 const menuList = [
   {
+    name: 'Dashboard',
+    classIcon: 'fa fa-columns',
+    path: '/#'
+  },
+
+  {
     name: 'Lead',
-    classIcon: 'fa fa-list-alt',
+    classIcon: 'fa fa-users',
     path: '/lead'
   },
   {
     name: 'Contact',
-    classIcon: 'fa fa-user-o',
+    classIcon: 'fa fa-address-book-o',
     path: '/contact'
   },
+  {
+    name: 'Opportunity',
+    classIcon: 'fa fa-handshake-o', //fa-sticky-note-o
+    path: '/#'
+  },
+  {
+    name: 'More',
+    classIcon: 'fa fa-cog', //fa-sticky-note-o
+    path: '/#'
+  }
   // {
   //   name: 'Opportunity',
   //   classIcon: 'fa fa-file-text-o',
@@ -40,7 +56,7 @@ const menuLeadFunction = [
     name: 'Convert',
     classIcon: 'fa fa-user-o',
     path: '/lead-convert'
-  },
+  }
   // {
   //   name: '+ Ticket',
   //   classIcon: 'fa fa-comment-o',
@@ -72,28 +88,25 @@ class Footer extends Component {
 
   renderItemMenu(item, key, id) {
     let currentPath = this.props.location.pathname
+    let active = currentPath.indexOf(item.path) !== -1 ? ' active' : ''
+    let styleColor = currentPath.indexOf(item.path) !== -1 ? {color: '#006cad'} : {}
     return (
-      <div className={currentPath.indexOf(item.path) !== -1 ? 'wrapper-item-footer active' : "wrapper-item-footer"} key={key + item.name}>
-        { id ? (
+      <div className="wrapper-item-footer" key={key + item.name}>
+        {id ? (
           <Link to={item.path + '/' + id} className="wrapper-circle-icon">
             <i
-              className={item.classIcon}
-              aria-hidden="true"
-              style={{
-                fontSize: 18,
-                color: '#ffffff',
-                paddingTop: 2
-              }}/>
+              className={item.classIcon + " footer-icon " + active}
+              style={styleColor}
+              aria-hidden="true"/>
           </Link>
-        ) : (<Link to={item.path} className="wrapper-circle-icon" onClick={item.path === currentPath ? this.clickToReloadPage : () => {return true}}>
+        ) : (<Link to={item.path} className="wrapper-circle-icon"
+                   onClick={item.path === currentPath ? this.clickToReloadPage : () => {
+                     return true
+                   }}>
           <i
-            className={item.classIcon}
+            className={item.classIcon + " footer-icon " + active}
             aria-hidden="true"
-            style={{
-              fontSize: 18,
-              color: '#ffffff',
-              paddingTop: 2
-            }}/>
+            style={styleColor}/>
         </Link>)}
         <label className="label-menu">{item.name}</label>
       </div>
@@ -105,7 +118,7 @@ class Footer extends Component {
     let res = pathName.split('/')
     const isFunction = !!functionMenu.find(e => e === res[0])
     let itemId = undefined
-    if(res.length >= 2 && isFunction) itemId = res[1]
+    if (res.length >= 2 && isFunction) itemId = res[1]
     return (
       <div className="wrapper-footer">
         {_.map(isFunction ? menuLeadFunction : menuList, (item, key) =>
