@@ -45,7 +45,7 @@ class Header extends Component {
   conditionalBack = () => {
     // CMB-81
     if (window.location.href.indexOf('form-changed') !== -1) {
-      let r = window.confirm("Bạn có muốn rời đi?");
+      let r = window.confirm('Bạn có muốn rời đi?')
       if (r === true) {
         window.history.go(-2)
       } else {
@@ -74,11 +74,11 @@ class Header extends Component {
       : ''
     let inSearch = !_.isEmpty(namePath) ? namePath.indexOf('search') !== -1 : false
     const isAllowBack = !!_.get(objPathOnRouter, 'back') || inSearch
-    if(inSearch) pathBack = true
+    if (inSearch) pathBack = true
     return (
       <div className="wrapper-icon" onClick={() => this.routeChange(pathBack)}>
         <i
-          className={'fa ' + (isAllowBack ? 'fa-arrow-left' : 'fa-bars')}
+          className={'fa ' + (isAllowBack ? 'fa-angle-left' : 'fa-angle-left')}
           aria-hidden="true"
           style={{
             fontSize: 26,
@@ -105,39 +105,70 @@ class Header extends Component {
     }
   }
 
+  renderButton = (fontawesomeClass = 'fa fa-bell') => {
+    return (
+        <i
+          className={fontawesomeClass}
+          aria-hidden="true"
+          style={{
+            // display: 'inline-block',
+            borderRadius: '50%',
+            boxShadow: '0px 0px 2px #888',
+            padding: '0.5em 0.6em',
+            color: 'white',
+            marginLeft: '5px',
+            backgroundColor: 'rgba(255,255,255,0.3)',
+          }}
+        />
+    )
+  }
+
   render() {
     let namePath = _.get(this.props, 'path') || ''
     return (
       <div className="wrapper-header" style={{ zIndex: 2 }}>
-        {this.renderIconLeft()}
-        <div className="wrapper-input">
-          {this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 || this.props.match.path.indexOf('convert') !== -1 ? ('') :
-            (
-              <div className="wrapper-input">
-                <i className="fa fa-search" aria-hidden="true"></i>
-                <form className="form-search" action="#" id="search-form" onSubmit={ e => { e.preventDefault() }} autoComplete="off">
-                  <input type="search" className="input-search-header" style={{ fontSize: 'inherit' }}
-                         placeholder="Search ..."
-                         defaultValue={this.props.match.params.keyword}
-                         onKeyPress={this._handleSearchEnter}
-                         name="search" id="search"/>
-                </form>
-              </div>
-            )}
+        <div className="wrapper-header-left">
+          {this.renderIconLeft()}
         </div>
-        <div className="wrapper-icon">
-          {!_.isEmpty(namePath) && (namePath.indexOf('create') !== -1 || namePath.indexOf('edit') !== -1 || namePath.indexOf('convert') !== -1) ? (<button id="globalSaveButton" type="button" className="btn-add-new-lead" onClick={this.handleSubmit} style={{backgroundColor: "white"}} disabled>
-            Lưu
-          </button>) : (
-            <i
-              className="fa fa-bell"
-              aria-hidden="true"
-              style={{
-                fontSize: 26,
-                color: '#ffffff'
-              }}></i>
-          )}
+        <div className="wrapper-header-center">
+          <div className="header-image-wrapper">
+            {/*{this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 || this.props.match.path.indexOf('convert') !== -1 ? ('') :*/}
+            {/*  (*/}
+            {/*    <div className="header-image">*/}
+            {/*      <i className="fa fa-search" aria-hidden="true"></i>*/}
+            {/*      <form className="form-search" action="#" id="search-form" onSubmit={ e => { e.preventDefault() }} autoComplete="off">*/}
+            {/*        <input type="search" className="input-search-header" style={{ fontSize: 'inherit' }}*/}
+            {/*               placeholder="Search ..."*/}
+            {/*               defaultValue={this.props.match.params.keyword}*/}
+            {/*               onKeyPress={this._handleSearchEnter}*/}
+            {/*               name="search" id="search"/>*/}
+            {/*      </form>*/}
+            {/*    </div>*/}
+            {/*  )}*/}
+            <img
+              alt="Citigo"
+              src={require('../../static/images/citigo.png')}
+              className="header-image"
+            />
+          </div>
         </div>
+        {!_.isEmpty(namePath) && (namePath.indexOf('create') !== -1 || namePath.indexOf('edit') !== -1 || namePath.indexOf('convert') !== -1) ? (
+          <div className="wrapper-header-right">
+
+            <div className="wrapper-icon">
+              <button id="globalSaveButton" type="button" className="btn-add-new-lead" onClick={this.handleSubmit}
+                      style={{ backgroundColor: 'white' }} disabled>
+                Lưu
+              </button>
+            </div>
+          </div>) : (
+          <div className="wrapper-header-right">
+            <div style={{flexGrow: 1}}/>
+            <div className="header-button-list" style={{flexGrow: 2}}>
+              {this.renderButton('fa fa-search')}
+              {this.renderButton('fa fa-bell')}
+            </div>
+          </div>)}
       </div>
     )
   }
