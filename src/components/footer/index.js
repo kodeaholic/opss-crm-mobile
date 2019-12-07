@@ -108,7 +108,7 @@ class Footer extends Component {
             aria-hidden="true"
             style={styleColor}/>
         </Link>)}
-        <label className="label-menu">{item.name}</label>
+        <label className={"label-menu " + active}>{item.name}</label>
       </div>
     )
   }

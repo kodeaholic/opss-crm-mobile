@@ -1,0 +1,62 @@
+.wrapper-filter {
+    z-index: 1;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 75px;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.06);
+    background-color: #ffffff;
+    flex: 1;
+    width: 94%;
+    margin-left: calc(3vw); /* 5% viewport width */
+    margin-right: calc(3vw);
+}
+
+.filter {
+    width: 95%;
+    margin: 0 auto 10px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #ffffff;
+}
+.filter-label {
+    margin: 10px auto 5px auto;
+    width: 95%;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.17;
+    letter-spacing: normal;
+    text-align: left;
+    color: black;
+}
+
+/* Customizing react-select */
+.react-select__control {
+    border-radius: 10px;
+    background-color: #f5f5f5 !important;
+}
+
+/* Item */
+.react-select__single-value {
+    color: #999999 !important;
+}
+
+.under-wrapper-header {
+    z-index: 1;
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    height: 35px;
+    background-color: #006cad;
+    color: #006cad;
+    border: none;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}

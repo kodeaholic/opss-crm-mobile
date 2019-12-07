@@ -31,6 +31,11 @@ import AsyncSelect from 'react-select/async/dist/react-select.esm'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
+
+/* Filter */
+import Filter from '../commonComponents/filter-box/index'
+
+
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
   leads: getLeadsData(state),
@@ -146,34 +151,7 @@ class Lead extends Component {
     let filters = this.props.filters
     let defaultValue = this.props.filterStatus
     return (
-      <div className="wrapper-filter-lead">
-        <div className="filter-lead-option">
-          <i
-            className="fa fa-address-book-o filter-header-item-padding icon-filter-lead"
-            aria-hidden="true"></i>
-          <div className="wrapper-filter-status">
-            {/*<AsyncSelect*/}
-            {/*  cacheOptions*/}
-            {/*  defaultOptions*/}
-            {/*  defaultValue={this.props.filterStatus}*/}
-            {/*  loadOptions={this.fetchLeadStatus}*/}
-            {/*  placeholder="Tình trạng"*/}
-            {/*  onChange={this.onFilterChange}*/}
-            {/*  isSearchable={false}*/}
-            {/*/>*/}
-            <Select
-              value={defaultValue}
-              options={filters}
-              placeholder="Tình trạng"
-              onChange={this.onFilterChange}
-              isSearchable={false}
-            />
-          </div>
-        </div>
-        <div className="filter-lead-result">
-          <Button label="+ Thêm mới" path="/lead-create" />
-        </div>
-      </div>
+      <Filter defaultValue={defaultValue} filters={filters} onChange={this.onFilterChange} isSearchable={false} placeholder="Tình trạng" label="Lọc theo leads"/>
     )
   }
 
@@ -262,7 +240,7 @@ class Lead extends Component {
       <div
         className="wrapper-list-lead"
         id="scrollableDiv"
-        style={{ height: 'calc(100vh - 105px)', overflow: 'auto', position: 'absolute', top: '100px', width: '100%'}}>
+        style={{ height: 'calc(100vh - 180px)', overflow: 'auto', position: 'absolute', top: '125px', width: '100%'}}>
         <InfiniteScroll
           dataLength={data.length} //This is important field to render the next data
           next={this.fetchMoreData}
