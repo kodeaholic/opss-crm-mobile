@@ -1,19 +1,24 @@
 import React, { Component } from 'react'
 import './index.css'
 import Select from 'react-select'
-
-export default class Filter extends Component {
+import { withRouter } from 'react-router-dom'
+import { toast } from 'react-toastify'
+class ComboFilterSearch extends Component {
   constructor(props) {
     super(props)
     this.state = {}
   }
 
-  componentWillMount() {
+  _handleSearchEnter = (e) => {
+    if (e.key === 'Enter') {
+      if (e.target.value && e.target.value != '' && e.target.value.length >= 3) {
+        this.props.history.push('/search/' + e.target.value)
+      } else {
+        toast.error('Vui lòng nhập nhập 3 kí tự trở lên')
+        return false
+      }
+    }
   }
-
-  handleChange = event => {
-  }
-
   render() {
     let defaultValue = this.props.defaultValue
     let filters = this.props.filters
@@ -35,8 +40,8 @@ export default class Filter extends Component {
               }} autoComplete="off">
                 <input type="search" className="input-search-filter-box"
                        placeholder="&#xF002; Nhập tìm kiếm nhanh"
-                       // defaultValue={this.props.match.params.keyword}
-                       // onKeyPress={this._handleSearchEnter}
+                       defaultValue={this.props.match.params.keyword}
+                       onKeyPress={this._handleSearchEnter}
                        name="search" id="search"/>
               </form>
             </div>
@@ -62,3 +67,5 @@ export default class Filter extends Component {
     )
   }
 }
+
+export default withRouter(ComboFilterSearch)

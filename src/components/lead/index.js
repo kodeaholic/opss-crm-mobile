@@ -10,8 +10,6 @@ import './index.css'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
-import Button from '../commonComponents/button'
 import {
   getListLead,
   getLeadsData,
@@ -26,15 +24,15 @@ import {
 //   getSessionStatus
 // } from '../../modules/sessionDuck'
 import { getUserLoggedIn, getSessionStatus } from '../../modules/loginDuck'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import AsyncSelect from 'react-select/async/dist/react-select.esm'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import Select from 'react-select'
 
 /* Filter */
-import Filter from '../commonComponents/filter-box/index'
+import ComboFilterSearch from '../commonComponents/filter-box/index'
 
+/* List */
+import List from '../commonComponents/list'
+import '../commonComponents/list/index.css'
 
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
@@ -64,6 +62,8 @@ class Lead extends Component {
     }
     this.fetchLeadStatus = this.fetchLeadStatus.bind(this)
     this.onFilterChange = this.onFilterChange.bind(this)
+    this.refreshData = this.refreshData.bind(this)
+    this.fetchMoreData = this.fetchMoreData.bind(this)
   }
   onFilterChange(value) {
     let filterStatus = value
@@ -151,7 +151,7 @@ class Lead extends Component {
     let filters = this.props.filters
     let defaultValue = this.props.filterStatus
     return (
-      <Filter defaultValue={defaultValue} filters={filters} onChange={this.onFilterChange} isSearchable={false} placeholder="Tình trạng" label="Lọc theo leads"/>
+      <ComboFilterSearch defaultValue={defaultValue} filters={filters} onChange={this.onFilterChange} isSearchable={false} placeholder="Tình trạng" label="Lọc theo leads"/>
     )
   }
 
@@ -161,20 +161,22 @@ class Lead extends Component {
       const { label } = assigned_user_id
       return (
         <Link
-          className="link-on-lead-list"
+          className="link-on-list"
           key={key}
           to={'/lead-view/' + item.id}>
-          <div className="wrapper-list-lead-item">
-            <div className="wrapper-item-row">
-              <label className="label-item-list lead-item-name">{lastname}</label>
-              <label className="label-item-list">{website}</label>
-              <label className="label-item-list">{leadstatus}</label>
-            </div>
-            <div className="wrapper-item-row">
-              <label className="label-item-list">{label}</label>
-              <label className="lead-item-status label-item-list">
-                {createdtime}
-              </label>
+          <div className="wrapper-80vw-border">
+            <div className="wrapper-list-item">
+              <div className="wrapper-item-row">
+                <label className="label-item-list item-name">{lastname}</label>
+                <label className="label-item-list">{website}</label>
+                <label className="label-item-list">{leadstatus}</label>
+              </div>
+              <div className="wrapper-item-row">
+                <label className="label-item-list text-bold">{label}</label>
+                <label className="item-status label-item-list">
+                  {createdtime}
+                </label>
+              </div>
             </div>
           </div>
         </Link>
@@ -210,22 +212,6 @@ class Lead extends Component {
     // this.props.actions.fetchListLeadElastic({ session, pageIndex, filterStatus })
   }
 
-  // renderLoading = () => {
-  //   if (this.props.leads.length === 0) {
-  //     return (
-  //       <div className="wrapper-list-lead"
-  //            style={{ height: '100%', overflow: 'auto', position: 'absolute', top: '50%', width: '100%', textAlign: "center", backgroundColor: 'transparent'}}>
-  //         Not found
-  //       </div>
-  //     )
-  //   }
-  //   else return (
-  //     <div className="loading-data">
-  //       <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-  //     </div>
-  //   )
-  // }
-
   renderList = data => {
     const { hasMoreData } = this.props
     if(data.length === 0) {
@@ -237,43 +223,7 @@ class Lead extends Component {
       )
     }
     return (
-      <div
-        className="wrapper-list-lead"
-        id="scrollableDiv"
-        style={{ height: 'calc(100vh - 180px)', overflow: 'auto', position: 'absolute', top: '170px', width: '100%'}}>
-        <InfiniteScroll
-          dataLength={data.length} //This is important field to render the next data
-          next={this.fetchMoreData}
-          hasMore={hasMoreData && !this.props.isLoading}
-          // loader={<h4>Loading...</h4>}
-          endMessage={
-            <p style={{textAlign: 'center'}}>
-              <b>Nothing left</b>
-            </p>
-          }
-          scrollableTarget="scrollableDiv"
-          refreshFunction={this.refreshData}
-          pullDownToRefresh
-          // pullDownToRefreshContent={
-          //   this.renderLoading()
-          // }
-          // releaseToRefreshContent={
-          //   this.renderLoading()
-          // }
-          pullDownToRefreshContent={
-            <h3 style={{textAlign: 'center'}}>&#8595; Pull down & release to refresh</h3>
-          }
-          releaseToRefreshContent={
-            <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
-          }
-        >
-          {data
-            ? _.map(data, (item, key) => {
-                return this.renderItemList(item, key)
-              })
-            : null}
-        </InfiniteScroll>
-      </div>
+      <List hasMoreData={hasMoreData} refreshData={this.refreshData} fetchMoreData={this.fetchMoreData} data={data} isLoading={this.props.isLoading} renderItemList={this.renderItemList}/>
     )
   }
 
