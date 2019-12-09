@@ -11,7 +11,7 @@
     margin-left: calc(3vw); /* 5% viewport width */
     margin-right: calc(3vw);
     overflow-x: auto;
-    height: calc(100vh - 235px);
+    max-height: calc(100vh - 235px);
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     top: 175px;

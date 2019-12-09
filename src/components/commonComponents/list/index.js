@@ -36,11 +36,6 @@ export default class List extends Component {
           dataLength={data.length} //This is important field to render the next data
           next={fetchMoreData}
           hasMore={hasMoreData && !isLoading}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Nothing left</b>
-            </p>
-          }
           scrollableTarget="scrollableDiv"
           refreshFunction={refreshData}
           pullDownToRefresh
