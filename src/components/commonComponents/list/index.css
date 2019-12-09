@@ -10,10 +10,10 @@
     width: 94%;
     margin-left: calc(3vw); /* 5% viewport width */
     margin-right: calc(3vw);
-    /*overflow-y: hidden;*/
-    /*overflow-x: hidden;*/
+    overflow-x: auto;
     height: calc(100vh - 235px);
-    overflow: auto;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     top: 175px;
 }
 .wrapper-list > div {

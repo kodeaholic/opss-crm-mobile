@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route} from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import Home from '../home'
 import Dashboard from '../dashboard'
 
@@ -11,8 +11,8 @@ import Search from '../search'
 import LeadComponent from '../lead-detail'
 import ContactComponent from '../contact-detail'
 import OpportunityComponent from '../opportunity-detail'
-import {ToastContainer} from 'react-toastify'
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import Login from '../login'
 import LogoutComponent from '../logout'
@@ -23,6 +23,12 @@ class App extends React.Component {
     super(props)
 
     this.state = {}
+  }
+
+  async componentDidMount() {
+    if (!('scrollBehavior' in document.documentElement.style)) {
+      await import('scroll-behavior-polyfill')
+    }
   }
 
   render() {
