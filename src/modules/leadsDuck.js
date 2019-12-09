@@ -87,7 +87,10 @@ export default (state = initialState, action) => {
           list = _.concat([], newLeads)
           state['hasMoreData'] = newLeads.length >= 20
         } else {
-          list = state['listleads']
+          if (filterChanged === undefined) list = state['listContacts']
+          else {
+            list = []
+          }
         }
       }
       state['listLeads'] = list
