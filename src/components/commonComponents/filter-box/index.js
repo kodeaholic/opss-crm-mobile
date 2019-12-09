@@ -63,20 +63,20 @@ class ComboFilterSearch extends Component {
                   }}
                 />
               </div>
-              <div className="filter-item with-margin-left">
-                {/* Loc theo user */}
-                <Select
-                  classNamePrefix="react-select"
-                  value={defaultValue}
-                  options={filters}
-                  placeholder={placeHolder}
-                  onChange={onChange}
-                  isSearchable={this.props.isSearchable}
-                  components={{
-                    IndicatorSeparator: () => null
-                  }}
-                />
-              </div>
+              {/*<div className="filter-item with-margin-left">*/}
+              {/*  /!* Loc theo user *!/*/}
+              {/*  <Select*/}
+              {/*    classNamePrefix="react-select"*/}
+              {/*    value={defaultValue}*/}
+              {/*    options={filters}*/}
+              {/*    placeholder={placeHolder}*/}
+              {/*    onChange={onChange}*/}
+              {/*    isSearchable={this.props.isSearchable}*/}
+              {/*    components={{*/}
+              {/*      IndicatorSeparator: () => null*/}
+              {/*    }}*/}
+              {/*  />*/}
+              {/*</div>*/}
             </div>
           </div>
         </div>
