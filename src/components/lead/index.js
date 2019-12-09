@@ -33,6 +33,7 @@ import ComboFilterSearch from '../commonComponents/filter-box/index'
 /* List */
 import List from '../commonComponents/list'
 import '../commonComponents/list/index.css'
+import ButtonAddNew from '../commonComponents/button/button-add-new'
 
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
@@ -227,6 +228,12 @@ class Lead extends Component {
     )
   }
 
+  renderButtonAddNewLead = () => {
+    return (
+      <ButtonAddNew pathToGoTo="/lead-create"/>
+    )
+  }
+
   render() {
     const dataLeads = _.get(this.props, 'leads') || {}
     if(this.props.expired){
@@ -246,6 +253,7 @@ class Lead extends Component {
     else
     return (
       <div className="wrapper-lead">
+        {this.renderButtonAddNewLead()}
         {this.renderFilter()}
         {this.renderList(dataLeads)}
       </div>
