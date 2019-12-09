@@ -16,7 +16,7 @@ class ScrollToTop extends Component {
   render() {
     return (
       <div>
-        <div onClick={this.handleClick} className="btn-scroll-to-top">
+        <div onClick={this.handleClick} className="btn-scroll-to-top" id="scrollToTopBtn">
           <i className="fa fa-angle-up btn-scroll-to-top-icon"/>
         </div>
       </div>

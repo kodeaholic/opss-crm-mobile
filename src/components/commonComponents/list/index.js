@@ -18,6 +18,17 @@ export default class List extends Component {
   componentDidMount() {
     let div = document.getElementsByClassName('infinite-scroll-component')[0]
     div.style.scrollBehavior = 'smooth'
+
+    /* Update position of btn scrollToTop and addNew */
+    let list = document.getElementById('scrollableDiv')
+    let scrollToTopBtn = document.getElementById('scrollToTopBtn')
+    let addNewBtn = document.getElementById('addNewBtn')
+    let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+    if (list.offsetHeight < (vh - 235)) {
+      /*  index.css | max-height: calc(100vh - 235px) */
+      scrollToTopBtn.style.display = 'none'
+      addNewBtn.style.bottom = '75px'
+    }
   }
 
   render() {

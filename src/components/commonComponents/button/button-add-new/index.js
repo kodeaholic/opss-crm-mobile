@@ -15,7 +15,7 @@ class ButtonAddNew extends Component {
   render() {
     return (
       <div>
-        <button onClick={this.handleClick} className="btn-add-new">
+        <button onClick={this.handleClick} className="btn-add-new" id="addNewBtn">
           <i className="fa fa-plus btn-add-new-icon"/>
         </button>
       </div>
