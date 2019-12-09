@@ -34,6 +34,7 @@ import ComboFilterSearch from '../commonComponents/filter-box/index'
 import List from '../commonComponents/list'
 import '../commonComponents/list/index.css'
 import ButtonAddNew from '../commonComponents/button/button-add-new'
+import ScrollToTop from '../commonComponents/button/scroll-to-top'
 
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
@@ -233,6 +234,11 @@ class Lead extends Component {
       <ButtonAddNew pathToGoTo="/lead-create"/>
     )
   }
+  renderButtonScrollToTop = () => {
+    return (
+      <ScrollToTop />
+    )
+  }
 
   render() {
     const dataLeads = _.get(this.props, 'leads') || {}
@@ -254,6 +260,7 @@ class Lead extends Component {
     return (
       <div className="wrapper-lead">
         {this.renderButtonAddNewLead()}
+        {this.renderButtonScrollToTop()}
         {this.renderFilter()}
         {this.renderList(dataLeads)}
       </div>

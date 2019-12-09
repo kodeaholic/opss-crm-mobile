@@ -112,7 +112,7 @@ class Header extends Component {
           aria-hidden="true"
           style={{
             // display: 'inline-block',
-            borderRadius: '50%',
+            borderRadius: '50px',
             boxShadow: '0px 0px 2px #888',
             padding: '0.5em 0.6em',
             color: 'white',
@@ -165,7 +165,7 @@ class Header extends Component {
           <div className="wrapper-header-right">
             <div style={{flexGrow: 1}}/>
             <div className="header-button-list" style={{flexGrow: 2}}>
-              {this.renderButton('fa fa-search')}
+              {/*{this.renderButton('fa fa-search')}*/}
               {this.renderButton('fa fa-bell')}
             </div>
           </div>)}
