@@ -24,10 +24,19 @@
     width: 94%;
     margin: 0 auto 5px auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     background-color: #ffffff;
     flex: 1;
+}
+.filter-item {
+    flex: 1;
+}
+.with-margin-left {
+    margin-left: 2.5px;
+}
+.with-margin-right {
+    margin-right: 2.5px;
 }
 .filter-label {
     width: 94%;
@@ -80,7 +89,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0 auto 5px auto;
+    margin: 0 auto 0 auto;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 }
@@ -111,7 +120,7 @@
 .search > form {
     border-radius: 10px;
     width: 100%;
-    margin: 0 auto 0 auto;
+    margin: 5px auto 0 auto;
     flex: 1.9;
     background-color: #f9f9f9;
 }
