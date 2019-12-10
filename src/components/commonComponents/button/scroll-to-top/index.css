@@ -22,3 +22,9 @@
     letter-spacing: normal;
     margin-bottom: 5px;
 }
+
+@media (max-height: 500px) {
+    .btn-scroll-to-top {
+        display: none;
+    }
+}

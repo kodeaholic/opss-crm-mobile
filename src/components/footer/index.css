@@ -25,7 +25,7 @@
 }
 @media (max-height: 500px) {
   .wrapper-footer {
-    z-index: -1000;
+    display: none;
   }
 }
 .active {

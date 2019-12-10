@@ -21,3 +21,8 @@
     line-height: 1.35;
     letter-spacing: normal;
 }
+@media (max-height: 500px) {
+    .btn-add-new {
+        display: none;
+    }
+}
