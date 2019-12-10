@@ -66,7 +66,6 @@ class Lead extends Component {
     super(props)
     this.state = {
     }
-    this.fetchLeadStatus = this.fetchLeadStatus.bind(this)
     this.onFilterStatusChange = this.onFilterStatusChange.bind(this)
     this.onFilterUserChange = this.onFilterUserChange.bind(this)
     this.refreshData = this.refreshData.bind(this)
@@ -86,8 +85,6 @@ class Lead extends Component {
     let filterChanged = true
     let filterUser = this.props.filterUser
     this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true, filterChanged: filterChanged, filterUser })
-    // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
-
   }
   onFilterUserChange(value) {
     let filterUser = value
@@ -103,46 +100,6 @@ class Lead extends Component {
     let filterChanged = true
     let filterStatus = this.props.filterStatus
     this.props.actions.getListLead({ session, refresh, filterUser, isLoading: true, filterChanged: filterChanged, filterStatus })
-    // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
-
-  }
-  fetchLeadStatus = (inputValue) => {
-    let session = this.props.userLoggedIn ? this.props.userLoggedIn.session : undefined
-    if(!session) {
-      let userLoginData = localStorage.getItem('userLoggedInKV')
-      if(userLoginData) {
-        userLoginData = JSON.parse(userLoginData).result.login
-        session = userLoginData.session
-      }
-    }
-
-    const bodyFormData = new FormData()
-    bodyFormData.append('_operation', 'fetchDataList')
-    bodyFormData.append('_session', session)
-    bodyFormData.append('source', 'leadstatus')
-    bodyFormData.append('search', inputValue)
-
-    const request = axios({
-      method: 'POST',
-      url: process.env.REACT_APP_API_URL_KVCRM,
-      data: bodyFormData,
-      config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    })
-
-    return request
-      .then(response => {
-        const { success, result } = response.data
-        if (success) {
-          result.unshift({label: 'Tất cả', value: 'All'})
-          return result
-        }
-        else {
-          return []
-        }
-      })
-      .catch(err => {
-        return []
-      })
   }
   componentWillMount() {
     let { userLoggedIn } = this.props
@@ -161,8 +118,7 @@ class Lead extends Component {
       let refresh = true
       let filterStatus = this.props.filterStatus
       let filterUser = this.props.filterUser
-      // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
-      this.props.actions.getListLead({ session, refresh, filterStatus, filterUser , isLoading: true })
+      this.props.actions.getListLead({ session, refresh, filterStatus, filterUser, isLoading: true })
     }
 
     /* Prevent browser's default pull to refresh behavior*/
@@ -226,8 +182,6 @@ class Lead extends Component {
     let filterStatus = this.props.filterStatus
     let filterUser = this.props.filterUser
     this.props.actions.getListLead({ session, refresh, filterStatus, filterUser })
-    // this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true })
-    // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
   }
 
   fetchMoreData = () => {
@@ -241,7 +195,6 @@ class Lead extends Component {
     let filterStatus = this.props.filterStatus
     let filterUser = this.props.filterUser
     this.props.actions.getListLead({ session, pageIndex, filterStatus, filterUser})
-    // this.props.actions.fetchListLeadElastic({ session, pageIndex, filterStatus })
   }
 
   renderList = data => {

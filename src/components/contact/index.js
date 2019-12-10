@@ -10,8 +10,6 @@ import './index.css'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
-// import Button from '../commonComponents/button'
 import {
   getListContact,
   getContactsData,
@@ -20,26 +18,37 @@ import {
   getContactsHasMoreData,
   getFilterStatus,
   fetchListContactElastic,
-  getFilters
+  getStatusOptions,
+  getUsers,
+  getFilterUser
 } from '../../modules/contactsDuck'
 // import {
 //   getSessionStatus
 // } from '../../modules/sessionDuck'
 import { getUserLoggedIn, getSessionStatus } from '../../modules/loginDuck'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import AsyncSelect from 'react-select/async/dist/react-select.esm'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import Select from 'react-select'
+
+/* Filter */
+import ComboFilterSearch from '../commonComponents/filter-box/index'
+
+/* List */
+import List from '../commonComponents/list'
+import '../commonComponents/list/index.css'
+import ButtonAddNew from '../commonComponents/button/button-add-new'
+import ScrollToTop from '../commonComponents/button/scroll-to-top'
+
 const mapStateToProps = state => ({
   userLoggedIn: getUserLoggedIn(state),
-  leads: getContactsData(state),
+  contacts: getContactsData(state),
   pageIndex: getContactsPageIndex(state),
   isLoading: getContactsLoading(state),
   hasMoreData: getContactsHasMoreData(state),
   expired: getSessionStatus(state),
   filterStatus: getFilterStatus(state),
-  filters: getFilters(state)
+  status: getStatusOptions(state),
+  users: getUsers(state),
+  filterUser: getFilterUser(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -57,9 +66,12 @@ class Contact extends Component {
     super(props)
     this.state = {
     }
-    this.onFilterChange = this.onFilterChange.bind(this)
+    this.onFilterStatusChange = this.onFilterStatusChange.bind(this)
+    this.onFilterUserChange = this.onFilterUserChange.bind(this)
+    this.refreshData = this.refreshData.bind(this)
+    this.fetchMoreData = this.fetchMoreData.bind(this)
   }
-  onFilterChange(value) {
+  onFilterStatusChange(value) {
     let filterStatus = value
     let refresh = true
     let session = this.props.userLoggedIn.session
@@ -71,12 +83,13 @@ class Contact extends Component {
       }
     }
     let filterChanged = true
-    this.props.actions.getListContact({ session, refresh, filterStatus, isLoading: true, filterChanged })
-    // this.props.actions.fetchListContactElastic({ session, refresh, filterStatus })
-
+    let filterUser = this.props.filterUser
+    this.props.actions.getListContact({ session, refresh, filterStatus, isLoading: true, filterChanged: filterChanged, filterUser })
   }
-  fetchContactStatus = (inputValue) => {
-    let session = this.props.userLoggedIn ? this.props.userLoggedIn.session : undefined
+  onFilterUserChange(value) {
+    let filterUser = value
+    let refresh = true
+    let session = this.props.userLoggedIn.session
     if(!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
       if(userLoginData) {
@@ -84,34 +97,9 @@ class Contact extends Component {
         session = userLoginData.session
       }
     }
-
-    const bodyFormData = new FormData()
-    bodyFormData.append('_operation', 'fetchDataList')
-    bodyFormData.append('_session', session)
-    bodyFormData.append('source', 'contactstatus')
-    bodyFormData.append('search', inputValue)
-
-    const request = axios({
-      method: 'POST',
-      url: process.env.REACT_APP_API_URL_KVCRM,
-      data: bodyFormData,
-      config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    })
-
-    return request
-      .then(response => {
-        const { success, result } = response.data
-        if (success) {
-          result.unshift({label: 'Tất cả', value: 'All'})
-          return result
-        }
-        else {
-          return []
-        }
-      })
-      .catch(err => {
-        return []
-      })
+    let filterChanged = true
+    let filterStatus = this.props.filterStatus
+    this.props.actions.getListContact({ session, refresh, filterUser, isLoading: true, filterChanged: filterChanged, filterStatus })
   }
   componentWillMount() {
     let { userLoggedIn } = this.props
@@ -126,11 +114,11 @@ class Contact extends Component {
         this.props.history.push('/login')
       }
     }
-    if (this.props.leads.length === 0) {
+    if (this.props.contacts.length === 0) {
       let refresh = true
       let filterStatus = this.props.filterStatus
-      // this.props.actions.fetchListContactElastic({ session, refresh, filterStatus })
-      this.props.actions.getListContact({ session, refresh, filterStatus, isLoading: true })
+      let filterUser = this.props.filterUser
+      this.props.actions.getListContact({ session, refresh, filterStatus, filterUser, isLoading: true })
     }
 
     /* Prevent browser's default pull to refresh behavior*/
@@ -142,37 +130,14 @@ class Contact extends Component {
   }
 
   renderFilter = () => {
-    let filters = this.props.filters
-    let defaultValue = this.props.filterStatus
+    let status = this.props.status
+    let users = this.props.users
+    let defaultOptions = {
+      filterStatus: this.props.filterStatus,
+      filterUser: this.props.filterUser
+    }
     return (
-      <div className="wrapper-filter-lead">
-        <div className="filter-lead-option">
-          <i
-            className="fa fa-address-book-o filter-header-item-padding icon-filter-lead"
-            aria-hidden="true"></i>
-          <div className="wrapper-filter-status">
-            {/*<AsyncSelect*/}
-            {/*  cacheOptions*/}
-            {/*  defaultOptions*/}
-            {/*  defaultValue={this.props.filterStatus}*/}
-            {/*  loadOptions={this.fetchContactStatus}*/}
-            {/*  placeholder="Tình trạng"*/}
-            {/*  onChange={this.onFilterChange}*/}
-            {/*  isSearchable={false}*/}
-            {/*/>*/}
-            <Select
-              value={defaultValue}
-              options={filters}
-              placeholder="Tình trạng"
-              onChange={this.onFilterChange}
-              isSearchable={false}
-            />
-          </div>
-        </div>
-        {/*<div className="filter-lead-result">
-          <Button label="+ Thêm mới" path="/lead-create" />
-        </div>*/}
-      </div>
+      <ComboFilterSearch defaultOptions={defaultOptions} availableOptions={{status: status, users: users}} onChange={{onFilterStatusChange: this.onFilterStatusChange, onFilterUserChange: this.onFilterUserChange}} label="Lọc contacts"/>
     )
   }
 
@@ -185,17 +150,19 @@ class Contact extends Component {
           className="link-on-lead-list"
           key={key}
           to={'/contact-view/' + item.id}>
-          <div className="wrapper-list-lead-item">
-            <div className="wrapper-item-row">
-              <label className="label-item-list lead-item-name">{cf_contact_website}</label>
-              <label className="label-item-list">{lastname}</label>
-              <label className="label-item-list">{cf_887}</label>
-            </div>
-            <div className="wrapper-item-row">
-              <label className="label-item-list">{label}</label>
-              <label className="lead-item-status label-item-list">
-                {createdtime}
-              </label>
+          <div className="wrapper-80vw-border">
+            <div className="wrapper-list-item">
+              <div className="wrapper-item-row">
+                <label className="label-item-list item-name">{lastname}</label>
+                <label className="label-item-list">{cf_contact_website}</label>
+                <label className="label-item-list">{cf_887}</label>
+              </div>
+              <div className="wrapper-item-row">
+                <label className="label-item-list text-bold">{label}</label>
+                <label className="item-status label-item-list">
+                  {createdtime}
+                </label>
+              </div>
             </div>
           </div>
         </Link>
@@ -213,8 +180,8 @@ class Contact extends Component {
     }
     let refresh = true
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListContact({ session, refresh, filterStatus })
-    // this.props.actions.fetchListContactElastic({ session, refresh, filterStatus })
+    let filterUser = this.props.filterUser
+    this.props.actions.getListContact({ session, refresh, filterStatus, filterUser })
   }
 
   fetchMoreData = () => {
@@ -226,79 +193,33 @@ class Contact extends Component {
       session = userLoginData.session
     }
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListContact({ session, pageIndex, filterStatus })
-    // this.props.actions.fetchListContactElastic({ session, pageIndex, filterStatus })
+    let filterUser = this.props.filterUser
+    this.props.actions.getListContact({ session, pageIndex, filterStatus, filterUser })
   }
-
-  // renderLoading = () => {
-  //   if (this.props.leads.length === 0) {
-  //     return (
-  //       <div className="wrapper-list-lead"
-  //            style={{ height: '100%', overflow: 'auto', position: 'absolute', top: '50%', width: '100%', textAlign: "center", backgroundColor: 'transparent'}}>
-  //         Not found
-  //       </div>
-  //     )
-  //   }
-  //   else return (
-  //     <div className="loading-data">
-  //       <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-  //     </div>
-  //   )
-  // }
 
   renderList = data => {
     const { hasMoreData } = this.props
     if(data.length === 0) {
       return (
-        <div className="wrapper-list-lead"
-             style={{ height: '100%', overflow: 'auto', position: 'absolute', top: '50%', width: '100%', textAlign: "center", backgroundColor: 'transparent'}}>
-          Empty
+        <div
+          className="wrapper-list" style={{backgroundColor: 'transparent', boxShadow: 'none', justifyContent: 'center'}}>
+          <p style={{flex: 1, margin: '15px auto 0 auto'}} id="empty-label">Empty</p>
         </div>
       )
     }
     return (
-      <div
-        className="wrapper-list-lead"
-        id="scrollableDiv"
-        style={{ height: 'calc(100vh - 105px)', overflow: 'auto', position: 'absolute', top: '100px', width: '100%'}}>
-        <InfiniteScroll
-          dataLength={data.length} //This is important field to render the next data
-          next={this.fetchMoreData}
-          hasMore={hasMoreData && !this.props.isLoading}
-          // loader={this.renderLoading()}
-          endMessage={
-            <p style={{textAlign: 'center'}}>
-              <b>Nothing left</b>
-            </p>
-          }
-          scrollableTarget="scrollableDiv"
-          refreshFunction={this.refreshData}
-          pullDownToRefresh
-          // pullDownToRefreshContent={
-          //   this.renderLoading()
-          // }
-          // releaseToRefreshContent={
-          //   this.renderLoading()
-          // }
-          pullDownToRefreshContent={
-            <h3 style={{textAlign: 'center'}}>&#8595; Pull down & release to refresh</h3>
-          }
-          releaseToRefreshContent={
-            <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
-          }
-        >
-          {data
-            ? _.map(data, (item, key) => {
-                return this.renderItemList(item, key)
-              })
-            : null}
-        </InfiniteScroll>
-      </div>
+      <List hasMoreData={hasMoreData} refreshData={this.refreshData} fetchMoreData={this.fetchMoreData} data={data} isLoading={this.props.isLoading} renderItemList={this.renderItemList}/>
+    )
+  }
+
+  renderButtonScrollToTop = () => {
+    return (
+      <ScrollToTop />
     )
   }
 
   render() {
-    const dataContacts = _.get(this.props, 'leads') || {}
+    const dataContacts = _.get(this.props, 'contacts') || {}
     if(this.props.expired){
       localStorage.removeItem('userLoggedInKV')
       toast.error("Session expired", {
@@ -308,8 +229,7 @@ class Contact extends Component {
       return (
         <Redirect to={'/login'} />
       )
-    }
-    if (this.props.isLoading){
+    } else if (this.props.isLoading){
       return (
         <div className="loading">Loading&#8230;</div>
       )
@@ -317,6 +237,7 @@ class Contact extends Component {
     else
     return (
       <div className="wrapper-lead">
+        {this.renderButtonScrollToTop()}
         {this.renderFilter()}
         {this.renderList(dataContacts)}
       </div>
