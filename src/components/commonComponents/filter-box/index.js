@@ -20,10 +20,16 @@ class ComboFilterSearch extends Component {
     }
   }
   render() {
-    let defaultValue = this.props.defaultValue
-    let filters = this.props.filters
+    let defaultOptions = this.props.defaultOptions
+    let availableOptions = this.props.availableOptions
+
+    let isDisabled = false
+    if (availableOptions.users.length === 2) { // Truong hop khong phai coach, SM, admin
+      defaultOptions.filterUser = availableOptions.users[1]
+      availableOptions.users = [availableOptions.users[1]]
+      isDisabled = true
+    }
     let onChange = this.props.onChange
-    let placeHolder = this.props.placeholder
     let label = this.props.label
     return (
       <div>
@@ -50,33 +56,34 @@ class ComboFilterSearch extends Component {
             <label className="filter-label">{label}</label>
             <div className="filter">
               <div className="filter-item with-margin-right">
-                {/* Loc theo tinh trang lead */}
+                {/* Loc theo tinh trang lead, contact */}
                 <Select
                   classNamePrefix="react-select"
-                  value={defaultValue}
-                  options={filters}
-                  placeholder={placeHolder}
-                  onChange={onChange}
-                  isSearchable={this.props.isSearchable}
+                  value={defaultOptions.filterStatus}
+                  options={availableOptions.status}
+                  placeholder="Tình trạng"
+                  onChange={onChange.onFilterStatusChange}
+                  isSearchable={false}
                   components={{
                     IndicatorSeparator: () => null
                   }}
                 />
               </div>
-              {/*<div className="filter-item with-margin-left">*/}
-              {/*  /!* Loc theo user *!/*/}
-              {/*  <Select*/}
-              {/*    classNamePrefix="react-select"*/}
-              {/*    value={defaultValue}*/}
-              {/*    options={filters}*/}
-              {/*    placeholder={placeHolder}*/}
-              {/*    onChange={onChange}*/}
-              {/*    isSearchable={this.props.isSearchable}*/}
-              {/*    components={{*/}
-              {/*      IndicatorSeparator: () => null*/}
-              {/*    }}*/}
-              {/*  />*/}
-              {/*</div>*/}
+              <div className="filter-item with-margin-left">
+                {/* Loc theo user */}
+                <Select
+                  classNamePrefix="react-select"
+                  value={defaultOptions.filterUser}
+                  options={availableOptions.users}
+                  placeholder="Người xử lý"
+                  onChange={onChange.onFilterUserChange}
+                  isSearchable={true}
+                  components={{
+                    IndicatorSeparator: () => null
+                  }}
+                  isDisabled={isDisabled}
+                />
+              </div>
             </div>
           </div>
         </div>

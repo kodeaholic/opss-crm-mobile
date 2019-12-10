@@ -9,7 +9,7 @@ class ScrollToTop extends Component {
   handleClick = (e) => {
     // e.preventDefault()
     let div = document.getElementsByClassName('infinite-scroll-component')[0] // Hien tai moi 1 man chi co 1 scroll component
-    div.scrollIntoView({ block: 'start',  behavior: 'smooth' }) // to TOP
+    if (div) div.scrollIntoView({ block: 'start',  behavior: 'smooth' }) // to TOP
     return true
   }
 

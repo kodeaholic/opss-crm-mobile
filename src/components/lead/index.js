@@ -18,7 +18,9 @@ import {
   getLeadsHasMoreData,
   getFilterStatus,
   fetchListLeadElastic,
-  getFilters
+  getStatusOptions,
+  getUsers,
+  getFilterUser
 } from '../../modules/leadsDuck'
 // import {
 //   getSessionStatus
@@ -44,7 +46,9 @@ const mapStateToProps = state => ({
   hasMoreData: getLeadsHasMoreData(state),
   expired: getSessionStatus(state),
   filterStatus: getFilterStatus(state),
-  filters: getFilters(state)
+  status: getStatusOptions(state),
+  users: getUsers(state),
+  filterUser: getFilterUser(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -63,11 +67,12 @@ class Lead extends Component {
     this.state = {
     }
     this.fetchLeadStatus = this.fetchLeadStatus.bind(this)
-    this.onFilterChange = this.onFilterChange.bind(this)
+    this.onFilterStatusChange = this.onFilterStatusChange.bind(this)
+    this.onFilterUserChange = this.onFilterUserChange.bind(this)
     this.refreshData = this.refreshData.bind(this)
     this.fetchMoreData = this.fetchMoreData.bind(this)
   }
-  onFilterChange(value) {
+  onFilterStatusChange(value) {
     let filterStatus = value
     let refresh = true
     let session = this.props.userLoggedIn.session
@@ -79,7 +84,25 @@ class Lead extends Component {
       }
     }
     let filterChanged = true
-    this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true, filterChanged: filterChanged })
+    let filterUser = this.props.filterUser
+    this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true, filterChanged: filterChanged, filterUser })
+    // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
+
+  }
+  onFilterUserChange(value) {
+    let filterUser = value
+    let refresh = true
+    let session = this.props.userLoggedIn.session
+    if(!session) {
+      let userLoginData = localStorage.getItem('userLoggedInKV')
+      if(userLoginData) {
+        userLoginData = JSON.parse(userLoginData).result.login
+        session = userLoginData.session
+      }
+    }
+    let filterChanged = true
+    let filterStatus = this.props.filterStatus
+    this.props.actions.getListLead({ session, refresh, filterUser, isLoading: true, filterChanged: filterChanged, filterStatus })
     // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
 
   }
@@ -137,8 +160,9 @@ class Lead extends Component {
     if (this.props.leads.length === 0) {
       let refresh = true
       let filterStatus = this.props.filterStatus
+      let filterUser = this.props.filterUser
       // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
-      this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true })
+      this.props.actions.getListLead({ session, refresh, filterStatus, filterUser , isLoading: true })
     }
 
     /* Prevent browser's default pull to refresh behavior*/
@@ -150,10 +174,14 @@ class Lead extends Component {
   }
 
   renderFilter = () => {
-    let filters = this.props.filters
-    let defaultValue = this.props.filterStatus
+    let status = this.props.status
+    let users = this.props.users
+    let defaultOptions = {
+      filterStatus: this.props.filterStatus,
+      filterUser: this.props.filterUser
+    }
     return (
-      <ComboFilterSearch defaultValue={defaultValue} filters={filters} onChange={this.onFilterChange} isSearchable={false} placeholder="Tình trạng" label="Lọc theo leads"/>
+      <ComboFilterSearch defaultOptions={defaultOptions} availableOptions={{status: status, users: users}} onChange={{onFilterStatusChange: this.onFilterStatusChange, onFilterUserChange: this.onFilterUserChange}} label="Lọc leads"/>
     )
   }
 
@@ -196,7 +224,8 @@ class Lead extends Component {
     }
     let refresh = true
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListLead({ session, refresh, filterStatus })
+    let filterUser = this.props.filterUser
+    this.props.actions.getListLead({ session, refresh, filterStatus, filterUser })
     // this.props.actions.getListLead({ session, refresh, filterStatus, isLoading: true })
     // this.props.actions.fetchListLeadElastic({ session, refresh, filterStatus })
   }
@@ -210,7 +239,8 @@ class Lead extends Component {
       session = userLoginData.session
     }
     let filterStatus = this.props.filterStatus
-    this.props.actions.getListLead({ session, pageIndex, filterStatus})
+    let filterUser = this.props.filterUser
+    this.props.actions.getListLead({ session, pageIndex, filterStatus, filterUser})
     // this.props.actions.fetchListLeadElastic({ session, pageIndex, filterStatus })
   }
 
@@ -218,9 +248,9 @@ class Lead extends Component {
     const { hasMoreData } = this.props
     if(data.length === 0) {
       return (
-        <div className="wrapper-list-lead"
-             style={{ height: '100%', overflow: 'auto', position: 'absolute', top: '50%', width: '100%', textAlign: "center", backgroundColor: 'transparent'}}>
-          &nbsp;
+        <div
+          className="wrapper-list" style={{backgroundColor: 'transparent', boxShadow: 'none', justifyContent: 'center'}}>
+          <p style={{flex: 1, margin: '15px auto 0 auto'}} id="empty-label">Empty</p>
         </div>
       )
     }

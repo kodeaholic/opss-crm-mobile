@@ -21,7 +21,12 @@ export const getFilterStatus = state => _.get(state, 'leads.filterStatus') || {
   label: 'Tất cả',
   value: 'All'
 }
-export const getFilters = state => _.get(state, 'leads.filters') || []
+export const getStatusOptions = state => _.get(state, 'leads.status') || []
+export const getUsers = state => _.get(state, 'leads.users') || []
+export const getFilterUser = state => _.get(state, 'leads.filterUser') || {
+  label: 'Tất cả',
+  value: 'All'
+}
 // Reducer
 const initialState = {
   listLeads: [],
@@ -34,7 +39,12 @@ const initialState = {
     label: 'Tất cả',
     value: 'All'
   },
-  filters: []
+  status: [],
+  users: [],
+  filterUser: {
+    label: 'Tất cả',
+    value: 'All'
+  }
 }
 
 function arrayUnique(array) {
@@ -55,6 +65,8 @@ export default (state = initialState, action) => {
       if (isLoading !== undefined) state['isLoading'] = isLoading
       let filterStatus = _.get(action, 'payload.filterStatus')
       if (filterStatus) state['filterStatus'] = filterStatus
+      let filterUser = _.get(action, 'payload.filterUser')
+      if (filterUser) state['filterUser'] = filterUser
       return state
     case types.SUCCESS_GET_LIST_LEAD: {
       state['isLoading'] = false
@@ -94,9 +106,12 @@ export default (state = initialState, action) => {
         }
       }
       state['listLeads'] = list
-      let filters = _.get(action, 'payload.result.filters') || []
-      filters.unshift({ label: 'Tất cả', value: 'All' })
-      state['filters'] = filters
+      let status = _.get(action, 'payload.result.status') || []
+      status.unshift({ label: 'Tất cả', value: 'All' })
+      state['status'] = status
+      let users = _.get(action, 'payload.result.users') || []
+      users.unshift({ label: 'Tất cả', value: 'All' })
+      state['users'] = users
       return state
     }
     case types.FAILURE_GET_LIST_LEAD: {
@@ -115,17 +130,19 @@ export const getListLead = payload => {
     dispatch({ type: types.REQUEST_GET_LIST_LEAD, payload })
     const bodyFormData = new FormData()
 
-    const { session, pageIndex, refresh, filterStatus, filterChanged } = payload
+    const { session, pageIndex, refresh, filterStatus, filterChanged, filterUser } = payload
     bodyFormData.append('_operation', 'listModuleRecords')
     bodyFormData.append('_session', session)
     bodyFormData.append('module', 'Leads')
     if (pageIndex) bodyFormData.append('page', pageIndex)
+    let option = {}
     if (filterStatus) {
-      let option = {
-        leadstatus: filterStatus.value
-      }
-      bodyFormData.append('option', JSON.stringify(option))
+        option.leadstatus = filterStatus ? filterStatus.value : 'All'
     }
+    if (filterUser) {
+      option.smownerid = filterUser ? filterUser.value : 'All'
+    }
+    if (!_.isEmpty(option)) bodyFormData.append('option', JSON.stringify(option))
 
     const request = axios({
       method: 'POST',
