@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import Input from '../../commonComponents/input'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 import './view.css'
 import _ from 'lodash'
@@ -24,7 +24,7 @@ class ContactView extends Component {
       <div>
         <div className="lead-view-container-info">
           <i className="fa fa-address-book-o icon-lead-view"
-            aria-hidden="true"></i>
+             aria-hidden="true"></i>
           <div className="lead-view-wrapper-info">
             <label className="lead-view-information-name">
               {contactData.lastname}
@@ -68,27 +68,52 @@ class ContactView extends Component {
     const description = _.get(contactData, 'description')
     const assignedUser = _.get(contactData, 'assigned_user_id.label')
     return (
-      <div className="lead-view-feild" val={leadName}>
-        <Field label="Họ tên khách hàng" val={leadName} />
-        <Field label="Tình trạng" val={leadStatus} />
-        <Field label="Tên gian hàng" val={leadWebsite} />
-        <Field label="Số điện thoại" val={leadPhone} phone/>
-        <Field label="Số điện thoại khác" val={leadSecondaryPhone} phone/>
-        <Field label="Ngành hàng" val={leadIndustry} />
-        <Field label="Khu vực" val={leadRegion} />
-        <Field label="Nguồn khách hàng" val={leadSource} />
-        <Field label="Người xử lý" val={assignedUser} />
-        {/*<Field label="Mô tả chung" val={description} isMultiLine/>*/}
-        <div className="wrapper-field-description">
-          <p><b className="label-description">
-            Mô tả chung
-          </b></p>
-          <textarea
-            className="description-field"
-            rows="5"
-            readOnly={true}
-            defaultValue={description}/>
-        </div>
+      <div
+        className="wrapper-view"
+        id="scrollableView"
+      >
+        <InfiniteScroll
+          dataLength={0} //This is important field to render the next data
+          next={() => {
+            return false
+          }}
+          hasMore={false}
+          scrollableTarget="scrollableView"
+          refreshFunction={() => {
+            return false
+          }}
+          pullDownToRefresh
+          pullDownToRefreshContent={
+            ''
+          }
+          releaseToRefreshContent={
+            ''
+          }
+        >
+          {<div className="lead-view-field" val={leadName}>
+            <Field label="Họ tên khách hàng" val={leadName}/>
+            <Field label="Tình trạng" val={leadStatus}/>
+            <Field label="Tên gian hàng" val={leadWebsite}/>
+            <Field label="Số điện thoại" val={leadPhone} phone/>
+            <Field label="Số điện thoại khác" val={leadSecondaryPhone} phone/>
+            <Field label="Ngành hàng" val={leadIndustry}/>
+            <Field label="Khu vực" val={leadRegion}/>
+            <Field label="Nguồn khách hàng" val={leadSource}/>
+            <Field label="Người xử lý" val={assignedUser}/>
+            {/*<Field label="Mô tả chung" val={description} isMultiLine/>*/}
+            <div className="wrapper-field-description">
+              <p><b className="label-description">
+                Mô tả chung
+              </b></p>
+              <textarea
+                className="description-field"
+                rows="5"
+                readOnly={true}
+                defaultValue={description}/>
+            </div>
+          </div>
+          }
+        </InfiniteScroll>
       </div>
     )
   }
@@ -119,13 +144,15 @@ class ContactView extends Component {
   }
 
   render() {
-    if(_.isEmpty(this.props.data, true)) {
+    if (_.isEmpty(this.props.data, true)) {
       return (<div className="lead-view-container"
-                   style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}><div className="loading-data">Permission Denied</div></div>)
+                   style={{ height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%' }}>
+        <div className="loading-data">Permission Denied</div>
+      </div>)
     } else {
       return (
         <div className="lead-view-container"
-             style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}>
+             style={{ height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%' }}>
           {this.renderCustomerInfo(this.props.data)}
           {this.renderTabBelow()}
           {this.state.activeTab !== 'DETAILS'
@@ -158,8 +185,9 @@ class Field extends Component {
             className="input-field"
             rows="5"
             readOnly={readOnly}
-            defaultValue={value}/>) : (!phoneCard ? (<p className="input-field">{value}</p>) : ( value? (<a className="phoneCard" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"></i> {value}
-          </a>) : (<p className="input-field">&nbsp;</p>)))
+            defaultValue={value}/>) : (!phoneCard ? (<p className="input-field">{value}</p>) : (value ? (
+            <a className="phoneCard" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"></i> {value}
+            </a>) : (<p className="input-field">&nbsp;</p>)))
         }
       </div>
     )
