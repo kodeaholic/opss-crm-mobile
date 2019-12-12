@@ -11,6 +11,7 @@ import Search from '../search'
 import LeadComponent from '../lead-detail'
 import ContactComponent from '../contact-detail'
 import OpportunityComponent from '../opportunity-detail'
+import ComingSoonComponent from '../comingsoon'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -42,8 +43,6 @@ class App extends React.Component {
         <Route exact path="/home" component={Home}/>
         <Route exact path="/lead" component={Lead}/>
         <Route exact path="/contact" component={Contact}/>
-        <Route exact path="/opportunity" component={Opportunity}/>
-        <Route exact path="/ticket" component={Ticket}/>
         <Route exact path="/search/:keyword" component={Search}/>
         <Route
           exact
@@ -74,6 +73,32 @@ class App extends React.Component {
           exact
           path="/opportunity-view/:id"
           component={OpportunityComponent}
+        />
+
+        <Route
+          exact
+          path="/more"
+          component={ComingSoonComponent}
+        />
+        <Route
+          exact
+          path="/dashboard"
+          component={ComingSoonComponent}
+        />
+        <Route
+          exact
+          path="/opportunity"
+          component={ComingSoonComponent}
+        />
+        <Route
+          exact
+          path="/home"
+          component={ComingSoonComponent}
+        />
+        <Route
+          exact
+          path="/ticket"
+          component={ComingSoonComponent}
         />
       </div>
     )

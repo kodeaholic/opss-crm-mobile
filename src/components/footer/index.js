@@ -9,7 +9,7 @@ const menuList = [
   {
     name: 'Dashboard',
     classIcon: 'fa fa-columns',
-    path: '/#'
+    path: '/dashboard'
   },
 
   {
@@ -25,12 +25,12 @@ const menuList = [
   {
     name: 'Opportunity',
     classIcon: 'fa fa-handshake-o', //fa-sticky-note-o
-    path: '/#'
+    path: '/opportunity'
   },
   {
     name: 'More',
     classIcon: 'fa fa-cog', //fa-sticky-note-o
-    path: '/#'
+    path: '/more'
   }
   // {
   //   name: 'Opportunity',
