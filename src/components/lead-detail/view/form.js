@@ -23,8 +23,12 @@ class LeadForm extends Component {
         'value': 'New'
       }
     }
+    let city = _.get(props, 'data.city') || undefined
+    let state = _.get(props, 'data.state') || undefined
     this.state = {
-      formData: initialFormData
+      formData: initialFormData,
+      currentCity: city,
+      currentState: state
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -164,6 +168,13 @@ class LeadForm extends Component {
     let data = this.state.formData
     data[name] = value
     this.clearError(name)
+    if (name === 'city') {
+      data.state = undefined
+      this.setState({ formData: data, currentCity: value, currentState: null })
+    }
+    else if (name === 'state') {
+      this.setState({ formData: data, currentState: value })
+    }
     this.setState({ formData: data })
     this.addChangeToURL()
   }
@@ -224,6 +235,17 @@ class LeadForm extends Component {
   }
 
   renderForm = () => {
+    let currentCity = this.state.currentCity
+    let currentState = this.state.currentState
+    let cityOptions = this.props.cities
+    let mapCityStateOptions = this.props.mapCityState
+    let filterStateOptions = []
+    if(currentCity && currentCity.value) {
+      filterStateOptions = mapCityStateOptions.filter((map) => map.city === currentCity.value)[0].states
+    }
+    else {
+      filterStateOptions = []
+    }
     let defaultAssignedUser = this.props.data.assigned_user_id
     if (!defaultAssignedUser) {
       // option = 'create'
@@ -302,6 +324,31 @@ class LeadForm extends Component {
               isSearchable={true}
             />
           </div>) : ('')}
+        <div className="form-convert-wrapper-field" id="city-wrapper">
+          <label className="form-convert-label-field">
+            Tỉnh/Thành phố
+          </label>
+          <Select
+            value={currentCity}
+            options={cityOptions}
+            placeholder="Tỉnh/ Thành phố"
+            onChange={this.onSelectChange.bind(this, 'city')}
+            isSearchable={true}
+          />
+        </div>
+        <div className="form-convert-wrapper-field" id="state-wrapper">
+          <label className="form-convert-label-field">
+            Quận/ Huyện
+          </label>
+          <Select
+            value={currentState}
+            options={filterStateOptions}
+            placeholder="Quận/ Huyện"
+            onChange={this.onSelectChange.bind(this, 'state')}
+            isSearchable={true}
+          />
+        </div>
+        <Field label="Địa chỉ chi tiết" name="lane" val={this.props.data.lane} changeHandler={this.handleChange}/>
         <div className="form-create-or-update-wrapper-field" id="assigned_user_id-wrapper">
           <label className="form-create-or-update-label-field">
             Người xử lý<span className="require-field"> (*)</span>

@@ -10,6 +10,8 @@ export const types = {
   SAVE_RECORD_SUCCESS: 'LEAD/SAVE_RECORD_SUCCESS',
   SAVE_RECORD_FAILED: 'LEAD/SAVE_RECORD_FAILED',
   SHOW_FORM_ADD_LEAD: 'SHOW_FORM_ADD_LEAD',
+  SHOW_FORM_ADD_LEAD_SUCCESS: 'SHOW_FORM_ADD_LEAD_SUCCESS',
+  SHOW_FORM_ADD_LEAD_FAILED: 'SHOW_FORM_ADD_LEAD_FAILED',
   SEND_REQUEST_CONVERT_LEAD: 'LEAD/REQUEST_CONVERT',
   CONVERT_LEAD_SUCCESS: 'LEAD/CONVERT_LEAD_SUCCESS',
   CONVERT_LEAD_FAILED: 'LEAD/CONVERT_LEAD_FAILED'
@@ -23,6 +25,8 @@ export const getFormSubmitResponseStatus = state => _.get(state, 'lead.formSubmi
 export const getViewPermission = state => _.get(state, 'lead.view_permission')
 export const getPhoneExists = state => _.get(state, 'lead.phoneExists') || undefined
 export const getErrorMsg = state => _.get(state, 'lead.errorMsg') || undefined
+export const getCities = state => _.get(state, 'lead.cities') || []
+export const getMapCityState = state => _.get(state, 'lead.mapCityState') || undefined
 
 /* Initial state */
 const initialState = {
@@ -34,7 +38,9 @@ const initialState = {
   },
   formSubmitResponseStatus: undefined,
   view_permission: undefined,
-  errorMsg: undefined
+  errorMsg: undefined,
+  cities: [],
+  mapCityState: []
 }
 
 /* Reducer */
@@ -72,7 +78,10 @@ export default (state = initialState, action) => {
       data.description = result.description
       data.allowed_to_edit_lead_source = result.allowed_to_edit_lead_source
       data.allowed_to_edit_lead = result.allowed_to_edit_lead
+      data.lane = result.lane
       data.record = result.id
+      data['city'] = result.city ? {label: result.city, value: result.city} : {label: "Hà Nội", value: "Hà Nội"}
+      data['state'] = result.state ? {label: result.state, value: result.state} : {label: "Ba Đình", value: "Ba Đình"}
       /*additional info for converting lead*/
       if (state['option'] === 'convert') {
         data['email'] = result.email
@@ -88,6 +97,8 @@ export default (state = initialState, action) => {
         data['phoneExists'] = result.phoneExists
       }
       state['data'] = data
+      state['cities'] = result.cities
+      state['mapCityState'] = result.mapCityState
       return state
     case types.GET_LEAD_FAILED:
       state['loading'] = false
@@ -132,6 +143,13 @@ export default (state = initialState, action) => {
       let errorMsg = _.get(response, 'error.message')
       state['errorMsg'] = errorMsg
       state['formSubmitResponseStatus'] = 'failed'
+      return state
+    case types.SHOW_FORM_ADD_LEAD_SUCCESS:
+      state['loading'] = false
+      let cities = _.get(action, 'payload.cities')
+      let mapCityState = _.get(action, 'payload.mapCityState')
+      state['cities'] = cities
+      state['mapCityState'] = mapCityState
       return state
     default:
       return state
@@ -278,6 +296,39 @@ export const requestConvertLead = payload => {
 export const showFormAddLead = payload => {
   return function action(dispatch) {
     dispatch({ type: types.SHOW_FORM_ADD_LEAD, payload })
+    const bodyFormData = new FormData()
+    const { session } = payload
+
+    bodyFormData.append('_operation', 'describe')
+    bodyFormData.append('_session', session)
+    bodyFormData.append('module', 'Leads')
+
+    const request = axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_URL_KVCRM,
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+
+    return request
+      .then(response => {
+        const { success, result } = response.data
+        let {cities, mapCityState} = response.data
+        if (success) {
+          return dispatch(fetchCitiesSuccess(result, cities, mapCityState))
+        }
+        else {
+          let error = response.data.error
+          if (error.code === 1501) {
+            return dispatch(expireSession())
+          }
+          return dispatch(fetchCitiesFailed(error))
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        return dispatch(fetchCitiesFailed(err))
+      })
   }
 }
 
@@ -309,5 +360,14 @@ export const convertLeadSuccess = payload => ({
 })
 export const convertLeadFailed = payload => ({
   type: types.CONVERT_LEAD_FAILED,
+  payload
+})
+
+export const fetchCitiesSuccess = payload => ({
+  type: types.SHOW_FORM_ADD_LEAD_SUCCESS,
+  payload
+})
+export const fetchCitiesFailed = payload => ({
+  type: types.SHOW_FORM_ADD_LEAD_FAILED,
   payload
 })

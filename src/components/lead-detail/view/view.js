@@ -68,6 +68,9 @@ class LeadView extends Component {
     const leadRegion = _.get(leadData, 'cf_lead_khu_vuc.label')
     const description = _.get(leadData, 'description')
     const assignedUser = _.get(leadData, 'assigned_user_id.label')
+    const leadCity = _.get(leadData, 'city.value')
+    const leadState = _.get(leadData, 'state.value')
+    const lane = _.get(leadData, 'lane')
     return (
       <div
         className="wrapper-view"
@@ -95,6 +98,10 @@ class LeadView extends Component {
               <Field label="Số điện thoại" val={leadPhone} phone/>
               <Field label="Số điện thoại khác" val={leadSecondaryPhone} phone/>
               <Field label="Ngành hàng" val={leadIndustry} />
+              <Field label="Khu vực" val={leadRegion} />
+              <Field label="Tỉnh/ Thành phố" val={leadCity} />
+              <Field label="Quận/ Huyện" val={leadState} />
+              <Field label="Địa chỉ chi tiết" val={lane} />
               <Field label="Khu vực" val={leadRegion} />
               <Field label="Nguồn khách hàng" val={leadSource} />
               <Field label="Người xử lý" val={assignedUser} />

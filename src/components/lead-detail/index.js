@@ -26,7 +26,9 @@ import {
   getViewPermission,
   requestConvertLead,
   getPhoneExists,
-  getErrorMsg
+  getErrorMsg,
+  getCities,
+  getMapCityState
 } from '../../modules/leadDuck'
 import { getSessionStatus } from '../../modules/loginDuck'
 
@@ -44,7 +46,9 @@ const mapStateToProps = (state, ownProps) => ({
   formSubmitResponseStatus: getFormSubmitResponseStatus(state),
   viewPermission: getViewPermission(state),
   phoneExists: getPhoneExists(state),
-  errorMsg: getErrorMsg(state)
+  errorMsg: getErrorMsg(state),
+  cities: getCities(state),
+  mapCityState: getMapCityState(state)
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -212,10 +216,15 @@ class LeadComponent extends Component {
         else if (this.state.isAdmin) {
           allowed = true
         }
+        let cities = this.props.cities
+        let mapCityState = this.props.mapCityState
         return (
           <LeadForm data={this.props.leadData} session={this.state.session} option={this.props.option}
                     submit={this.props.actions.requestSaveLead} allowedToEditPhone={allowed}
-                    allowedToEditLead={this.props.leadData.allowed_to_edit_lead}/>
+                    allowedToEditLead={this.props.leadData.allowed_to_edit_lead}
+                    cities={cities}
+                    mapCityState={mapCityState}
+          />
         )
       } else if (this.props.option === 'convert' && this.props.leadData.phoneExists === false) {
         return (
