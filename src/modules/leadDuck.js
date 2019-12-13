@@ -206,12 +206,16 @@ export const requestSaveLead = payload => {
     if (formData.assigned_user_id) formData.assigned_user_id = formData.assigned_user_id.value
     if (formData.leadstatus) formData.leadstatus = formData.leadstatus.value
     if (formData.cf_lead_khu_vuc) formData.cf_lead_khu_vuc = formData.cf_lead_khu_vuc.value
+    if (formData.city) formData.city = formData.city.value
+    if (formData.state) formData.state = formData.state.value
     const bodyFormData = new FormData()
     bodyFormData.append("_operation", 'saveRecord')
     bodyFormData.append("_session", session)
     bodyFormData.append("module", 'Leads')
     if (data.record) bodyFormData.append("record", formData.record)
-    bodyFormData.append("values", JSON.stringify(formData))
+    let jsonString = JSON.stringify(formData)
+    console.log(jsonString)
+    bodyFormData.append("values", jsonString)
     const request = axios({
       method: 'POST',
       url: process.env.REACT_APP_API_URL_KVCRM,
