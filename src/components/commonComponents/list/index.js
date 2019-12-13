@@ -22,12 +22,12 @@ export default class List extends Component {
     /* Update position of btn scrollToTop and addNew */
     let list = document.getElementById('scrollableDiv')
     let scrollToTopBtn = document.getElementById('scrollToTopBtn')
-    let addNewBtn = document.getElementById('addNewBtn')
     let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
     if (list.offsetHeight < (vh - 235)) {
       /*  index.css | max-height: calc(100vh - 235px) */
       scrollToTopBtn.style.display = 'none'
-      addNewBtn.style.bottom = '75px'
+      let addNewBtn = document.getElementById('addNewBtn')
+      if (addNewBtn) addNewBtn.style.bottom = '75px'
     }
   }
 
