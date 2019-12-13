@@ -71,6 +71,11 @@ class App extends React.Component {
         />
         <Route
           exact
+          path="/contact-edit/:id"
+          component={ContactComponent}
+        />
+        <Route
+          exact
           path="/opportunity-view/:id"
           component={OpportunityComponent}
         />

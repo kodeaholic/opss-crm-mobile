@@ -5,25 +5,28 @@ import {expireSession} from './loginDuck'
 export const types = {
   SEND_REQUEST_GET_CONTACT_DETAIL_BY_RECORD_ID: 'CONTACT/FETCH',
   GET_CONTACT_SUCCESS: 'CONTACT/FETCH_SUCCESS',
-  GET_LEAD_FAILED: 'LEAD/FETCH_FAILED',
-  SEND_REQUEST_SAVE_RECORD: 'LEAD/SAVE_RECORD',
-  SAVE_RECORD_SUCCESS: 'LEAD/SAVE_RECORD_SUCCESS',
-  SAVE_RECORD_FAILED: 'LEAD/SAVE_RECORD_FAILED',
-  SHOW_FORM_ADD_LEAD: 'SHOW_FORM_ADD_LEAD',
+  GET_CONTACT_FAILED: 'CONTACT/FETCH_FAILED',
+  SEND_REQUEST_SAVE_CONTACT_RECORD: 'CONTACT/REQUEST_SAVE_RECORD',
+  SAVE_CONTACT_RECORD_SUCCESS: 'CONTACT/SAVE_CONTACT_RECORD_SUCCESS',
+  SAVE_CONTACT_RECORD_FAILED: 'CONTACT/SAVE_CONTACT_RECORD_FAILED',
 }
 
 /* Selectors */
 export const getLoadingStatus = state => _.get(state, 'contact.loading') || false
 export const getCurrentOption = state => _.get(state, 'contact.option') || undefined
 export const getContactData = state => _.get(state, 'contact.data') || {}
-export const getFormSubmitResponseStatus = state => _.get(state, 'lead.formSubmitResponseStatus')
+export const getFormSubmitResponseStatus = state => _.get(state, 'contact.formSubmitResponseStatus')
+export const getCities = state => _.get(state, 'contact.cities') || []
+export const getMapCityState = state => _.get(state, 'contact.mapCityState') || undefined
 
 /* Initial state */
 const initialState = {
-  option: undefined, /* view, create, or update */
+  option: undefined, /* view, update */
   loading: false,
   data: {},
-  formSubmitResponseStatus: false
+  formSubmitResponseStatus: false,
+  cities: [],
+  mapCityState: []
 }
 
 /* Reducer */
@@ -40,7 +43,7 @@ export default (state = initialState, action) => {
       let data = {}
       let result = _.get(action, 'payload')
       data.lastname = result.lastname
-      data.cf_887 = result.cf_887
+      data.cf_887 = result.cf_887 //status
       data.cf_contact_website = result.cf_contact_website
       data.phone = result.phone
       data.mobile = result.mobile
@@ -50,29 +53,33 @@ export default (state = initialState, action) => {
       data.assigned_user_id = result.assigned_user_id
       data.description = result.description
       data.record = result.id
+      data.cf_contact_street = result.cf_contact_street
+      data['cf_city'] = result.cf_city ? {label: result.cf_city, value: result.cf_city} : {label: "Hà Nội", value: "Hà Nội"}
+      data['cf_state'] = result.cf_state ? {label: result.cf_state, value: result.cf_state} : {label: "Ba Đình", value: "Ba Đình"}
+      data['allowed_to_edit_lead_source'] = result.allowed_to_edit_lead_source
+      data['allowed_to_edit_contact'] = result.allowed_to_edit_contact
+      data['allowed_to_edit_phone'] = result.allowed_to_edit_phone
+      state['cities'] = result.cities
+      state['mapCityState'] = result.mapCityState
       state['data'] = data
       return state
-    case types.GET_LEAD_FAILED:
+    case types.GET_CONTACT_FAILED:
       state['loading'] = false
       return state
-    case types.SEND_REQUEST_SAVE_RECORD:
+    case types.SEND_REQUEST_SAVE_CONTACT_RECORD:
       state['loading'] = true
       state['formSubmitResponseStatus'] = false
       return state
-    case types.SAVE_RECORD_SUCCESS:
+    case types.SAVE_CONTACT_RECORD_SUCCESS:
       state['loading'] = false
       let newState = _.get(action, 'payload')
       newState = { ...state['data'], ...newState}
       state['formSubmitResponseStatus'] = true
       state['data'] = newState
       return state
-    case types.SAVE_RECORD_FAILED:
+    case types.SAVE_CONTACT_RECORD_FAILED:
       state['loading'] = true
       state['formSubmitResponseStatus'] = false
-      return state
-    case types.SHOW_FORM_ADD_LEAD:
-      state = initialState
-      state['option'] = _.get(action, 'payload.option')
       return state
     default:
       return state
@@ -109,7 +116,7 @@ export const fetchContactRecord = payload => {
           if (error.code === 1501) {
             return dispatch(expireSession())
           }
-          return dispatch(fetchLeadFailed(error))
+          return dispatch(fetchContactFailed(error))
         }
       })
       .catch(err => {
@@ -119,22 +126,23 @@ export const fetchContactRecord = payload => {
   }
 }
 
-export const requestSaveLead = payload => {
+export const requestSaveContact = payload => {
   return function action(dispatch) {
-    dispatch({ type: types.SEND_REQUEST_SAVE_RECORD, payload })
+    dispatch({ type: types.SEND_REQUEST_SAVE_CONTACT_RECORD, payload })
     let {session, data} = payload
     let formData = {...data} /* clone */
     if (formData.industry) formData.industry = formData.industry.value
-    if (formData.leadsource) formData.leadsource = formData.leadsource.value
     if (formData.assigned_user_id) formData.assigned_user_id = formData.assigned_user_id.value
-    if (formData.leadstatus) formData.leadstatus = formData.leadstatus.value
-    if (formData.cf_lead_khu_vuc) formData.cf_lead_khu_vuc = formData.cf_lead_khu_vuc.value
+    if (formData.cf_contact_khu_vuc) formData.cf_contact_khu_vuc = formData.cf_contact_khu_vuc.value
+    if (formData.cf_city) formData.cf_city = formData.cf_city.value
+    if (formData.cf_state) formData.cf_state = formData.cf_state.value
+    if (formData.leadsource) formData.leadsource = formData.leadsource.value
     const bodyFormData = new FormData()
     bodyFormData.append("_operation", 'saveRecord')
     bodyFormData.append("_session", session)
-    bodyFormData.append("module", 'Leads')
-    if (data.record) bodyFormData.append("record", formData.record)
-    bodyFormData.append("values", JSON.stringify(formData))
+    bodyFormData.append("record", formData.record)
+    let jsonString = JSON.stringify(formData)
+    bodyFormData.append("values", jsonString)
     const request = axios({
       method: 'POST',
       url: process.env.REACT_APP_API_URL_KVCRM,
@@ -147,27 +155,20 @@ export const requestSaveLead = payload => {
         if (success) {
           let record = _.get(result, 'record_id')
           if (record) data["record"] = record
-          return dispatch(saveLeadSuccess(data))
+          return dispatch(saveContactSuccess(data))
         }
         else {
           console.log(response.data)
-          return dispatch(saveLeadFailed(response.data))
+          return dispatch(saveContactFailed(response.data))
         }
       })
       .catch(err => {
         //handle error
-        return dispatch(saveLeadFailed(err))
+        return dispatch(saveContactFailed(err))
       })
 
   }
 }
-export const showFormAddLead = payload => {
-  return function action(dispatch) {
-    dispatch({ type: types.SHOW_FORM_ADD_LEAD, payload })
-  }
-}
-
-
 
 /* Action declaration */
 export const fetchContactSuccess = payload => ({
@@ -175,17 +176,17 @@ export const fetchContactSuccess = payload => ({
   payload
 })
 
-export const fetchLeadFailed = payload => ({
-  type: types.GET_LEAD_FAILED,
+export const fetchContactFailed = payload => ({
+  type: types.GET_CONTACT_FAILED,
   payload
 })
 
-export const saveLeadSuccess = payload => ({
-  type: types.SAVE_RECORD_SUCCESS,
+export const saveContactSuccess = payload => ({
+  type: types.SAVE_CONTACT_RECORD_SUCCESS,
   payload
 })
 
-export const saveLeadFailed = payload => ({
-  type: types.SAVE_RECORD_FAILED,
+export const saveContactFailed = payload => ({
+  type: types.SAVE_CONTACT_RECORD_FAILED,
   payload
 })

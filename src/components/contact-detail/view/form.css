@@ -1,0 +1,72 @@
+.container-form-create-or-update {
+    flex: 1;
+    height: calc(100vh - 105px);
+    overflow: auto;
+    position: absolute;
+    top: 50px;
+    width: 100%;
+}
+
+.wrapper-button-form-create-or-update {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    background-color: #ffffff;
+    height: 50px;
+    width: 100%;
+    margin-bottom: 1px;
+}
+
+.form-create-or-update-button {
+    padding: 0 12px;
+}
+
+.form-create-or-update-field {
+    background-color: #fff;
+    padding-bottom: 10px;
+}
+
+.form-create-or-update-wrapper-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 0;
+    padding: 5px 10px 0 10px;
+}
+
+.form-create-or-update-label-field {
+    /*font-size: 17px;*/
+}
+.form-create-or-update-label-error {
+    font-size: 10px;
+    font-style: italic;
+    color: red;
+}
+
+.form-create-or-update-require-field {
+    color: red;
+}
+
+input.form-create-or-update-input-field {
+    background-color: white;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height: 30px;
+    width: auto;
+    padding-left: 3px;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+textarea.form-create-or-update-input-field {
+    background-color: white;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    width: auto;
+    padding-left: 3px;
+    margin-bottom: 5px;
+    font-size: 15px;
+}

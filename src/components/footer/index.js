@@ -44,7 +44,7 @@ const menuList = [
   // }
 ]
 
-const functionMenu = ['lead-view']
+const functionMenu = ['lead-view', 'contact-view']
 
 const menuLeadFunction = [
   {
@@ -57,21 +57,14 @@ const menuLeadFunction = [
     classIcon: 'fa fa-user-o',
     path: '/lead-convert'
   }
-  // {
-  //   name: '+ Ticket',
-  //   classIcon: 'fa fa-comment-o',
-  //   path: '/ticket'
-  // },
-  // {
-  //   name: '+ Công việc',
-  //   classIcon: 'fa fa-tasks',
-  //   path: '/working'
-  // },
-  // {
-  //   name: '+ Cuộc hẹn',
-  //   classIcon: 'fa fa-history',
-  //   path: '/meeting'
-  // }
+]
+
+const menuContactFunction = [
+  {
+    name: 'Sửa',
+    classIcon: 'fa fa-list-alt',
+    path: '/contact-edit'
+  },
 ]
 
 class Footer extends Component {
@@ -119,9 +112,16 @@ class Footer extends Component {
     const isFunction = !!functionMenu.find(e => e === res[0])
     let itemId = undefined
     if (res.length >= 2 && isFunction) itemId = res[1]
+    let menuToBeRendered = undefined
+    if (isFunction && pathName.indexOf("contact") !== -1) {
+      menuToBeRendered = menuContactFunction
+    } else if (isFunction && pathName.indexOf("lead") !== -1) {
+      menuToBeRendered = menuLeadFunction
+    }
+    else menuToBeRendered = menuList
     return (
       <div className="wrapper-footer">
-        {_.map(isFunction ? menuLeadFunction : menuList, (item, key) =>
+        {_.map(menuToBeRendered, (item, key) =>
           this.renderItemMenu(item, key, itemId)
         )}
       </div>

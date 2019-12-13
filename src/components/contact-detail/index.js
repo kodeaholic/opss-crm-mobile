@@ -1,12 +1,12 @@
 /* default import */
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import _ from 'lodash'
-import {toast} from 'react-toastify'
-import {Redirect} from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { Redirect } from 'react-router-dom'
 
 /* react-redux */
-import {bindActionCreators} from 'redux'
+import { bindActionCreators } from 'redux'
 import compose from 'recompose/compose'
 
 /* app */
@@ -14,21 +14,20 @@ import withAuth from '../withAuth'
 import withLayout from '../withLayout'
 
 /* predefined actions and selectors for mapStateToProps and mapDispatchToProps */
-import {getUserLoggedIn} from '../../modules/loginDuck'
+import { getUserLoggedIn } from '../../modules/loginDuck'
 import {
   fetchContactRecord,
   getCurrentOption,
   getContactData,
   getLoadingStatus,
-  // requestSaveLead,
-  getFormSubmitResponseStatus,
-  // showFormAddLead
+  requestSaveContact,
+  getFormSubmitResponseStatus, getCities, getMapCityState
 } from '../../modules/contactDuck'
-import {getSessionStatus} from '../../modules/loginDuck'
+import { getSessionStatus } from '../../modules/loginDuck'
 
 /* import child views */
 import ContactView from './view/view'
-// import LeadForm from './view/form'
+import ContactForm from './view/form'
 
 const mapStateToProps = (state, ownProps) => ({
   expired: getSessionStatus(state),
@@ -36,15 +35,16 @@ const mapStateToProps = (state, ownProps) => ({
   contactData: getContactData(state),
   option: getCurrentOption(state),
   loading: getLoadingStatus(state),
-  formSubmitResponseStatus: getFormSubmitResponseStatus(state)
+  formSubmitResponseStatus: getFormSubmitResponseStatus(state),
+  cities: getCities(state),
+  mapCityState: getMapCityState(state)
 })
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       fetchContactRecord,
-      // requestSaveLead,
-      // showFormAddLead
+      requestSaveContact
     },
     dispatch
   )
@@ -56,31 +56,20 @@ class ContactComponent extends Component {
     let option = undefined
     let pathName = props.location.pathname
     if (pathName.indexOf('view') !== -1) option = 'view'
-    else if (pathName.indexOf('edit') !== -1) option = 'edit'
-    else option = 'create'
+    else option = 'edit'
     let array = pathName.split('/')
     this.state = {
       contactData: {
-        lastname: undefined,
-        leadstatus: undefined,
-        cf_contact_website: undefined,
-        phone: undefined,
-        mobile: undefined,
-        industry: undefined,
-        cf_lead_khu_vuc: undefined,
-        leadsource: undefined,
-        assigned_user_id: undefined,
-        description: undefined,
         record: array.length > 2 ? array[2] : undefined
       },
-      viewOrCreateOrUpdate: option, // default,
+      viewOrEdit: option, // default,
       recordId: array.length > 2 ? array[2] : undefined,
       session: undefined
     }
   }
 
   componentWillMount() {
-    const {currentUser} = this.props
+    const { currentUser } = this.props
     let session = undefined
     if (currentUser) session = currentUser.session
     if (!session) {
@@ -88,37 +77,31 @@ class ContactComponent extends Component {
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
-    this.setState({session: session})
+    this.setState({ session: session })
     let record = this.state.recordId
-    console.log("WillMount: current session - " + session)
-    console.log("WillMount: current option - " + this.state.viewOrCreateOrUpdate)
-    console.log("WillMount: record: " + record)
-    let option = this.state.viewOrCreateOrUpdate
-    switch (this.state.viewOrCreateOrUpdate) {
+    let option = this.state.viewOrEdit
+    switch (option) {
       case 'view':
-        this.props.actions.fetchContactRecord({session, record, option})
-        break;
-      /*case 'create':
-        this.props.actions.showFormAddLead({session, option})
-        break;
+        this.props.actions.fetchContactRecord({ session, record, option: option })
+        break
       case 'edit':
-        this.props.actions.fetchLeadRecord({session, record, option})
-        break;*/
+        this.props.actions.fetchContactRecord({ session, record, option: option })
+        break
       default:
-        break;
+        break
     }
   }
 
   render() {
-    /* check if view, create, or update */
-    if(this.props.expired){
+    /* check if view or edit */
+    if (this.props.expired) {
       localStorage.removeItem('userLoggedInKV')
-      toast.error("Session expired", {
+      toast.error('Session expired', {
         autoClose: 1500,
-        draggable: false,
+        draggable: false
       })
       return (
-        <Redirect to={'/login'} />
+        <Redirect to={'/login'}/>
       )
     }
     if (this.props.loading) {
@@ -126,15 +109,15 @@ class ContactComponent extends Component {
         <div className="wrapper-lead">
           <div className="loading-data">
             <i className="fa fa-spinner fa-pulse fa-3x fa-fw"
-               style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+               style={{ position: 'fixed', top: 'calc(50vh - 50.25px)' }}></i>
           </div>
         </div>
       )
     } else {
       if (this.props.formSubmitResponseStatus && (this.props.location.pathname.indexOf('view') === -1)) {
-        toast.success("Success", {
+        toast.success('Success', {
           autoClose: 2000,
-          draggable: false,
+          draggable: false
         })
         return <Redirect to={'/contact-view/' + this.props.contactData.record}/>
       }
@@ -142,16 +125,18 @@ class ContactComponent extends Component {
         return (
           <ContactView data={this.props.contactData}/>
         )
-      } else if (this.props.option === 'edit' || this.props.option === 'create') {
-        /*return (
-          <LeadForm data={this.props.contactData} session={this.state.session} option={this.props.option}
-                    submit={this.props.actions.requestSaveLead}/>
-        )*/
+      } else {
+        let cities = this.props.cities
+        let mapCityState = this.props.mapCityState
+        return (
+          <ContactForm data={this.props.contactData} session={this.state.session} option={this.props.option}
+                       submit={this.props.actions.requestSaveContact}
+                       cities={cities}
+                       mapCityState={mapCityState}
+          />
+        )
       }
     }
-    return (
-      <div>Default</div>
-    )
   }
 }
 

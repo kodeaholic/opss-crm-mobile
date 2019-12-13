@@ -22,14 +22,14 @@ class ContactView extends Component {
   renderCustomerInfo = contactData => {
     return (
       <div>
-        <div className="lead-view-container-info">
+        <div className="contact-view-container-info">
           <i className="fa fa-address-book-o icon-lead-view"
-             aria-hidden="true"></i>
-          <div className="lead-view-wrapper-info">
-            <label className="lead-view-information-name">
+             aria-hidden="true"/>
+          <div className="contact-view-wrapper-info">
+            <label className="contact-view-information-name">
               {contactData.lastname}
             </label>
-            <label className="lead-view-information-phone">
+            <label className="contact-view-information-phone">
               {contactData.mobile}
             </label>
           </div>
@@ -57,16 +57,19 @@ class ContactView extends Component {
   }
 
   renderDetails = contactData => {
-    const leadName = _.get(contactData, 'lastname')
-    const leadStatus = _.get(contactData, 'cf_887.label')
+    const contactName = _.get(contactData, 'lastname')
+    const contactStatus = _.get(contactData, 'cf_887.label')
     const leadSource = _.get(contactData, 'leadsource.label')
-    const leadWebsite = _.get(contactData, 'cf_contact_website')
-    const leadPhone = _.get(contactData, 'mobile')
-    const leadSecondaryPhone = _.get(contactData, 'phone')
-    const leadIndustry = _.get(contactData, 'cf_contact_nganh_hang.label')
-    const leadRegion = _.get(contactData, 'cf_contact_khu_vuc.label')
+    const website = _.get(contactData, 'cf_contact_website')
+    const phone = _.get(contactData, 'mobile')
+    const secondaryPhone = _.get(contactData, 'phone')
+    const industry = _.get(contactData, 'cf_contact_nganh_hang.label')
+    const region = _.get(contactData, 'cf_contact_khu_vuc.label')
     const description = _.get(contactData, 'description')
     const assignedUser = _.get(contactData, 'assigned_user_id.label')
+    const city = _.get(contactData, 'cf_city.value')
+    const state = _.get(contactData, 'cf_state.value')
+    const address = _.get(contactData, 'cf_contact_street')
     return (
       <div
         className="wrapper-view"
@@ -90,14 +93,17 @@ class ContactView extends Component {
             ''
           }
         >
-          {<div className="lead-view-field" val={leadName}>
-            <Field label="Họ tên khách hàng" val={leadName}/>
-            <Field label="Tình trạng" val={leadStatus}/>
-            <Field label="Tên gian hàng" val={leadWebsite}/>
-            <Field label="Số điện thoại" val={leadPhone} phone/>
-            <Field label="Số điện thoại khác" val={leadSecondaryPhone} phone/>
-            <Field label="Ngành hàng" val={leadIndustry}/>
-            <Field label="Khu vực" val={leadRegion}/>
+          {<div className="contact-view-field" val={contactName}>
+            <Field label="Họ tên khách hàng" val={contactName}/>
+            <Field label="Tình trạng" val={contactStatus}/>
+            <Field label="Tên gian hàng" val={website}/>
+            <Field label="Số điện thoại" val={phone} phone/>
+            <Field label="Số điện thoại khác" val={secondaryPhone} phone/>
+            <Field label="Ngành hàng" val={industry}/>
+            <Field label="Khu vực" val={region}/>
+            <Field label="Tỉnh/Thành phố" val={city}/>
+            <Field label="Quận/Huyện" val={state}/>
+            <Field label="Địa chỉ chi tiết" val={address}/>
             <Field label="Nguồn khách hàng" val={leadSource}/>
             <Field label="Người xử lý" val={assignedUser}/>
             {/*<Field label="Mô tả chung" val={description} isMultiLine/>*/}
@@ -121,23 +127,23 @@ class ContactView extends Component {
   renderRelated = () => {
     return (
       <div>
-        <div className="lead-view-related-wrapper">
+        <div className="contact-view-related-wrapper">
           <i
             className="fa fa-sticky-note-o lead-view-related-icon"
-            aria-hidden="true"></i>
-          <label className="lead-view-related-label">Ticket (3)</label>
+            aria-hidden="true"/>
+          <label className="contact-view-related-label">Ticket (3)</label>
         </div>
-        <div className="lead-view-related-wrapper">
+        <div className="contact-view-related-wrapper">
           <i
             className="fa fa-history lead-view-related-icon"
-            aria-hidden="true"></i>
-          <label className="lead-view-related-label">Activities (5)</label>
+            aria-hidden="true"/>
+          <label className="contact-view-related-label">Activities (5)</label>
         </div>
-        <div className="lead-view-related-wrapper">
+        <div className="contact-view-related-wrapper">
           <i
             className="fa fa-tasks lead-view-related-icon"
-            aria-hidden="true"></i>
-          <label className="lead-view-related-label">Updates (6)</label>
+            aria-hidden="true"/>
+          <label className="contact-view-related-label">Updates (6)</label>
         </div>
       </div>
     )
@@ -145,13 +151,13 @@ class ContactView extends Component {
 
   render() {
     if (_.isEmpty(this.props.data, true)) {
-      return (<div className="lead-view-container"
+      return (<div className="contact-view-container"
                    style={{ height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%' }}>
         <div className="loading-data">Permission Denied</div>
       </div>)
     } else {
       return (
-        <div className="lead-view-container"
+        <div className="contact-view-container"
              style={{ height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%' }}>
           {this.renderCustomerInfo(this.props.data)}
           {this.renderTabBelow()}
@@ -185,9 +191,8 @@ class Field extends Component {
             className="input-field"
             rows="5"
             readOnly={readOnly}
-            defaultValue={value}/>) : (!phoneCard ? (<p className="input-field">{value}</p>) : (value ? (
-            <a className="phoneCard" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"></i> {value}
-            </a>) : (<p className="input-field">&nbsp;</p>)))
+            defaultValue={value}/>) : (!phoneCard ? (!_.isEmpty(value) ? (<p className="input-field">{value}</p>) : (<p className="input-field">&nbsp;</p>)) : ( value? (<a className="phoneCard" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"/> {value}
+          </a>) : (<p className="input-field">&nbsp;</p>)))
         }
       </div>
     )

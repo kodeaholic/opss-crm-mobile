@@ -214,7 +214,6 @@ export const requestSaveLead = payload => {
     bodyFormData.append("module", 'Leads')
     if (data.record) bodyFormData.append("record", formData.record)
     let jsonString = JSON.stringify(formData)
-    console.log(jsonString)
     bodyFormData.append("values", jsonString)
     const request = axios({
       method: 'POST',
