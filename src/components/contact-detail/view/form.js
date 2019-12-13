@@ -211,22 +211,25 @@ class ContactForm extends Component {
         <Field label="Họ tên khách hàng" isRequired={true} name="lastname" val={this.props.data.lastname}
                changeHandler={this.handleChange}/>
         <Field label="Tên gian hàng" name="cf_contact_website" val={this.props.data.cf_contact_website} changeHandler={this.handleChange}/>
-        <div className="form-create-or-update-wrapper-field" id="cf_887-wrapper">
-          <label className="form-create-or-update-label-field">
-            Tình trạng
-          </label>
-          <Select
-            defaultValue={this.props.option === 'edit' ? this.props.data.cf_887 : {
-              'value': 'Sell',
-              'label': 'Bán hàng'
-            }}
-            placeholder="Tình trạng"
-            isDisabled={true}
-          />
-        </div>
-        <Field label="Số điện thoại" name="cf_mobile" val={this.props.data.mobile} isRequired={true}
-               changeHandler={this.handleChange} isReadOnly={!this.props.data.allowed_to_edit_phone}/>
-        <div className="form-create-or-update-wrapper-field" id="cf_pot_industry-wrapper">
+        {/*{*/}
+        {/*  <div className="form-create-or-update-wrapper-field" id="cf_887-wrapper">*/}
+        {/*    <label className="form-create-or-update-label-field">*/}
+        {/*      Tình trạng*/}
+        {/*    </label>*/}
+        {/*    <Select*/}
+        {/*      defaultValue={this.props.option === 'edit' ? this.props.data.cf_887 : {*/}
+        {/*        'value': 'Sell',*/}
+        {/*        'label': 'Bán hàng'*/}
+        {/*      }}*/}
+        {/*      placeholder="Tình trạng"*/}
+        {/*      isDisabled={true}*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*}*/}
+        {this.props.data.allowed_to_edit_phone && <Field label="Số điện thoại" name="cf_mobile" val={this.props.data.mobile} isRequired={true}
+               changeHandler={this.handleChange} />}
+
+        {this.props.data.allowed_to_edit_lead_source && <div className="form-create-or-update-wrapper-field" id="cf_pot_industry-wrapper">
           <label className="form-create-or-update-label-field">
             Ngành hàng<span className="require-field"> (*)</span>
           </label>
@@ -235,7 +238,7 @@ class ContactForm extends Component {
             placeholder="Ngành hàng"
             isDisabled={true}
           />
-        </div>
+        </div>}
         <div className="form-create-or-update-wrapper-field" id="cf_pot_khu_vuc-wrapper">
           <label className="form-create-or-update-label-field">
             Khu vực<span className="require-field"> (*)</span>
