@@ -1,5 +1,5 @@
 .wrapper-list {
-    position: absolute;
+    position: fixed;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -54,6 +54,9 @@
 }
 .label-item-list.text-bold {
     font-weight: bold;
+}
+.label-item-list.text-grey {
+    color: grey;
 }
 .wrapper-80vw-border {
     width: 94%;

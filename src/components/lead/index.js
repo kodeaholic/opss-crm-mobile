@@ -154,11 +154,11 @@ class Lead extends Component {
             <div className="wrapper-list-item">
               <div className="wrapper-item-row">
                 <label className="label-item-list item-name">{lastname}</label>
-                <label className="label-item-list">{website}</label>
+                <label className="label-item-list text-bold">{website}</label>
                 <label className="label-item-list">{leadstatus}</label>
               </div>
               <div className="wrapper-item-row">
-                <label className="label-item-list text-bold">{label}</label>
+                <label className="label-item-list text-grey">{label}</label>
                 <label className="item-status label-item-list">
                   {createdtime}
                 </label>
