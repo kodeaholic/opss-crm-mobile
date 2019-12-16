@@ -45,7 +45,8 @@
     border: none;
 }
 .label-item-list.item-name {
-    color: blue;
+    color: #006cad;
+    font-weight: bold;
 }
 .label-item-list.item-status {
     color: #555454;
@@ -56,7 +57,7 @@
     font-weight: bold;
 }
 .label-item-list.text-grey {
-    color: grey;
+    color: #757575;
 }
 .wrapper-80vw-border {
     width: 94%;
