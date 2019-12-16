@@ -81,8 +81,9 @@ class Footer extends Component {
 
   renderItemMenu(item, key, id) {
     let currentPath = this.props.location.pathname
-    let active = currentPath.indexOf(item.path) !== -1 ? ' active' : ''
-    let styleColor = currentPath.indexOf(item.path) !== -1 ? {color: '#006cad'} : {}
+    let checkActive = currentPath.indexOf(item.path) !== -1 || (item.name === 'More' && (currentPath.indexOf('calendar') !== -1 || currentPath.indexOf('ticket') !== -1))
+    let active = checkActive ? ' active' : ''
+    let styleColor = checkActive ? {color: '#006cad'} : {}
     return (
       <div className="wrapper-item-footer" key={key + item.name}>
         {id ? (

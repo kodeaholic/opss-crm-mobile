@@ -12,17 +12,16 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const router = {
-  lead: {
-    back: ''
-  },
   'lead-view': {
     back: 'lead'
   },
   'lead-convert': {
-    back: 'lead-view'
+    back: 'lead-view',
+    withId: true
   },
   'lead-edit': {
-    back: 'lead-view'
+    back: 'lead-view',
+    withId: true
   },
   'lead-create': {
     back: 'lead'
@@ -30,9 +29,18 @@ const router = {
   'contact-view': {
     back: 'contact'
   },
-  'opportunity-view': {
-    back: 'opportunity'
+  'contact-edit': {
+    back: 'contact-view',
+    withId: true
+  },
+  'calendar' : {
+    back: 'more'
+  },
+  'ticket' : {
+    back: 'more'
   }
+  // More
+
 }
 
 class Header extends Component {
@@ -46,24 +54,18 @@ class Header extends Component {
     // CMB-81
     if (window.location.href.indexOf('form-changed') !== -1) {
       let r = window.confirm('Bạn có muốn rời đi?')
-      if (r === true) {
-        window.history.go(-2)
-      } else {
-        return false
-      }
+      return r === true
     } else {
-      window.history.back()
+      return true
     }
   }
   routeChange = pathBack => {
     if (pathBack) {
-      // this.props.history.push('/' + pathBack)
-      this.conditionalBack()
+      if (this.conditionalBack()) {
+        this.props.history.push('/' + pathBack)
+      }
+      else return false
     }
-    // this.props.history.goBack()
-    // else {
-    //   document.getElementById('myDropdown').classList.toggle('show')
-    // }
   }
 
   renderIconLeft = () => {
@@ -72,24 +74,24 @@ class Header extends Component {
     let pathBack = !_.isEmpty(objPathOnRouter)
       ? _.get(objPathOnRouter, 'back')
       : ''
-    let inSearch = !_.isEmpty(namePath) ? namePath.indexOf('search') !== -1 : false
-    const isAllowBack = !!_.get(objPathOnRouter, 'back') || inSearch
-    if (inSearch) pathBack = true
+    if (!_.isEmpty(pathBack)) {
+      let withId = _.get(objPathOnRouter, 'withId')
+      if (withId) {
+        let pathName = this.props.location.pathname
+        pathBack += "/" + pathName.split('/')[2]
+      }
+    }
+    const isAllowBack = !!_.get(objPathOnRouter, 'back')
     return (
-      <div className="wrapper-icon" onClick={() => this.routeChange(pathBack)}>
+      <div className="wrapper-icon" onClick={() => this.routeChange(pathBack)} style={{display: isAllowBack ? '' : 'none'}}>
         <i
-          className={'fa ' + (isAllowBack ? 'fa-angle-left' : 'fa-angle-left')}
+          className={'fa fa-angle-left'}
           aria-hidden="true"
           style={{
             fontSize: 26,
             color: '#ffffff'
           }}
         />
-        {/*<div id="myDropdown" className="dropdown-content">*/}
-        {/*  /!*<a href="/lead"><i className="fa fa-user" aria-hidden="true"></i> &nbsp;Profile</a>*!/*/}
-        {/*  /!*<a href="/lead"><i className="fa fa-cog" aria-hidden="true"></i>&nbsp;Settings</a>*!/*/}
-        {/*  <a href="/logout"><i className="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Logout</a>*/}
-        {/*</div>*/}
       </div>
     )
   }
