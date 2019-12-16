@@ -81,7 +81,15 @@ class Header extends Component {
         pathBack += "/" + pathName.split('/')[2]
       }
     }
-    const isAllowBack = !!_.get(objPathOnRouter, 'back')
+    let isAllowBack = !!_.get(objPathOnRouter, 'back')
+    let search = this.props.location.search
+    if (search.indexOf('previousScreen') !== -1) {
+      search = search.split('previousScreen=')[1]
+      if (!_.isEmpty(search)) {
+        pathBack = search
+        isAllowBack = true
+      }
+    }
     return (
       <div className="wrapper-icon" onClick={() => this.routeChange(pathBack)} style={{display: isAllowBack ? '' : 'none'}}>
         <i
@@ -174,7 +182,7 @@ class Header extends Component {
           <div className="wrapper-header-right">
             <div style={{flexGrow: 1}}/>
             <div className="header-button-list" style={{flexGrow: 2}}>
-              {this.renderButton('fa fa-search', '/search')}
+              {this.renderButton('fa fa-search', '/search?previousScreen='+namePath)}
               {this.renderButton('fa fa-bell', '/notifications')}
             </div>
           </div>)}
