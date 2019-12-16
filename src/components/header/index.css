@@ -138,3 +138,6 @@
   height: auto;
   flex: 1;
 }
+.header-button-list > a {
+  flex: 1;
+}

@@ -111,6 +111,16 @@ class App extends React.Component {
           path="/calendar"
           component={ComingSoonComponent}
         />
+        <Route
+          exact
+          path="/notifications"
+          component={ComingSoonComponent}
+        />
+        <Route
+          exact
+          path="/search"
+          component={ComingSoonComponent}
+        />
       </div>
     )
   }

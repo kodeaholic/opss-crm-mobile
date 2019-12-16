@@ -105,8 +105,9 @@ class Header extends Component {
     }
   }
 
-  renderButton = (fontawesomeClass = 'fa fa-bell') => {
+  renderButton = (fontawesomeClass = 'fa fa-bell', path = '', badge = 0) => {
     return (
+      <a href={path} className={badge > 0 ? 'notifications' : ''}>
         <i
           className={fontawesomeClass}
           aria-hidden="true"
@@ -120,6 +121,7 @@ class Header extends Component {
             backgroundColor: 'rgba(255,255,255,0.3)',
           }}
         />
+      </a>
     )
   }
 
@@ -165,8 +167,8 @@ class Header extends Component {
           <div className="wrapper-header-right">
             <div style={{flexGrow: 1}}/>
             <div className="header-button-list" style={{flexGrow: 2}}>
-              {/*{this.renderButton('fa fa-search')}*/}
-              {this.renderButton('fa fa-bell')}
+              {this.renderButton('fa fa-search', '/search')}
+              {this.renderButton('fa fa-bell', '/notifications')}
             </div>
           </div>)}
       </div>
