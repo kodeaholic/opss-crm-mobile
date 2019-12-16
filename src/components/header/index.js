@@ -127,6 +127,30 @@ class Header extends Component {
     )
   }
 
+  renderCenteredLogo = () => {
+    return (
+      <div className="header-image-wrapper">
+        {/*{this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 || this.props.match.path.indexOf('convert') !== -1 ? ('') :*/}
+        {/*  (*/}
+        {/*    <div className="header-image">*/}
+        {/*      <i className="fa fa-search" aria-hidden="true"></i>*/}
+        {/*      <form className="form-search" action="#" id="search-form" onSubmit={ e => { e.preventDefault() }} autoComplete="off">*/}
+        {/*        <input type="search" className="input-search-header" style={{ fontSize: 'inherit' }}*/}
+        {/*               placeholder="Search ..."*/}
+        {/*               defaultValue={this.props.match.params.keyword}*/}
+        {/*               onKeyPress={this._handleSearchEnter}*/}
+        {/*               name="search" id="search"/>*/}
+        {/*      </form>*/}
+        {/*    </div>*/}
+        {/*  )}*/}
+        <img
+          alt="Citigo"
+          src={require('../../static/images/citigo.png')}
+          className="header-image"
+        />
+      </div>
+    )
+  }
   render() {
     let namePath = _.get(this.props, 'path') || ''
     return (
@@ -135,26 +159,7 @@ class Header extends Component {
           {this.renderIconLeft()}
         </div>
         <div className="wrapper-header-center">
-          <div className="header-image-wrapper">
-            {/*{this.props.match.path.indexOf('edit') !== -1 || this.props.match.path.indexOf('create') !== -1 || this.props.match.path.indexOf('convert') !== -1 ? ('') :*/}
-            {/*  (*/}
-            {/*    <div className="header-image">*/}
-            {/*      <i className="fa fa-search" aria-hidden="true"></i>*/}
-            {/*      <form className="form-search" action="#" id="search-form" onSubmit={ e => { e.preventDefault() }} autoComplete="off">*/}
-            {/*        <input type="search" className="input-search-header" style={{ fontSize: 'inherit' }}*/}
-            {/*               placeholder="Search ..."*/}
-            {/*               defaultValue={this.props.match.params.keyword}*/}
-            {/*               onKeyPress={this._handleSearchEnter}*/}
-            {/*               name="search" id="search"/>*/}
-            {/*      </form>*/}
-            {/*    </div>*/}
-            {/*  )}*/}
-            <img
-              alt="Citigo"
-              src={require('../../static/images/citigo.png')}
-              className="header-image"
-            />
-          </div>
+          {this.renderCenteredLogo()}
         </div>
         {!_.isEmpty(namePath) && (namePath.indexOf('create') !== -1 || namePath.indexOf('edit') !== -1 || namePath.indexOf('convert') !== -1) ? (
           <div className="wrapper-header-right">
