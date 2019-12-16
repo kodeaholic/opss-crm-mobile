@@ -12,6 +12,7 @@ import LeadComponent from '../lead-detail'
 import ContactComponent from '../contact-detail'
 import OpportunityComponent from '../opportunity-detail'
 import ComingSoonComponent from '../comingsoon'
+import MoreComponent from '../more'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -83,7 +84,7 @@ class App extends React.Component {
         <Route
           exact
           path="/more"
-          component={ComingSoonComponent}
+          component={MoreComponent}
         />
         <Route
           exact
@@ -103,6 +104,11 @@ class App extends React.Component {
         <Route
           exact
           path="/ticket"
+          component={ComingSoonComponent}
+        />
+        <Route
+          exact
+          path="/calendar"
           component={ComingSoonComponent}
         />
       </div>
