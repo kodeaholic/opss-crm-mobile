@@ -147,7 +147,7 @@ class SearchBox extends Component {
   renderSearchHistory = () => {
     let keywords = this.getSearchHistory()
     let firstTenKeyWords = keywords.splice(0, 10)
-    let search = "?search-box" + this.props.location.search
+    let search = "search-box" + this.props.location.search
     return (
       <div>
         {firstTenKeyWords.map((keyword, i) => {
@@ -155,7 +155,7 @@ class SearchBox extends Component {
             <p className="history-search-list-item" key={i + keyword} onClick={() =>
               {
                 this.addToSearchHistory(keyword)
-                this.props.history.push('/search/' + keyword)
+                this.props.history.push('/search/' + keyword + "?pathBack=" + search)
               }
             }>
               {keyword}

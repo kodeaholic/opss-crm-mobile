@@ -83,11 +83,21 @@ class Header extends Component {
     }
     let isAllowBack = !!_.get(objPathOnRouter, 'back')
     let search = this.props.location.search
-    if (search.indexOf('previousScreen') !== -1) {
-      search = search.split('previousScreen=')[1]
+    if (search.indexOf('pathBack') !== -1) {
+      isAllowBack = true
+      search = search.split('pathBack=')[1]
       if (!_.isEmpty(search)) {
         pathBack = search
         isAllowBack = true
+      }
+    }
+    else {
+      if (search.indexOf('previousScreen') !== -1) {
+        search = search.split('previousScreen=')[1]
+        if (!_.isEmpty(search)) {
+          pathBack = search
+          isAllowBack = true
+        }
       }
     }
     return (
