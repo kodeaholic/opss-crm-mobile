@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 
 import _ from 'lodash'
@@ -8,8 +8,8 @@ import withLayout from '../withLayout'
 
 import './index.css'
 
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import Button from '../commonComponents/button'
 import {
@@ -18,12 +18,12 @@ import {
   getSRLoading,
   getSRPageIndex,
   getSRHasMoreData,
-  getKeyword,
+  getKeyword
 } from '../../modules/searchDuck'
 import {
   getSessionStatus
 } from '../../modules/loginDuck'
-import {getUserLoggedIn} from '../../modules/loginDuck'
+import { getUserLoggedIn } from '../../modules/loginDuck'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { toast } from 'react-toastify'
 
@@ -34,13 +34,13 @@ const mapStateToProps = (state, ownProps) => ({
   isLoading: getSRLoading(state),
   hasMoreData: getSRHasMoreData(state),
   expired: getSessionStatus(state),
-  keyword: getKeyword(state, ownProps),
+  keyword: getKeyword(state, ownProps)
 })
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      getSearchResult,
+      getSearchResult
     },
     dispatch
   )
@@ -55,8 +55,8 @@ class Lead extends Component {
   }
 
   componentWillMount() {
-    let {userLoggedIn, keyword} = this.props
-    let {session} = userLoggedIn || {}
+    let { userLoggedIn, keyword } = this.props
+    let { session } = userLoggedIn || {}
     if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
       if (userLoginData) {
@@ -67,16 +67,16 @@ class Lead extends Component {
       }
     }
     let refresh = true
-    this.props.actions.getSearchResult({session, refresh, keyword})
+    this.props.actions.getSearchResult({ session, refresh, keyword })
 
     /* Prevent browser's default pull to refresh behavior*/
     document.body.style.overscrollBehavior = 'contain'
   }
 
   componentWillReceiveProps(newProps) {
-    if(newProps.keyword !== this.props.keyword) {
-      let {userLoggedIn, keyword} = newProps
-      let {session} = userLoggedIn || {}
+    if (newProps.keyword !== this.props.keyword) {
+      let { userLoggedIn, keyword } = newProps
+      let { session } = userLoggedIn || {}
       if (!session) {
         let userLoginData = localStorage.getItem('userLoggedInKV')
         if (userLoginData) {
@@ -87,7 +87,7 @@ class Lead extends Component {
         }
       }
       let refresh = true
-      this.props.actions.getSearchResult({session, refresh, keyword})
+      this.props.actions.getSearchResult({ session, refresh, keyword })
     }
   }
 
@@ -117,15 +117,18 @@ class Lead extends Component {
   }
 
   renderItemList = (item, key) => {
+    let basePath = this.props.location.pathname
+    basePath = basePath.substring(basePath.indexOf('/') + 1)
+    let pathBack = basePath + this.props.location.search
     item = item._source
     if (item) {
-      const {label, s_website, crmid, status, _createdtime, sales_user, asssignto, setype} = item
+      const { label, s_website, crmid, status, _createdtime, sales_user, asssignto, setype } = item
       let setypeLabel = setype
-      let to_url = '/lead-view/10x' + crmid;
-      if(setype === 'Contacts') {
-        to_url = '/contact-view/12x' + crmid;
-      } else if(setype === 'Potentials') {
-        to_url = '/opportunity-view/13x' + crmid;
+      let to_url = '/lead-view/10x' + crmid + '?pathBack=' + pathBack
+      if (setype === 'Contacts') {
+        to_url = '/contact-view/12x' + crmid + '?pathBack=' + pathBack
+      } else if (setype === 'Potentials') {
+        to_url = '/opportunity-view/13x' + crmid + '?pathBack=' + pathBack
         setypeLabel = 'Opportunities'
       }
       let currentSectionTitle = this.state.sectionTitle
@@ -135,7 +138,8 @@ class Lead extends Component {
           className="link-on-lead-list"
           key={key}
           to={to_url}>
-          {currentSectionTitle !== setype ? (<div className="wrapper-list-lead-item section-title">{setypeLabel} ({item._count})</div>) : ''}
+          {currentSectionTitle !== setype ? (
+            <div className="wrapper-list-lead-item section-title">{setypeLabel} ({item._count})</div>) : ''}
           <div className="wrapper-list-lead-item">
             <div className="wrapper-item-row">
               <label className="label-item-list lead-item-name">{label}</label>
@@ -156,26 +160,26 @@ class Lead extends Component {
   }
 
   refreshData = () => {
-    const {userLoggedIn} = this.props
-    let {session} = userLoggedIn
+    const { userLoggedIn } = this.props
+    let { session } = userLoggedIn
     if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
     let refresh = true
-    this.props.actions.getSearchResult({session, refresh})
+    this.props.actions.getSearchResult({ session, refresh })
   }
 
   fetchMoreData = () => {
-    const {pageIndex, userLoggedIn} = this.props
-    let {session} = userLoggedIn
+    const { pageIndex, userLoggedIn } = this.props
+    let { session } = userLoggedIn
     if (!session) {
       let userLoginData = localStorage.getItem('userLoggedInKV')
       userLoginData = JSON.parse(userLoginData).result.login
       session = userLoginData.session
     }
-    this.props.actions.getSearchResult({session, pageIndex})
+    this.props.actions.getSearchResult({ session, pageIndex })
   }
 
   renderLoading = () => {
@@ -225,21 +229,22 @@ class Lead extends Component {
 
   render() {
     const dataLeads = _.get(this.props, 'listSR') || []
-    if(this.props.expired){
+    if (this.props.expired) {
       localStorage.removeItem('userLoggedInKV')
-      toast.error("Session expired", {
+      toast.error('Session expired', {
         autoClose: 1500,
-        draggable: false,
+        draggable: false
       })
       return (
-        <Redirect to={'/login'} />
+        <Redirect to={'/login'}/>
       )
     } else {
       if (this.props.isLoading) {
         return (
           <div className="wrapper-lead">
             <div className="loading-data">
-              <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{position: 'fixed', top: 'calc(50vh - 50.25px)'}}></i>
+              <i className="fa fa-spinner fa-pulse fa-3x fa-fw"
+                 style={{ position: 'fixed', top: 'calc(50vh - 50.25px)' }}></i>
             </div>
           </div>
         )
