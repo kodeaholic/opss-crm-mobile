@@ -73,22 +73,28 @@ class SearchBox extends Component {
       let keywords = searchHistory[userId + '']
 
       /* Find and delete duplicate keyword */
-      let index = keywords.indexOf(keyword)
+      let index = keywords ? keywords.indexOf(keyword) : -1
       if (index !== -1) {
         // delete keyword at index
         keywords.splice(index, 1)
       }
-      keywords.unshift(keyword)
+      if (_.isEmpty(keywords)) {
+        keywords = [keyword]
+      }
+      else {
+        keywords.unshift(keyword)
+      }
       searchHistory[userId + ''] = keywords
     }
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
   }
 
   _handleSearchEnter = (e) => {
+    let search = "search-box" + this.props.location.search
     if (e.key === 'Enter') {
       if (e.target.value && e.target.value != '' && e.target.value.length >= 3) {
         this.addToSearchHistory(e.target.value)
-        this.props.history.push('/search/' + e.target.value)
+        this.props.history.push('/search/' + e.target.value + "?pathBack=" + search)
       } else {
         toast.error('Vui lòng nhập nhập 3 kí tự trở lên')
         return false
@@ -146,7 +152,7 @@ class SearchBox extends Component {
 
   renderSearchHistory = () => {
     let keywords = this.getSearchHistory()
-    let firstTenKeyWords = keywords.splice(0, 10)
+    let firstTenKeyWords = keywords ? keywords.splice(0, 10) : []
     let search = "search-box" + this.props.location.search
     return (
       <div>

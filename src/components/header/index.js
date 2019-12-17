@@ -83,9 +83,10 @@ class Header extends Component {
     }
     let isAllowBack = !!_.get(objPathOnRouter, 'back')
     let search = this.props.location.search
-    if (search.indexOf('pathBack') !== -1) {
+    let indexOfPathBack = search.indexOf('pathBack')
+    if (indexOfPathBack !== -1) {
       isAllowBack = true
-      search = search.split('pathBack=')[1]
+      search = search.substr(indexOfPathBack + 9) // extract from pathBack= until the end of URL
       if (!_.isEmpty(search)) {
         pathBack = search
         isAllowBack = true
