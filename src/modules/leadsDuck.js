@@ -18,13 +18,13 @@ export const getLeadsPageIndex = state => _.get(state, 'leads.pageIndex') || 0
 export const getLeadsHasMoreData = state =>
   _.get(state, 'leads.hasMoreData') || false
 export const getFilterStatus = state => _.get(state, 'leads.filterStatus') || {
-  label: 'Tất cả',
+  label: 'Tình trạng',
   value: 'All'
 }
 export const getStatusOptions = state => _.get(state, 'leads.status') || []
 export const getUsers = state => _.get(state, 'leads.users') || []
 export const getFilterUser = state => _.get(state, 'leads.filterUser') || {
-  label: 'Tất cả',
+  label: 'Người xử lý',
   value: 'All'
 }
 // Reducer
@@ -36,13 +36,13 @@ const initialState = {
   detailsLead: {},
   isLoadingDetail: false,
   filterStatus: {
-    label: 'Tất cả',
+    label: 'Tình trạng',
     value: 'All'
   },
   status: [],
   users: [],
   filterUser: {
-    label: 'Tất cả',
+    label: 'Người xử lý',
     value: 'All'
   }
 }
@@ -107,10 +107,10 @@ export default (state = initialState, action) => {
       }
       state['listLeads'] = list
       let status = _.get(action, 'payload.result.status') || []
-      status.unshift({ label: 'Tất cả', value: 'All' })
+      status.unshift({ label: 'Tình trạng', value: 'All' })
       state['status'] = status
       let users = _.get(action, 'payload.result.users') || []
-      users.unshift({ label: 'Tất cả', value: 'All' })
+      users.unshift({ label: 'Người xử lý', value: 'All' })
       state['users'] = users
       return state
     }

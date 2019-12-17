@@ -18,13 +18,13 @@ export const getContactsPageIndex = state => _.get(state, 'contacts.pageIndex') 
 export const getContactsHasMoreData = state =>
   _.get(state, 'contacts.hasMoreData') || false
 export const getFilterStatus = state => _.get(state, 'contacts.filterStatus') || {
-  label: 'Tất cả',
+  label: 'Tình trạng',
   value: 'All'
 }
 export const getStatusOptions = state => _.get(state, 'contacts.status') || []
 export const getUsers = state => _.get(state, 'contacts.users') || []
 export const getFilterUser = state => _.get(state, 'contacts.filterUser') || {
-  label: 'Tất cả',
+  label: 'Người xử lý',
   value: 'All'
 }
 // Reducer
@@ -36,13 +36,13 @@ const initialState = {
   detailsContact: {},
   isLoadingDetail: false,
   filterStatus: {
-    label: 'Tất cả',
+    label: 'Tình trạng',
     value: 'All'
   },
   status: [],
   users: [],
   filterUser: {
-    label: 'Tất cả',
+    label: 'Người xử lý',
     value: 'All'
   }
 }
@@ -107,10 +107,10 @@ export default (state = initialState, action) => {
       }
       state['listContacts'] = list
       let status = _.get(action, 'payload.result.status') || []
-      status.unshift({ label: 'Tất cả', value: 'All' })
+      status.unshift({ label: 'Tình trạng', value: 'All' })
       state['status'] = status
       let users = _.get(action, 'payload.result.users') || []
-      users.unshift({ label: 'Tất cả', value: 'All' })
+      users.unshift({ label: 'Người xử lý', value: 'All' })
       state['users'] = users
       return state
     }
