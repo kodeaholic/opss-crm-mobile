@@ -50,6 +50,27 @@ class SearchBox extends Component {
   _handleSearchEnter = (e) => {
     if (e.key === 'Enter') {
       if (e.target.value && e.target.value != '' && e.target.value.length >= 3) {
+        let userLoginData = localStorage.getItem('userLoggedInKV')
+        userLoginData = JSON.parse(userLoginData).result.login
+        let userId = userLoginData.userid
+        let searchHistory = localStorage.getItem('searchHistory')
+        if (_.isEmpty(searchHistory)) {
+          searchHistory = {}
+          searchHistory[userId+""] = [e.target.value]
+        } else {
+          searchHistory = JSON.parse(searchHistory)
+          let keywords = searchHistory[userId+""]
+
+          /* Find and delete duplicate keyword */
+          let index = keywords.indexOf(e.target.value)
+          if(index !== -1) {
+            // delete keyword at index
+            keywords.splice(index, 1)
+          }
+          keywords.unshift(e.target.value)
+          searchHistory[userId + ""] = keywords
+        }
+        localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
         this.props.history.push('/search/' + e.target.value)
       } else {
         toast.error('Vui lòng nhập nhập 3 kí tự trở lên')
@@ -57,6 +78,8 @@ class SearchBox extends Component {
       }
     }
   }
+
+
 
   renderButton = (fontawesomeClass = 'fa fa-bell', path = '', badge = 0) => {
     return (
@@ -103,6 +126,10 @@ class SearchBox extends Component {
                name="search" id="search"/>
       </form>
     )
+  }
+
+  renderSearchHistory = () => {
+
   }
 
   render() {
