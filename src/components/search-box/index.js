@@ -47,30 +47,47 @@ class SearchBox extends Component {
     )
   }
 
+  getSearchHistory = () => {
+    let userLoginData = localStorage.getItem('userLoggedInKV')
+    userLoginData = JSON.parse(userLoginData).result.login
+    let userId = userLoginData.userid
+    let searchHistory = localStorage.getItem('searchHistory')
+    if (_.isEmpty(searchHistory)) {
+      return []
+    } else {
+      searchHistory = JSON.parse(searchHistory)
+      return searchHistory[userId + '']
+    }
+  }
+
+  addToSearchHistory = (keyword) => {
+    let userLoginData = localStorage.getItem('userLoggedInKV')
+    userLoginData = JSON.parse(userLoginData).result.login
+    let userId = userLoginData.userid
+    let searchHistory = localStorage.getItem('searchHistory')
+    if (_.isEmpty(searchHistory)) {
+      searchHistory = {}
+      searchHistory[userId + ''] = [keyword]
+    } else {
+      searchHistory = JSON.parse(searchHistory)
+      let keywords = searchHistory[userId + '']
+
+      /* Find and delete duplicate keyword */
+      let index = keywords.indexOf(keyword)
+      if (index !== -1) {
+        // delete keyword at index
+        keywords.splice(index, 1)
+      }
+      keywords.unshift(keyword)
+      searchHistory[userId + ''] = keywords
+    }
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+  }
+
   _handleSearchEnter = (e) => {
     if (e.key === 'Enter') {
       if (e.target.value && e.target.value != '' && e.target.value.length >= 3) {
-        let userLoginData = localStorage.getItem('userLoggedInKV')
-        userLoginData = JSON.parse(userLoginData).result.login
-        let userId = userLoginData.userid
-        let searchHistory = localStorage.getItem('searchHistory')
-        if (_.isEmpty(searchHistory)) {
-          searchHistory = {}
-          searchHistory[userId+""] = [e.target.value]
-        } else {
-          searchHistory = JSON.parse(searchHistory)
-          let keywords = searchHistory[userId+""]
-
-          /* Find and delete duplicate keyword */
-          let index = keywords.indexOf(e.target.value)
-          if(index !== -1) {
-            // delete keyword at index
-            keywords.splice(index, 1)
-          }
-          keywords.unshift(e.target.value)
-          searchHistory[userId + ""] = keywords
-        }
-        localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+        this.addToSearchHistory(e.target.value)
         this.props.history.push('/search/' + e.target.value)
       } else {
         toast.error('Vui lòng nhập nhập 3 kí tự trở lên')
@@ -78,7 +95,6 @@ class SearchBox extends Component {
       }
     }
   }
-
 
 
   renderButton = (fontawesomeClass = 'fa fa-bell', path = '', badge = 0) => {
@@ -129,15 +145,43 @@ class SearchBox extends Component {
   }
 
   renderSearchHistory = () => {
-
+    let keywords = this.getSearchHistory()
+    let firstTenKeyWords = keywords.splice(0, 10)
+    let search = "?search-box" + this.props.location.search
+    return (
+      <div>
+        {firstTenKeyWords.map((keyword, i) => {
+          return (
+            <p className="history-search-list-item" key={i + keyword} onClick={() =>
+              {
+                this.addToSearchHistory(keyword)
+                this.props.history.push('/search/' + keyword)
+              }
+            }>
+              {keyword}
+            </p>
+          )
+        })}
+      </div>
+    )
   }
 
   render() {
     return (
-      <div className="search-box-header" style={{ zIndex: 2 }}>
-        <div className="search-box-wrapper">
-          {this.renderSearchBox()}
-          {this.renderCancelButton()}
+      <div>
+        <div className="search-box-header" style={{ zIndex: 2 }}>
+          <div className="search-box-wrapper">
+            {this.renderSearchBox()}
+            {this.renderCancelButton()}
+          </div>
+        </div>
+        <div className="history-search-wrapper">
+          <label className="history-search-label">
+            Tìm kiếm gần đây
+          </label>
+          <div className="history-search-list">
+            {this.renderSearchHistory()}
+          </div>
         </div>
       </div>
     )
