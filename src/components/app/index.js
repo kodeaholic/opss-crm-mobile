@@ -13,6 +13,7 @@ import ContactComponent from '../contact-detail'
 import OpportunityComponent from '../opportunity-detail'
 import ComingSoonComponent from '../comingsoon'
 import MoreComponent from '../more'
+import SearchBoxComponent from '../search-box'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -118,8 +119,8 @@ class App extends React.Component {
         />
         <Route
           exact
-          path="/search"
-          component={ComingSoonComponent}
+          path="/search-box"
+          component={SearchBoxComponent}
         />
       </div>
     )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import _ from 'lodash'
 import { getPathName } from '../../modules/routerDuck'
 
@@ -117,7 +117,7 @@ class Header extends Component {
 
   renderButton = (fontawesomeClass = 'fa fa-bell', path = '', badge = 0) => {
     return (
-      <a href={path} className={badge > 0 ? 'notifications' : ''}>
+      <Link to={path}>
         <i
           className={fontawesomeClass}
           aria-hidden="true"
@@ -131,7 +131,7 @@ class Header extends Component {
             backgroundColor: 'rgba(255,255,255,0.3)',
           }}
         />
-      </a>
+      </Link>
     )
   }
 
@@ -161,6 +161,7 @@ class Header extends Component {
   }
   render() {
     let namePath = _.get(this.props, 'path') || ''
+    let isSearch = this.props.location.pathname.indexOf("/search") !== -1
     return (
       <div className="wrapper-header" style={{ zIndex: 2 }}>
         <div className="wrapper-header-left">
@@ -180,9 +181,8 @@ class Header extends Component {
             </div>
           </div>) : (
           <div className="wrapper-header-right">
-            <div style={{flexGrow: 1}}/>
-            <div className="header-button-list" style={{flexGrow: 2}}>
-              {this.renderButton('fa fa-search', '/search?previousScreen='+namePath)}
+            <div className="header-button-list">
+              {isSearch ? ('') : this.renderButton('fa fa-search', '/search-box?previousScreen='+namePath)}
               {this.renderButton('fa fa-bell', '/notifications')}
             </div>
           </div>)}
