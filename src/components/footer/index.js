@@ -84,10 +84,13 @@ class Footer extends Component {
     let checkActive = currentPath.indexOf(item.path) !== -1 || (item.name === 'More' && (currentPath.indexOf('calendar') !== -1 || currentPath.indexOf('ticket') !== -1))
     let active = checkActive ? ' active' : ''
     let styleColor = checkActive ? {color: '#006cad'} : {}
+    let basePath = this.props.location.pathname
+    basePath = basePath.substring(basePath.indexOf('/') + 1)
+    let pathBack = basePath + this.props.location.search
     return (
       <div className="wrapper-item-footer" key={key + item.name}>
         {id ? (
-          <Link to={item.path + '/' + id} className="wrapper-circle-icon">
+          <Link to={item.path + '/' + id + "?pathBack=" + pathBack} className="wrapper-circle-icon">
             <i
               className={item.classIcon + " footer-icon " + active}
               style={styleColor}

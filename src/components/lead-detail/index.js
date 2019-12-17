@@ -145,6 +145,9 @@ class LeadComponent extends Component {
   }
 
   render() {
+    /* For navigation back purpose */
+    let pathBack = this.props.location.search
+    pathBack = pathBack.substring(pathBack.indexOf('pathBack=')+9)
     let userLoginData = localStorage.getItem('userLoggedInKV')
     userLoginData = JSON.parse(userLoginData).result.login
     let currentUserId = userLoginData.userid
@@ -175,9 +178,9 @@ class LeadComponent extends Component {
           draggable: false
         })
         if (this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('create') !== -1) {
-          return <Redirect to={'/lead-view/' + this.props.leadData.record}/>
+          return pathBack ? (<Redirect to={'/' + pathBack  }/>) : (<Redirect to={'/lead-view/' + this.props.leadData.record} />)
         } else if (this.props.location.pathname.indexOf('convert') !== -1) {
-          return <Redirect to={'/contact-view/' + this.props.leadData.record}/>
+          return pathBack ? (<Redirect to={'/' + pathBack  }/>) : (<Redirect to={'/contact-view/' + this.props.leadData.record} />)
         }
       }
       if (this.props.formSubmitResponseStatus === 'failed' && (this.props.location.pathname.indexOf('view') === -1)) {

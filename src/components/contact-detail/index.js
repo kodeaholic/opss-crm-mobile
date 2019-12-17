@@ -93,6 +93,10 @@ class ContactComponent extends Component {
   }
 
   render() {
+    /* For navigation back purpose */
+    let pathBack = this.props.location.search
+    pathBack = pathBack.substring(pathBack.indexOf('pathBack=')+9)
+
     /* check if view or edit */
     if (this.props.expired) {
       localStorage.removeItem('userLoggedInKV')
@@ -109,7 +113,7 @@ class ContactComponent extends Component {
         <div className="wrapper-lead">
           <div className="loading-data">
             <i className="fa fa-spinner fa-pulse fa-3x fa-fw"
-               style={{ position: 'fixed', top: 'calc(50vh - 50.25px)' }}></i>
+               style={{ position: 'fixed', top: 'calc(50vh - 50.25px)' }}/>
           </div>
         </div>
       )
@@ -119,7 +123,7 @@ class ContactComponent extends Component {
           autoClose: 2000,
           draggable: false
         })
-        return <Redirect to={'/contact-view/' + this.props.contactData.record}/>
+        return pathBack ? (<Redirect to={'/' + pathBack  }/>) : (<Redirect to={'/contact-view/' + this.props.contactData.record} />)
       }
       if (this.props.option === 'view') {
         return (
