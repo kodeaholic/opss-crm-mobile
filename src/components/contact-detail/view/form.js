@@ -230,8 +230,8 @@ class ContactForm extends Component {
         {/*}*/}
         {this.props.data.allowed_to_edit_phone && <Field label="Số điện thoại" name="mobile" val={this.props.data.mobile} isRequired={true}
                changeHandler={this.handleChange} />}
-        {this.props.data.allowed_to_edit_phone && <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone}
-                                                         changeHandler={this.handleChange} />}
+        <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone}
+                                                         changeHandler={this.handleChange} />
 
         {this.props.data.allowed_to_edit_lead_source && <div className="form-create-or-update-wrapper-field" id="cf_pot_industry-wrapper">
           <label className="form-create-or-update-label-field">

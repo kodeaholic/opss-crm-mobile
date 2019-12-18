@@ -22,9 +22,11 @@ class LeadForm extends Component {
         'label': 'Mới tạo',
         'value': 'New'
       }
+      initialFormData['city'] = {label: "Hà Nội", value: "Hà Nội"}
+      initialFormData['state'] = {label: "Ba Đình", value: "Ba Đình"}
     }
-    let city = _.get(props, 'data.city') || undefined
-    let state = _.get(props, 'data.state') || undefined
+    let city = _.get(props, 'data.city') || {label: "Hà Nội", value: "Hà Nội"}
+    let state = _.get(props, 'data.state') || {label: "Ba Đình", value: "Ba Đình"}
     this.state = {
       formData: initialFormData,
       currentCity: city,
@@ -243,7 +245,8 @@ class LeadForm extends Component {
     let mapCityStateOptions = this.props.mapCityState
     let filterStateOptions = []
     if(currentCity && currentCity.value) {
-      filterStateOptions = mapCityStateOptions.filter((map) => map.city === currentCity.value)[0].states
+      let results = mapCityStateOptions.filter((map) => map.city === currentCity.value)
+      filterStateOptions = results.length > 0 ? results[0].states : []
     }
     else {
       filterStateOptions = []
