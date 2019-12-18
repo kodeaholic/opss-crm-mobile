@@ -73,11 +73,11 @@ class ContactForm extends Component {
     }
     if (formData.mobile && !formData.mobile.match(phoneRegex)) {
       error++
-      this.addError('mobile', 'Vui lòng nhập đúng định dạng')
+      this.addError('cf_mobile', 'Vui lòng nhập đúng định dạng')
     }
     if (formData.phone && !formData.phone.match(phoneRegex)) {
       error++
-      this.addError('phone', 'Vui lòng nhập đúng định dạng')
+      this.addError('cf_phone', 'Vui lòng nhập đúng định dạng')
     }
     if (formData.cf_pot_nganh_hang && formData.cf_pot_nganh_hang === {}) {
       error++
@@ -228,8 +228,10 @@ class ContactForm extends Component {
         {/*    />*/}
         {/*  </div>*/}
         {/*}*/}
-        {this.props.data.allowed_to_edit_phone && <Field label="Số điện thoại" name="cf_mobile" val={this.props.data.mobile} isRequired={true}
+        {this.props.data.allowed_to_edit_phone && <Field label="Số điện thoại" name="mobile" val={this.props.data.mobile} isRequired={true}
                changeHandler={this.handleChange} />}
+        {this.props.data.allowed_to_edit_phone && <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone}
+                                                         changeHandler={this.handleChange} />}
 
         {this.props.data.allowed_to_edit_lead_source && <div className="form-create-or-update-wrapper-field" id="cf_pot_industry-wrapper">
           <label className="form-create-or-update-label-field">
