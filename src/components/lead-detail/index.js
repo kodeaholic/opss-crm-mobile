@@ -180,7 +180,8 @@ class LeadComponent extends Component {
         if (this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('create') !== -1) {
           return pathBack ? (<Redirect to={'/' + pathBack  }/>) : (<Redirect to={'/lead-view/' + this.props.leadData.record} />)
         } else if (this.props.location.pathname.indexOf('convert') !== -1) {
-          return pathBack ? (<Redirect to={'/' + pathBack  }/>) : (<Redirect to={'/contact-view/' + this.props.leadData.record} />)
+          // return pathBack ? (<Redirect to={'/' + pathBack  }/>) : (<Redirect to={'/contact-view/' + this.props.leadData.record} />)
+          return <Redirect to={'/contact-view/' + this.props.leadData.record} />
         }
       }
       if (this.props.formSubmitResponseStatus === 'failed' && (this.props.location.pathname.indexOf('view') === -1)) {

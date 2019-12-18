@@ -403,7 +403,7 @@ class Field extends Component {
     return (
       <div className="form-convert-wrapper-field" id={this.props.name + '-wrapper'}>
         <label className="form-convert-label-field">
-          {label} {isRequired ? (<span className="require-input-common-component"> (*)</span>) : null}
+          {label} {isRequired ? (<span className="require-field"> (*)</span>) : null}
         </label>
         {
           isMultiLine ? (<textarea
