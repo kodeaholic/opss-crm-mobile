@@ -401,7 +401,7 @@ class Field extends Component {
     return (
       <div className="form-create-or-update-wrapper-field" id={this.props.name + '-wrapper'}>
         <label className="form-create-or-update-label-field">
-          {label} {isRequired ? (<span className="require-input-common-component"> (*)</span>) : null}
+          {label} {isRequired ? (<span className="require-field"> (*)</span>) : null}
         </label>
         {
           isMultiLine ? (<textarea
@@ -417,8 +417,6 @@ class Field extends Component {
               onChange={handler}
               readOnly={readOnly}/>)
         }
-        {/*<label className="form-create-or-update-label-error">Không được để trống</label>*/}
-        {/*<label className="form-create-or-update-label-error">Không đúng định dạng</label>*/}
       </div>
     )
   }
