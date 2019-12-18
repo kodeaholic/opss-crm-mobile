@@ -123,8 +123,10 @@ class Footer extends Component {
       menuToBeRendered = menuLeadFunction
     }
     else menuToBeRendered = menuList
+
+    let hideFooter = this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('convert') !== -1 || this.props.location.pathname.indexOf('create') !== -1
     return (
-      <div className="wrapper-footer">
+      <div className="wrapper-footer" style={{display: hideFooter ? 'none' : ''}}>
         {_.map(menuToBeRendered, (item, key) =>
           this.renderItemMenu(item, key, itemId)
         )}

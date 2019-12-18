@@ -33,10 +33,10 @@ const router = {
     back: 'contact-view',
     withId: true
   },
-  'calendar' : {
+  'calendar': {
     back: 'more'
   },
-  'ticket' : {
+  'ticket': {
     back: 'more'
   }
   // More
@@ -63,8 +63,7 @@ class Header extends Component {
     if (pathBack) {
       if (this.conditionalBack()) {
         this.props.history.push('/' + pathBack)
-      }
-      else return false
+      } else return false
     }
   }
 
@@ -78,7 +77,7 @@ class Header extends Component {
       let withId = _.get(objPathOnRouter, 'withId')
       if (withId) {
         let pathName = this.props.location.pathname
-        pathBack += "/" + pathName.split('/')[2]
+        pathBack += '/' + pathName.split('/')[2]
       }
     }
     let isAllowBack = !!_.get(objPathOnRouter, 'back')
@@ -91,8 +90,7 @@ class Header extends Component {
         pathBack = search
         isAllowBack = true
       }
-    }
-    else {
+    } else {
       if (search.indexOf('previousScreen') !== -1) {
         search = search.split('previousScreen=')[1]
         if (!_.isEmpty(search)) {
@@ -102,7 +100,8 @@ class Header extends Component {
       }
     }
     return (
-      <div className="wrapper-icon" onClick={() => this.routeChange(pathBack)} style={{display: isAllowBack ? '' : 'none'}}>
+      <div className="wrapper-icon" onClick={() => this.routeChange(pathBack)}
+           style={{ display: isAllowBack ? '' : 'none' }}>
         <i
           className={'fa fa-angle-left'}
           aria-hidden="true"
@@ -139,7 +138,7 @@ class Header extends Component {
             padding: '0.5em 0.6em',
             color: 'white',
             marginLeft: '5px',
-            backgroundColor: 'rgba(255,255,255,0.3)',
+            backgroundColor: 'rgba(255,255,255,0.3)'
           }}
         />
       </Link>
@@ -170,9 +169,10 @@ class Header extends Component {
       </div>
     )
   }
+
   render() {
     let namePath = _.get(this.props, 'path') || ''
-    let isSearch = this.props.location.pathname.indexOf("/search") !== -1
+    let hideSearch = this.props.location.pathname.indexOf('/search') !== -1 || this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('convert') !== -1 || this.props.location.pathname.indexOf('create') !== -1
     return (
       <div className="wrapper-header" style={{ zIndex: 2 }}>
         <div className="wrapper-header-left">
@@ -181,22 +181,12 @@ class Header extends Component {
         <div className="wrapper-header-center">
           {this.renderCenteredLogo()}
         </div>
-        {!_.isEmpty(namePath) && (namePath.indexOf('create') !== -1 || namePath.indexOf('edit') !== -1 || namePath.indexOf('convert') !== -1) ? (
-          <div className="wrapper-header-right">
-
-            <div className="wrapper-icon">
-              <button id="globalSaveButton" type="button" className="btn-add-new-lead" onClick={this.handleSubmit}
-                      style={{ backgroundColor: 'white' }} disabled>
-                Lưu
-              </button>
-            </div>
-          </div>) : (
-          <div className="wrapper-header-right">
-            <div className="header-button-list">
-              {isSearch ? ('') : this.renderButton('fa fa-search', '/search-box?previousScreen='+namePath)}
-              {this.renderButton('fa fa-bell', '/notifications')}
-            </div>
-          </div>)}
+        <div className="wrapper-header-right">
+          <div className="header-button-list">
+            {hideSearch ? ('') : this.renderButton('fa fa-search', '/search-box?previousScreen=' + namePath)}
+            {this.renderButton('fa fa-bell', '/notifications')}
+          </div>
+        </div>
       </div>
     )
   }
