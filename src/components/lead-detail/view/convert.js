@@ -181,11 +181,13 @@ class LeadConvertForm extends Component {
     }
   }
   renderSaveButton = () => {
-    let saveBtn = document.getElementById('globalSaveButton');
-    if (!_.isEmpty(saveBtn)) {
-      saveBtn.disabled = false;
-      saveBtn.onclick = this.handleSubmit
-    }
+    return (
+      <div className="wrapper-save-btn">
+        <button className="save-btn" onClick={this.handleSubmit}>
+          Lưu
+        </button>
+      </div>
+    )
   }
   /*
   * Fetch data from API for dropdown select

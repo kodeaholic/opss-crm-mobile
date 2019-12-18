@@ -13,25 +13,31 @@ const mapStateToProps = (state, ownProps) => ({
 
 const router = {
   'lead-view': {
-    back: 'lead'
+    back: 'lead',
+    title: 'Lead details'
   },
   'lead-convert': {
     back: 'lead-view',
-    withId: true
+    withId: true,
+    title: 'Convert Lead'
   },
   'lead-edit': {
     back: 'lead-view',
-    withId: true
+    withId: true,
+    title: 'Sửa Lead'
   },
   'lead-create': {
-    back: 'lead'
+    back: 'lead',
+    title: 'Thêm Lead'
   },
   'contact-view': {
-    back: 'contact'
+    back: 'contact',
+    title: 'Contact details'
   },
   'contact-edit': {
     back: 'contact-view',
-    withId: true
+    withId: true,
+    title: 'Sửa Contact'
   },
   'calendar': {
     back: 'more'
@@ -170,16 +176,27 @@ class Header extends Component {
     )
   }
 
+  renderTitle = (title) => {
+    return (
+      <div className="title">
+        {title}
+      </div>
+    )
+  }
   render() {
-    let namePath = _.get(this.props, 'path') || ''
-    let hideSearch = this.props.location.pathname.indexOf('/search') !== -1 || this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('convert') !== -1 || this.props.location.pathname.indexOf('create') !== -1
+    const namePath = _.get(this.props, 'path') || ''
+    const objPathOnRouter = _.get(router, [namePath])
+    let title = !_.isEmpty(objPathOnRouter)
+      ? _.get(objPathOnRouter, 'title')
+      : undefined
+    let hideSearch = this.props.location.pathname.indexOf('/search') !== -1 || this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('convert') !== -1 || this.props.location.pathname.indexOf('create') !== -1 || this.props.location.pathname.indexOf('view') !== -1
     return (
       <div className="wrapper-header" style={{ zIndex: 2 }}>
         <div className="wrapper-header-left">
           {this.renderIconLeft()}
         </div>
         <div className="wrapper-header-center">
-          {this.renderCenteredLogo()}
+          {title ? this.renderTitle(title) : this.renderCenteredLogo()}
         </div>
         <div className="wrapper-header-right">
           <div className="header-button-list">

@@ -132,3 +132,12 @@
   text-align: left;
   flex: 1;
 }
+
+.title {
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-family: Roboto;
+  font-weight: bold;
+}
