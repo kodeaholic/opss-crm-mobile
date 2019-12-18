@@ -73,7 +73,7 @@ class Header extends Component {
     }
   }
 
-  renderIconLeft = () => {
+  renderIconLeft = (color = '#ffffff') => {
     const namePath = _.get(this.props, 'path') || ''
     const objPathOnRouter = _.get(router, [namePath])
     let pathBack = !_.isEmpty(objPathOnRouter)
@@ -113,17 +113,47 @@ class Header extends Component {
           aria-hidden="true"
           style={{
             fontSize: 26,
-            color: '#ffffff'
+            color: color
           }}
         />
       </div>
     )
   }
+  addToSearchHistory = (keyword) => {
+    let userLoginData = localStorage.getItem('userLoggedInKV')
+    userLoginData = JSON.parse(userLoginData).result.login
+    let userId = userLoginData.userid
+    let searchHistory = localStorage.getItem('searchHistory')
+    if (_.isEmpty(searchHistory)) {
+      searchHistory = {}
+      searchHistory[userId + ''] = [keyword]
+    } else {
+      searchHistory = JSON.parse(searchHistory)
+      let keywords = searchHistory[userId + '']
+
+      /* Find and delete duplicate keyword */
+      let index = keywords ? keywords.indexOf(keyword) : -1
+      if (index !== -1) {
+        // delete keyword at index
+        keywords.splice(index, 1)
+      }
+      if (_.isEmpty(keywords)) {
+        keywords = [keyword]
+      }
+      else {
+        keywords.unshift(keyword)
+      }
+      searchHistory[userId + ''] = keywords
+    }
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+  }
 
   _handleSearchEnter = (e) => {
+    let search = "search-box" + this.props.location.search
     if (e.key === 'Enter') {
       if (e.target.value && e.target.value != '' && e.target.value.length >= 3) {
-        this.props.history.push('/search/' + e.target.value)
+        this.addToSearchHistory(e.target.value)
+        this.props.history.push('/search/' + e.target.value + "?pathBack=" + search)
       } else {
         toast.error('Vui lòng nhập nhập 3 kí tự trở lên')
         return false
@@ -183,7 +213,39 @@ class Header extends Component {
       </div>
     )
   }
-  render() {
+
+  clearInput = () => {
+    let input = document.getElementById('search')
+    if (input) {
+      input.value = ''
+      input.focus()
+    }
+  }
+  renderSearchBoxInput = () => {
+    let searchKey = this.props.location.pathname.split('/')[2]
+    return (
+      <div className="wrapper-header" style={{ zIndex: 2, backgroundColor: '#ffffff' }}>
+        <div className="wrapper-header-icon">
+          {this.renderIconLeft('#000000')}
+        </div>
+        <div className="wrapper-header-search-box">
+          <i className="fa fa-search fa-search-custom" aria-hidden="true" />
+          <form action="#" onSubmit={e => {
+            e.preventDefault()
+          }} autoComplete="off">
+            <input type="search" style={{ fontSize: 'inherit' }}
+                   defaultValue={searchKey}
+                   placeholder="Nhập từ khóa tìm kiếm"
+                   onKeyPress={this._handleSearchEnter}
+                   name="search" id="search"/>
+          </form>
+          <i className="fa fa-times fa-times-custom" aria-hidden="true" onClick={this.clearInput}/>
+        </div>
+      </div>
+    )
+  }
+
+  renderNormal = () => {
     const namePath = _.get(this.props, 'path') || ''
     const objPathOnRouter = _.get(router, [namePath])
     let title = !_.isEmpty(objPathOnRouter)
@@ -206,6 +268,11 @@ class Header extends Component {
         </div>
       </div>
     )
+  }
+  render() {
+    let isSearchResultScreen = this.props.location.pathname.indexOf('/search/') !== -1
+    if (!isSearchResultScreen) return this.renderNormal()
+    else return this.renderSearchBoxInput()
   }
 }
 
