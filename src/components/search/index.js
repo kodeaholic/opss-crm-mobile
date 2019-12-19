@@ -151,9 +151,38 @@ class Lead extends Component {
     let opportunities = data.filter((map) => map._index === 'potentialcrm')
     return (
       <div className="cards-wrapper">
-        <ListCard data={leads} functionRenderItem={this.renderItemList} name="Leads"/>
-        <ListCard data={contacts} functionRenderItem={this.renderItemList} name="Contacts"/>
-        <ListCard data={opportunities} functionRenderItem={this.renderItemList} name="Opportunities"/>
+        {leads.length > 0 && <ListCard data={leads} functionRenderItem={this.renderItemList} name="Leads"/>}
+        {contacts.length > 0 && <ListCard data={contacts} functionRenderItem={this.renderItemList} name="Contacts"/>}
+        {opportunities.length > 0 && <ListCard data={opportunities} functionRenderItem={this.renderItemList} name="Opportunities"/>}
+      </div>
+    )
+  }
+
+  renderFilter = (data) => {
+    let leads = data.filter((map) => map._index === 'leadcrm')
+    let contacts = data.filter((map) => map._index === 'contactcrm')
+    let opportunities = data.filter((map) => map._index === 'potentialcrm')
+    let changeTab = () => {
+      // active button
+
+      // hide cards
+    }
+    return (
+      <div className="filter-search-result-wrapper" style={{ display: data.length > 0 ? '' : 'none' }}>
+        <div className="filter-search-button-list">
+          {data.length > 0 && (<div className="filter-search-button active" id="btn-filter-all">
+            Tất cả
+          </div>)}
+          {leads.length > 0 && (<div className="filter-search-button" id="btn-filter-leads">
+            Leads
+          </div>)}
+          {contacts.length > 0 && (<div className="filter-search-button" id="btn-filter-contacts">
+            Contacts
+          </div>)}
+          {opportunities.length > 0 && (<div className="filter-search-button" id="btn-filter-opportunities">
+            Opportunities
+          </div>)}
+        </div>
       </div>
     )
   }
@@ -191,6 +220,7 @@ class Lead extends Component {
         } else {
           return (
             <div className="wrapper-search-result">
+              {this.renderFilter(dataList)}
               {dataList ? this.renderResult(dataList) : this.renderLoading()}
             </div>
           )
