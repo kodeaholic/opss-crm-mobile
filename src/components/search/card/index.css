@@ -108,6 +108,7 @@
     margin-left: 5px;
 }
 .filter-search-result-wrapper {
+    z-index: 2;
     width: calc(100vw);
     position: fixed;
     top: 45px;

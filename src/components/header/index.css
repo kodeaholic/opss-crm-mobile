@@ -152,8 +152,9 @@
 }
 .header-image {
   flex: 1;
-  max-width: 75px;
+  max-width: 80px;
   height: auto;
+  max-height: 35px;
 }
 
 .header-button-list {
