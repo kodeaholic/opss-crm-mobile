@@ -153,6 +153,7 @@ class Header extends Component {
     if (e.key === 'Enter') {
       if (e.target.value && e.target.value != '' && e.target.value.length >= 3) {
         this.addToSearchHistory(e.target.value)
+        e.target.blur()
         this.props.history.push('/search/' + e.target.value + "?pathBack=" + search)
       } else {
         toast.error('Vui lòng nhập nhập 3 kí tự trở lên')
