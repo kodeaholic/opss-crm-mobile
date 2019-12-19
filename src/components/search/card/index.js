@@ -30,7 +30,7 @@ export default class ListCard extends Component {
       }
     }
     return (
-      <div className="card-wrapper">
+      <div className="card-wrapper" id={"card-wrapper-" + name}>
         <div className="card-title" id={"card-title-" + name} onClick={clickToExpand} style={{overflow: 'hidden', borderBottomLeftRadius: setBorderBottomCardTitle ? '5px' : '0', borderBottomRightRadius: setBorderBottomCardTitle ? '5px' : '0'}}>
           {name} <span>{data.length}</span>
         </div>

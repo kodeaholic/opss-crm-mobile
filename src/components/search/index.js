@@ -151,9 +151,9 @@ class Lead extends Component {
     let opportunities = data.filter((map) => map._index === 'potentialcrm')
     return (
       <div className="cards-wrapper">
-        {leads.length > 0 && <ListCard data={leads} functionRenderItem={this.renderItemList} name="Leads"/>}
-        {contacts.length > 0 && <ListCard data={contacts} functionRenderItem={this.renderItemList} name="Contacts"/>}
-        {opportunities.length > 0 && <ListCard data={opportunities} functionRenderItem={this.renderItemList} name="Opportunities"/>}
+        {leads.length > 0 && <ListCard data={leads} functionRenderItem={this.renderItemList} name="leads"/>}
+        {contacts.length > 0 && <ListCard data={contacts} functionRenderItem={this.renderItemList} name="contacts"/>}
+        {opportunities.length > 0 && <ListCard data={opportunities} functionRenderItem={this.renderItemList} name="opportunities"/>}
       </div>
     )
   }
@@ -162,24 +162,46 @@ class Lead extends Component {
     let leads = data.filter((map) => map._index === 'leadcrm')
     let contacts = data.filter((map) => map._index === 'contactcrm')
     let opportunities = data.filter((map) => map._index === 'potentialcrm')
-    let changeTab = () => {
+    let changeTab = (e) => {
       // active button
-
+      let currentActiveElement = document.getElementsByClassName("filter-search-button active")[0]
+      currentActiveElement.classList.remove("active")
+      e.target.classList.add("active")
       // hide cards
+      const cards = ["leads", "contacts", "opportunities"]
+      let id = e.target.id.split('btn-filter-')[1]
+      if (id === 'all') {
+        cards.forEach((item, index) => {
+          let div = document.getElementById('card-wrapper-' + item)
+          if (div) div.style.display = 'block'
+        })
+      }
+      else {
+        cards.forEach((item, index) => {
+          if (item === id) {
+            let div = document.getElementById('card-wrapper-' + item)
+            if (div) div.style.display = 'block'
+          }
+          else {
+            let div = document.getElementById('card-wrapper-' + item)
+            if (div) div.style.display = 'none'
+          }
+        })
+      }
     }
     return (
       <div className="filter-search-result-wrapper" style={{ display: data.length > 0 ? '' : 'none' }}>
         <div className="filter-search-button-list">
-          {data.length > 0 && (<div className="filter-search-button active" id="btn-filter-all">
+          {data.length > 0 && (<div className="filter-search-button active" id="btn-filter-all" onClick={changeTab}>
             Tất cả
           </div>)}
-          {leads.length > 0 && (<div className="filter-search-button" id="btn-filter-leads">
+          {leads.length > 0 && (<div className="filter-search-button" id="btn-filter-leads" onClick={changeTab}>
             Leads
           </div>)}
-          {contacts.length > 0 && (<div className="filter-search-button" id="btn-filter-contacts">
+          {contacts.length > 0 && (<div className="filter-search-button" id="btn-filter-contacts" onClick={changeTab}>
             Contacts
           </div>)}
-          {opportunities.length > 0 && (<div className="filter-search-button" id="btn-filter-opportunities">
+          {opportunities.length > 0 && (<div className="filter-search-button" id="btn-filter-opportunities" onClick={changeTab}>
             Opportunities
           </div>)}
         </div>
