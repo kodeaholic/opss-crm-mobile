@@ -1,0 +1,109 @@
+.infinite-scroll-component {
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+.wrapper-search-result {
+    position: fixed;
+    background-color: transparent;
+    width: 94%;
+    margin-left: calc(3vw); /* 5% viewport width */
+    margin-right: calc(3vw);
+    max-height: calc(100vh - 180px);
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    top: 120px;
+}
+.wrapper-list > div {
+    width: 100%;
+}
+
+.wrapper-list-item {
+    border-top: none;
+    border-bottom: 1px solid #eeeeee;
+    padding: 5px 0 5px 0;
+    display: flex;
+    flex-direction: row;
+}
+.wrapper-item-row {
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    width: 50%;
+    justify-content: space-around;
+}
+
+.label-item-list {
+    font-size: 14px;
+    font-weight: 400;
+    color: #000;
+}
+.link-on-list {
+    text-decoration: none;
+    border: none;
+}
+.label-item-list.item-name {
+    color: #006cad;
+    font-weight: bold;
+}
+.label-item-list.item-status {
+    color: #555454;
+    font-weight: 500;
+    font-style: italic;
+}
+.label-item-list.text-bold {
+    font-weight: bold;
+}
+.label-item-list.text-grey {
+    color: #757575;
+}
+.wrapper-80vw-border {
+    width: 94%;
+    margin-left: calc(3vw);
+    margin-right: calc(3vw);
+}
+
+.cards-wrapper {
+    width: 94%;
+    height: 100%;
+    margin-left: calc(3vw);
+    margin-right: calc(3vw);
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+}
+.cards-wrapper > .card-wrapper {
+    height: 100%;
+    flex: 1;
+    margin-bottom: 1px;
+}
+.card-body {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 0;
+    transition: all 1s ease;
+}
+.card-title {
+    width: 100%;
+    height: 40px;
+    background-color: #4ab048;
+    color: #ffffff;
+    font-weight: bold;
+    font-family: Roboto;
+    padding: 10px;
+    margin-bottom: 0;
+    border-radius: 5px;
+}
+.card-title > span {
+    display: inline-block;
+    width: 32px;
+    height: 20px;
+    border-radius: 100px;
+    background-color: var(--white);
+    color: #4ab048;
+    text-align: center;
+    margin-left: 5px;
+}

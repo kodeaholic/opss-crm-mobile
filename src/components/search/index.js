@@ -8,6 +8,9 @@ import withLayout from '../withLayout'
 
 import './index.css'
 
+/* Child component */
+import ListCard from './card'
+
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -95,27 +98,6 @@ class Lead extends Component {
     document.body.style.overscrollBehavior = 'auto'
   }
 
-  renderFilter = () => {
-    return (
-      <div className="wrapper-filter-lead">
-        <div className="filter-lead-option">
-          <i
-            className="fa fa-address-book-o filter-header-item-padding icon-filter-lead"
-            aria-hidden="true"></i>
-          <label className="label-filter-option filter-header-item-padding">
-            Hen lien he sau
-          </label>
-          <i
-            className="fa fa-caret-down filter-header-item-padding"
-            aria-hidden="true"></i>
-        </div>
-        <div className="filter-lead-result">
-          <Button label="+ Thêm mới" path="/add-new-customer"/>
-        </div>
-      </div>
-    )
-  }
-
   renderItemList = (item, key) => {
     let basePath = this.props.location.pathname
     basePath = basePath.substring(basePath.indexOf('/') + 1)
@@ -131,18 +113,14 @@ class Lead extends Component {
         to_url = '/opportunity-view/13x' + crmid + '?pathBack=' + pathBack
         setypeLabel = 'Opportunities'
       }
-      let currentSectionTitle = this.state.sectionTitle
-      this.state.sectionTitle = setype
       return (
         <Link
-          className="link-on-lead-list"
+          className="link-on-list"
           key={key}
           to={to_url}>
-          {currentSectionTitle !== setype ? (
-            <div className="wrapper-list-lead-item section-title">{setypeLabel} ({item._count})</div>) : ''}
-          <div className="wrapper-list-lead-item">
+          <div className="wrapper-search-list-item">
             <div className="wrapper-item-row">
-              <label className="label-item-list lead-item-name">{label}</label>
+              <label className="label-item-list item-name">{label}</label>
               <label className="label-item-list">{s_website}</label>
               <label className="label-item-list">{status}</label>
             </div>
@@ -159,76 +137,29 @@ class Lead extends Component {
     }
   }
 
-  refreshData = () => {
-    const { userLoggedIn } = this.props
-    let { session } = userLoggedIn
-    if (!session) {
-      let userLoginData = localStorage.getItem('userLoggedInKV')
-      userLoginData = JSON.parse(userLoginData).result.login
-      session = userLoginData.session
-    }
-    let refresh = true
-    this.props.actions.getSearchResult({ session, refresh })
-  }
-
-  fetchMoreData = () => {
-    const { pageIndex, userLoggedIn } = this.props
-    let { session } = userLoggedIn
-    if (!session) {
-      let userLoginData = localStorage.getItem('userLoggedInKV')
-      userLoginData = JSON.parse(userLoginData).result.login
-      session = userLoginData.session
-    }
-    this.props.actions.getSearchResult({ session, pageIndex })
-  }
-
   renderLoading = () => {
     return (
       <div className="loading-data">
-        <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
       </div>
     )
   }
 
-  renderList = data => {
-    // const {hasMoreData} = this.props
+  renderResult = data => {
+    let leads = data.filter((map) => map._index === 'leadcrm')
+    let contacts = data.filter((map) => map._index === 'contactcrm')
+    let opportunities = data.filter((map) => map._index === 'potentialcrm')
     return (
-      <div
-        className="wrapper-list-lead"
-        id="scrollableDiv"
-        style={{
-          height: 'calc(100vh - 105px)',
-          overflow: 'auto',
-          position: 'absolute', /*top: '100px',*/
-          width: '100%'
-        }}>
-        <InfiniteScroll
-          dataLength={data.length} //This is important field to render the next data
-          next={this.fetchMoreData}
-          hasMore={false}
-          loader={this.renderLoading()}
-          scrollableTarget="scrollableDiv"
-          refreshFunction={this.refreshData}
-          /*pullDownToRefresh
-          pullDownToRefreshContent={
-            this.renderLoading()
-          }*/
-          /*releaseToRefreshContent={
-            this.renderLoading()
-          }*/
-        >
-          {data
-            ? _.map(data, (item, key) => {
-              return this.renderItemList(item, key)
-            })
-            : null}
-        </InfiniteScroll>
+      <div className="cards-wrapper">
+        <ListCard data={leads} functionRenderItem={this.renderItemList} name="Leads"/>
+        <ListCard data={contacts} functionRenderItem={this.renderItemList} name="Contacts"/>
+        <ListCard data={opportunities} functionRenderItem={this.renderItemList} name="Opportunities"/>
       </div>
     )
   }
 
   render() {
-    const dataLeads = _.get(this.props, 'listSR') || []
+    const dataList = _.get(this.props, 'listSR') || []
     if (this.props.expired) {
       localStorage.removeItem('userLoggedInKV')
       toast.error('Session expired', {
@@ -241,17 +172,17 @@ class Lead extends Component {
     } else {
       if (this.props.isLoading) {
         return (
-          <div className="wrapper-lead">
+          <div className="wrapper-search-container">
             <div className="loading-data">
               <i className="fa fa-spinner fa-pulse fa-3x fa-fw"
-                 style={{ position: 'fixed', top: 'calc(50vh - 50.25px)' }}></i>
+                 style={{ position: 'fixed', top: 'calc(50vh - 50.25px)' }}/>
             </div>
           </div>
         )
       } else {
-        if (dataLeads.length === 0) {
+        if (dataList.length === 0) {
           return (
-            <div className="wrapper-lead">
+            <div className="wrapper-search-result">
               <div className="loading-data">
                 Search not found
               </div>
@@ -259,10 +190,8 @@ class Lead extends Component {
           )
         } else {
           return (
-            <div className="wrapper-lead">
-              {/*{this.renderFilter()}*/}
-              {dataLeads ? this.renderList(dataLeads) : this.renderLoading()}
-              {this.state.sectionTitle = ''}
+            <div className="wrapper-search-result">
+              {dataList ? this.renderResult(dataList) : this.renderLoading()}
             </div>
           )
         }
