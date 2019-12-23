@@ -181,48 +181,59 @@ class LoginPage extends React.Component {
       return <Redirect to={'/lead'} />
     }
     return (
-      <div className="col-md-6 col-md-offset-3">
+      <div className="col-md-12 col-md-offset-12" style={{backgroundColor: '#006cad', width: '100%', height: '100%'}}>
         {this.props.isShowPopupResetPassword ? this.renderPopup() : null}
-        <div className="login-header-logo">
-          <img
-            alt="load"
-            src={require('../../static/images/logo-kiotviet.png')}
-            className="responsive-image-logo"
-          />
-        </div>
-        <form name="form" onSubmit={this.handleSubmit}>
-          <div className={submitted && !username ? ' has-error' : ''}>
-            <label htmlFor="username">Tên đăng nhập</label>
-            <input
-              type="text"
-              className="form-control"
-              name="username"
-              value={username}
-              onChange={this.handleChange}
-            />
+        <div className="login-wrapper">
+          <div className="login-header-logo-wrapper">
+            <div className="login-header-logo">
+              <img
+                alt="load"
+                src={require('../../static/images/app-logo.png')}
+                className="responsive-image-logo"
+              />
+            </div>
           </div>
-          <div className={submitted && !password ? ' has-error' : ''}>
-            <label htmlFor="password">Mật khẩu</label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              value={password}
-              onChange={this.handleChange}
-            />
+          <div className="login-header-app-name">
+            crm mobile
           </div>
-          <div className="btn-login-forgetPass">
-            <button className="btn btn-primary kv-btn-login">Đăng nhập</button>
-            {loggingIn && (
-              <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-            )}
-            <label
-              className="btn-link btn-forgetPass"
-              onClick={() => this.handlePopupOpen()}>
+          <form className="form-login" onSubmit={(e) => {e.preventDefault()}}>
+            <div className={submitted && !username ? 'form-login-input-wrapper has-error' : 'form-login-input-wrapper'}>
+              <div className="input-icon">
+                <i className="fa fa-user fa-2x" aria-hidden="true" />
+              </div>
+              <input
+                type="text"
+                className="form-login-input"
+                name="username"
+                value={username}
+                onChange={this.handleChange}
+                placeholder="Tên đăng nhập"
+              />
+            </div>
+            <div className={submitted && !password ? 'form-login-input-wrapper has-error' : 'form-login-input-wrapper'}>
+              <div className="input-icon">
+                <i className="fa fa-lock fa-2x" aria-hidden="true" />
+              </div>
+              <input
+                type="password"
+                className="form-login-input"
+                name="password"
+                value={password}
+                onChange={this.handleChange}
+                placeholder="Mật khẩu"
+              />
+            </div>
+            <div className="btn-forgot-password" onClick={() => this.handlePopupOpen()}>
               Quên mật khẩu?
-            </label>
-          </div>
-        </form>
+            </div>
+            <button className="btn-login" onClick={this.handleSubmit}>
+              {!loggingIn && "Đăng nhập"}
+              {loggingIn && (
+                <i className="fa fa-spinner fa-pulse fa-3x fa-fw" />
+              )}
+            </button>
+          </form>
+        </div>
       </div>
     )
   }

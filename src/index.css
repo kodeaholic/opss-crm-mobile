@@ -19,12 +19,14 @@ code {
 .app-wrapper {
   background-color: #f9f9f9;
   position: relative;
-  height: 100vh;
-  max-width: 760px;
+  height: calc(100vh);
+  width: calc(100vw);
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow: hidden;
 }
+.app-wrapper::-webkit-scrollbar { width: 0 !important }
 
 .root {
   flex: 1;

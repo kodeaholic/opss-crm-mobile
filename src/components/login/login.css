@@ -103,11 +103,36 @@
 
 .btn-forgetPass {
   padding-top: 10px;
+  color: #ffffff;
 }
 
 /*input[type="text"] {*/
 /*  font-size: inherit;*/
 /*}*/
+
+.login-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.login-header-logo-wrapper {
+  margin: 15% auto 0 auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 30px;
+  background-color: var(--white);
+}
+
+.login-header-app-name {
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: bold;
+  font-family: Roboto;
+  font-size: 26px;
+  margin: 10px auto 0 auto;
+  width: 100%;
+  text-align: center;
+}
 
 .login-header-logo {
   width: 100%;
@@ -118,8 +143,7 @@
 
 .responsive-image-logo {
   width: 100%;
-  height: auto;
-  padding: 20px;
+  height: 100%;
 }
 
 .kv-btn-login {
@@ -128,4 +152,77 @@
 
 .modal-body-popup-input {
   padding-top: 10px;
+}
+
+.form-login {
+  width: 100%;
+}
+
+.form-login-input-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 50px;
+  margin: 5px auto 5px auto;
+  justify-content: center;
+  align-items: center;
+}
+.input-icon {
+  height: 100%;
+  flex: 0.5;
+  text-align: center;
+  color: #ffffff;
+  margin: 0 auto 0 auto;
+  border: 1px solid #ffffff;
+  padding: 0;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  line-height: 50px;
+  vertical-align: middle;
+}
+.form-login-input {
+  width: 100px;
+  height: 100%;
+  flex: 2;
+  padding: 0;
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 0 5px 5px 0;
+  text-indent: 20px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.form-login-input::placeholder {
+  color: #a5a5a5;
+  font-family: Roboto;
+  text-align: left;
+}
+.btn-login {
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  background-color: #58ba47;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+}
+.btn-login:focus {
+  outline: none;
+}
+.btn-forgot-password {
+  margin-top: 5px;
+  width: 100%;
+  height: 60px;
+  border: none;
+  background-color: transparent;
+  color: #ffffff;
+  text-align: right;
 }
