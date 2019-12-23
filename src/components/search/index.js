@@ -13,8 +13,6 @@ import ListCard from './card'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
-import Button from '../commonComponents/button'
 import {
   getSearchResult,
   getSRData,
@@ -27,7 +25,6 @@ import {
   getSessionStatus
 } from '../../modules/loginDuck'
 import { getUserLoggedIn } from '../../modules/loginDuck'
-import InfiniteScroll from 'react-infinite-scroll-component'
 import { toast } from 'react-toastify'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -76,23 +73,21 @@ class Lead extends Component {
     document.body.style.overscrollBehavior = 'contain'
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.keyword !== this.props.keyword) {
-      let { userLoggedIn, keyword } = newProps
-      let { session } = userLoggedIn || {}
-      if (!session) {
-        let userLoginData = localStorage.getItem('userLoggedInKV')
-        if (userLoginData) {
-          userLoginData = JSON.parse(userLoginData).result.login
-          session = userLoginData.session
-        } else {
-          this.props.history.push('/login')
-        }
-      }
-      let refresh = true
-      this.props.actions.getSearchResult({ session, refresh, keyword })
-    }
-  }
+  // componentWillReceiveProps(newProps) {
+  //   let { userLoggedIn, keyword } = newProps
+  //   let { session } = userLoggedIn || {}
+  //   if (!session) {
+  //     let userLoginData = localStorage.getItem('userLoggedInKV')
+  //     if (userLoginData) {
+  //       userLoginData = JSON.parse(userLoginData).result.login
+  //       session = userLoginData.session
+  //     } else {
+  //       this.props.history.push('/login')
+  //     }
+  //   }
+  //   let refresh = true
+  //   this.props.actions.getSearchResult({ session, refresh, keyword })
+  // }
 
   componentWillUnmount() {
     document.body.style.overscrollBehavior = 'auto'
