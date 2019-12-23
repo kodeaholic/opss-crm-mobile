@@ -12,7 +12,7 @@
     max-height: calc(100vh - 165px);
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    top: 100px;
+    top: 85px;
 }
 .wrapper-list > div {
     width: 100%;
