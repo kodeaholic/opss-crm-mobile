@@ -166,7 +166,7 @@ class LoginPage extends React.Component {
               Gửi yêu cầu
             </button>
             {isLoadingSendForgetPassword && (
-              <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+              <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
             )}
           </div>
         </div>
@@ -181,7 +181,7 @@ class LoginPage extends React.Component {
       return <Redirect to={'/lead'} />
     }
     return (
-      <div className="col-md-12 col-md-offset-12" style={{backgroundColor: '#006cad', width: '100%', height: '100%'}}>
+      <div className="col-md-12 col-md-offset-12" style={{backgroundImage: 'url("/login-background_25.png")', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', width: '100%', height: '100%'}}>
         {this.props.isShowPopupResetPassword ? this.renderPopup() : null}
         <div className="login-wrapper">
           <div className="login-header-logo-wrapper">

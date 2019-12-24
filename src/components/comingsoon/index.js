@@ -54,6 +54,11 @@ class ComingSoon extends Component {
     }
   }
 
+  componentWillMount() {
+    /* Prevent browser's default pull to refresh behavior*/
+    document.body.style.overscrollBehavior= 'contain'
+  }
+
   componentDidMount() {
     this.countdownTimer();
     let timeInterval = setInterval(this.countdownTimer, 1000)
@@ -62,27 +67,29 @@ class ComingSoon extends Component {
 
   componentWillUnmount() {
     clearInterval(this.state.timeInterval)
+    /* Prevent browser's default pull to refresh behavior*/
+    document.body.style.overscrollBehavior= 'auto'
   }
 
   render(){
     return (
       <div className="wrapper">
         <div className="coming-soon-header">
-          <img
-            className="coming-soon-header-image"
-            alt="Citigo"
-            src={require('../../static/images/citigo.png')}
-            style={{maxWidth: '155px'}}
-          />
-          <div className="coming-soon-header-image">
-            &nbsp;
-          </div>
-          <img
-            className="coming-soon-header-image"
-            alt="CRM"
-            src={require('../../static/images/app-logo.png')}
-            style={{maxWidth: '70px'}}
-          />
+          {/*<img*/}
+          {/*  className="coming-soon-header-image"*/}
+          {/*  alt="Citigo"*/}
+          {/*  src={require('../../static/images/citigo.png')}*/}
+          {/*  style={{maxWidth: '155px'}}*/}
+          {/*/>*/}
+          {/*<div className="coming-soon-header-image">*/}
+          {/*  &nbsp;*/}
+          {/*</div>*/}
+          {/*<img*/}
+          {/*  className="coming-soon-header-image"*/}
+          {/*  alt="CRM"*/}
+          {/*  src={require('../../static/images/app-logo.png')}*/}
+          {/*  style={{maxWidth: '70px'}}*/}
+          {/*/>*/}
         </div>
         <div id="count-down" style={{marginTop: '20px'}}/>
       </div>

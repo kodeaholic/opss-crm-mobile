@@ -47,8 +47,8 @@ export default class List extends Component {
           dataLength={data.length} //This is important field to render the next data
           next={fetchMoreData}
           hasMore={hasMoreData && !isLoading}
-          loader={<div className="list-spinner"/>}
-          // loader={<h4>Loading...</h4>}
+          // loader={<div className="list-spinner"/>}
+          loader={<h4 style={{textAlign:'center', fontFamily: 'Roboto, serif'}}>Loading...</h4>}
           scrollableTarget="scrollableDiv"
           refreshFunction={refreshData}
           pullDownToRefresh
