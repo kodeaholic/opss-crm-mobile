@@ -27,7 +27,8 @@
     "redux-thunk": "2.3.0",
     "scroll-behavior-polyfill": "^2.0.13",
     "seamless-immutable": "^7.1.4",
-    "styled-components": "^4.4.0"
+    "styled-components": "^4.4.0",
+    "typeface-roboto": "0.0.75"
   },
   "devDependencies": {
     "prettier": "1.18.2",
