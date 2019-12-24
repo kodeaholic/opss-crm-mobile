@@ -69,25 +69,28 @@ class Lead extends Component {
     let refresh = true
     this.props.actions.getSearchResult({ session, refresh, keyword })
 
-    /* Prevent browser's default pull to refresh behavior*/
+    /* Prevent browser's default pull to refresh behavior */
     document.body.style.overscrollBehavior = 'contain'
   }
 
-  // componentWillReceiveProps(newProps) {
-  //   let { userLoggedIn, keyword } = newProps
-  //   let { session } = userLoggedIn || {}
-  //   if (!session) {
-  //     let userLoginData = localStorage.getItem('userLoggedInKV')
-  //     if (userLoginData) {
-  //       userLoginData = JSON.parse(userLoginData).result.login
-  //       session = userLoginData.session
-  //     } else {
-  //       this.props.history.push('/login')
-  //     }
-  //   }
-  //   let refresh = true
-  //   this.props.actions.getSearchResult({ session, refresh, keyword })
-  // }
+  componentWillReceiveProps(newProps) {
+    if (newProps.keyword !== this.props.keyword || localStorage.getItem('searchResultsChanged')) {
+      let { userLoggedIn, keyword } = newProps
+      let { session } = userLoggedIn || {}
+      if (!session) {
+        let userLoginData = localStorage.getItem('userLoggedInKV')
+        if (userLoginData) {
+          userLoginData = JSON.parse(userLoginData).result.login
+          session = userLoginData.session
+        } else {
+          this.props.history.push('/login')
+        }
+      }
+      let refresh = true
+      localStorage.removeItem('searchResultsChanged')
+      this.props.actions.getSearchResult({ session, refresh, keyword })
+    }
+  }
 
   componentWillUnmount() {
     document.body.style.overscrollBehavior = 'auto'
@@ -205,7 +208,6 @@ class Lead extends Component {
   }
 
   render() {
-    const dataList = _.get(this.props, 'listSR') || []
     if (this.props.expired) {
       localStorage.removeItem('userLoggedInKV')
       toast.error('Session expired', {
@@ -226,6 +228,7 @@ class Lead extends Component {
           </div>
         )
       } else {
+        const dataList = _.get(this.props, 'listSR') || []
         if (dataList.length === 0) {
           return (
             <div className="wrapper-search-result">

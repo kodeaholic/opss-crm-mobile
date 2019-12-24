@@ -167,12 +167,13 @@ class LeadComponent extends Component {
         <div className="wrapper-lead">
           <div className="loading-data">
             <i className="fa fa-spinner fa-pulse fa-3x fa-fw"
-               style={{ position: 'fixed', top: 'calc(50vh - 50.25px)' }}></i>
+               style={{ position: 'fixed', top: 'calc(50vh - 50.25px)' }}/>
           </div>
         </div>
       )
     } else {
       if (this.props.formSubmitResponseStatus === 'success' && (this.props.location.pathname.indexOf('view') === -1)) {
+        localStorage.setItem('searchResultsChanged', "changed")
         toast.success('Success', {
           autoClose: 2000,
           draggable: false
