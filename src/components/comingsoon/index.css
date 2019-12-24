@@ -1,10 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Pacifico);
 @import url('https://fonts.googleapis.com/css?family=Anton');
 .wrapper {
-    width: 100%;
-    padding-bottom: 55px;
-    padding-top: 50px;
-    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 60px);
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: transparent;
 }
 .rainbow {
 
@@ -21,6 +25,7 @@
 
     /* Standar Syntax */
     animation: rainbow 5s infinite;
+    text-align: center;
 }
 
 /* Chrome, Safari, Opera */
@@ -66,4 +71,52 @@
     80%{color: DeepPink;}
     90%{color: DodgerBlue;}
     100%{color: orange;}
+}
+
+.coming-soon-header {
+    width: calc(94vw);
+    margin-left: calc(3vw);
+    margin-right: calc(3vw);
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    /*margin: 5px 10px 5px 10px;*/
+    justify-content: center;
+}
+.coming-soon-header-image {
+    flex: 1;
+    height: auto;
+    max-width: 40%;
+}
+.count-down-wrapper {
+    width: calc(80vw);
+    margin-right: calc(10vw);
+    margin-left: calc(10vw);
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.count-down-item {
+    flex: 0 0 40px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px 0 10px;
+    justify-content: center;
+    text-align: center;
+}
+.count-down-item-value {
+    border-radius: 20px;
+    font-size: 26px;
+    flex: 0 0 40px;
+    text-align: center;
+    color: #ffffff;
+    vertical-align: middle;
+}
+.count-down-item-label {
+    flex: 0 0 20px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #ffffff;
 }
