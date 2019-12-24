@@ -9,7 +9,7 @@
     width: 94%;
     margin-left: calc(3vw); /* 5% viewport width */
     margin-right: calc(3vw);
-    max-height: calc(100vh - 165px);
+    max-height: calc(100vh - 100px);
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     top: 85px;
@@ -89,7 +89,7 @@
 .card-title {
     width: 100%;
     height: 40px;
-    background-color: #4ab048;
+    background-color: #006cad;
     color: #ffffff;
     font-weight: bold;
     font-family: Roboto;
@@ -104,7 +104,7 @@
     height: 20px;
     border-radius: 100px;
     background-color: var(--white);
-    color: #4ab048;
+    color: #006cad;
     text-align: center;
     margin-left: 5px;
 }
