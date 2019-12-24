@@ -64,3 +64,25 @@
     margin-left: calc(3vw);
     margin-right: calc(3vw);
 }
+
+.list-spinner {
+    z-index: 999 !important;
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #006cad; /* Blue */
+    border-radius: 50%;
+    position: fixed;
+    top: calc(50vh - 24px);
+    left: calc(50vw - 24px);
+    width: 48px;
+    height: 48px;
+    animation: list-spinner 500ms linear infinite;
+    -moz-animation: list-spinner 500ms linear infinite;
+    -webkit-animation: list-spinner 500ms linear infinite;
+    -o-animation:  list-spinner 500ms linear infinite;
+
+}
+
+@keyframes list-spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
