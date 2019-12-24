@@ -57,13 +57,14 @@ code {
   content: '';
   display: block;
   position: fixed;
-  top: 0;
+  top: 120px;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: radial-gradient(rgba(20, 20, 20,.1), rgba(0, 0, 0, .1));
+  height: calc(100vh - 190px);
+  background-color: transparent;
+  /*background: radial-gradient(rgba(20, 20, 20,.1), rgba(0, 0, 0, .1));*/
 
-  background: -webkit-radial-gradient(rgba(20, 20, 20,.1), rgba(0, 0, 0,.1));
+  /*background: -webkit-radial-gradient(rgba(20, 20, 20,.1), rgba(0, 0, 0,.1));*/
 }
 
 /* :not(:required) hides these rules from IE9 and below */

@@ -47,6 +47,7 @@ export default class List extends Component {
           dataLength={data.length} //This is important field to render the next data
           next={fetchMoreData}
           hasMore={hasMoreData && !isLoading}
+          loader={<div className="loading">Loading&#8230;</div>}
           scrollableTarget="scrollableDiv"
           refreshFunction={refreshData}
           pullDownToRefresh
