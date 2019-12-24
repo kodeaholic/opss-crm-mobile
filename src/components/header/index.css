@@ -89,7 +89,7 @@
   font-size: 15px;
   color: #12679b;
   top: 50%;
-  left: 30px;
+  left: calc(9vw);
   transform: translateY(-50%) translateX(150%);
 }
 .fa-times-custom {
