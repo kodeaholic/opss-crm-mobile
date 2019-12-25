@@ -62,9 +62,9 @@ code {
   width: 100%;
   height: calc(100vh - 110px);
   /*background-color: transparent;*/
-  background: radial-gradient(rgba(20, 20, 20,.1), rgba(0, 0, 0, .1));
+  /*background: radial-gradient(rgba(20, 20, 20,.1), rgba(0, 0, 0, .1));*/
 
-  background: -webkit-radial-gradient(rgba(20, 20, 20,.1), rgba(0, 0, 0,.1));
+  /*background: -webkit-radial-gradient(rgba(20, 20, 20,.1), rgba(0, 0, 0,.1));*/
 }
 
 /* :not(:required) hides these rules from IE9 and below */

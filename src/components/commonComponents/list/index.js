@@ -48,7 +48,8 @@ export default class List extends Component {
           next={fetchMoreData}
           hasMore={hasMoreData && !isLoading}
           // loader={<div className="list-spinner"/>}
-          loader={<h4 style={{textAlign:'center', fontFamily: 'Roboto, serif'}}>Loading...</h4>}
+          // loader={<h4 style={{textAlign:'center', fontFamily: 'Roboto, serif'}}>Loading...</h4>}
+          loader={<h4 style={{textAlign:'center'}}><i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{color: '#006CAD'}}/></h4>}
           scrollableTarget="scrollableDiv"
           refreshFunction={refreshData}
           pullDownToRefresh

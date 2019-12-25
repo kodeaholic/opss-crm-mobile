@@ -87,16 +87,20 @@ class Footer extends Component {
     let basePath = this.props.location.pathname
     basePath = basePath.substring(basePath.indexOf('/') + 1)
     let pathBack = basePath + this.props.location.search
+    let onClickDiv = (e) => {
+      let a = e.target.childNodes[0]
+      if (a) a.click()
+    }
     return (
-      <div className="wrapper-item-footer" key={key + item.name}>
+      <div className={"wrapper-item-footer" + active} key={key + item.name} onClick={onClickDiv}>
         {id ? (
-          <Link to={item.path + '/' + id + "?pathBack=" + pathBack} className="wrapper-circle-icon">
+          <Link to={item.path + '/' + id + "?pathBack=" + pathBack} className="wrapper-footer-link">
             <i
               className={item.classIcon + " footer-icon " + active}
               style={styleColor}
               aria-hidden="true"/>
           </Link>
-        ) : (<Link to={item.path} className="wrapper-circle-icon"
+        ) : (<Link to={item.path} className="wrapper-footer-link"
                    onClick={item.path === currentPath ? this.clickToReloadPage : () => {
                      return true
                    }}>
