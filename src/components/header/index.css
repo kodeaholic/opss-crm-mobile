@@ -82,8 +82,9 @@
   vertical-align: middle;
 }
 .wrapper-icon > i {
-  position: relative;
-  top: 25%;
+  position: fixed;
+  top: 10px;
+  left: 10px;
 }
 
 /*.wrapper-input {*/
