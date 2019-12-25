@@ -94,27 +94,31 @@ class Footer extends Component {
         a.click()
       }
     }
-    return (
-      <div className={"wrapper-item-footer" + active} key={key + item.name} onClick={onClickDiv}>
-        {id ? (
-          <Link to={item.path + '/' + id + "?pathBack=" + pathBack} className="wrapper-footer-link">
-            <i
-              className={item.classIcon + " footer-icon " + active}
-              style={styleColor}
-              aria-hidden="true"/>
-          </Link>
-        ) : (<Link to={item.path} className="wrapper-footer-link"
-                   onClick={item.path === currentPath ? this.clickToReloadPage : () => {
-                     return true
-                   }}>
+    if (id) {
+      return (
+        <Link to={item.path + '/' + id + "?pathBack=" + pathBack} className={"wrapper-footer-link" + active}>
+          <i
+            className={item.classIcon + " footer-icon " + active}
+            style={styleColor}
+            aria-hidden="true"/>
+          <label className={"label-menu " + active}>{item.name}</label>
+        </Link>
+      )
+    }
+    else {
+      return (
+        <Link to={item.path} className={"wrapper-footer-link" + active}
+              onClick={item.path === currentPath ? this.clickToReloadPage : () => {
+                return true
+              }}>
           <i
             className={item.classIcon + " footer-icon " + active}
             aria-hidden="true"
             style={styleColor}/>
-        </Link>)}
-        <label className={"label-menu " + active}>{item.name}</label>
-      </div>
-    )
+          <label className={"label-menu " + active}>{item.name}</label>
+        </Link>
+      )
+    }
   }
 
   render() {
