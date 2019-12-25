@@ -96,7 +96,7 @@ class Footer extends Component {
     }
     if (id) {
       return (
-        <Link to={item.path + '/' + id + "?pathBack=" + pathBack} className={"wrapper-footer-link" + active}>
+        <Link to={item.path + '/' + id + "?pathBack=" + pathBack} className={"wrapper-footer-link" + active} key={item.name + id}>
           <i
             className={item.classIcon + " footer-icon " + active}
             style={styleColor}
@@ -107,7 +107,7 @@ class Footer extends Component {
     }
     else {
       return (
-        <Link to={item.path} className={"wrapper-footer-link" + active}
+        <Link to={item.path} className={"wrapper-footer-link" + active} key={item.name + id}
               onClick={item.path === currentPath ? this.clickToReloadPage : () => {
                 return true
               }}>

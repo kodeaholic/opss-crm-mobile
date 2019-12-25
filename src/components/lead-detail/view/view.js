@@ -3,6 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 
 import './view.css'
 import _ from 'lodash'
+import DetailView from '../../commonComponents/detail-view'
 
 // const tabs = ['DETAILS', 'RELATED']
 const tabs = ['DETAILS']
@@ -123,30 +124,6 @@ class LeadView extends Component {
     )
   }
 
-  renderRelated = () => {
-    return (
-      <div>
-        {/*<div className="lead-view-related-wrapper">*/}
-        {/*  <i*/}
-        {/*    className="fa fa-sticky-note-o lead-view-related-icon"*/}
-        {/*    aria-hidden="true"></i>*/}
-        {/*  <label className="lead-view-related-label">Ticket (3)</label>*/}
-        {/*</div>*/}
-        <div className="lead-view-related-wrapper">
-          <i
-            className="fa fa-history lead-view-related-icon"
-            aria-hidden="true"></i>
-          <label className="lead-view-related-label">Activities (5)</label>
-        </div>
-        <div className="lead-view-related-wrapper">
-          <i
-            className="fa fa-tasks lead-view-related-icon"
-            aria-hidden="true"></i>
-          <label className="lead-view-related-label">Updates (6)</label>
-        </div>
-      </div>
-    )
-  }
 
 
   render() {
@@ -155,14 +132,7 @@ class LeadView extends Component {
                    style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}><div className="loading-data">Permission Denied</div></div>)
     } else {
       return (
-        <div className="lead-view-container"
-             style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}>
-          {this.renderCustomerInfo(this.props.data)}
-          {this.renderTabBelow()}
-          {this.state.activeTab !== 'DETAILS'
-            ? this.renderRelated({})
-            : this.renderDetails(this.props.data)}
-        </div>
+        <DetailView data={this.props.data}/>
       )
     }
   }
