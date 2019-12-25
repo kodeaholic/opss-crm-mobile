@@ -240,7 +240,7 @@ class Header extends Component {
                    onKeyPress={this._handleSearchEnter}
                    name="search" id="search"/>
           </form>
-          <i className="fa fa-times fa-times-custom" aria-hidden="true" onClick={this.clearInput}/>
+          <i className="fa fa-times fa-times-custom fa-3x" aria-hidden="true" onClick={this.clearInput}/>
         </div>
       </div>
     )
