@@ -89,7 +89,10 @@ class Footer extends Component {
     let pathBack = basePath + this.props.location.search
     let onClickDiv = (e) => {
       let a = e.target.childNodes[0]
-      if (a) a.click()
+      if (a && a.tagName === 'A') {
+        console.log(a.tagName)
+        a.click()
+      }
     }
     return (
       <div className={"wrapper-item-footer" + active} key={key + item.name} onClick={onClickDiv}>
