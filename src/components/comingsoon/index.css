@@ -77,16 +77,14 @@
     width: calc(94vw);
     margin-left: calc(3vw);
     margin-right: calc(3vw);
-    height: 30px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     /*margin: 5px 10px 5px 10px;*/
+    margin-top: 10px;
     justify-content: center;
 }
 .coming-soon-header-image {
-    flex: 1;
-    height: auto;
-    max-width: 40%;
 }
 .count-down-wrapper {
     width: calc(80vw);

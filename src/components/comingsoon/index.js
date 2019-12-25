@@ -7,6 +7,7 @@ import withAuth from '../withAuth'
 import withFooter from '../withFooter'
 
 import './index.css'
+import './firework.css'
 
 class ComingSoon extends Component {
   constructor(props) {
@@ -75,12 +76,12 @@ class ComingSoon extends Component {
     return (
       <div className="wrapper">
         <div className="coming-soon-header">
-          {/*<img*/}
-          {/*  className="coming-soon-header-image"*/}
-          {/*  alt="Citigo"*/}
-          {/*  src={require('../../static/images/citigo.png')}*/}
-          {/*  style={{maxWidth: '155px'}}*/}
-          {/*/>*/}
+          <img
+            className="coming-soon-header-image"
+            alt="Citigo"
+            src={require('../../static/images/citigo.png')}
+            style={{width: '115px'}}
+          />
           {/*<div className="coming-soon-header-image">*/}
           {/*  &nbsp;*/}
           {/*</div>*/}
@@ -91,7 +92,11 @@ class ComingSoon extends Component {
           {/*  style={{maxWidth: '70px'}}*/}
           {/*/>*/}
         </div>
-        <div id="count-down" style={{marginTop: '20px'}}/>
+        <div id="count-down" style={{marginTop: '10px'}}/>
+        <div className="pyro">
+          <div className="before"/>
+          <div className="after"/>
+        </div>
       </div>
     )
   }
