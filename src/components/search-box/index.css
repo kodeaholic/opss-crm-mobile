@@ -8,33 +8,35 @@
 }
 
 .search-box-wrapper {
-    width: 92%;
+    width: 96%;
     margin-left: calc(4vw);
-    margin-right: calc(4vw);
+    /*margin-right: calc(4vw);*/
     height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 .form-search {
-    flex: 5.5;
+    flex: 5;
     border-radius: 30px;
     width: 100%;
     height: 60%;
 }
 .cancel-button {
-    flex: 0.5;
+    flex: 1;
     font-family: Roboto;
     font-size: 14px;
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.21;
+    /*line-height: 1.21;*/
     letter-spacing: normal;
     color: #006cad;
     border: none;
     background-color: transparent;
-    padding: 0 0 0 10px;
+    /*padding: 0 0 0 10px;*/
+    padding: 0;
+    height: 100%;
 }
 button.cancel-button:focus {
     outline: none;
