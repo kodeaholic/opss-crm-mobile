@@ -269,7 +269,7 @@ class LeadConvertForm extends Component {
                  isRequired/>
           <div className="form-convert-wrapper-field" id="cf_pot_khu_vuc-wrapper">
             <label className="form-convert-label-field">
-              Khu vực<span className="require-field"> (*)</span>
+              Khu vực<span className="require-field"> *</span>
             </label>
             <AsyncSelect
               cacheOptions
@@ -283,7 +283,7 @@ class LeadConvertForm extends Component {
           </div>
           <div className="form-convert-wrapper-field" id="potentialname-wrapper">
             <label className="form-convert-label-field">
-              Cơ hội<span className="require-field"> (*)</span>
+              Cơ hội<span className="require-field"> *</span>
             </label>
             <AsyncSelect
               cacheOptions
@@ -297,7 +297,7 @@ class LeadConvertForm extends Component {
           </div>
           <div className="form-convert-wrapper-field" id="cf_pot_nganh_hang-wrapper">
             <label className="form-convert-label-field">
-              Ngành hàng<span className="require-field"> (*)</span>
+              Ngành hàng<span className="require-field"> *</span>
             </label>
             <AsyncSelect
               cacheOptions
@@ -311,7 +311,7 @@ class LeadConvertForm extends Component {
           </div>
           <div className="form-convert-wrapper-field" id="customer_type-wrapper">
             <label className="form-convert-label-field">
-              Loại khách<span className="require-field"> (*)</span>
+              Loại khách<span className="require-field"> *</span>
             </label>
             <AsyncSelect
               cacheOptions
@@ -328,7 +328,7 @@ class LeadConvertForm extends Component {
                  changeHandler={this.handleChange} isRequired/>
           <div className="form-convert-wrapper-field" id="cf_city-wrapper">
             <label className="form-convert-label-field">
-              Tỉnh/Thành phố<span className="require-field"> (*)</span>
+              Tỉnh/Thành phố<span className="require-field"> *</span>
             </label>
             <Select
               value={currentCity}
@@ -340,7 +340,7 @@ class LeadConvertForm extends Component {
           </div>
           <div className="form-convert-wrapper-field" id="cf_state-wrapper">
             <label className="form-convert-label-field">
-              Quận/ Huyện<span className="require-field"> (*)</span>
+              Quận/ Huyện<span className="require-field"> *</span>
             </label>
             <Select
               value={currentState}
@@ -352,7 +352,7 @@ class LeadConvertForm extends Component {
           </div>
           <div className="form-convert-wrapper-field" id="assigned_user_id-wrapper">
             <label className="form-convert-label-field">
-              Người xử lý<span className="require-field"> (*)</span>
+              Người xử lý<span className="require-field"> *</span>
             </label>
             {/*<AsyncSelect*/}
             {/*  cacheOptions*/}
@@ -403,7 +403,7 @@ class Field extends Component {
     return (
       <div className="form-convert-wrapper-field" id={this.props.name + '-wrapper'}>
         <label className="form-convert-label-field">
-          {label} {isRequired ? (<span className="require-field"> (*)</span>) : null}
+          {label} {isRequired ? (<span className="require-field"> *</span>) : null}
         </label>
         {
           isMultiLine ? (<textarea
