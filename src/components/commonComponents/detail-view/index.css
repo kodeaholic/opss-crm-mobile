@@ -174,8 +174,23 @@ a.detail-row-phone-card:focus {
     text-transform: capitalize;
     padding-left: 10px;
     padding-right: 10px;
-    overflow: scroll;
-    min-height: 80px;
-    max-height: 100px;
     margin-bottom: 5px;
+}
+textarea.detail-text-area {
+    border: none;
+    width: 100%;
+    background-color: transparent;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 5px;
+    font-size: 15px;
+    -webkit-appearance: none;
+    color: #000000;
+}
+textarea.detail-text-area:disabled {
+    color: #000000;
 }
