@@ -191,3 +191,10 @@ a:hover {
 a:active {
   text-decoration: none !important;
 }
+
+input {
+  -webkit-appearance: none;
+}
+textarea {
+  -webkit-appearance: none;
+}

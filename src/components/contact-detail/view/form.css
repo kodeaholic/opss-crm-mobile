@@ -66,6 +66,7 @@ input.form-create-or-update-input-field {
     padding-left: 3px;
     margin-bottom: 5px;
     font-size: 15px;
+    -webkit-appearance: none;
 }
 textarea.form-create-or-update-input-field {
     background-color: white;
@@ -76,4 +77,5 @@ textarea.form-create-or-update-input-field {
     padding-left: 3px;
     margin-bottom: 5px;
     font-size: 15px;
+    -webkit-appearance: none;
 }
