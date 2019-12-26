@@ -146,3 +146,36 @@ a.detail-row-phone-card:focus {
     outline: none;
     text-decoration: none;
 }
+.detail-row-long-text {
+    width: 100%;
+    flex: 3;
+    flex-direction: column;
+    justify-content: center;
+}
+.detail-label-long-text {
+    width: 100%;
+    color: #757575;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    text-transform: capitalize;
+    padding-left: 10px;
+}
+.detail-value-long-text {
+    width: 100%;
+    color: #000000;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    text-transform: capitalize;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow: scroll;
+    min-height: 80px;
+    max-height: 100px;
+    margin-bottom: 5px;
+}

@@ -182,40 +182,55 @@ class DetailRow extends Component {
         <a className="detail-row-phone-card" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"/> {value}</a>
       )
     }
-    if (isLongText) {
-      return (
-        <p style={{height: '30px'}}>
-          <OverlayTrigger trigger="click" placement="top" overlay={<Tooltip id="tooltip">
-            {value}
-          </Tooltip>}>
-            <button className="btn-show-tooltip"
-                    style={{
-                      cursor: 'default',
-                      border: 'none',
-                    }}
-            >
-              Chạm để xem
-            </button>
-          </OverlayTrigger>
-        </p>
-      )
-    }
+    // if (isLongText) {
+    //   return (
+    //     <p style={{height: '30px'}}>
+    //       <OverlayTrigger trigger="click" placement="top" overlay={<Tooltip id="tooltip">
+    //         {value}
+    //       </Tooltip>}>
+    //         <button className="btn-show-tooltip"
+    //                 style={{
+    //                   cursor: 'default',
+    //                   border: 'none',
+    //                 }}
+    //         >
+    //           Chạm để xem
+    //         </button>
+    //       </OverlayTrigger>
+    //     </p>
+    //   )
+    // }
     return (
       value
     )
   }
   render() {
     let label = this.props.label
+    let value = this.props.value
     let isLongText = this.props.isLongText
-    return (
-      <div className="detail-row">
-        <div className="detail-label">
-          {label}
+    if(!isLongText) {
+      return (
+        <div className="detail-row">
+          <div className="detail-label">
+            {label}
+          </div>
+          <div className="detail-value" style={isLongText ? {textAlign: 'left'} : {}}>
+            {this.renderValue(this.props)}
+          </div>
         </div>
-        <div className="detail-value" style={isLongText ? {textAlign: 'left'} : {}}>
-          {this.renderValue(this.props)}
+      )
+    }
+    else {
+      return (
+        <div className="detail-row-long-text">
+          <div className="detail-label-long-text">
+            {label}
+          </div>
+          <div className="detail-value-long-text">
+            {value}
+          </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
