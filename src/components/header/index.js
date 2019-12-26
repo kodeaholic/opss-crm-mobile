@@ -39,6 +39,10 @@ const router = {
     withId: true,
     title: 'Sửa Contact'
   },
+  'opportunity-view': {
+    back: 'opportunity',
+    title: 'Opportunity details'
+  },
   'calendar': {
     back: 'more'
   },
