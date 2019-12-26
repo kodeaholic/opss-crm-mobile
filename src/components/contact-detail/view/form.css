@@ -26,9 +26,13 @@
 .form-create-or-update-field {
     background-color: #fff;
     padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .form-create-or-update-wrapper-field {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,7 +41,9 @@
 }
 
 .form-create-or-update-label-field {
-    /*font-size: 17px;*/
+    flex: 1;
+    font-family: Roboto;
+    color: #000000;
 }
 .form-create-or-update-label-error {
     font-size: 10px;
@@ -50,11 +56,12 @@
 }
 
 input.form-create-or-update-input-field {
+    flex: 0 0 40px;
     background-color: white;
     border: 1px solid #ccc;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    height: 30px;
+    height: 40px;
     width: auto;
     padding-left: 3px;
     margin-bottom: 5px;

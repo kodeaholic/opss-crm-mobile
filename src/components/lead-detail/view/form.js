@@ -263,7 +263,7 @@ class LeadForm extends Component {
         <Field label="Tên gian hàng" name="website" val={this.props.data.website} changeHandler={this.handleChange}/>
         <div className="form-create-or-update-wrapper-field" id="leadstatus-wrapper">
           <label className="form-create-or-update-label-field">
-            Tình trạng<span className="require-field"> (*)</span>
+            Tình trạng<span className="require-field"> *</span>
           </label>
           <AsyncSelect
             cacheOptions
@@ -288,7 +288,7 @@ class LeadForm extends Component {
         <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone} changeHandler={this.handleChange}/>
         <div className="form-create-or-update-wrapper-field" id="industry-wrapper">
           <label className="form-create-or-update-label-field">
-            Ngành hàng<span className="require-field"> (*)</span>
+            Ngành hàng<span className="require-field"> *</span>
           </label>
           <AsyncSelect
             cacheOptions
@@ -302,7 +302,7 @@ class LeadForm extends Component {
         </div>
         <div className="form-create-or-update-wrapper-field" id="cf_lead_khu_vuc-wrapper">
           <label className="form-create-or-update-label-field">
-            Khu vực<span className="require-field"> (*)</span>
+            Khu vực<span className="require-field"> *</span>
           </label>
           <AsyncSelect
             cacheOptions
@@ -317,7 +317,7 @@ class LeadForm extends Component {
         {this.props.data.allowed_to_edit_lead_source || this.props.option === 'create' ? (
           <div className="form-create-or-update-wrapper-field" id="leadsource-wrapper">
             <label className="form-create-or-update-label-field">
-              Nguồn khách hàng<span className="require-field"> (*)</span>
+              Nguồn khách hàng<span className="require-field"> *</span>
             </label>
             <AsyncSelect
               cacheOptions
@@ -356,7 +356,7 @@ class LeadForm extends Component {
         <Field label="Địa chỉ chi tiết" name="lane" val={this.props.data.lane} changeHandler={this.handleChange}/>
         <div className="form-create-or-update-wrapper-field" id="assigned_user_id-wrapper">
           <label className="form-create-or-update-label-field">
-            Người xử lý<span className="require-field"> (*)</span>
+            Người xử lý<span className="require-field"> *</span>
           </label>
           <AsyncSelect
             cacheOptions
@@ -401,7 +401,7 @@ class Field extends Component {
     return (
       <div className="form-create-or-update-wrapper-field" id={this.props.name + '-wrapper'}>
         <label className="form-create-or-update-label-field">
-          {label} {isRequired ? (<span className="require-field"> (*)</span>) : null}
+          {label} {isRequired ? (<span className="require-field"> *</span>) : null}
         </label>
         {
           isMultiLine ? (<textarea
