@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import Home from '../home'
 import Dashboard from '../dashboard'
 
@@ -41,7 +41,9 @@ class App extends React.Component {
         <ScrollToTop/>
         <ToastContainer autoClose={2000} position="top-center" hideProgressBar/>
         <Route exact path="/logout" component={LogoutComponent}/>
-        <Route exact path="/" component={Lead}/>
+        <Route exact path="/" render={() => (
+          <Redirect to="/lead"/>
+        )}/>
         <Route path="/login" exact component={Login}/>
         <Route exact path="/home" component={Home}/>
         <Route exact path="/lead" component={Lead}/>
