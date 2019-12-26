@@ -53,23 +53,48 @@ export default DetailView
 class DetailsCard extends Component {
 
   render() {
-    let data = this.props.data
+    let data = this.props.data.data
+    let setype = this.props.data.setype
+    if (setype === 'lead') {
+      return (
+        <div className="detail-card">
+          <DetailRow label="Họ và tên khách hàng" value={data.lastname}/>
+          <DetailRow label="Tình trạng" value={data.leadstatus.label}/>
+          <DetailRow label="Tên gian hàng" value={data.website}/>
+          <DetailRow label="Số điện thoại" value={data.mobile} phone={true}/>
+          <DetailRow label="Số điện thoại khác" value={data.phone} phone={true}/>
+          <DetailRow label="Ngành hàng" value={data.industry.label}/>
+          <DetailRow label="Khu vực" value={data.cf_lead_khu_vuc.label}/>
+          <DetailRow label="Tỉnh/ Thành phố" value={data.city.label}/>
+          <DetailRow label="Quận/ Huyện" value={data.state.label}/>
+          <DetailRow label="Địa chỉ chi tiết" value={data.lane}/>
+          <DetailRow label="Nguồn khách hàng" value={data.leadsource.label}/>
+          <DetailRow label="Người xử lý" value={data.assigned_user_id.label}/>
+          <DetailRow label="Mô tả chung" value={data.description} isLongText={data.description && data.description.length > 10}/>
+        </div>
+      )
+    }
+    if (setype === 'contact') {
+      return (
+        <div className="detail-card">
+          <DetailRow label="Họ và tên khách hàng" value={data.lastname}/>
+          <DetailRow label="Tình trạng" value={data.cf_887.label}/>
+          <DetailRow label="Tên gian hàng" value={data.cf_contact_website}/>
+          <DetailRow label="Số điện thoại" value={data.mobile} phone={true}/>
+          <DetailRow label="Số điện thoại khác" value={data.phone} phone={true}/>
+          <DetailRow label="Ngành hàng" value={data.cf_contact_nganh_hang.label}/>
+          <DetailRow label="Khu vực" value={data.cf_contact_khu_vuc.label}/>
+          <DetailRow label="Tỉnh/ Thành phố" value={data.cf_city.value}/>
+          <DetailRow label="Quận/ Huyện" value={data.cf_state.value}/>
+          <DetailRow label="Địa chỉ chi tiết" value={data.cf_contact_street}/>
+          <DetailRow label="Nguồn khách hàng" value={data.leadsource.label}/>
+          <DetailRow label="Người xử lý" value={data.assigned_user_id.label}/>
+          <DetailRow label="Mô tả chung" value={data.description} isLongText={data.description && data.description.length > 10}/>
+        </div>
+      )
+    }
     return (
-      <div className="detail-card">
-        <DetailRow label="Họ và tên khách hàng" value={data.lastname}/>
-        <DetailRow label="Tình trạng" value={data.leadstatus.label}/>
-        <DetailRow label="Tên gian hàng" value={data.website}/>
-        <DetailRow label="Số điện thoại" value={data.mobile} phone={true}/>
-        <DetailRow label="Số điện thoại khác" value={data.phone} phone={true}/>
-        <DetailRow label="Ngành hàng" value={data.industry.label}/>
-        <DetailRow label="Khu vực" value={data.cf_lead_khu_vuc.label}/>
-        <DetailRow label="Tỉnh/ Thành phố" value={data.city.label}/>
-        <DetailRow label="Quận/ Huyện" value={data.state.label}/>
-        <DetailRow label="Địa chỉ chi tiết" value={data.lane}/>
-        <DetailRow label="Nguồn khách hàng" value={data.leadsource.label}/>
-        <DetailRow label="Người xử lý" value={data.assigned_user_id.label}/>
-        <DetailRow label="Mô tả chung" value={data.description} isLongText={data.description && data.description.length > 10}/>
-      </div>
+      <div>Default</div>
     )
   }
 }

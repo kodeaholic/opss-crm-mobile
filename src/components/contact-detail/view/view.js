@@ -3,6 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 
 import './view.css'
 import _ from 'lodash'
+import DetailView from '../../commonComponents/detail-view'
 
 const tabs = ['DETAILS'/*, 'RELATED'*/]
 
@@ -157,14 +158,7 @@ class ContactView extends Component {
       </div>)
     } else {
       return (
-        <div className="contact-view-container"
-             style={{ height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%' }}>
-          {this.renderCustomerInfo(this.props.data)}
-          {this.renderTabBelow()}
-          {this.state.activeTab !== 'DETAILS'
-            ? this.renderRelated({})
-            : this.renderDetails(this.props.data)}
-        </div>
+        <DetailView data={{data: this.props.data, setype: 'contact'}}/>
       )
     }
   }

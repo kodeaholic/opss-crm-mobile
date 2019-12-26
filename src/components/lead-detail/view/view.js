@@ -132,7 +132,7 @@ class LeadView extends Component {
                    style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}><div className="loading-data">Permission Denied</div></div>)
     } else {
       return (
-        <DetailView data={this.props.data}/>
+        <DetailView data={{data: this.props.data, setype: 'lead'}}/>
       )
     }
   }
