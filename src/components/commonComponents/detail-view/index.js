@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-
+import {OverlayTrigger, Tooltip} from 'react-bootstrap'
 import './index.css'
 import _ from 'lodash'
+import divWithClassName from 'react-bootstrap/cjs/utils/divWithClassName'
 
 class DetailView extends Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class DetailsCard extends Component {
         <DetailRow label="Khu vực" value={data.cf_lead_khu_vuc.label}/>
         <DetailRow label="Nguồn khách hàng" value={data.leadsource.label}/>
         <DetailRow label="Người xử lý" value={data.assigned_user_id.label}/>
-        <DetailRow label="Mô tả chung" value={data.description}/>
+        <DetailRow label="Mô tả chung" value={data.description} isLongText={data.description && data.description.length > 10}/>
       </div>
     )
   }
@@ -73,24 +74,49 @@ class DetailsCard extends Component {
 class RelatedCard extends Component {
   render() {
     return (
-      <div>
-        Related
+      <div style={{width: '100%', height: '100%'}}>
+        {/*<div className="rainbow" style={{textAlign: 'center', marginTop: '50%', fontSize: '16px'}}>*/}
+        {/*  Tính năng đang trong quá trình phát triển*/}
+        {/*</div>*/}
+        <iframe src="/coming-soon-no-footer" frameBorder="0" title="Coming soon" width='100%' height="100%" style={{border: 'none'}}/>
       </div>
     )
   }
 }
 
 class DetailRow extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showModal: false
+    }
+  }
   render() {
     let label = this.props.label
     let value = this.props.value
+    let isLongText = this.props.isLongText
     return (
       <div className="detail-row">
         <div className="detail-label">
           {label}
         </div>
-        <div className="detail-value">
-          {value}
+        <div className="detail-value" style={isLongText ? {textAlign: 'left'} : {}}>
+          {!isLongText ? value : (
+            <p>
+              <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip">
+                {value}
+              </Tooltip>}>
+                <button className="btn-show-tooltip"
+                  style={{
+                    cursor: 'default',
+                    border: 'none',
+                  }}
+                >
+                  Chạm để xem
+                </button>
+              </OverlayTrigger>
+            </p>
+          )}
         </div>
       </div>
     )

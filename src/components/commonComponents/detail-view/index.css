@@ -108,3 +108,12 @@
 .detail-label:after {
     content: ':';
 }
+.btn-show-tooltip {
+    border-radius: 10px;
+    text-decoration: none;
+    background-color: #006cad;
+    color: #ffffff;
+}
+.btn-show-tooltip:focus {
+    outline: none;
+}

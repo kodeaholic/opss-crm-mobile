@@ -12,6 +12,7 @@ import LeadComponent from '../lead-detail'
 import ContactComponent from '../contact-detail'
 import OpportunityComponent from '../opportunity-detail'
 import ComingSoonComponent from '../comingsoon'
+import ComingSoonNoFooter from '../comingsoon/nofooter/comingsoon-nofooter'
 import MoreComponent from '../more'
 import SearchBoxComponent from '../search-box'
 import { ToastContainer } from 'react-toastify'
@@ -116,6 +117,11 @@ class App extends React.Component {
           exact
           path="/notifications"
           component={ComingSoonComponent}
+        />
+        <Route
+          exact
+          path="/coming-soon-no-footer"
+          component={ComingSoonNoFooter}
         />
         <Route
           exact
