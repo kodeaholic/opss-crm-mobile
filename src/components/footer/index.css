@@ -31,6 +31,7 @@
   text-align: center;
   align-items: center;
   padding-top: 15px;
+  text-decoration: none;
 }
 .wrapper-footer-link.active {
   background-color: rgba(0, 0, 0, 0.06);
