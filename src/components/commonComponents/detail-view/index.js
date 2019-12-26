@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {OverlayTrigger, Tooltip} from 'react-bootstrap'
 import './index.css'
 import _ from 'lodash'
-import divWithClassName from 'react-bootstrap/cjs/utils/divWithClassName'
 
 class DetailView extends Component {
   constructor(props) {
@@ -60,8 +59,8 @@ class DetailsCard extends Component {
         <DetailRow label="Họ và tên khách hàng" value={data.lastname}/>
         <DetailRow label="Tình trạng" value={data.leadstatus.label}/>
         <DetailRow label="Tên gian hàng" value={data.website}/>
-        <DetailRow label="Số điện thoại" value={data.mobile}/>
-        <DetailRow label="Số điện thoại khác" value={data.phone}/>
+        <DetailRow label="Số điện thoại" value={data.mobile} phone={true}/>
+        <DetailRow label="Số điện thoại khác" value={data.phone} phone={true}/>
         <DetailRow label="Ngành hàng" value={data.industry.label}/>
         <DetailRow label="Khu vực" value={data.cf_lead_khu_vuc.label}/>
         <DetailRow label="Nguồn khách hàng" value={data.leadsource.label}/>
@@ -91,9 +90,39 @@ class DetailRow extends Component {
       showModal: false
     }
   }
+  renderValue = (props) => {
+    let phone = props.phone
+    let value = props.value
+    let isLongText = props.isLongText
+    if (phone && value) {
+      return (
+        <a className="detail-row-phone-card" href={'tel:' + value}><i className="fa fa-phone" aria-hidden="true"/> {value}</a>
+      )
+    }
+    if (isLongText) {
+      return (
+        <p>
+          <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip">
+            {value}
+          </Tooltip>}>
+            <button className="btn-show-tooltip"
+                    style={{
+                      cursor: 'default',
+                      border: 'none',
+                    }}
+            >
+              Chạm để xem
+            </button>
+          </OverlayTrigger>
+        </p>
+      )
+    }
+    return (
+      value
+    )
+  }
   render() {
     let label = this.props.label
-    let value = this.props.value
     let isLongText = this.props.isLongText
     return (
       <div className="detail-row">
@@ -101,22 +130,7 @@ class DetailRow extends Component {
           {label}
         </div>
         <div className="detail-value" style={isLongText ? {textAlign: 'left'} : {}}>
-          {!isLongText ? value : (
-            <p>
-              <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip">
-                {value}
-              </Tooltip>}>
-                <button className="btn-show-tooltip"
-                  style={{
-                    cursor: 'default',
-                    border: 'none',
-                  }}
-                >
-                  Chạm để xem
-                </button>
-              </OverlayTrigger>
-            </p>
-          )}
+          {this.renderValue(this.props)}
         </div>
       </div>
     )

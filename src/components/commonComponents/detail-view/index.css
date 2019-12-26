@@ -117,3 +117,12 @@
 .btn-show-tooltip:focus {
     outline: none;
 }
+.detail-row-phone-card {
+    text-decoration: none;
+    color: #000000;
+    background-color: transparent;
+}
+a.detail-row-phone-card:focus {
+    outline: none;
+    text-decoration: none;
+}
