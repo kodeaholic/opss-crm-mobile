@@ -63,6 +63,9 @@ class DetailsCard extends Component {
         <DetailRow label="Số điện thoại khác" value={data.phone} phone={true}/>
         <DetailRow label="Ngành hàng" value={data.industry.label}/>
         <DetailRow label="Khu vực" value={data.cf_lead_khu_vuc.label}/>
+        <DetailRow label="Tỉnh/ Thành phố" value={data.city.label}/>
+        <DetailRow label="Quận/ Huyện" value={data.state.label}/>
+        <DetailRow label="Địa chỉ chi tiết" value={data.lane}/>
         <DetailRow label="Nguồn khách hàng" value={data.leadsource.label}/>
         <DetailRow label="Người xử lý" value={data.assigned_user_id.label}/>
         <DetailRow label="Mô tả chung" value={data.description} isLongText={data.description && data.description.length > 10}/>
