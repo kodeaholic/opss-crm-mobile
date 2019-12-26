@@ -48,6 +48,10 @@
     text-transform: uppercase;
     color: #000000;
     font-family: Roboto;
+    font-size: 14px;
+    font-weight: 300;
+    font-stretch: normal;
+    font-style: normal;
     padding-top: 10px;
     border-bottom: none;
 }
@@ -92,6 +96,11 @@
     text-align: left;
     vertical-align: middle;
     color: #757575;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
     text-transform: capitalize;
     padding-left: 10px;
 }
@@ -101,6 +110,11 @@
     text-align: left;
     vertical-align: middle;
     color: #000000;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
     padding-left: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
