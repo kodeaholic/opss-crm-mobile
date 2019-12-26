@@ -129,8 +129,8 @@ class DetailRow extends Component {
     }
     if (isLongText) {
       return (
-        <p>
-          <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip">
+        <p style={{height: '30px'}}>
+          <OverlayTrigger trigger="click" placement="top" overlay={<Tooltip id="tooltip">
             {value}
           </Tooltip>}>
             <button className="btn-show-tooltip"

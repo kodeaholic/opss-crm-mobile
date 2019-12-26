@@ -132,6 +132,7 @@
     text-decoration: none;
     background-color: #006cad;
     color: #ffffff;
+    height: 100%;
 }
 .btn-show-tooltip:focus {
     outline: none;
