@@ -39,7 +39,25 @@ class AddToHomeScreen extends Component {
     })
   }
 
+  renderAppleDeviceGuide = () => {
+    return (
+      <div className="guide">
+
+      </div>
+    )
+  }
+
+  renderAndroidGuide = () => {
+    return (
+      <div className="guide">
+
+      </div>
+    )
+  }
+
   render() {
+    let iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)
+    let android = !!navigator.userAgent && /Android/.test(navigator.userAgent)
     return (
       <div className="add-to-home-screen-container">
         <p className="promotion">
@@ -48,6 +66,8 @@ class AddToHomeScreen extends Component {
         <button className="btn-add-to-home-screen glow" id="button-install" style={{display: 'none'}}>
           Thêm vào màn hình chính
         </button>
+        {iOS && this.renderAppleDeviceGuide()}
+        {android && this.renderAndroidGuide()}
       </div>
     )
   }
