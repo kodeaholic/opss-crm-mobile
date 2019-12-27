@@ -1,12 +1,9 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import compose from 'recompose/compose'
 import Home from '../home'
-import Dashboard from '../dashboard'
-
 import Lead from '../lead'
-import Opportunity from '../opportunity'
 import Contact from '../contact'
-import Ticket from '../ticket'
 import Search from '../search'
 import LeadComponent from '../lead-detail'
 import ContactComponent from '../contact-detail'
@@ -21,6 +18,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import Login from '../login'
 import LogoutComponent from '../logout'
 import ScrollToTop from './ScrollToTop'
+import AddToHomeScreen from '../a2hs/a2hs'
+import checkMobileDevice from '../checkMobileDevice'
 
 class App extends React.Component {
   constructor(props) {
@@ -130,9 +129,16 @@ class App extends React.Component {
           path="/search-box"
           component={SearchBoxComponent}
         />
+        <Route
+          exact
+          path="/add-to-home-screen"
+          component={AddToHomeScreen}
+        />
       </div>
     )
   }
 }
 
-export default App
+export default compose(
+  checkMobileDevice()
+)(App)
