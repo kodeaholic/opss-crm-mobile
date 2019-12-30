@@ -28,7 +28,8 @@ render(
 
 window.isUpdateAvailable = new Promise(function(resolve, reject) {
   // lazy way of disabling service workers while developing
-  if ('serviceWorker' in navigator && ['localhost', '127', 'ngrok'].indexOf(window.location.hostname) === -1) {
+  // if ('serviceWorker' in navigator && ['localhost', '127', 'ngrok'].indexOf(window.location.hostname) === -1) {
+  if ('serviceWorker' in navigator) {
     // register service worker file
     navigator.serviceWorker.register('service-worker.js')
       .then(reg => {
