@@ -239,12 +239,12 @@ class Lead extends Component {
           )
         } else {
           return (
-            <div>
+            <>
               {this.renderFilter(dataList)}
               <div className="wrapper-search-result">
                 {dataList ? this.renderResult(dataList) : this.renderLoading()}
               </div>
-            </div>
+            </>
           )
         }
       }

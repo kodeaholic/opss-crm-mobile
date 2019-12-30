@@ -6,7 +6,7 @@
 .wrapper-search-result {
     position: fixed;
     background-color: transparent;
-    width: 94%;
+    width: calc(94vw);
     margin-left: calc(3vw); /* 5% viewport width */
     margin-right: calc(3vw);
     max-height: calc(100vh - 100px);
@@ -64,10 +64,10 @@
 }
 
 .cards-wrapper {
-    width: 94%;
-    height: 100%;
-    margin-left: calc(3vw);
-    margin-right: calc(3vw);
+    width: 94vw;
+    height: auto;
+    /*margin-left: calc(3vw);*/
+    /*margin-right: calc(3vw);*/
     display: flex;
     flex-direction: column;
     background-color: transparent;
@@ -118,11 +118,13 @@
     height: 40px;
 }
 .filter-search-button-list {
-    width: 88.36%;
+    width: 94vw;
+    /*width: 88.36%;*/
     height: 100%;
     display: flex;
     flex-direction: row;
-    margin: 0 calc(5.82vw) 0 calc(5.82vw);
+    margin: 0 3vw;
+    /*margin: 0 calc(5.82vw) 0 calc(5.82vw);*/
 }
 .filter-search-button {
     flex: 1;
