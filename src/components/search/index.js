@@ -186,6 +186,8 @@ class Lead extends Component {
           }
         })
       }
+      let div = document.getElementsByClassName('wrapper-search-result')[0]
+      if (div) div.scrollIntoView({ block: 'start'}) // to TOP
     }
     return (
       <div className="filter-search-result-wrapper" style={{ display: data.length > 0 ? '' : 'none' }}>

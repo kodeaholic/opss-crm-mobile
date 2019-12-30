@@ -3,15 +3,19 @@
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
 }
+::-webkit-scrollbar {
+    display: none;
+}
 .wrapper-search-result {
     position: fixed;
     background-color: transparent;
     width: calc(94vw);
     margin-left: calc(3vw); /* 5% viewport width */
     margin-right: calc(3vw);
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 90px);
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
     top: 85px;
 }
 .wrapper-list > div {
