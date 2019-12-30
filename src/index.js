@@ -11,17 +11,44 @@ const target = document.querySelector('#root')
 render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <App/>
     </ConnectedRouter>
   </Provider>,
   target
 )
-if ('serviceWorker' in navigator) {
-  console.log("Will the service worker register? 👍")
-  navigator.serviceWorker.register('service-worker.js')
-    .then(function(reg){
-      console.log("Yes, it did. 👍")
-    }).catch(function(err) {
-    console.log("No it didn't. This happened:", err)
-  })
-}
+// if ('serviceWorker' in navigator) {
+//   console.log("Will the service worker register? 👍")
+//   navigator.serviceWorker.register('service-worker.js')
+//     .then(function(reg){
+//       console.log("Yes, it did. 👍")
+//     }).catch(function(err) {
+//     console.log("No it didn't. This happened:", err)
+//   })
+// }
+
+window.isUpdateAvailable = new Promise(function(resolve, reject) {
+  // lazy way of disabling service workers while developing
+  if ('serviceWorker' in navigator && ['localhost', '127', 'ngrok'].indexOf(window.location.hostname) === -1) {
+    // register service worker file
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => {
+        reg.onupdatefound = () => {
+          const installingWorker = reg.installing
+          installingWorker.onstatechange = () => {
+            switch (installingWorker.state) {
+              case 'installed':
+                if (navigator.serviceWorker.controller) {
+                  // new update available
+                  resolve(true)
+                } else {
+                  // no update available
+                  resolve(false)
+                }
+                break
+            }
+          }
+        }
+      })
+      .catch(err => console.error('[SW ERROR]', err))
+  }
+})

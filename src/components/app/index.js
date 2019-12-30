@@ -20,6 +20,7 @@ import LogoutComponent from '../logout'
 import ScrollToTop from './ScrollToTop'
 import AddToHomeScreen from '../a2hs/a2hs'
 import checkMobileDevice from '../checkMobileDevice'
+import checkAppUpdate from '../checkAppUpdate'
 
 class App extends React.Component {
   constructor(props) {
@@ -134,11 +135,16 @@ class App extends React.Component {
           path="/add-to-home-screen"
           component={AddToHomeScreen}
         />
+        {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+        <div id="snackbar">
+          😘😘😘 CRM Mobile đã có version mới. Bấm <button id="app-update-btn">update</button> để cập nhật ngay 😘😘😘 hoặc <button id="hide-update-btn">Để sau</button>
+        </div>
       </div>
     )
   }
 }
 
 export default compose(
-  checkMobileDevice()
+  checkMobileDevice(),
+  checkAppUpdate()
 )(App)
