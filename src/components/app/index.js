@@ -21,6 +21,7 @@ import ScrollToTop from './ScrollToTop'
 import AddToHomeScreen from '../a2hs/a2hs'
 import checkMobileDevice from '../checkMobileDevice'
 import checkAppUpdate from '../checkAppUpdate'
+import MetaTags from 'react-meta-tags'
 
 class App extends React.Component {
   constructor(props) {
@@ -38,6 +39,9 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-wrapper">
+        <MetaTags>
+          <meta name="apple-mobile-web-app-capable" content="yes"/>
+        </MetaTags>
         <ScrollToTop/>
         <ToastContainer autoClose={2000} position="top-center" hideProgressBar/>
         <Route exact path="/logout" component={LogoutComponent}/>
