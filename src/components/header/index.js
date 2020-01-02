@@ -170,17 +170,8 @@ class Header extends Component {
     return (
       <Link to={path}>
         <i
-          className={fontawesomeClass}
+          className={fontawesomeClass + " header-button-icon"}
           aria-hidden="true"
-          style={{
-            // display: 'inline-block',
-            borderRadius: '50px',
-            boxShadow: '0px 0px 2px #888',
-            padding: '0.5em 0.6em',
-            color: 'white',
-            marginLeft: '5px',
-            backgroundColor: 'rgba(255,255,255,0.3)'
-          }}
         />
       </Link>
     )
