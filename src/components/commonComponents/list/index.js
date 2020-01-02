@@ -19,6 +19,13 @@ export default class List extends Component {
     let div = document.getElementsByClassName('infinite-scroll-component')[0]
     div.style.scrollBehavior = 'smooth'
 
+    /* Additional code for search results */
+    let cards = document.getElementsByClassName('infinite-scroll-component')
+    if (cards.length > 1) {
+      if(typeof cards[1] === 'undefined') cards[1].style.scrollBehavior = 'smooth'
+      if(typeof cards[2] === 'undefined') cards[2].style.scrollBehavior = 'smooth'
+    }
+
     /* Update position of btn scrollToTop and addNew */
     let list = document.getElementById('scrollableDiv')
     let scrollToTopBtn = document.getElementById('scrollToTopBtn')
