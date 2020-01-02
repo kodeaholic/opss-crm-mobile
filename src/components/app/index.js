@@ -149,6 +149,5 @@ class App extends React.Component {
 }
 
 export default compose(
-  checkMobileDevice(),
   checkAppUpdate()
 )(App)
