@@ -119,7 +119,7 @@ class Lead extends Component {
           <div className="wrapper-search-list-item">
             <div className="wrapper-item-row">
               <label className="label-item-list item-name">{label}</label>
-              <label className="label-item-list">{s_website}</label>
+              <label className="label-item-list" style={{fontWeight: 'bold'}}>{s_website}</label>
               <label className="label-item-list">{status}</label>
             </div>
             <div className="wrapper-item-row">
