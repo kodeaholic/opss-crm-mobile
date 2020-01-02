@@ -92,7 +92,7 @@ class ComingSoon extends Component {
           {/*  style={{maxWidth: '70px'}}*/}
           {/*/>*/}
         </div>
-        <div id="count-down" style={{marginTop: '10px'}}/>
+        <div id="count-down" style={{marginTop: '10px', 'color': '#ffffff', fontFamily: 'Roboto', textAlign: 'center'}}/>
         <div className="pyro">
           <div className="before"/>
           <div className="after"/>
