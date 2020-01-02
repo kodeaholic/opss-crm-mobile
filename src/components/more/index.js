@@ -43,10 +43,17 @@ class MoreComponent extends Component {
   //   return lastname
   // }
 
+  redirectToLogout = (e) => {
+    e.preventDefault()
+    window.location.href = 'logout'
+    console.log(e.target.getAttribute("href"))
+    return false
+  }
+
   renderItemList = (name, path, iconClassName, iconColorCode) => {
     if (path.indexOf('logout') !== -1) {
       return (
-        <a className="link-on-more-list" href="/logout">
+        <a className="link-on-more-list" href="/logout" onClick={this.redirectToLogout}>
           <div className="wrapper-96vw-border">
             <div className="more-list-item">
               <div className="more-item-row"><i className="fa fa-sign-out" style={{color: "#00c2a7"}}/><label
