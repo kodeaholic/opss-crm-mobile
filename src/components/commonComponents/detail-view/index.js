@@ -227,10 +227,13 @@ class DetailRow extends Component {
             {label}
           </div>
           <div className="detail-value-long-text">
-            <textarea
-              readOnly={true}
-              className="detail-text-area"
-              rows="5" defaultValue={value}/>
+            {/*<textarea*/}
+            {/*  readOnly={true}*/}
+            {/*  className="detail-text-area"*/}
+            {/*  rows="5" defaultValue={value}/>*/}
+            <div className="detail-text-area" style={{whiteSpace: 'pre'}}>
+              {value}
+            </div>
           </div>
         </div>
       )

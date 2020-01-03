@@ -83,6 +83,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-y: scroll;
+    -ms-overflow-y: scroll;
 }
 .detail-row {
     flex: 1;
@@ -176,7 +178,7 @@ a.detail-row-phone-card:focus {
     padding-right: 10px;
     margin-bottom: 5px;
 }
-textarea.detail-text-area {
+.detail-text-area {
     border: none;
     width: 100%;
     background-color: transparent;
