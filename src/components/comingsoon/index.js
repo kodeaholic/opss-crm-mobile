@@ -17,7 +17,7 @@ class ComingSoon extends Component {
 
   countdownTimer = () => {
     const difference = +new Date("2020-01-01") - +new Date();
-    let remaining = "Team OPSS xin chúc bạn một năm mới hạnh phúc!";
+    let remaining = "Team OPSS xin chúc bạn một năm mới hạnh phúc";
 
     if (difference > 0) {
       let parts = {

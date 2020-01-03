@@ -123,6 +123,7 @@
     font-stretch: normal;
     font-style: normal;
     padding-left: 10px;
+    padding-right: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
 }

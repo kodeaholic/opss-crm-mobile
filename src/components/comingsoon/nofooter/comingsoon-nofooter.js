@@ -16,7 +16,7 @@ class ComingSoonNoFooter extends Component {
 
   countdownTimer = () => {
     const difference = +new Date("2020-01-01") - +new Date();
-    let remaining = "Team OPSS xin chúc bạn một năm mới hạnh phúc!";
+    let remaining = "Team OPSS xin chúc bạn một năm mới hạnh phúc";
 
     if (difference > 0) {
       let parts = {
@@ -94,7 +94,7 @@ class ComingSoonNoFooter extends Component {
           {/*  style={{maxWidth: '70px'}}*/}
           {/*/>*/}
         </div>
-        <div id="count-down"/>
+        <div id="count-down" style={{marginTop: '10px', 'color': '#ffffff', fontFamily: 'Roboto', textAlign: 'center'}}/>
         <div className="pyro">
           <div className="before"/>
           <div className="after"/>
