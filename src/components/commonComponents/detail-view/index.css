@@ -84,10 +84,13 @@
     align-items: flex-start;
     overflow-y: scroll;
     -ms-overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
 }
 .detail-row {
     flex: 1;
     width: 100%;
+    min-height: 40px;
     /*max-height: 40px;*/
     display: flex;
     flex-direction: row;
