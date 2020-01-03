@@ -81,8 +81,7 @@
     padding-top: 5px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     overflow-y: scroll;
     -ms-overflow-y: scroll;
 }
@@ -178,10 +177,13 @@ a.detail-row-phone-card:focus {
     padding-left: 10px;
     padding-right: 10px;
     margin-bottom: 5px;
+    overflow-x: hidden;
+    word-break: break-word;
+    max-height: 250px;
 }
 .detail-text-area {
-    border: none;
     width: 100%;
+    border: none;
     background-color: transparent;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -193,6 +195,9 @@ a.detail-row-phone-card:focus {
     font-size: 15px;
     -webkit-appearance: none;
     color: #000000;
+    word-break: break-word;
+    overflow-x: auto;
+    overflow-y: auto;
 }
 textarea.detail-text-area:disabled {
     color: #000000;
