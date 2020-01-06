@@ -79,23 +79,24 @@
     height: 100%;
     width: 100%;
     padding-top: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*align-items: flex-start;*/
     overflow-y: scroll;
     -ms-overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
 }
 .detail-row {
-    flex: 1;
+    /*flex: 1;*/
+    height: auto;
     width: 100%;
     min-height: 40px;
     /*max-height: 40px;*/
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    /*align-items: center;*/
     vertical-align: middle;
     padding-top: 5px;
 }
@@ -153,9 +154,7 @@ a.detail-row-phone-card:focus {
 }
 .detail-row-long-text {
     width: 100%;
-    flex: 3;
-    flex-direction: column;
-    justify-content: center;
+    height: auto;
 }
 .detail-label-long-text {
     width: 100%;
@@ -183,11 +182,11 @@ a.detail-row-phone-card:focus {
     overflow-x: hidden;
     word-break: break-word;
     word-wrap: break-word;
-    height: 100%;
+    height: auto;
 }
 .detail-text-area {
     width: 100%;
-    height: 100%;
+    height: auto;
     border: none;
     background-color: transparent;
     -webkit-border-radius: 5px;
