@@ -224,7 +224,7 @@ class DetailRow extends Component {
       let onToggleClick = (e) => {
         e.preventDefault()
         let innerText = e.target.innerText
-        if (innerText === 'Chi tiết') {
+        if (innerText === 'Xem thêm') {
           // expand
           let txt = e.target.previousSibling
           txt.style.height = txt.scrollHeight + 'px'
@@ -233,7 +233,7 @@ class DetailRow extends Component {
         else {
           let txt = e.target.previousSibling
           txt.style.height = 'auto'
-          e.target.innerText = 'Chi tiết'
+          e.target.innerText = 'Xem thêm'
         }
       }
       return (
@@ -247,7 +247,7 @@ class DetailRow extends Component {
               readOnly={true}
               className="detail-text-area"
               rows="5" defaultValue={value}/>
-            <button id="toggle" onClick={onToggleClick}>Chi tiết</button>
+            <button id="toggle" onClick={onToggleClick}>Xem thêm</button>
             {/*<div className="detail-text-area" style={{whiteSpace: 'pre'}}>*/}
             {/*  {value}*/}
             {/*</div>*/}
