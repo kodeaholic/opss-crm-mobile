@@ -184,7 +184,7 @@ a.detail-row-phone-card:focus {
     word-wrap: break-word;
     height: auto;
 }
-.detail-text-area {
+textarea.detail-text-area {
     width: 100%;
     height: auto;
     border: none;
@@ -195,14 +195,23 @@ a.detail-row-phone-card:focus {
     padding-right: 0;
     margin-left: 0;
     margin-right: 0;
-    margin-bottom: 5px;
     font-size: 15px;
     -webkit-appearance: none;
     color: #000000;
-    overflow-x: auto;
-    word-break: break-word !important;
-    word-wrap: break-word !important;
 }
 textarea.detail-text-area:disabled {
     color: #000000;
+}
+button#toggle {
+    background-color: #006cad;
+    opacity: 0.7;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 15px;
+    border-radius: 5px;
+    border: none;
+    color: #ffffff;
+}
+button#toggle:focus {
+    outline: none;
 }

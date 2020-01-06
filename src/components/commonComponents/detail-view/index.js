@@ -221,19 +221,36 @@ class DetailRow extends Component {
       )
     }
     else {
+      let onToggleClick = (e) => {
+        e.preventDefault()
+        let innerText = e.target.innerText
+        if (innerText === 'Chi tiết') {
+          // expand
+          let txt = e.target.previousSibling
+          txt.style.height = txt.scrollHeight + 'px'
+          e.target.innerText = 'Ẩn'
+        }
+        else {
+          let txt = e.target.previousSibling
+          txt.style.height = 'auto'
+          e.target.innerText = 'Chi tiết'
+        }
+      }
       return (
         <div className="detail-row-long-text">
           <div className="detail-label-long-text">
             {label}
           </div>
-          <div className="detail-value-long-text">
-            {/*<textarea*/}
-            {/*  readOnly={true}*/}
-            {/*  className="detail-text-area"*/}
-            {/*  rows="5" defaultValue={value}/>*/}
-            <div className="detail-text-area" style={{whiteSpace: 'pre'}}>
-              {value}
-            </div>
+          <div className="detail-value-long-text" style={{textAlign: 'center'}}>
+            <textarea
+              id={"longText-" + label}
+              readOnly={true}
+              className="detail-text-area"
+              rows="5" defaultValue={value}/>
+            <button id="toggle" onClick={onToggleClick}>Chi tiết</button>
+            {/*<div className="detail-text-area" style={{whiteSpace: 'pre'}}>*/}
+            {/*  {value}*/}
+            {/*</div>*/}
           </div>
         </div>
       )
