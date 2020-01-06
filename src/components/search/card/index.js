@@ -14,24 +14,24 @@ export default class ListCard extends Component {
     let renderItemList = this.props.functionRenderItem
     let name = this.props.name
     let setBorderBottomCardTitle = data.length === 0
-    let clickToExpand = () => {
-      let div = document.getElementById('scrollableDiv-' + name)
-      let title = document.getElementById('card-title-' + name)
-      if (div.style.display !== "block" && div.style.display) {
-        if (data.length > 0) div.style.display = "block";
-        if (data.length > 0) {
-          title.style.borderBottomLeftRadius = '0'
-          title.style.borderBottomRightRadius = '0'
-        }
-      } else {
-        div.style.display = "none";
-        title.style.borderBottomLeftRadius = '5px'
-        title.style.borderBottomRightRadius = '5px'
-      }
-    }
+    // let clickToExpand = () => {
+    //   let div = document.getElementById('scrollableDiv-' + name)
+    //   let title = document.getElementById('card-title-' + name)
+    //   if (div.style.display !== "block" && div.style.display) {
+    //     if (data.length > 0) div.style.display = "block";
+    //     if (data.length > 0) {
+    //       title.style.borderBottomLeftRadius = '0'
+    //       title.style.borderBottomRightRadius = '0'
+    //     }
+    //   } else {
+    //     div.style.display = "none";
+    //     title.style.borderBottomLeftRadius = '5px'
+    //     title.style.borderBottomRightRadius = '5px'
+    //   }
+    // }
     return (
       <div className="card-wrapper" id={"card-wrapper-" + name}>
-        <div className="card-title" id={"card-title-" + name} onClick={clickToExpand} style={{overflow: 'hidden', borderBottomLeftRadius: setBorderBottomCardTitle ? '5px' : '0', borderBottomRightRadius: setBorderBottomCardTitle ? '5px' : '0'}}>
+        <div className="card-title" id={"card-title-" + name} style={{overflow: 'hidden', borderBottomLeftRadius: setBorderBottomCardTitle ? '5px' : '0', borderBottomRightRadius: setBorderBottomCardTitle ? '5px' : '0'}}>
           {name} <span>{data.length}</span>
         </div>
         <div
