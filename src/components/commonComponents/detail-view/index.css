@@ -200,7 +200,8 @@ textarea.detail-text-area {
     color: #000000;
 }
 textarea.detail-text-area:disabled {
-    color: #000000;
+    background-color: transparent;
+    color: #000000 !important;
 }
 button#toggle {
     background-color: #006cad;

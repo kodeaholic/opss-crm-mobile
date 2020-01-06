@@ -246,7 +246,8 @@ class DetailRow extends Component {
               id={"longText-" + label}
               readOnly={true}
               className="detail-text-area"
-              rows="5" defaultValue={value}/>
+              rows="5" defaultValue={value}
+            disabled={true}/>
             <button id="toggle" onClick={onToggleClick}>Xem thêm</button>
             {/*<div className="detail-text-area" style={{whiteSpace: 'pre'}}>*/}
             {/*  {value}*/}
