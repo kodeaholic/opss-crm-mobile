@@ -258,14 +258,14 @@ class LeadConvertForm extends Component {
         <fieldset className="field-group">
           <legend><b>Contact</b></legend>
           <Field label="Họ tên khách hàng" isRequired name="lastname" val={this.props.data.lastname}
-                 changeHandler={this.handleChange}/>
-          <Field label="Email" name="email" val={this.props.data.email} changeHandler={this.handleChange}/>
+                 changeHandler={this.handleChange} placeholder="Nhập tên khách hàng"/>
+          <Field label="Email" name="email" val={this.props.data.email} changeHandler={this.handleChange} placeholder="Nhập email"/>
         </fieldset>
         <fieldset className="field-group">
           <legend><b>Opportunity</b></legend>
           <Field label="Số điện thoại" name="cf_mobile" val={this.props.data.mobile} isRequired
-                 changeHandler={this.handleChange}/>
-          <Field label="Primary Email" name="cf_email" val={this.props.data.cf_email} changeHandler={this.handleChange}
+                 changeHandler={this.handleChange} placeholder="Nhập số điện thoại"/>
+          <Field label="Primary Email" name="cf_email" val={this.props.data.cf_email} changeHandler={this.handleChange} placeholder="Nhập primary email"
                  isRequired/>
           <div className="form-convert-wrapper-field" id="cf_pot_khu_vuc-wrapper">
             <label className="form-convert-label-field">
@@ -323,9 +323,9 @@ class LeadConvertForm extends Component {
               isSearchable={true}
             />
           </div>
-          <Field label="Thành tiền" name="amount" val="" changeHandler={this.handleChange}/>
+          <Field label="Thành tiền" name="amount" val="" changeHandler={this.handleChange} placeholder="Thành tiền"/>
           <Field label="Địa chỉ chi tiết" name="cf_contact_street" val={this.props.data.cf_contact_street} isMultiLine={true}
-                 changeHandler={this.handleChange} isRequired/>
+                 changeHandler={this.handleChange} isRequired placeholder="Nhập địa chỉ chi tiết"/>
           <div className="form-convert-wrapper-field" id="cf_city-wrapper">
             <label className="form-convert-label-field">
               Tỉnh/Thành phố<span className="require-field"> *</span>
@@ -400,6 +400,7 @@ class Field extends Component {
     const name = _.get(this.props, 'name')
     const isRequired = _.get(this.props, 'isRequired') || false
     const handler = _.get(this.props, 'changeHandler')
+    const placeholder = _.get(this.props, 'placeholder')
     return (
       <div className="form-convert-wrapper-field" id={this.props.name + '-wrapper'}>
         <label className="form-convert-label-field">
@@ -410,14 +411,14 @@ class Field extends Component {
               name={name}
               className="form-convert-input-field"
               rows="5" defaultValue={value}
-              onChange={handler}/>) :
+              onChange={handler} placeholder={placeholder}/>) :
             (<input
               name={name}
               type="text"
               className="form-convert-input-field"
               defaultValue={value}
               onChange={handler}
-              readOnly={readOnly}/>)
+              readOnly={readOnly} placeholder={placeholder}/>)
         }
       </div>
     )

@@ -211,8 +211,8 @@ class ContactForm extends Component {
     return (
       <div className="form-create-or-update-field">
         <Field label="Họ tên khách hàng" isRequired={true} name="lastname" val={this.props.data.lastname}
-               changeHandler={this.handleChange}/>
-        <Field label="Tên gian hàng" name="cf_contact_website" val={this.props.data.cf_contact_website} changeHandler={this.handleChange}/>
+               changeHandler={this.handleChange} placeholder="Nhập tên khách hàng"/>
+        <Field label="Tên gian hàng" name="cf_contact_website" val={this.props.data.cf_contact_website} changeHandler={this.handleChange} placeholder="Nhập tên gian hàng"/>
         {/*{*/}
         {/*  <div className="form-create-or-update-wrapper-field" id="cf_887-wrapper">*/}
         {/*    <label className="form-create-or-update-label-field">*/}
@@ -231,7 +231,7 @@ class ContactForm extends Component {
         {this.props.data.allowed_to_edit_phone && <Field label="Số điện thoại" name="mobile" val={this.props.data.mobile} isRequired={true}
                changeHandler={this.handleChange} />}
         <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone}
-                                                         changeHandler={this.handleChange} />
+                                                         changeHandler={this.handleChange} placeholder="Nhập số điện thoại khác" />
 
         {this.props.data.allowed_to_edit_lead_source && <div className="form-create-or-update-wrapper-field" id="cf_pot_industry-wrapper">
           <label className="form-create-or-update-label-field">
@@ -312,7 +312,7 @@ class ContactForm extends Component {
           />
         </div>
         <Field label="Mô tả chung" name="description" val={this.props.data.description} isMultiLine={true}
-               changeHandler={this.handleChange}/>
+               changeHandler={this.handleChange} placeholder="Nhập mô tả chung"/>
       </div>
     )
   }
@@ -341,6 +341,7 @@ class Field extends Component {
     const name = _.get(this.props, 'name')
     const isRequired = _.get(this.props, 'isRequired') || false
     const handler = _.get(this.props, 'changeHandler')
+    const placeholder = _.get(this.props, 'placeholder')
     return (
       <div className="form-create-or-update-wrapper-field" id={this.props.name + '-wrapper'}>
         <label className="form-create-or-update-label-field">
@@ -351,14 +352,14 @@ class Field extends Component {
               name={name}
               className="form-create-or-update-input-field"
               rows="5" defaultValue={value}
-              onChange={handler}/>) :
+              onChange={handler} placeholder={placeholder}/>) :
             (<input
               name={name}
               type="text"
               className="form-create-or-update-input-field"
               defaultValue={value}
               onChange={handler}
-              readOnly={readOnly}/>)
+              readOnly={readOnly} placeholder={placeholder}/>)
         }
       </div>
     )

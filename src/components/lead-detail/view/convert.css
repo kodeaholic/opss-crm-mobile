@@ -90,3 +90,18 @@ textarea.form-convert-input-field {
     border: none;
     margin-bottom: 0;
 }
+::placeholder {
+    color: #a5a5a5;
+    font-style: italic;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: normal;
+    text-indent: 5px !important;
+}
+div[class*="-placeholder"] {
+    color: #a5a5a5;
+    font-style: italic;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: normal;
+}
