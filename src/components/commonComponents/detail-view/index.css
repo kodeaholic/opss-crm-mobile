@@ -127,8 +127,17 @@
     font-style: normal;
     padding-left: 10px;
     padding-right: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    width: 50%;
+    justify-content: space-around;
+}
+.detail-value > label {
+    flex: 1;
+    font-family: Roboto;
 }
 .detail-label:after {
     content: ':';
@@ -185,6 +194,7 @@ a.detail-row-phone-card:focus {
     height: auto;
 }
 textarea.detail-text-area {
+    overflow: hidden;
     width: 100%;
     height: auto;
     border: none;

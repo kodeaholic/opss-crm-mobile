@@ -215,7 +215,7 @@ class DetailRow extends Component {
             {label}
           </div>
           <div className="detail-value" style={isLongText ? {textAlign: 'left'} : {}}>
-            {this.renderValue(this.props)}
+            <label>{this.renderValue(this.props)}</label>
           </div>
         </div>
       )
@@ -246,7 +246,7 @@ class DetailRow extends Component {
               id={"longText-" + label}
               readOnly={true}
               className="detail-text-area"
-              rows="5" defaultValue={value}
+              rows="1" defaultValue={value}
             disabled={true}/>
             <button id="toggle" onClick={onToggleClick}>Xem thêm</button>
             {/*<div className="detail-text-area" style={{whiteSpace: 'pre'}}>*/}
