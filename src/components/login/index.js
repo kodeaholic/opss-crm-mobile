@@ -181,7 +181,7 @@ class LoginPage extends React.Component {
       return <Redirect to={'/lead'} />
     }
     return (
-      <div className="col-md-12 col-md-offset-12" style={{backgroundColor: '#006cad', width: '100vw', height: '100vh'}}>
+      <div className="login-container">
         {/*<div className="col-md-12 col-md-offset-12" style={{backgroundImage: 'url("/login-background_25.png")', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', width: '100%', height: '100%'}}>*/}
         {this.props.isShowPopupResetPassword ? this.renderPopup() : null}
         <div className="login-wrapper">
