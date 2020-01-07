@@ -19,8 +19,8 @@ code {
 .app-wrapper {
   background-color: #f9f9f9;
   position: relative;
-  height: calc(100vh);
-  width: calc(100vw);
+  height: calc(100%);
+  width: calc(100%);
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -60,7 +60,7 @@ code {
   top: 50px;
   left: 0;
   width: 100%;
-  height: calc(100vh - 110px);
+  height: calc(100% - 110px);
   /*background-color: transparent;*/
   /*background: radial-gradient(rgba(20, 20, 20,.1), rgba(0, 0, 0, .1));*/
 
