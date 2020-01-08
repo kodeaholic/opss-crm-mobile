@@ -149,6 +149,11 @@ class LeadComponent extends Component {
     let pathBack = this.props.location.search
     pathBack = pathBack.substring(pathBack.indexOf('pathBack=')+9)
     let userLoginData = localStorage.getItem('userLoggedInKV')
+    if (!userLoginData) {
+      return (
+        <Redirect to={'/login'}/>
+      )
+    }
     userLoginData = JSON.parse(userLoginData).result.login
     let currentUserId = userLoginData.userid
     /* check if view, create, or update */
