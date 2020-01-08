@@ -202,14 +202,17 @@ class LeadComponent extends Component {
       }
       if (this.props.option === 'view') {
         if (this.props.viewPermission !== undefined && this.props.viewPermission.code === 'ACCESS_DENIED') {
-          return (<div className="lead-view-container" style={{
-            height: 'calc(100vh)',
-            overflow: 'scroll',
-            position: 'absolute',
-            top: '0',
-            width: '100%'
+          return (<div style={{
+            height: '50px',
+            position: 'fixed',
+            top: '50px',
+            width: '100%',
+            textAlign: 'center',
+            verticalAlign: 'middle',
+            paddingTop: '10px',
+            color: '#000000'
           }}>
-            <div className="loading-data">Permission Denied</div>
+            <p style={{fontFamily: 'Roboto'}}>Bạn không có quyền xem (permission denied)</p>
           </div>)
         }
         return (
@@ -238,14 +241,17 @@ class LeadComponent extends Component {
                            currentUserId={currentUserId}/>
         )
       } else if (this.props.option === 'convert' && this.props.leadData.phoneExists === true) {
-        return (<div className="lead-view-container" style={{
-          height: 'calc(100vh)',
-          overflow: 'scroll',
-          position: 'absolute',
-          top: '0',
-          width: '100%'
+        return (<div style={{
+          height: '50px',
+          position: 'fixed',
+          top: '50px',
+          width: '100%',
+          textAlign: 'center',
+          verticalAlign: 'middle',
+          paddingTop: '10px',
+          color: '#000000'
         }}>
-          <div className="loading-data">Lead is converted</div>
+          <p style={{fontFamily: 'Roboto'}}>Lead có số điện thoại này đã được chuyển đổi</p>
         </div>)
       }
     }

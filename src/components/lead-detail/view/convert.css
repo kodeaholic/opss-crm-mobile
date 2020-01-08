@@ -1,13 +1,11 @@
-.container-form-convert {
-    flex: 1;
-    height: calc(100vh - 105px);
-    overflow: auto;
-    position: absolute;
-    top: 50px;
+.form-convert-lead-container {
     width: 100%;
+    padding-bottom: 55px;
+    padding-top: 50px;
+    height: 100%;
 }
 
-.wrapper-button-form-convert {
+.wrapper-button-form-convert-lead {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -19,11 +17,11 @@
     margin-bottom: 1px;
 }
 
-.form-convert-button {
+.form-convert-lead-button {
     padding: 0 12px;
 }
 
-.form-convert-field {
+.form-convert-lead-field {
     background-color: #fff;
     padding-bottom: 10px;
     display: flex;
@@ -31,7 +29,7 @@
     justify-content: center;
 }
 
-.form-convert-wrapper-field {
+.form-convert-lead-wrapper-field {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -40,22 +38,22 @@
     padding: 5px 10px 0 10px;
 }
 
-.form-convert-label-field {
+.form-convert-lead-label-field {
     flex: 1;
     font-family: Roboto;
     color: #000000;
 }
-.form-convert-label-error {
+.form-convert-lead-label-error {
     font-size: 10px;
     font-style: italic;
     color: red;
 }
 
-.form-convert-require-field {
+.form-convert-lead-require-field {
     color: red;
 }
 
-input.form-convert-input-field {
+input.form-convert-lead-input-field {
     flex: 0 0 40px;
     background-color: white;
     border: 1px solid #ccc;
@@ -68,7 +66,7 @@ input.form-convert-input-field {
     font-size: 15px;
     -webkit-appearance: none;
 }
-textarea.form-convert-input-field {
+textarea.form-convert-lead-input-field {
     background-color: white;
     border: 1px solid #ccc;
     -webkit-border-radius: 5px;

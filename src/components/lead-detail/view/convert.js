@@ -55,7 +55,7 @@ class LeadConvertForm extends Component {
     if (!document.getElementById(name + '-error')) {
       let nameField = document.getElementById(name + '-wrapper')
       let error = document.createElement('label')
-      error.setAttribute('class', 'form-convert-label-error')
+      error.setAttribute('class', 'form-convert-lead-label-error')
       error.setAttribute('id', name + '-error')
       let node = document.createTextNode(content)
       error.appendChild(node)
@@ -254,7 +254,7 @@ class LeadConvertForm extends Component {
       defaultAssignedUser = this.props.data.defaultAssignedUser
     }
     return (
-      <div className="form-convert-field">
+      <div className="form-convert-lead-field">
         <fieldset className="field-group">
           <legend><b>Contact</b></legend>
           <Field label="Họ tên khách hàng" isRequired name="lastname" val={this.props.data.lastname}
@@ -267,8 +267,8 @@ class LeadConvertForm extends Component {
                  changeHandler={this.handleChange} placeholder="Nhập số điện thoại"/>
           <Field label="Primary Email" name="cf_email" val={this.props.data.cf_email} changeHandler={this.handleChange} placeholder="Nhập primary email"
                  isRequired/>
-          <div className="form-convert-wrapper-field" id="cf_pot_khu_vuc-wrapper">
-            <label className="form-convert-label-field">
+          <div className="form-convert-lead-wrapper-field" id="cf_pot_khu_vuc-wrapper">
+            <label className="form-convert-lead-label-field">
               Khu vực<span className="require-field"> *</span>
             </label>
             <AsyncSelect
@@ -281,8 +281,8 @@ class LeadConvertForm extends Component {
               isSearchable={true}
             />
           </div>
-          <div className="form-convert-wrapper-field" id="potentialname-wrapper">
-            <label className="form-convert-label-field">
+          <div className="form-convert-lead-wrapper-field" id="potentialname-wrapper">
+            <label className="form-convert-lead-label-field">
               Cơ hội<span className="require-field"> *</span>
             </label>
             <AsyncSelect
@@ -295,8 +295,8 @@ class LeadConvertForm extends Component {
               isSearchable={true}
             />
           </div>
-          <div className="form-convert-wrapper-field" id="cf_pot_nganh_hang-wrapper">
-            <label className="form-convert-label-field">
+          <div className="form-convert-lead-wrapper-field" id="cf_pot_nganh_hang-wrapper">
+            <label className="form-convert-lead-label-field">
               Ngành hàng<span className="require-field"> *</span>
             </label>
             <AsyncSelect
@@ -309,8 +309,8 @@ class LeadConvertForm extends Component {
               isSearchable={true}
             />
           </div>
-          <div className="form-convert-wrapper-field" id="customer_type-wrapper">
-            <label className="form-convert-label-field">
+          <div className="form-convert-lead-wrapper-field" id="customer_type-wrapper">
+            <label className="form-convert-lead-label-field">
               Loại khách<span className="require-field"> *</span>
             </label>
             <AsyncSelect
@@ -326,8 +326,8 @@ class LeadConvertForm extends Component {
           <Field label="Thành tiền" name="amount" val="" changeHandler={this.handleChange} placeholder="Thành tiền"/>
           <Field label="Địa chỉ chi tiết" name="cf_contact_street" val={this.props.data.cf_contact_street} isMultiLine={true}
                  changeHandler={this.handleChange} isRequired placeholder="Nhập địa chỉ chi tiết"/>
-          <div className="form-convert-wrapper-field" id="cf_city-wrapper">
-            <label className="form-convert-label-field">
+          <div className="form-convert-lead-wrapper-field" id="cf_city-wrapper">
+            <label className="form-convert-lead-label-field">
               Tỉnh/Thành phố<span className="require-field"> *</span>
             </label>
             <Select
@@ -338,8 +338,8 @@ class LeadConvertForm extends Component {
               isSearchable={true}
             />
           </div>
-          <div className="form-convert-wrapper-field" id="cf_state-wrapper">
-            <label className="form-convert-label-field">
+          <div className="form-convert-lead-wrapper-field" id="cf_state-wrapper">
+            <label className="form-convert-lead-label-field">
               Quận/ Huyện<span className="require-field"> *</span>
             </label>
             <Select
@@ -350,8 +350,8 @@ class LeadConvertForm extends Component {
               isSearchable={true}
             />
           </div>
-          <div className="form-convert-wrapper-field" id="assigned_user_id-wrapper">
-            <label className="form-convert-label-field">
+          <div className="form-convert-lead-wrapper-field" id="assigned_user_id-wrapper">
+            <label className="form-convert-lead-label-field">
               Người xử lý<span className="require-field"> *</span>
             </label>
             {/*<AsyncSelect*/}
@@ -378,7 +378,7 @@ class LeadConvertForm extends Component {
 
   render() {
     return (
-      <div className="container-form-convert">
+      <div className="form-convert-lead-container">
         {this.renderSaveButton()}
         {this.renderForm()}
       </div>
@@ -402,20 +402,20 @@ class Field extends Component {
     const handler = _.get(this.props, 'changeHandler')
     const placeholder = _.get(this.props, 'placeholder')
     return (
-      <div className="form-convert-wrapper-field" id={this.props.name + '-wrapper'}>
-        <label className="form-convert-label-field">
+      <div className="form-convert-lead-wrapper-field" id={this.props.name + '-wrapper'}>
+        <label className="form-convert-lead-label-field">
           {label} {isRequired ? (<span className="require-field"> *</span>) : null}
         </label>
         {
           isMultiLine ? (<textarea
               name={name}
-              className="form-convert-input-field"
+              className="form-convert-lead-input-field"
               rows="5" defaultValue={value}
               onChange={handler} placeholder={placeholder}/>) :
             (<input
               name={name}
               type="text"
-              className="form-convert-input-field"
+              className="form-convert-lead-input-field"
               defaultValue={value}
               onChange={handler}
               readOnly={readOnly} placeholder={placeholder}/>)
