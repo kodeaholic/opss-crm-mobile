@@ -40,7 +40,7 @@ class ContactForm extends Component {
     if (!document.getElementById(name + '-error')) {
       let nameField = document.getElementById(name + '-wrapper')
       let error = document.createElement('label')
-      error.setAttribute('class', 'form-create-or-update-label-error')
+      error.setAttribute('class', 'form-contact-label-error')
       error.setAttribute('id', name + '-error')
       let node = document.createTextNode(content)
       error.appendChild(node)
@@ -209,13 +209,13 @@ class ContactForm extends Component {
       defaultAssignedUser = this.props.data.defaultAssignedUser
     }
     return (
-      <div className="form-create-or-update-field">
+      <div className="form-contact-field">
         <Field label="Họ tên khách hàng" isRequired={true} name="lastname" val={this.props.data.lastname}
                changeHandler={this.handleChange} placeholder="Nhập tên khách hàng"/>
         <Field label="Tên gian hàng" name="cf_contact_website" val={this.props.data.cf_contact_website} changeHandler={this.handleChange} placeholder="Nhập tên gian hàng"/>
         {/*{*/}
-        {/*  <div className="form-create-or-update-wrapper-field" id="cf_887-wrapper">*/}
-        {/*    <label className="form-create-or-update-label-field">*/}
+        {/*  <div className="form-contact-wrapper-field" id="cf_887-wrapper">*/}
+        {/*    <label className="form-contact-label-field">*/}
         {/*      Tình trạng*/}
         {/*    </label>*/}
         {/*    <Select*/}
@@ -233,8 +233,8 @@ class ContactForm extends Component {
         <Field label="Số điện thoại khác" name="phone" val={this.props.data.phone}
                                                          changeHandler={this.handleChange} placeholder="Nhập số điện thoại khác" />
 
-        {this.props.data.allowed_to_edit_lead_source && <div className="form-create-or-update-wrapper-field" id="cf_pot_industry-wrapper">
-          <label className="form-create-or-update-label-field">
+        {this.props.data.allowed_to_edit_lead_source && <div className="form-contact-wrapper-field" id="cf_pot_industry-wrapper">
+          <label className="form-contact-label-field">
             Ngành hàng<span className="require-field"> *</span>
           </label>
           <Select
@@ -243,8 +243,8 @@ class ContactForm extends Component {
             isDisabled={true}
           />
         </div>}
-        <div className="form-create-or-update-wrapper-field" id="cf_pot_khu_vuc-wrapper">
-          <label className="form-create-or-update-label-field">
+        <div className="form-contact-wrapper-field" id="cf_pot_khu_vuc-wrapper">
+          <label className="form-contact-label-field">
             Khu vực<span className="require-field"> *</span>
           </label>
           <AsyncSelect
@@ -258,8 +258,8 @@ class ContactForm extends Component {
           />
         </div>
         {this.props.data.allowed_to_edit_lead_source || this.props.option === 'create' ? (
-          <div className="form-create-or-update-wrapper-field" id="leadsource-wrapper">
-            <label className="form-create-or-update-label-field">
+          <div className="form-contact-wrapper-field" id="leadsource-wrapper">
+            <label className="form-contact-label-field">
               Nguồn khách hàng<span className="require-field"> *</span>
             </label>
             <AsyncSelect
@@ -272,8 +272,8 @@ class ContactForm extends Component {
               isSearchable={true}
             />
           </div>) : ('')}
-        <div className="form-convert-wrapper-field" id="cf_city-wrapper">
-          <label className="form-convert-label-field">
+        <div className="form-contact-wrapper-field" id="cf_city-wrapper">
+          <label className="form-contact-label-field">
             Tỉnh/Thành phố
           </label>
           <Select
@@ -284,8 +284,8 @@ class ContactForm extends Component {
             isSearchable={true}
           />
         </div>
-        <div className="form-convert-wrapper-field" id="cf_state-wrapper">
-          <label className="form-convert-label-field">
+        <div className="form-contact-wrapper-field" id="cf_state-wrapper">
+          <label className="form-contact-label-field">
             Quận/ Huyện
           </label>
           <Select
@@ -297,8 +297,8 @@ class ContactForm extends Component {
           />
         </div>
         <Field label="Địa chỉ chi tiết" name="cf_contact_street" val={this.props.data.cf_contact_street} changeHandler={this.handleChange}/>
-        <div className="form-create-or-update-wrapper-field" id="assigned_user_id-wrapper">
-          <label className="form-create-or-update-label-field">
+        <div className="form-contact-wrapper-field" id="assigned_user_id-wrapper">
+          <label className="form-contact-label-field">
             Người xử lý<span className="require-field"> *</span>
           </label>
           <AsyncSelect
@@ -319,7 +319,7 @@ class ContactForm extends Component {
 
   render() {
     return (
-      <div className="container-form-create-or-update">
+      <div className="container-form-contact">
         {this.renderSaveButton()}
         {this.renderForm()}
       </div>
@@ -343,20 +343,20 @@ class Field extends Component {
     const handler = _.get(this.props, 'changeHandler')
     const placeholder = _.get(this.props, 'placeholder')
     return (
-      <div className="form-create-or-update-wrapper-field" id={this.props.name + '-wrapper'}>
-        <label className="form-create-or-update-label-field">
+      <div className="form-contact-wrapper-field" id={this.props.name + '-wrapper'}>
+        <label className="form-contact-label-field">
           {label} {isRequired ? (<span className="require-field"> *</span>) : null}
         </label>
         {
           isMultiLine ? (<textarea
               name={name}
-              className="form-create-or-update-input-field"
+              className="form-contact-input-field"
               rows="5" defaultValue={value}
               onChange={handler} placeholder={placeholder}/>) :
             (<input
               name={name}
               type="text"
-              className="form-create-or-update-input-field"
+              className="form-contact-input-field"
               defaultValue={value}
               onChange={handler}
               readOnly={readOnly} placeholder={placeholder}/>)
