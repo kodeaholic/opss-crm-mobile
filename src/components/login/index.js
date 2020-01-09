@@ -224,8 +224,8 @@ class LoginPage extends React.Component {
                 placeholder="Mật khẩu"
               />
             </div>
-            <div className="btn-forgot-password" onClick={() => this.handlePopupOpen()}>
-              Quên mật khẩu?
+            <div className="btn-forgot-password">
+              <button onClick={() => this.handlePopupOpen()} style={{backgroundColor: 'transparent', border: 'none'}}>Quên mật khẩu?</button>
             </div>
             <button className="btn-login" onClick={this.handleSubmit}>
               {!loggingIn && "Đăng nhập"}
