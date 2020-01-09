@@ -137,8 +137,8 @@
     color: #000000;
     font-family: Roboto;
     text-align: center;
-    padding: 3px 5px 0 5px;
-    margin: 5px;
+    padding: 5px;
+    margin: 5px 5px 5px 0;
 }
 .filter-search-button.active {
     color: #006cad;
