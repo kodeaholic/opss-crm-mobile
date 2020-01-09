@@ -79,3 +79,7 @@
 .save-btn:focus {
   outline: none;
 }
+.responsive-footer-icon.icon-active {
+  filter: invert(24%) sepia(84%) saturate(1907%) hue-rotate(182deg) brightness(97%) contrast(101%);
+  -webkit-filter: invert(24%) sepia(84%) saturate(1907%) hue-rotate(182deg) brightness(75%) contrast(101%);
+}

@@ -9,28 +9,33 @@ const menuList = [
   {
     name: 'Dashboard',
     classIcon: 'fa fa-columns',
-    path: '/dashboard'
+    path: '/dashboard',
+    icon: 'dashboard.png'
   },
 
   {
     name: 'Lead',
     classIcon: 'fa fa-users',
-    path: '/lead'
+    path: '/lead',
+    icon: 'lead.png'
   },
   {
     name: 'Contact',
     classIcon: 'fa fa-address-book-o',
-    path: '/contact'
+    path: '/contact',
+    icon: 'contact.png'
   },
   {
     name: 'Opportunity',
     classIcon: 'fa fa-handshake-o', //fa-sticky-note-o
-    path: '/opportunity'
+    path: '/opportunity',
+    icon: 'opp.png'
   },
   {
     name: 'More',
     classIcon: 'fa fa-cog', //fa-sticky-note-o
-    path: '/more'
+    path: '/more',
+    icon: 'more.png'
   }
   // {
   //   name: 'Opportunity',
@@ -50,12 +55,14 @@ const menuLeadFunction = [
   {
     name: 'Sửa',
     classIcon: 'fa fa-list-alt',
-    path: '/lead-edit'
+    path: '/lead-edit',
+    icon: 'edit.png'
   },
   {
     name: 'Convert',
     classIcon: 'fa fa-user-o',
-    path: '/lead-convert'
+    path: '/lead-convert',
+    icon: 'convert.png'
   }
 ]
 
@@ -63,7 +70,8 @@ const menuContactFunction = [
   {
     name: 'Sửa',
     classIcon: 'fa fa-list-alt',
-    path: '/contact-edit'
+    path: '/contact-edit',
+    icon: 'edit.png'
   },
 ]
 
@@ -83,6 +91,7 @@ class Footer extends Component {
     let currentPath = this.props.location.pathname
     let checkActive = currentPath.indexOf(item.path) !== -1 || (item.name === 'More' && (currentPath.indexOf('calendar') !== -1 || currentPath.indexOf('ticket') !== -1))
     let active = checkActive ? ' active' : ''
+    let activeIcon = checkActive ? ' icon-active' : ''
     let styleColor = checkActive ? {color: '#006cad'} : {}
     let basePath = this.props.location.pathname
     basePath = basePath.substring(basePath.indexOf('/') + 1)
@@ -97,10 +106,15 @@ class Footer extends Component {
     if (id) {
       return (
         <Link to={item.path + '/' + id + "?pathBack=" + pathBack} className={"wrapper-footer-link" + active} key={item.name + id}>
-          <i
-            className={item.classIcon + " footer-icon " + active}
-            style={styleColor}
-            aria-hidden="true"/>
+          {/*<i*/}
+          {/*  className={item.classIcon + " footer-icon " + active}*/}
+          {/*  style={styleColor}*/}
+          {/*  aria-hidden="true"/>*/}
+          <img
+            alt={item.name}
+            src={require('../../static/icons/' + item.icon)}
+            className={"responsive-footer-icon" + activeIcon}
+          />
           <label className={"label-menu " + active}>{item.name}</label>
         </Link>
       )
@@ -111,10 +125,15 @@ class Footer extends Component {
               onClick={item.path === currentPath ? this.clickToReloadPage : () => {
                 return true
               }}>
-          <i
-            className={item.classIcon + " footer-icon " + active}
-            aria-hidden="true"
-            style={styleColor}/>
+          {/*<i*/}
+          {/*  className={item.classIcon + " footer-icon " + active}*/}
+          {/*  aria-hidden="true"*/}
+          {/*  style={styleColor}/>*/}
+          <img
+            alt={item.name}
+            src={require('../../static/icons/' + item.icon)}
+            className={"responsive-footer-icon" + activeIcon}
+          />
           <label className={"label-menu " + active}>{item.name}</label>
         </Link>
       )
