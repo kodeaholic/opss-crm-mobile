@@ -1,6 +1,26 @@
 @import url(https://fonts.googleapis.com/css?family=Pacifico);
 @import url('https://fonts.googleapis.com/css?family=Anton');
-.wrapper {
+.background-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh);
+    margin: 0 !important;
+    padding: 0 !important;
+    background-image: url("../../../static/images/hpny.png");
+}
+.background-wrapper.times-up {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh);
+    margin: 0 !important;
+    padding: 0 !important;
+    background-image: url("../../../static/images/hpny-with-text.png");
+}
+.background-wrapper.times-up {
     position: fixed;
     top: 0;
     left: 0;
@@ -86,6 +106,7 @@
 .coming-soon-header-image {
 }
 .count-down-wrapper {
+    margin-top: 60px;
     width: calc(80vw);
     margin-right: calc(10vw);
     margin-left: calc(10vw);

@@ -87,6 +87,7 @@
 .coming-soon-header-image {
 }
 .count-down-wrapper {
+    margin-top: 60px;
     width: calc(80vw);
     margin-right: calc(10vw);
     margin-left: calc(10vw);

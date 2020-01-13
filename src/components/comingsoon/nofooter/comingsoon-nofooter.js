@@ -15,8 +15,8 @@ class ComingSoonNoFooter extends Component {
   }
 
   countdownTimer = () => {
-    const difference = +new Date("2020-01-01") - +new Date();
-    let remaining = "Team OPSS xin chúc bạn một năm mới hạnh phúc";
+    const difference = +new Date("2020-01-25T00:00:00") - +new Date();
+    let remaining = undefined
 
     if (difference > 0) {
       let parts = {
@@ -30,16 +30,16 @@ class ComingSoonNoFooter extends Component {
         `
         <div class="count-down-wrapper">
           <div class="count-down-item">
-            <div class="count-down-item-value" style="color: #D68528;">${parts['days']}</div>
-            <div class="count-down-item-label" style="color: #D68528;">days</div>
+            <div class="count-down-item-value" style="color: #ECB253;">${parts['days']}</div>
+            <div class="count-down-item-label" style="color: #ECB253;">days</div>
           </div>
           <div class="count-down-item">
-            <div class="count-down-item-value" style="color: #DF9639;">${parts['hours']}</div>
-            <div class="count-down-item-label" style="color: #DF9639;">hours</div>
+            <div class="count-down-item-value" style="color: #ECB253;">${parts['hours']}</div>
+            <div class="count-down-item-label" style="color: #ECB253;">hours</div>
           </div>
           <div class="count-down-item">
-            <div class="count-down-item-value" style="color: #E8A84A;">${parts['minutes']}</div>
-            <div class="count-down-item-label" style="color: #E8A84A;">minutes</div>
+            <div class="count-down-item-value" style="color: #ECB253;">${parts['minutes']}</div>
+            <div class="count-down-item-label" style="color: #ECB253;">minutes</div>
           </div>
           <div class="count-down-item">
             <div class="count-down-item-value" style="color: #ECB253;">${parts['seconds']}</div>
@@ -49,8 +49,12 @@ class ComingSoonNoFooter extends Component {
       `
     }
     let timer = document.getElementById('count-down')
-    if (timer) {
+    if (timer && remaining) {
       timer.innerHTML = remaining
+    }
+    else {
+      let backGroundContainer = document.getElementsByClassName('background-wrapper')[0]
+      backGroundContainer.classList.add('times-up')
     }
   }
 
@@ -73,17 +77,16 @@ class ComingSoonNoFooter extends Component {
 
   render(){
     return (
-      <div className="wrapper" style={{    backgroundImage: 'url("/comingsoon-background.png")',
-        backgroundSize: 'cover',
+      <div className="background-wrapper" style={{backgroundSize: 'cover',
         backgroundPosition: 'center center',
         backgroundRepeat: 'no-repeat',}}>
-        <div className="coming-soon-header">
-          <img
-            className="coming-soon-header-image"
-            alt="Citigo"
-            src={require('../../../static/images/citigo.png')}
-            style={{width: '115px'}}
-          />
+        {/*<div className="coming-soon-header">*/}
+        {/*  <img*/}
+        {/*    className="coming-soon-header-image"*/}
+        {/*    alt="Citigo"*/}
+        {/*    src={require('../../../static/images/citigo.png')}*/}
+        {/*    style={{width: '115px'}}*/}
+        {/*  />*/}
           {/*<div className="coming-soon-header-image">*/}
           {/*  &nbsp;*/}
           {/*</div>*/}
@@ -93,7 +96,7 @@ class ComingSoonNoFooter extends Component {
           {/*  src={require('../../static/images/app-logo.png')}*/}
           {/*  style={{maxWidth: '70px'}}*/}
           {/*/>*/}
-        </div>
+        {/*</div>*/}
         <div id="count-down" style={{marginTop: '10px', 'color': '#ffffff', fontFamily: 'Roboto', textAlign: 'center'}}/>
         <div className="pyro">
           <div className="before"/>

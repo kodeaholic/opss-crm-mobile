@@ -31,16 +31,16 @@ class ComingSoon extends Component {
         `
         <div class="count-down-wrapper">
           <div class="count-down-item">
-            <div class="count-down-item-value" style="color: #D68528;">${parts['days']}</div>
-            <div class="count-down-item-label" style="color: #D68528;">days</div>
+            <div class="count-down-item-value" style="color: #ECB253;">${parts['days']}</div>
+            <div class="count-down-item-label" style="color: #ECB253;">days</div>
           </div>
           <div class="count-down-item">
-            <div class="count-down-item-value" style="color: #DF9639;">${parts['hours']}</div>
-            <div class="count-down-item-label" style="color: #DF9639;">hours</div>
+            <div class="count-down-item-value" style="color: #ECB253;">${parts['hours']}</div>
+            <div class="count-down-item-label" style="color: #ECB253;">hours</div>
           </div>
           <div class="count-down-item">
-            <div class="count-down-item-value" style="color: #E8A84A;">${parts['minutes']}</div>
-            <div class="count-down-item-label" style="color: #E8A84A;">minutes</div>
+            <div class="count-down-item-value" style="color: #ECB253;">${parts['minutes']}</div>
+            <div class="count-down-item-label" style="color: #ECB253;">minutes</div>
           </div>
           <div class="count-down-item">
             <div class="count-down-item-value" style="color: #ECB253;">${parts['seconds']}</div>
