@@ -71,7 +71,10 @@
   height: 100%;
   border: none;
   background-color: #F1F6F9;
-  text-indent: 35px;
+  text-indent: 35px !important;
+}
+.wrapper-header-search-box > form > input::placeholder {
+  text-indent: 35px !important;
 }
 
 .wrapper-icon {
