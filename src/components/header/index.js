@@ -5,10 +5,20 @@ import { getPathName } from '../../modules/routerDuck'
 
 import './index.css'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { toast } from 'react-toastify'
+import { getSearchResult} from '../../modules/searchDuck'
 
 const mapStateToProps = (state, ownProps) => ({
   path: getPathName(state, ownProps)
+})
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    {
+      getSearchResult
+    },
+    dispatch
+  )
 })
 
 const router = {
@@ -159,6 +169,16 @@ class Header extends Component {
         this.addToSearchHistory(e.target.value)
         e.target.blur()
         this.props.history.push('/search/' + e.target.value + "?pathBack=" + search)
+        /* onEnter */
+        let session = undefined
+        let userLoginData = localStorage.getItem('userLoggedInKV')
+        if (userLoginData) {
+          userLoginData = JSON.parse(userLoginData).result.login
+          session = userLoginData.session
+        } else {
+          this.props.history.push('/login')
+        }
+      this.props.actions.getSearchResult({session, refresh: true, keyword: e.target.value})
       } else {
         toast.error('Vui lòng nhập nhập 3 kí tự trở lên')
         return false
@@ -272,4 +292,4 @@ class Header extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Header))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))

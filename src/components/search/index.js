@@ -73,24 +73,24 @@ class Lead extends Component {
     document.body.style.overscrollBehavior = 'contain'
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.keyword !== this.props.keyword || localStorage.getItem('searchResultsChanged')) {
-      let { userLoggedIn, keyword } = newProps
-      let { session } = userLoggedIn || {}
-      if (!session) {
-        let userLoginData = localStorage.getItem('userLoggedInKV')
-        if (userLoginData) {
-          userLoginData = JSON.parse(userLoginData).result.login
-          session = userLoginData.session
-        } else {
-          this.props.history.push('/login')
-        }
-      }
-      let refresh = true
-      localStorage.removeItem('searchResultsChanged')
-      this.props.actions.getSearchResult({ session, refresh, keyword })
-    }
-  }
+  // componentWillReceiveProps(newProps) {
+  //   if (newProps.keyword !== this.props.keyword || localStorage.getItem('searchResultsChanged')) {
+  //     let { userLoggedIn, keyword } = newProps
+  //     let { session } = userLoggedIn || {}
+  //     if (!session) {
+  //       let userLoginData = localStorage.getItem('userLoggedInKV')
+  //       if (userLoginData) {
+  //         userLoginData = JSON.parse(userLoginData).result.login
+  //         session = userLoginData.session
+  //       } else {
+  //         this.props.history.push('/login')
+  //       }
+  //     }
+  //     let refresh = true
+  //     localStorage.removeItem('searchResultsChanged')
+  //     this.props.actions.getSearchResult({ session, refresh, keyword })
+  //   }
+  // }
 
   componentWillUnmount() {
     document.body.style.overscrollBehavior = 'auto'
@@ -138,7 +138,7 @@ class Lead extends Component {
   renderLoading = () => {
     return (
       <div className="loading-data">
-        <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
+        <i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{backgroundColor: '#ffffff'}}/>
       </div>
     )
   }

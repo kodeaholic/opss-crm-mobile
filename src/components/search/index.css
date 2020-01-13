@@ -3,6 +3,7 @@
   padding-bottom: 55px;
   padding-top: 50px;
   height: 100%;
+  background-color: #ffffff;
 }
 
 /*.wrapper-search-list {*/
@@ -66,4 +67,7 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;
+  color: #006cad;
+  padding-top: 50%;
+  background-color: #ffffff;
 }
