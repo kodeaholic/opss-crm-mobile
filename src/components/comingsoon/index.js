@@ -17,7 +17,7 @@ class ComingSoon extends Component {
 
   countdownTimer = () => {
     const difference = +new Date("2020-01-25T00:00:00") - +new Date();
-    let remaining = "Team OPSS xin chúc bạn một năm mới hạnh phúc";
+    let remaining = undefined
 
     if (difference > 0) {
       let parts = {
@@ -50,8 +50,12 @@ class ComingSoon extends Component {
       `
     }
     let timer = document.getElementById('count-down')
-    if (timer) {
+    if (timer && remaining) {
       timer.innerHTML = remaining
+    }
+    else {
+      let backGroundContainer = document.getElementsByClassName('with-footer-container')[0]
+      backGroundContainer.classList.add('times-up')
     }
   }
 

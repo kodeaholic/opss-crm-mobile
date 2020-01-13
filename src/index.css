@@ -170,7 +170,18 @@ input:focus {
   left: 0;
   width: 100vw;
   height: calc(100vh - 60px);
-  background-image: url("static/images/comingsoon-background.png");
+  background-image: url("static/images/hpny.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.with-footer-container.times-up {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 60px);
+  background-image: url("static/images/hpny-with-text.png");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
