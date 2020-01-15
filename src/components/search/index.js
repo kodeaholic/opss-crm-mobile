@@ -100,9 +100,10 @@ class Lead extends Component {
     let basePath = this.props.location.pathname
     basePath = basePath.substring(basePath.indexOf('/') + 1)
     let pathBack = basePath + this.props.location.search
-    item = item._source
+    // item = item._source
     if (item) {
-      const { label, s_website, crmid, status, _createdtime, sales_user, assign_to, setype } = item
+      // const { label, s_website, crmid, status, _createdtime, sales_user, assign_to, setype } = item
+      const { label, s_website, crmid, s_status, createdtime, sales_user, assign_to, setype } = item
       let setypeLabel = setype
       let to_url = '/lead-view/10x' + crmid + '?pathBack=' + pathBack
       if (setype === 'Contacts') {
@@ -120,13 +121,13 @@ class Lead extends Component {
             <div className="wrapper-item-row">
               <label className="label-item-list item-name">{label}</label>
               <label className="label-item-list" style={{fontWeight: 'bold'}}>{s_website}</label>
-              <label className="label-item-list">{status}</label>
+              <label className="label-item-list">{s_status}</label>
             </div>
             <div className="wrapper-item-row">
               <label className="label-item-list">{assign_to}</label>
               <label className="label-item-list closedwon-sale">{sales_user}</label>
               <label className="lead-item-status label-item-list">
-                {_createdtime}
+                {createdtime}
               </label>
             </div>
           </div>
