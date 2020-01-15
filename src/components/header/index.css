@@ -1,11 +1,9 @@
-.input-search-header {
-  border: 2px solid #ccc;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  height: 30px;
-  padding-left: 30px;
-  font-size: 20px;
-  width: 100%;
+input#search::placeholder {
+  font-style: normal !important;
+  text-indent: 10px !important;
+}
+input#search {
+  text-indent: 25px !important;
 }
 .input-search-header:focus {
   border-color: #333;
