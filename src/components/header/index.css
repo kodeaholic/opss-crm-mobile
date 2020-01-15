@@ -3,7 +3,7 @@ input#search::placeholder {
   text-indent: 10px !important;
 }
 input#search {
-  text-indent: 25px !important;
+  /*text-indent: 25px !important;*/
 }
 .input-search-header:focus {
   border-color: #333;
