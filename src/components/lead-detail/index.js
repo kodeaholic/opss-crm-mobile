@@ -207,6 +207,7 @@ class LeadComponent extends Component {
       }
       if (this.props.option === 'view') {
         if (this.props.viewPermission !== undefined && this.props.viewPermission.code === 'ACCESS_DENIED') {
+          document.getElementById('wrapper-footer').style.display = 'none'
           return (<div style={{
             height: '50px',
             position: 'fixed',
