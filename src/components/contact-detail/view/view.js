@@ -16,6 +16,7 @@ class ContactView extends Component {
 
   render() {
     if (_.isEmpty(this.props.data, true)) {
+      document.getElementById('wrapper-footer').style.display = 'none'
       return (<div style={{
         height: '50px',
         position: 'fixed',
