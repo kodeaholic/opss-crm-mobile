@@ -15,8 +15,19 @@ class ContactView extends Component {
 
   render() {
     if(_.isEmpty(this.props.data, true)) {
-      return (<div className="lead-view-container"
-                   style={{height: 'calc(100vh)', overflow: 'scroll', position: 'absolute', top: '0', width: '100%'}}><div className="loading-data">Permission Denied</div></div>)
+      document.getElementById('wrapper-footer').style.display = 'none'
+      return (<div style={{
+        height: '50px',
+        position: 'fixed',
+        top: '50px',
+        width: '100%',
+        textAlign: 'center',
+        verticalAlign: 'middle',
+        paddingTop: '10px',
+        color: '#000000'
+      }}>
+        <p style={{fontFamily: 'Roboto'}}>Bạn không có quyền xem (permission denied)</p>
+      </div>)
     } else {
       return (
         <DetailView data={{data: this.props.data, setype: 'opportunity'}}/>
