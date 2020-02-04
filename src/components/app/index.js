@@ -73,7 +73,7 @@ class App extends React.Component {
     if (!('scrollBehavior' in document.documentElement.style)) {
       await import('scroll-behavior-polyfill')
     }
-    try {
+    if (messaging) try {
       messaging.requestPermission()
         .then(async function() {
           const token = await messaging.getToken().then((currentToken) => {
