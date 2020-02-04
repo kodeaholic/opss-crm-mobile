@@ -73,30 +73,34 @@ class App extends React.Component {
     if (!('scrollBehavior' in document.documentElement.style)) {
       await import('scroll-behavior-polyfill')
     }
-    messaging.requestPermission()
-      .then(async function() {
-        const token = await messaging.getToken().then((currentToken) => {
-          subscribeToFcmTopic(currentToken)
-          return currentToken
-          }
-        )
-        console.log("FCM token: " + token)
-        messaging.onMessage((payload) => {
+    try {
+      messaging.requestPermission()
+        .then(async function() {
+          const token = await messaging.getToken().then((currentToken) => {
+              subscribeToFcmTopic(currentToken)
+              return currentToken
+            }
+          )
+          console.log("FCM token: " + token)
+          messaging.onMessage((payload) => {
 
-          /* Show snackbar */
-        })
-        messaging.onTokenRefresh(() => {
-          messaging.getToken().then((refreshedToken) => {
-            console.log('Token refreshed.')
-            subscribeToFcmTopic(refreshedToken)
-          }).catch((err) => {
-            console.log('Unable to retrieve refreshed token ', err)
+            /* Show snackbar */
+          })
+          messaging.onTokenRefresh(() => {
+            messaging.getToken().then((refreshedToken) => {
+              console.log('Token refreshed.')
+              subscribeToFcmTopic(refreshedToken)
+            }).catch((err) => {
+              console.log('Unable to retrieve refreshed token ', err)
+            });
           });
-        });
-      })
-      .catch(function(err) {
-        console.log("Unable to get permission to notify.", err)
-      })
+        })
+        .catch(function(err) {
+          console.log("Unable to get permission to notify.", err)
+        })
+    } catch (e) {
+      console.log(e.message)
+    }
     navigator.serviceWorker.addEventListener("message", (message) => {
       let snackbar = document.getElementById("snackbar")
 
