@@ -19,10 +19,49 @@ import Login from '../login'
 import LogoutComponent from '../logout'
 import ScrollToTop from './ScrollToTop'
 import AddToHomeScreen from '../a2hs/a2hs'
-import checkMobileDevice from '../checkMobileDevice'
-import checkAppUpdate from '../checkAppUpdate'
 import MetaTags from 'react-meta-tags'
 
+/* Firebase */
+import { messaging } from "../../init-fcm.js"
+import axios from 'axios'
+const subscribeToFcmTopic = (token) => {
+  const bodyFormData = new FormData()
+  let userLoginData = localStorage.getItem('userLoggedInKV')
+  let session = null
+  if(userLoginData) {
+    userLoginData = JSON.parse(userLoginData).result.login
+    session = userLoginData.session
+  }
+
+  bodyFormData.append('_operation', 'subscribeToFcmTopic')
+  bodyFormData.append('_session', session)
+  bodyFormData.append('token', token)
+
+  const request = axios({
+    method: 'POST',
+    url: process.env.REACT_APP_API_URL_KVCRM,
+    data: bodyFormData,
+    config: { headers: { 'Content-Type': 'multipart/form-data' } }
+  })
+
+  request
+    .then(response => {
+      const { success } = response.data
+      if (success) {
+        console.log('Successful subscribed client to crm_mobile_update topic')
+      }
+      else {
+        let error = response.data.error
+        if (error.code === 1501) {
+          console.log('CRM Mobile login required')
+        }
+        console.log(error)
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -34,6 +73,40 @@ class App extends React.Component {
     if (!('scrollBehavior' in document.documentElement.style)) {
       await import('scroll-behavior-polyfill')
     }
+    messaging.requestPermission()
+      .then(async function() {
+        const token = await messaging.getToken().then((currentToken) => {
+          subscribeToFcmTopic(currentToken)
+          return currentToken
+          }
+        )
+        console.log("FCM token: " + token)
+        messaging.onMessage((payload) => {
+
+          /* Show snackbar */
+        })
+        messaging.onTokenRefresh(() => {
+          messaging.getToken().then((refreshedToken) => {
+            console.log('Token refreshed.')
+            subscribeToFcmTopic(refreshedToken)
+          }).catch((err) => {
+            console.log('Unable to retrieve refreshed token ', err)
+          });
+        });
+      })
+      .catch(function(err) {
+        console.log("Unable to get permission to notify.", err)
+      })
+    navigator.serviceWorker.addEventListener("message", (message) => {
+      let snackbar = document.getElementById("snackbar")
+
+      // Add the "show" class to DIV
+      snackbar.className = "show"
+    })
+  }
+
+  updateApp = () => {
+    window.location.reload(true)
   }
 
   render() {
@@ -141,7 +214,7 @@ class App extends React.Component {
         />
         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
         <div id="snackbar">
-          😘😘😘 CRM Mobile đã có version mới. Bấm <button id="app-update-btn">update</button> để cập nhật ngay 😘😘😘 hoặc <button id="hide-update-btn">Để sau</button>
+          😘😘😘 CRM Mobile đã có version mới. Bấm <button id="app-update-btn" onClick={this.updateApp}>update</button> để cập nhật ngay 😘😘😘
         </div>
       </div>
     )
@@ -149,5 +222,5 @@ class App extends React.Component {
 }
 
 export default compose(
-  checkAppUpdate()
+  // checkAppUpdate()
 )(App)
