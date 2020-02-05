@@ -113,8 +113,9 @@ class App extends React.Component {
     } catch (e) {
       console.log(e.message)
     }
-    navigator.serviceWorker.addEventListener('message', (message) => {
+    if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', (message) => {
       console.log('navigator.serviceWorker event message is fired')
+      console.log(message)
       let snackbar = document.getElementById('snackbar')
 
       // Add the "show" class to DIV
