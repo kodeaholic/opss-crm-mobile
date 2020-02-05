@@ -24,6 +24,7 @@ import MetaTags from 'react-meta-tags'
 /* Firebase */
 // import { messaging } from '../../init-fcm.js'
 import axios from 'axios'
+import './index.css'
 if ('Notification' in window) {
   console.log('Notification API supported')
   var messaging = require('../../init-fcm').messaging
@@ -124,12 +125,48 @@ class App extends React.Component {
   }
 
   updateApp = () => {
+    localStorage.setItem("newAppVersionStatus", "available")
     window.location.reload(true)
   }
 
+  hideVersionUpdatePopup = () => {
+    localStorage.removeItem("newAppVersionStatus")
+    let versionUpdatePopup = document.getElementById('versionUpdatePopup')
+    versionUpdatePopup.remove()
+  }
+
+  renderVersionUpdatePopup = () => {
+    return (
+      <div className="version-update-popup" id="versionUpdatePopup">
+        <div className="version-container">
+          <div className="version-dialog-wrapper">
+            <div className="version-title">
+              <div className="title-text">
+                What' s news ?
+              </div>
+              <div className="title-version-number">
+                1.0
+              </div>
+            </div>
+            <div className="version-content">
+              <p>- Cải thiện trải nghiệm người dùng</p>
+              <p>- Thêm tính năng tạo mới Hợp đồng phần mềm</p>
+            </div>
+            <button className="hide-version-update-popup" onClick={this.hideVersionUpdatePopup}>
+              OK
+            </button>
+          </div>
+
+        </div>
+      </div>
+    )
+  }
+
   render() {
+    let newAppVersion = localStorage.getItem('newAppVersionStatus')
     return (
       <div className="app-wrapper">
+        {newAppVersion ? this.renderVersionUpdatePopup() : null}
         <MetaTags>
           <meta name="apple-mobile-web-app-capable" content="yes"/>
         </MetaTags>
