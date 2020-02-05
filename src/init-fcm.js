@@ -22,7 +22,7 @@ const init = () => {
 }
 const initializedFirebaseApp = init()
 const messaging = initializedFirebaseApp ? initializedFirebaseApp.messaging() : undefined
-messaging.usePublicVapidKey(
+if (messaging) messaging.usePublicVapidKey(
   // Project Settings => Cloud Messaging => Web Push certificates (key pair)
   process.env.REACT_APP_FIREBASE_VAPID_KEY
 )
