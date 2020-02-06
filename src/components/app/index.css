@@ -1,0 +1,77 @@
+/* Absolute Center Spinner */
+.version-update-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 9999;
+    background-color: rgba(127, 127, 127, 0.5);
+}
+
+.version-container {
+    margin-top: 15vh;
+    margin-left: 10vw;
+    width: 80vw;
+    height: 70vh;
+    background-image: url("../../static/images/app-updated-background.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+}
+
+.version-dialog-wrapper {
+    position: relative;
+    top: 40%;
+    height: calc(50%);
+    width: 80%;
+    margin: 0 10% 10% 10%;
+    display: flex;
+    flex-flow: column;
+    -webkit-flex-flow: column;
+}
+
+.version-title {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    height: 40px;
+}
+.title-text {
+    flex: 3;
+    text-align: left;
+    color: black;
+}
+.title-version-number {
+    flex: 1;
+    text-align: right;
+    color: #006cad;
+}
+
+.version-content {
+    margin-top: 10px;
+    width: 100%;
+    flex: 2;
+}
+
+button.hide-version-update-popup {
+    width: 100%;
+    background-color: #58ba47;
+    border-radius: 4px;
+    text-transform: uppercase;
+    color: white;
+    font-family: Roboto;
+    box-shadow: 0 3px 3px 0 rgba(17, 17, 17, 0.1);
+    border: none;
+    min-height: 40px;
+}
+
+button.hide-version-update-popup:focus {
+    outline: none;
+}

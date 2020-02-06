@@ -22,13 +22,21 @@ import AddToHomeScreen from '../a2hs/a2hs'
 import MetaTags from 'react-meta-tags'
 
 /* Firebase */
-import { messaging } from "../../init-fcm.js"
+// import { messaging } from '../../init-fcm.js'
 import axios from 'axios'
+import './index.css'
+if ('Notification' in window) {
+  console.log('Notification API supported')
+  var messaging = require('../../init-fcm').messaging
+} else {
+  // API not supported
+  console.log('Notification API not supported')
+}
 const subscribeToFcmTopic = (token) => {
   const bodyFormData = new FormData()
   let userLoginData = localStorage.getItem('userLoggedInKV')
   let session = null
-  if(userLoginData) {
+  if (userLoginData) {
     userLoginData = JSON.parse(userLoginData).result.login
     session = userLoginData.session
   }
@@ -49,8 +57,7 @@ const subscribeToFcmTopic = (token) => {
       const { success } = response.data
       if (success) {
         console.log('Successful subscribed client to crm_mobile_update topic')
-      }
-      else {
+      } else {
         let error = response.data.error
         if (error.code === 1501) {
           console.log('CRM Mobile login required')
@@ -62,6 +69,7 @@ const subscribeToFcmTopic = (token) => {
       console.log(err)
     })
 }
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -81,41 +89,84 @@ class App extends React.Component {
               return currentToken
             }
           )
-          console.log("FCM token: " + token)
-          messaging.onMessage((payload) => {
-
-            /* Show snackbar */
-          })
-          messaging.onTokenRefresh(() => {
-            messaging.getToken().then((refreshedToken) => {
-              console.log('Token refreshed.')
-              subscribeToFcmTopic(refreshedToken)
-            }).catch((err) => {
-              console.log('Unable to retrieve refreshed token ', err)
-            });
-          });
+          console.log('FCM token: ' + token)
         })
         .catch(function(err) {
-          console.log("Unable to get permission to notify.", err)
+          console.log('Unable to get permission to notify.', err)
         })
+      messaging.onMessage((payload) => {
+
+        /* Show snackbar */
+        console.log('messaging.onMessage is fired')
+        let snackbar = document.getElementById('snackbar')
+
+        // Add the "show" class to DIV
+        snackbar.className = 'show'
+      })
+      messaging.onTokenRefresh(() => {
+        messaging.getToken().then((refreshedToken) => {
+          console.log('Token refreshed.')
+          subscribeToFcmTopic(refreshedToken)
+        }).catch((err) => {
+          console.log('Unable to retrieve refreshed token ', err)
+        })
+      })
     } catch (e) {
       console.log(e.message)
     }
-    navigator.serviceWorker.addEventListener("message", (message) => {
-      let snackbar = document.getElementById("snackbar")
+    if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', (message) => {
+      console.log('navigator.serviceWorker event message is fired')
+      console.log(message)
+      let snackbar = document.getElementById('snackbar')
 
       // Add the "show" class to DIV
-      snackbar.className = "show"
+      snackbar.className = 'show'
     })
   }
 
   updateApp = () => {
+    localStorage.setItem("newAppVersionStatus", "available")
     window.location.reload(true)
   }
 
+  hideVersionUpdatePopup = () => {
+    localStorage.removeItem("newAppVersionStatus")
+    let versionUpdatePopup = document.getElementById('versionUpdatePopup')
+    versionUpdatePopup.remove()
+  }
+
+  renderVersionUpdatePopup = () => {
+    return (
+      <div className="version-update-popup" id="versionUpdatePopup">
+        <div className="version-container">
+          <div className="version-dialog-wrapper">
+            <div className="version-title">
+              <div className="title-text">
+                What' s news ?
+              </div>
+              <div className="title-version-number">
+                1.0
+              </div>
+            </div>
+            <div className="version-content">
+              <p>- Cải thiện trải nghiệm người dùng</p>
+              <p>- Thêm tính năng tạo mới Hợp đồng phần mềm</p>
+            </div>
+            <button className="hide-version-update-popup" onClick={this.hideVersionUpdatePopup}>
+              OK
+            </button>
+          </div>
+
+        </div>
+      </div>
+    )
+  }
+
   render() {
+    let newAppVersion = localStorage.getItem('newAppVersionStatus')
     return (
       <div className="app-wrapper">
+        {newAppVersion ? this.renderVersionUpdatePopup() : null}
         <MetaTags>
           <meta name="apple-mobile-web-app-capable" content="yes"/>
         </MetaTags>
@@ -218,7 +269,9 @@ class App extends React.Component {
         />
         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
         <div id="snackbar">
-          😘😘😘 CRM Mobile đã có version mới. Bấm <button id="app-update-btn" onClick={this.updateApp}>update</button> để cập nhật ngay 😘😘😘
+          😘😘😘 CRM Mobile đã có version mới. Bấm <button id="app-update-btn"
+                                                           onClick={this.updateApp}>update</button> để cập nhật ngay
+          😘😘😘
         </div>
       </div>
     )
