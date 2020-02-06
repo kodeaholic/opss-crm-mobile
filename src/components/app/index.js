@@ -132,7 +132,7 @@ class App extends React.Component {
   hideVersionUpdatePopup = () => {
     localStorage.removeItem("newAppVersionStatus")
     let versionUpdatePopup = document.getElementById('versionUpdatePopup')
-    versionUpdatePopup.remove()
+    if (versionUpdatePopup) versionUpdatePopup.remove()
   }
 
   renderVersionUpdatePopup = () => {
