@@ -66,12 +66,78 @@ const menuLeadFunction = [
   }
 ]
 
+const renderOptSelection = () => {
+  let onClickOuter = () => {
+    let popup = document.getElementById('optSelectionPopup')
+    popup.style.visibility = 'hidden'
+  }
+  let onClickInner = (e) => {
+    e.stopPropagation()
+  }
+  let showRightAngle = (e) => {
+    e.target.childNodes[1].style.visibility = 'visible'
+  }
+  return (
+    <div className="opt-selection-popup" id="optSelectionPopup" onClick={onClickOuter}>
+      <div className="opt-selection-container" onClick={onClickInner}>
+        <div className="opt-selection-popup-header">
+          Loại hợp đồng
+        </div>
+        <div className="opt-selection-wrapper">
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng phần mềm <span className="right-angle">&#8250;</span></a>
+          </div>
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng phần cứng <span className="right-angle">&#8250;</span></a>
+          </div>
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng tái ký KPI <span className="right-angle">&#8250;</span></a>
+          </div>
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng nâng gói KPI <span className="right-angle">&#8250;</span></a>
+          </div>
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng thêm CN KPI <span className="right-angle">&#8250;</span></a>
+          </div>
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng tái ký <span className="right-angle">&#8250;</span></a>
+          </div>
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng nâng gói <span className="right-angle">&#8250;</span></a>
+          </div>
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng thêm chi nhánh <span className="right-angle">&#8250;</span></a>
+          </div>
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng giao vận <span className="right-angle">&#8250;</span></a>
+          </div>
+          <div className="opt-selection-row">
+            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng dịch vụ gia tăng <span className="right-angle">&#8250;</span></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
+const openOptSelection = () => {
+  let optSelectionPopUp = document.getElementById('optSelectionPopup')
+  optSelectionPopUp.style.visibility = 'visible'
+}
+
 const menuContactFunction = [
   {
     name: 'Sửa',
     classIcon: 'fa fa-list-alt',
     path: '/contact-edit',
     icon: 'edit.png'
+  },
+  {
+    name: '+ Opportunity',
+    classIcon: 'fa fa-list-alt',
+    clickToOpenPopUp: openOptSelection,
+    icon: 'opp.png'
   },
 ]
 
@@ -104,6 +170,18 @@ class Footer extends Component {
       }
     }
     if (id) {
+      if (typeof item.clickToOpenPopUp !== 'undefined') {
+        return (
+          <button className={"wrapper-footer-link"} key={item.name + id} style={{border: 'none', backgroundColor: '#ffffff'}} onClick={item.clickToOpenPopUp}>
+            <img
+              alt={item.name}
+              src={require('../../static/icons/' + item.icon)}
+              className={"responsive-footer-icon" + activeIcon}
+            />
+            <label className={"label-menu " + active}>{item.name}</label>
+          </button>
+        )
+      }
       return (
         <Link to={item.path + '/' + id + "?pathBack=" + pathBack} className={"wrapper-footer-link" + active} key={item.name + id}>
           {/*<i*/}
@@ -156,6 +234,7 @@ class Footer extends Component {
     let hideFooter = this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('convert') !== -1 || this.props.location.pathname.indexOf('create') !== -1 || this.props.location.pathname.indexOf('search/') !== -1
     return (
       <div className="wrapper-footer" style={{display: hideFooter ? 'none' : ''}} id="wrapper-footer">
+        {renderOptSelection()}
         {_.map(menuToBeRendered, (item, key) =>
           this.renderItemMenu(item, key, itemId)
         )}
