@@ -156,9 +156,6 @@ button.wrapper-footer-link:focus {
 /*  font-size: 20px;*/
 /*  !*color: transparent;*!*/
 /*}*/
-.opt-selection-row-content:hover {
-  color: #006CAD;
-}
 .opt-selection-row-content:focus {
   color: #006CAD;
 }

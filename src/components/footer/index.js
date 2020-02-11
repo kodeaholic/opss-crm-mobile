@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 
 import _ from 'lodash'
@@ -75,7 +75,22 @@ const renderOptSelection = () => {
     e.stopPropagation()
   }
   let showRightAngle = (e) => {
+    e.preventDefault()
+    let id = e.target.id
     e.target.childNodes[1].style.visibility = 'visible'
+    /* Disable all links */
+    let links = document.getElementsByClassName('opt-selection-row-content')
+    Array.prototype.forEach.call(links, function(el) {
+      el.removeAttribute("href")
+    })
+    e.target.style.color = "#006CAD"
+    let pathName = window.location.pathname
+    let recordId = pathName.split('/')[2] // contact-id
+    let href = window.location.href
+    href = href.replace(pathName, '/contact-view/' + recordId)
+    setTimeout(() => {
+      window.location.href = href
+    }, 50)
   }
   return (
     <div className="opt-selection-popup" id="optSelectionPopup" onClick={onClickOuter}>
@@ -85,34 +100,34 @@ const renderOptSelection = () => {
         </div>
         <div className="opt-selection-wrapper">
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng phần mềm <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} id="optPhanMem" className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng phần mềm <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng phần cứng <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng phần cứng <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng tái ký KPI <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng tái ký KPI <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng nâng gói KPI <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng nâng gói KPI <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng thêm CN KPI <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng thêm CN KPI <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng tái ký <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng tái ký <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng nâng gói <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng nâng gói <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng thêm chi nhánh <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng thêm chi nhánh <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng giao vận <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng giao vận <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <a className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng dịch vụ gia tăng <span className="right-angle">&#8250;</span></a>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng dịch vụ gia tăng <span className="right-angle">&#8250;</span></Link>
           </div>
         </div>
 
