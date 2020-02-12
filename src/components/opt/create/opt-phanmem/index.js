@@ -17,7 +17,7 @@ class OptPhanMemComponent extends Component {
   render() {
     return (
       <div className="form-add-opt-container">
-        <ExpandableFormComponent title="Thông tin cơ bản" expanded={true}>
+        <ExpandableFormComponent title="Thông tin cơ bản">
           <div className="expandable-form-wrapper-field" id="type-wrapper">
             <label className="expandable-form-label-field">Cơ hội <span className="require-field"> *</span></label>
             <input name="type" type="text" className="expandable-form-input-field" value=" Hợp đồng phần mềm" disabled
@@ -186,7 +186,7 @@ class OptPhanMemComponent extends Component {
             <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập mô tả nguồn khách hàng"/>
           </div>
         </ExpandableFormComponent>
-        <ExpandableFormComponent title="Thông tin hợp đồng">
+        <ExpandableFormComponent title="Thông tin hợp đồng" expanded={true}>
           <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
             <label
               className="expandable-form-label-field">Số hợp đồng</label>
@@ -217,6 +217,22 @@ class OptPhanMemComponent extends Component {
               isSearchable={false}
               placeholder="Lựa chọn gói"
             />
+          </div>
+          <div className="row-col-2">
+            <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <label className="expandable-form-label-field">Ngày bắt đầu </label>
+              <div className="expandable-form-input-date-wrapper">
+                <input name="cf_contact_website" type="date" className="expandable-form-input-field" style={{width: '88%'}}/>
+                <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
+              </div>
+            </div>
+            <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <label className="expandable-form-label-field">Ngày kết thúc </label>
+              <div className="expandable-form-input-date-wrapper">
+                <input name="cf_contact_website" type="date" className="expandable-form-input-field" style={{width: '88%'}}/>
+                <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
+              </div>
+            </div>
           </div>
           <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
             <label

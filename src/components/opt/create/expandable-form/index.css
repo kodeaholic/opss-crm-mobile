@@ -173,3 +173,13 @@ span[class*="indicatorSeparator"] {
 button.create-opt-button:focus {
     outline: none;
 }
+
+/* start-date & end-date */
+.row-col-2 {
+    margin-top: 0;
+    display: flex;
+    flex-direction: row;
+}
+.row-col-2 > div:nth-child(1) {
+    margin-right: 5px;
+}
