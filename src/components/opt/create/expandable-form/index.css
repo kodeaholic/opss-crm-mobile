@@ -72,7 +72,9 @@
 .expandable-form-require-field {
     color: red;
 }
-
+.expandable-form-input-field {
+    text-indent: 5px;
+}
 input.expandable-form-input-field {
     flex: 0 0 40px;
     background-color: white;
@@ -135,4 +137,20 @@ span[class*="indicatorSeparator"] {
 .expandable-form-input-date-wrapper > i {
     margin-top: 12px;
     color: #1492E6;
+}
+
+/* For input with right label (VND) */
+.input-vnd-unit {
+    position: relative;
+}
+.input-vnd-unit input {
+    width: 100%;
+}
+.input-vnd-unit:before {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    content:"VNĐ";
+    font-family: Roboto;
+    font-size: 14px;
 }
