@@ -87,7 +87,15 @@ const renderOptSelection = () => {
     let pathName = window.location.pathname
     let recordId = pathName.split('/')[2] // contact-id
     let href = window.location.href
-    href = href.replace(pathName, '/contact-view/' + recordId)
+    let basePath = window.location.pathname
+    basePath = basePath.substring(basePath.indexOf('/') + 1)
+    let pathBack = basePath + window.location.search
+    let goTo = e.target.getAttribute("path")
+    if (goTo) href = href.replace(pathName, goTo + "/" + recordId + "?pathBack=" + pathBack)
+    else {
+      alert(goTo)
+      href = href.replace(pathName, '/contact-view/' + recordId + "?pathBack=" + pathBack)
+    }
     setTimeout(() => {
       window.location.href = href
     }, 50)
@@ -100,7 +108,7 @@ const renderOptSelection = () => {
         </div>
         <div className="opt-selection-wrapper">
           <div className="opt-selection-row">
-            <Link to={"#"} id="optPhanMem" className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng phần mềm <span className="right-angle">&#8250;</span></Link>
+            <Link to={"#"} id="optPhanMem" className="opt-selection-row-content" href="#" onClick={showRightAngle} path="/opt-phan-mem">Hợp đồng phần mềm <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
             <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng phần cứng <span className="right-angle">&#8250;</span></Link>
@@ -246,7 +254,8 @@ class Footer extends Component {
       menuToBeRendered = menuLeadFunction
     }
     else menuToBeRendered = menuList
-    let hideFooter = this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('convert') !== -1 || this.props.location.pathname.indexOf('create') !== -1 || this.props.location.pathname.indexOf('search/') !== -1
+    let pathNameToCheck = this.props.location.pathname
+    let hideFooter = pathNameToCheck.indexOf('edit') !== -1 || pathNameToCheck.indexOf('convert') !== -1 || pathNameToCheck.indexOf('create') !== -1 || pathNameToCheck.indexOf('search/') !== -1 || pathNameToCheck.indexOf('/opt-') !== -1
     return (
       <div className="wrapper-footer" style={{display: hideFooter ? 'none' : ''}} id="wrapper-footer">
         {renderOptSelection()}
