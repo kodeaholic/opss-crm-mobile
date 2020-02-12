@@ -3,7 +3,7 @@
     top: 50px;
     left: 0;
     width: 100%;
-    height: calc(100vh - 50px);
+    height: calc(100% - 50px);
     overflow: scroll;
     -webkit-overflow-scrolling: touch; /* for smooth on ios */
     background-color: #ffffff;
