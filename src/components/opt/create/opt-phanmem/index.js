@@ -7,6 +7,13 @@ import './index.css'
 import Select from 'react-select'
 
 class OptPhanMemComponent extends Component {
+  focusParentDateInput = (e) => {
+    let input = e.target.previousSibling
+    if (input) {
+      input.click() /* For mobile users */
+      input.focus() /* For pc users */
+    }
+  }
   render() {
     return (
       <div className="form-add-opt-container">
@@ -76,7 +83,7 @@ class OptPhanMemComponent extends Component {
             <label className="expandable-form-label-field">Ngày sinh </label>
             <div className="expandable-form-input-date-wrapper">
               <input name="cf_contact_website" type="date" className="expandable-form-input-field"/>
-              <i className="fa fa-calendar float-right" aria-hidden="true" style={{color: '#1492E6'}}/>
+              <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput} style={{color: '#1492E6'}}/>
             </div>
           </div>
           <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
@@ -100,7 +107,7 @@ class OptPhanMemComponent extends Component {
             <label className="expandable-form-label-field">Ngày cấp </label>
             <div className="expandable-form-input-date-wrapper">
               <input name="cf_contact_website" type="date" className="expandable-form-input-field"/>
-              <i className="fa fa-calendar float-right" aria-hidden="true"/>
+              <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
             </div>
           </div>
           <div className="expandable-form-wrapper-field" id="description-wrapper">
@@ -246,7 +253,7 @@ class OptPhanMemComponent extends Component {
             <label className="expandable-form-label-field">Ngày kí hợp đồng </label>
             <div className="expandable-form-input-date-wrapper">
               <input name="cf_contact_website" type="date" className="expandable-form-input-field"/>
-              <i className="fa fa-calendar float-right" aria-hidden="true"/>
+              <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
             </div>
           </div>
           <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
