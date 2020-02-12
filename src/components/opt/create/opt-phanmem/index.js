@@ -23,14 +23,28 @@ class OptPhanMemComponent extends Component {
             <input name="type" type="text" className="expandable-form-input-field" value=" Hợp đồng phần mềm" disabled
                    style={{ border: 'none', marginBottom: '0' }}/>
           </div>
-          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+          <div className="expandable-form-wrapper-field" id="cf_hanh_chinh_xac_nhan-wrapper">
             <label className="expandable-form-label-field">
               Kế toán/ Admin xác nhận
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
               isSearchable={false}
-              value={{ 'label': 'Chờ xác nhận', 'value': 'Chờ xác nhận' }}
+              defaultValue={{ 'label': 'Chờ xác nhận', 'value': 'Chờ xác nhận' }}
+              options={[
+                {
+                  "label": "Chờ xác nhận",
+                  "value": "Chờ xác nhận"
+                },
+                {
+                  "label": "Xác nhận",
+                  "value": "Xác nhận"
+                },
+                {
+                  "label": "Từ chối",
+                  "value": "Từ chối"
+                }
+              ]}
               onChange={() => { return false}}
             />
           </div>
@@ -68,14 +82,24 @@ class OptPhanMemComponent extends Component {
                    className="expandable-form-input-field"
                    placeholder="Nhập tên gian hàng"/>
           </div>
-          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+          <div className="expandable-form-wrapper-field" id="customer_type-wrapper">
             <label className="expandable-form-label-field">
               Loại khách <span className="require-field"> *</span>
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
               isSearchable={false}
-              value={{ 'label': 'Cá nhân', 'value': 'Chờ xác nhận' }}
+              defaultValue={{ 'label': 'Cá nhân', 'value': 'Cá nhân' }}
+              options={[
+                {
+                  "label": "Cá nhân",
+                  "value": "Cá nhân"
+                },
+                {
+                  "label": "Công ty",
+                  "value": "Công ty"
+                }
+              ]}
               onChange={() => { return false}}
             />
           </div>
@@ -86,7 +110,7 @@ class OptPhanMemComponent extends Component {
               <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput} style={{color: '#1492E6'}}/>
             </div>
           </div>
-          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+          <div className="expandable-form-wrapper-field" id="cf_gender-wrapper">
             <label className="expandable-form-label-field">
               Giới tính
             </label>
@@ -94,6 +118,16 @@ class OptPhanMemComponent extends Component {
               classNamePrefix="expandable-form-react-select"
               isSearchable={false}
               placeholder="Lựa chọn giới tính"
+              options={[
+                {
+                  "label": "Nam",
+                  "value": "Nam"
+                },
+                {
+                  "label": "Nữ",
+                  "value": "Nữ"
+                }
+              ]}
             />
           </div>
           <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
