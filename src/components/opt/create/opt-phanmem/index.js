@@ -10,7 +10,7 @@ class OptPhanMemComponent extends Component {
   render() {
     return (
       <div className="form-add-opt-container">
-        <ExpandableFormComponent title="Thông tin cơ bản">
+        <ExpandableFormComponent title="Thông tin cơ bản" expanded={true}>
           <div className="expandable-form-wrapper-field" id="type-wrapper">
             <label className="expandable-form-label-field">Cơ hội <span className="require-field"> *</span></label>
             <input name="type" type="text" className="expandable-form-input-field" value=" Hợp đồng phần mềm" disabled
@@ -275,7 +275,7 @@ class OptPhanMemComponent extends Component {
             <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập ghi chú"/>
           </div>
         </ExpandableFormComponent>
-        <ExpandableFormComponent title="Thông tin CSKH" expanded={true}>
+        <ExpandableFormComponent title="Thông tin CSKH">
           <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
             <label className="expandable-form-label-field">
               Người xử lý <span className="require-field"> *</span>
@@ -312,7 +312,56 @@ class OptPhanMemComponent extends Component {
           </div>
         </ExpandableFormComponent>
         <ExpandableFormComponent title="Câu hỏi thường gặp">
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Tình hình kinh doanh hiện nay của khách hàng ?</label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Hình thức công cụ quản lý hiện nay ?</label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Tính năng của Kiot Việt là yếu tố quyết định ?</label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Điểm yếu nào của Kiot Việt khiến khách hàng cân nhắc ?</label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Khó khăn khách hàng đang gặp phải ?</label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Tính chủ động của khách hàng ?</label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Yếu tố nào ngăn cản khách hàng quyết định ?</label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Đối thủ nào đã tiếp cận khách hàng ?</label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"/>
+          </div>
         </ExpandableFormComponent>
+        <button className="create-opt-button">Tạo</button>
       </div>
     )
   }

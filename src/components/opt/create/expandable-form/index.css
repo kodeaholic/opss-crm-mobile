@@ -154,3 +154,22 @@ span[class*="indicatorSeparator"] {
     font-family: Roboto;
     font-size: 14px;
 }
+
+/* Button */
+.create-opt-button {
+    margin: 15px;
+    width: calc(100% - 30px);
+    height: 40px;
+    background-color: #58BA47;
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #ffffff;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 3px 3px 0 rgba(17, 17, 17, 0.1);
+}
+button.create-opt-button:focus {
+    outline: none;
+}
