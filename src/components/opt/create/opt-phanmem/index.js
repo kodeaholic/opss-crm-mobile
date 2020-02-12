@@ -22,6 +22,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               value={{ 'label': 'Chờ xác nhận', 'value': 'Chờ xác nhận' }}
               onChange={() => { return false}}
             />
@@ -32,6 +33,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               value={{ 'label': 'Bán hàng', 'value': 'Chờ xác nhận' }}
               onChange={() => { return false}}
             />
@@ -47,6 +49,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               value={{ 'label': 'Thời trang', 'value': 'Chờ xác nhận' }}
               onChange={() => { return false}}
             />
@@ -64,6 +67,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               value={{ 'label': 'Cá nhân', 'value': 'Chờ xác nhận' }}
               onChange={() => { return false}}
             />
@@ -81,6 +85,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               placeholder="Lựa chọn giới tính"
             />
           </div>
@@ -131,6 +136,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               value={{ 'label': 'Hồ Chí Minh', 'value': 'Chờ xác nhận' }}
               onChange={() => { return false}}
             />
@@ -141,6 +147,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               value={{ 'label': 'Quận 1', 'value': 'Chờ xác nhận' }}
               onChange={() => { return false}}
             />
@@ -151,6 +158,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               value={{ 'label': 'Sài Gòn', 'value': 'Chờ xác nhận' }}
               onChange={() => { return false}}
             />
@@ -161,6 +169,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               value={{ 'label': 'Hotline', 'value': 'Chờ xác nhận' }}
               onChange={() => { return false}}
             />
@@ -170,7 +179,7 @@ class OptPhanMemComponent extends Component {
             <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập mô tả nguồn khách hàng"/>
           </div>
         </ExpandableFormComponent>
-        <ExpandableFormComponent title="Thông tin hợp đồng" expanded={true}>
+        <ExpandableFormComponent title="Thông tin hợp đồng">
           <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
             <label
               className="expandable-form-label-field">Số hợp đồng</label>
@@ -198,6 +207,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               placeholder="Lựa chọn gói"
             />
           </div>
@@ -221,6 +231,7 @@ class OptPhanMemComponent extends Component {
             </label>
             <Select
               classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
               placeholder="Lựa chọn hình thức thanh toán"
             />
           </div>
@@ -264,9 +275,43 @@ class OptPhanMemComponent extends Component {
             <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập ghi chú"/>
           </div>
         </ExpandableFormComponent>
-        <ExpandableFormComponent title="Thông tin CSKH">
+        <ExpandableFormComponent title="Thông tin CSKH" expanded={true}>
+          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+            <label className="expandable-form-label-field">
+              Người xử lý <span className="require-field"> *</span>
+            </label>
+            <Select
+              classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
+              placeholder="Chọn người xử lý"
+            />
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+            <label className="expandable-form-label-field">
+              Gọi CSKH
+            </label>
+            <Select
+              classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
+              defaultValue={{label: 'Chưa gọi', value: 'Chưa gọi'}}
+            />
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+            <label className="expandable-form-label-field">
+              Đánh giá
+            </label>
+            <Select
+              classNamePrefix="expandable-form-react-select"
+              isSearchable={false}
+              placeholder="Chọn đánh giá"
+            />
+          </div>
+          <div className="expandable-form-wrapper-field" id="description-wrapper">
+            <label className="expandable-form-label-field">Phản hồi CSKH </label>
+            <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập phản hồi CSKH"/>
+          </div>
         </ExpandableFormComponent>
-        <ExpandableFormComponent title="Câu hỏi thường">
+        <ExpandableFormComponent title="Câu hỏi thường gặp">
         </ExpandableFormComponent>
       </div>
     )
