@@ -10,7 +10,7 @@ class OptPhanMemComponent extends Component {
   render() {
     return (
       <div className="form-add-opt-container">
-        <ExpandableFormComponent title="Thông tin cơ bản" expanded={true}>
+        <ExpandableFormComponent title="Thông tin cơ bản">
           <div className="expandable-form-wrapper-field" id="type-wrapper">
             <label className="expandable-form-label-field">Cơ hội <span className="require-field"> *</span></label>
             <input name="type" type="text" className="expandable-form-input-field" value=" Hợp đồng phần mềm" disabled
@@ -99,7 +99,68 @@ class OptPhanMemComponent extends Component {
             <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập mô tả chung về khách hàng"/>
           </div>
         </ExpandableFormComponent>
-        <ExpandableFormComponent title="Thông tin liên hệ">
+        <ExpandableFormComponent title="Thông tin liên hệ" expanded={true}>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Số điện thoại <span className="require-field"> *</span></label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"
+                   placeholder="Nhập số điện thoại" value=""/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Địa chỉ chi tiết <span className="require-field"> *</span></label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"
+                   placeholder="Nhập địa chỉ chi tiết" value=""/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+            <label
+              className="expandable-form-label-field">Primary Email <span className="require-field"> *</span></label>
+            <input name="cf_contact_website" type="text"
+                   className="expandable-form-input-field"
+                   placeholder="Nhập địa chỉ email" value=""/>
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+            <label className="expandable-form-label-field">
+              Thàng phố/ Tỉnh <span className="require-field"> *</span>
+            </label>
+            <Select
+              classNamePrefix="expandable-form-react-select"
+              value={{ 'label': 'Hồ Chí Minh', 'value': 'Chờ xác nhận' }}
+            />
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+            <label className="expandable-form-label-field">
+              Quận/ Huyện <span className="require-field"> *</span>
+            </label>
+            <Select
+              classNamePrefix="expandable-form-react-select"
+              value={{ 'label': 'Quận 1', 'value': 'Chờ xác nhận' }}
+            />
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+            <label className="expandable-form-label-field">
+              Khu vực <span className="require-field"> *</span>
+            </label>
+            <Select
+              classNamePrefix="expandable-form-react-select"
+              value={{ 'label': 'Sài Gòn', 'value': 'Chờ xác nhận' }}
+            />
+          </div>
+          <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+            <label className="expandable-form-label-field">
+              Nguồn khách hàng <span className="require-field"> *</span>
+            </label>
+            <Select
+              classNamePrefix="expandable-form-react-select"
+              value={{ 'label': 'Hotline', 'value': 'Chờ xác nhận' }}
+            />
+          </div>
+          <div className="expandable-form-wrapper-field" id="description-wrapper">
+            <label className="expandable-form-label-field">Mô tả nguồn khách hàng </label>
+            <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập mô tả nguồn khách hàng"/>
+          </div>
         </ExpandableFormComponent>
         <ExpandableFormComponent title="Thông tin hợp đồng">
         </ExpandableFormComponent>
