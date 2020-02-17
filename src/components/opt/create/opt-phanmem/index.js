@@ -535,10 +535,7 @@ class OptPhanMemComponent extends Component {
               </div>
               <div className="expandable-form-wrapper-field" id="cf_passport_location-wrapper">
                 <label className="expandable-form-label-field">Nơi cấp </label>
-                <div className="expandable-form-input-date-wrapper">
-                  <input name="cf_passport_location" type="text" className="expandable-form-input-field" onChange={this.handleChange} placeholder="Nhập nơi cấp CMT/MST"/>
-                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
-                </div>
+                <input name="cf_passport_location" type="text" className="expandable-form-input-field" onChange={this.handleChange} placeholder="Nhập nơi cấp CMT/MST"/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_motachung-wrapper">
                 <label className="expandable-form-label-field">Mô tả chung về khách hàng </label>
