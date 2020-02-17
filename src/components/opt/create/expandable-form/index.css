@@ -183,3 +183,8 @@ button.create-opt-button:focus {
 .row-col-2 > div:nth-child(1) {
     margin-right: 5px;
 }
+.expandable-form-label-error {
+    font-size: 10px;
+    font-style: italic;
+    color: red;
+}

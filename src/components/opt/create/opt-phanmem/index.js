@@ -90,17 +90,90 @@ class OptPhanMemComponent extends Component {
     }
   }
 
+  addError = (name, content) => {
+    if (!document.getElementById(name + '-error')) {
+      let nameField = document.getElementById(name + '-wrapper')
+      let error = document.createElement('label')
+      error.setAttribute('class', 'expandable-form-label-error')
+      error.setAttribute('id', name + '-error')
+      let node = document.createTextNode(content)
+      error.appendChild(node)
+      nameField.appendChild(error)
+    }
+    return false
+  }
+  clearError = (name) => {
+    let labelError = document.getElementById(name + '-error')
+    if (labelError) labelError.remove()
+  }
+
+  validateRequiredField(value, name) {
+    /* value = value of field */
+    /* name = name of field */
+    if (!_.isEmpty(value)) return true
+    else {
+      this.addError(name, 'Vui lòng không để trống')
+      return false
+    }
+  }
+
   handleSubmit(e) {
     e.preventDefault()
-    let session = this.props.session
+    let contactData = this.props.contactData
     let formData = this.state.formData
+
+    /* default fields - cannot change */
     formData['contact_id'] = {
       label: this.props.contactData.lastname,
       value: formData.contactRecordId
     }
+    formData['potentialname'] = "Hợp đồng phần mềm"
+
+    /* Required fields with default values from contact data */
+    /**
+     * sales_stage
+     * cf_pot_nganh_hang
+     * cf_mobile
+     * cf_contact_street
+     * cf_email
+     * cf_city
+     * cf_state
+     * cf_pot_khu_vuc
+     * leadsource
+     */
+    /* Check neu undefined, tuc la user khong dong den, khong thay doi gi, thi lay du lieu tu contact */
+    if (!formData.hasOwnProperty('sales_stage')) formData['sales_stage'] = contactData.cf_887
+    if (!formData.hasOwnProperty('cf_pot_nganh_hang')) formData['cf_pot_nganh_hang'] = contactData.cf_contact_nganh_hang
+    if (!formData.hasOwnProperty('cf_mobile')) formData['cf_mobile'] = contactData.mobile
+    if (!formData.hasOwnProperty('cf_contact_street')) formData['cf_contact_street'] = contactData.cf_contact_street
+    if (!formData.hasOwnProperty('cf_email')) formData['cf_email'] = contactData.email
+    if (!formData.hasOwnProperty('cf_city') && !formData.hasOwnProperty('cf_state')) {
+      formData['cf_city'] = contactData.cf_city
+      formData['cf_state'] = contactData.cf_state
+    }
+    if (!formData.hasOwnProperty('cf_pot_khu_vuc')) formData['cf_pot_khu_vuc'] = contactData.cf_contact_khu_vuc
+    if (!formData.hasOwnProperty('leadsource')) formData['leadsource'] = contactData.leadsource
+    if (!formData.hasOwnProperty('assigned_user_id')) formData['assigned_user_id'] = contactData.assigned_user_id
+
     /* validation - edit */
-    // let phoneRegex = /^[0-9]{1,255}$/g
-    // let error = 0
+    let phoneRegex = /^[0-9]{1,255}$/g
+    let onlyNumberRegex = /^[0-9]{1,255}$/g
+    let error = 0
+
+    // Required combobox
+    if (!this.validateRequiredField(formData.sales_stage, 'sales_stage')) error++
+    if (!this.validateRequiredField(formData.cf_pot_nganh_hang, 'cf_pot_nganh_hang')) error++
+    if (!this.validateRequiredField(formData.customer_type, 'customer_type')) error++
+    if (!this.validateRequiredField(formData.leadsource, 'leadsource')) error++
+    if (!this.validateRequiredField(formData.cf_city, 'cf_city')) error++
+    if (!this.validateRequiredField(formData.cf_state, 'cf_state')) error++
+    if (!this.validateRequiredField(formData.cf_pot_khu_vuc, 'cf_pot_khu_vuc')) error++
+    if (!this.validateRequiredField(formData.assigned_user_id, 'assigned_user_id')) error++
+    if (!this.validateRequiredField(formData.cf_mobile, 'cf_mobile')) error++
+    if (!this.validateRequiredField(formData.cf_contact_street, 'cf_contact_street')) error++
+    if (!this.validateRequiredField(formData.cf_email, 'cf_email')) error++
+
+    //
     // if (formData.lastname === '') {
     //   error++
     //   this.addError('lastname', 'Vui lòng không để trống')
@@ -130,13 +203,13 @@ class OptPhanMemComponent extends Component {
     //   error++
     //   this.addError('website', 'Vui lòng không nhập khoảng trắng và kí tự đặc biệt')
     // }
-    // if (error > 0) {
-    //   toast.error('Vui lòng hoàn thiện các trường chưa đúng', {
-    //     autoClose: 1500,
-    //     draggable: false
-    //   })
-    //   return false
-    // }
+    if (error > 0) {
+      toast.error('Vui lòng hoàn thiện các trường chưa đúng', {
+        autoClose: 1500,
+        draggable: false
+      })
+      return false
+    }
     // this.props.actions.requestSaveOpportunity({ session, data: formData })
     console.log(formData)
   }
@@ -159,15 +232,14 @@ class OptPhanMemComponent extends Component {
     const { name, value } = e.target
     let data = this.state.formData
     data[name] = value
-    // this.clearError(name)
+    this.clearError(name)
     this.setState({ formData: data })
-    // this.addChangeToURL()
   }
 
   onSelectChange(name, value) {
     let data = this.state.formData
     data[name] = value
-    // this.clearError(name)
+    this.clearError(name)
     if (name === 'cf_city') {
       data.cf_state = undefined
       this.setState({ formData: data, currentCity: value, currentState: null, cityChanged: true })
@@ -175,7 +247,6 @@ class OptPhanMemComponent extends Component {
       this.setState({ formData: data, currentState: value })
     }
     this.setState({ formData: data })
-    // this.addChangeToURL()
   }
 
   /*
@@ -369,7 +440,6 @@ class OptPhanMemComponent extends Component {
                 <Select
                   classNamePrefix="expandable-form-react-select"
                   isSearchable={false}
-                  defaultValue={{ 'label': 'Cá nhân', 'value': 'Cá nhân' }}
                   options={[
                     {
                       'label': 'Cá nhân',
