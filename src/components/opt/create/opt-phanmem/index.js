@@ -70,7 +70,7 @@ class OptPhanMemComponent extends Component {
       record: record,
       session: undefined,
       formData: {
-        record: record,
+        contactRecordId: record,
         potentialname: 'Hợp đồng phần mềm',
         contact_id: undefined
       },
@@ -94,7 +94,10 @@ class OptPhanMemComponent extends Component {
     e.preventDefault()
     let session = this.props.session
     let formData = this.state.formData
-    formData['contact_id'] = this.props.contactData.lastname
+    formData['contact_id'] = {
+      label: this.props.contactData.lastname,
+      value: formData.contactRecordId
+    }
     /* validation - edit */
     // let phoneRegex = /^[0-9]{1,255}$/g
     // let error = 0
@@ -313,12 +316,10 @@ class OptPhanMemComponent extends Component {
                       'value': 'Từ chối'
                     }
                   ]}
-                  onChange={() => {
-                    return false
-                  }}
+                  onChange={this.onSelectChange.bind(this, 'approval_status')}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="sales_stage-wrapper">
                 <label className="expandable-form-label-field">
                   Tình trạng <span className="require-field"> *</span>
                 </label>
@@ -339,7 +340,7 @@ class OptPhanMemComponent extends Component {
                        value={this.props.contactData.lastname} disabled
                        style={{ border: 'none', marginBottom: '0' }}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_nganh_hang-wrapper">
                 <label className="expandable-form-label-field">
                   Ngành hàng <span className="require-field"> *</span>
                 </label>
@@ -354,12 +355,12 @@ class OptPhanMemComponent extends Component {
                   isSearchable={true}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_website-wrapper">
                 <label
                   className="expandable-form-label-field">Tên gian hàng </label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_pot_website" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập tên gian hàng"/>
+                       placeholder="Nhập tên gian hàng" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="customer_type-wrapper">
                 <label className="expandable-form-label-field">
@@ -379,15 +380,13 @@ class OptPhanMemComponent extends Component {
                       'value': 'Công ty'
                     }
                   ]}
-                  onChange={() => {
-                    return false
-                  }}
+                  onChange={this.onSelectChange.bind(this, 'customer_type')}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_birthday-wrapper">
                 <label className="expandable-form-label-field">Ngày sinh </label>
                 <div className="expandable-form-input-date-wrapper">
-                  <input name="cf_contact_website" type="date" className="expandable-form-input-field"/>
+                  <input name="cf_birthday" type="date" className="expandable-form-input-field" onChange={this.handleChange}/>
                   <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}
                      style={{ color: '#1492E6' }}/>
                 </div>
@@ -410,54 +409,62 @@ class OptPhanMemComponent extends Component {
                       'value': 'Nữ'
                     }
                   ]}
+                  onChange={this.onSelectChange.bind(this, 'cf_gender')}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_passport-wrapper">
                 <label
                   className="expandable-form-label-field">Số CMT/MST </label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_passport" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập CMT/MST"/>
+                       placeholder="Nhập CMT/MST" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_passport_date-wrapper">
                 <label className="expandable-form-label-field">Ngày cấp </label>
                 <div className="expandable-form-input-date-wrapper">
-                  <input name="cf_contact_website" type="date" className="expandable-form-input-field"/>
+                  <input name="cf_passport_date" type="date" className="expandable-form-input-field" onChange={this.handleChange}/>
                   <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                 </div>
               </div>
-              <div className="expandable-form-wrapper-field" id="description-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_passport_location-wrapper">
+                <label className="expandable-form-label-field">Nơi cấp </label>
+                <div className="expandable-form-input-date-wrapper">
+                  <input name="cf_passport_location" type="date" className="expandable-form-input-field" onChange={this.handleChange} placeholder="Nhập nơi cấp CMT/MST"/>
+                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
+                </div>
+              </div>
+              <div className="expandable-form-wrapper-field" id="cf_pot_motachung-wrapper">
                 <label className="expandable-form-label-field">Mô tả chung về khách hàng </label>
-                <textarea name="description" className="expandable-form-input-field" rows="5"
-                          placeholder="Nhập mô tả chung về khách hàng"/>
+                <textarea name="cf_pot_motachung" className="expandable-form-input-field" rows="5"
+                          placeholder="Nhập mô tả chung về khách hàng" onChange={this.handleChange}/>
               </div>
             </ExpandableFormComponent>
             <ExpandableFormComponent title="Thông tin liên hệ">
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_mobile-wrapper">
                 <label
                   className="expandable-form-label-field">Số điện thoại <span
                   className="require-field"> *</span></label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_mobile" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập số điện thoại" defaultValue={contactData.mobile}/>
+                       placeholder="Nhập số điện thoại" defaultValue={contactData.mobile} onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_contact_street-wrapper">
                 <label
                   className="expandable-form-label-field">Địa chỉ chi tiết <span
                   className="require-field"> *</span></label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_contact_street" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập địa chỉ chi tiết" defaultValue={contactData.cf_contact_street}/>
+                       placeholder="Nhập địa chỉ chi tiết" defaultValue={contactData.cf_contact_street} onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_email-wrapper">
                 <label
                   className="expandable-form-label-field">Primary Email <span
                   className="require-field"> *</span></label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_email" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập địa chỉ email" defaultValue={contactData.email}/>
+                       placeholder="Nhập địa chỉ email" defaultValue={contactData.email} onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_city-wrapper">
                 <label className="expandable-form-label-field">
                   Thàng phố/ Tỉnh <span className="require-field"> *</span>
                 </label>
@@ -470,7 +477,7 @@ class OptPhanMemComponent extends Component {
                   isSearchable={true}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_state-wrapper">
                 <label className="expandable-form-label-field">
                   Quận/ Huyện <span className="require-field"> *</span>
                 </label>
@@ -483,7 +490,7 @@ class OptPhanMemComponent extends Component {
                   isSearchable={true}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_khu_vuc-wrapper">
                 <label className="expandable-form-label-field">
                   Khu vực <span className="require-field"> *</span>
                 </label>
@@ -498,7 +505,7 @@ class OptPhanMemComponent extends Component {
                   isSearchable={true}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="leadsource-wrapper">
                 <label className="expandable-form-label-field">
                   Nguồn khách hàng <span className="require-field"> *</span>
                 </label>
@@ -513,35 +520,35 @@ class OptPhanMemComponent extends Component {
                   isSearchable={true}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="description-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_lead_source_des-wrapper">
                 <label className="expandable-form-label-field">Mô tả nguồn khách hàng </label>
-                <textarea name="description" className="expandable-form-input-field" rows="5"
-                          placeholder="Nhập mô tả nguồn khách hàng"/>
+                <textarea name="cf_pot_lead_source_des" className="expandable-form-input-field" rows="5"
+                          placeholder="Nhập mô tả nguồn khách hàng" onChange={this.handleChange}/>
               </div>
             </ExpandableFormComponent>
             <ExpandableFormComponent title="Thông tin hợp đồng">
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_contractid-wrapper">
                 <label
                   className="expandable-form-label-field">Số hợp đồng</label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_pot_contractid" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập số hợp đồng"/>
+                       placeholder="Nhập số hợp đồng" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_ma_voucer-wrapper">
                 <label
                   className="expandable-form-label-field">Mã khuyến mãi</label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_pot_ma_voucer" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập mã khuyến mãi"/>
+                       placeholder="Nhập mã khuyến mãi" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="represent-wrapper">
                 <label
                   className="expandable-form-label-field">Người đại diện</label>
-                <input name="cf_contact_website" type="text"
+                <input name="represent" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập người đại diện"/>
+                       placeholder="Nhập người đại diện" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_goihd-wrapper">
                 <label className="expandable-form-label-field">
                   Gói hợp đồng
                 </label>
@@ -556,38 +563,38 @@ class OptPhanMemComponent extends Component {
                 />
               </div>
               <div className="row-col-2">
-                <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+                <div className="expandable-form-wrapper-field" id="cf_pot_startdate-wrapper">
                   <label className="expandable-form-label-field">Ngày bắt đầu </label>
                   <div className="expandable-form-input-date-wrapper">
-                    <input name="cf_contact_website" type="date" className="expandable-form-input-field"
-                           style={{ width: '88%' }}/>
+                    <input name="cf_pot_startdate" type="date" className="expandable-form-input-field"
+                           style={{ width: '88%' }} onChange={this.handleChange}/>
                     <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                   </div>
                 </div>
-                <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+                <div className="expandable-form-wrapper-field" id="cf_pot_enddate-wrapper">
                   <label className="expandable-form-label-field">Ngày kết thúc </label>
                   <div className="expandable-form-input-date-wrapper">
-                    <input name="cf_contact_website" type="date" className="expandable-form-input-field"
-                           style={{ width: '88%' }}/>
+                    <input name="cf_pot_enddate" type="date" className="expandable-form-input-field"
+                           style={{ width: '88%' }} onChange={this.handleChange}/>
                     <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                   </div>
                 </div>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_thoihan-wrapper">
                 <label
                   className="expandable-form-label-field">Thời hạn (số tháng)</label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_pot_thoihan" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập thời hạn"/>
+                       placeholder="Nhập thời hạn" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_khuyenmai-wrapper">
                 <label
                   className="expandable-form-label-field">Khuyến mãi (số tháng)</label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_pot_khuyenmai" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập khuyến mãi"/>
+                       placeholder="Nhập khuyến mãi" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_hinhthuctt-wrapper">
                 <label className="expandable-form-label-field">
                   Hình thức thanh toán
                 </label>
@@ -601,50 +608,50 @@ class OptPhanMemComponent extends Component {
                   isSearchable={true}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="amount-wrapper">
                 <label
                   className="expandable-form-label-field">Thanh toán</label>
                 <span className="input-vnd-unit">
-              <input name="cf_contact_website" type="text" className="expandable-form-input-field"
-                     placeholder="Nhập số tiền thanh toán" defaultValue="0"/>
+              <input name="amount" type="text" className="expandable-form-input-field"
+                     placeholder="Nhập số tiền thanh toán" defaultValue="0" onChange={this.handleChange}/>
             </span>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="closedwon_date-wrapper">
                 <label className="expandable-form-label-field">Ngày kí hợp đồng </label>
                 <div className="expandable-form-input-date-wrapper">
-                  <input name="cf_contact_website" type="date" className="expandable-form-input-field"/>
+                  <input name="closedwon_date" type="date" className="expandable-form-input-field" onChange={this.handleChange}/>
                   <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                 </div>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_sochinhanh-wrapper">
                 <label
                   className="expandable-form-label-field">Số lượng cửa hàng</label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_pot_sochinhanh" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập số lượng cửa hàng"/>
+                       placeholder="Nhập số lượng cửa hàng" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_diachich-wrapper">
                 <label
                   className="expandable-form-label-field">Địa chỉ</label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_pot_diachich" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập địa chỉ"/>
+                       placeholder="Nhập địa chỉ" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_branch_address-wrapper">
                 <label
                   className="expandable-form-label-field">Địa chỉ chi nhánh</label>
-                <input name="cf_contact_website" type="text"
+                <input name="cf_branch_address" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập địa chỉ chi nhánh"/>
+                       placeholder="Nhập địa chỉ chi nhánh" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="description-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_note-wrapper">
                 <label className="expandable-form-label-field">Ghi chú </label>
-                <textarea name="description" className="expandable-form-input-field" rows="5"
-                          placeholder="Nhập ghi chú"/>
+                <textarea name="cf_pot_note" className="expandable-form-input-field" rows="5"
+                          placeholder="Nhập ghi chú" onChange={this.handleChange}/>
               </div>
             </ExpandableFormComponent>
             <ExpandableFormComponent title="Thông tin CSKH">
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="assigned_user_id-wrapper">
                 <label className="expandable-form-label-field">
                   Người xử lý <span className="require-field"> *</span>
                 </label>
@@ -659,7 +666,7 @@ class OptPhanMemComponent extends Component {
                   isSearchable={true}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_869-wrapper">
                 <label className="expandable-form-label-field">
                   Gọi CSKH
                 </label>
@@ -678,9 +685,10 @@ class OptPhanMemComponent extends Component {
                     }
                   ]
                   }
+                  onChange={this.onSelectChange.bind(this, 'cf_869')}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_967-wrapper">
                 <label className="expandable-form-label-field">
                   Đánh giá
                 </label>
@@ -702,62 +710,63 @@ class OptPhanMemComponent extends Component {
                       "value": "Ít quan tâm"
                     }
                   ]}
+                  onChange={this.onSelectChange.bind(this, 'cf_967')}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="description-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_871-wrapper">
                 <label className="expandable-form-label-field">Phản hồi CSKH </label>
-                <textarea name="description" className="expandable-form-input-field" rows="5"
-                          placeholder="Nhập phản hồi CSKH"/>
+                <textarea name="cf_871" className="expandable-form-input-field" rows="5"
+                          placeholder="Nhập phản hồi CSKH" onChange={this.handleChange}/>
               </div>
             </ExpandableFormComponent>
             <ExpandableFormComponent title="Câu hỏi thường gặp">
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_tinhhinhkinhdoanh-wrapper">
                 <label
                   className="expandable-form-label-field">Tình hình kinh doanh hiện nay của khách hàng ?</label>
-                <input name="cf_contact_website" type="text"
-                       className="expandable-form-input-field"/>
+                <input name="cf_pot_tinhhinhkinhdoanh" type="text"
+                       className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_hinhthuccongcu-wrapper">
                 <label
                   className="expandable-form-label-field">Hình thức công cụ quản lý hiện nay ?</label>
-                <input name="cf_contact_website" type="text"
-                       className="expandable-form-input-field"/>
+                <input name="cf_pot_hinhthuccongcu" type="text"
+                       className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_tinhnang-wrapper">
                 <label
                   className="expandable-form-label-field">Tính năng của Kiot Việt là yếu tố quyết định ?</label>
-                <input name="cf_contact_website" type="text"
-                       className="expandable-form-input-field"/>
+                <input name="cf_pot_tinhnang" type="text"
+                       className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_diemyeu-wrapper">
                 <label
                   className="expandable-form-label-field">Điểm yếu nào của Kiot Việt khiến khách hàng cân nhắc ?</label>
-                <input name="cf_contact_website" type="text"
-                       className="expandable-form-input-field"/>
+                <input name="cf_pot_diemyeu" type="text"
+                       className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_khokhan-wrapper">
                 <label
                   className="expandable-form-label-field">Khó khăn khách hàng đang gặp phải ?</label>
-                <input name="cf_contact_website" type="text"
-                       className="expandable-form-input-field"/>
+                <input name="cf_pot_khokhan" type="text"
+                       className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_tinhchudong-wrapper">
                 <label
                   className="expandable-form-label-field">Tính chủ động của khách hàng ?</label>
-                <input name="cf_contact_website" type="text"
-                       className="expandable-form-input-field"/>
+                <input name="cf_pot_tinhchudong" type="text"
+                       className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_ngancankh-wrapper">
                 <label
                   className="expandable-form-label-field">Yếu tố nào ngăn cản khách hàng quyết định ?</label>
-                <input name="cf_contact_website" type="text"
-                       className="expandable-form-input-field"/>
+                <input name="cf_pot_ngancankh" type="text"
+                       className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_doithunao-wrapper">
                 <label
                   className="expandable-form-label-field">Đối thủ nào đã tiếp cận khách hàng ?</label>
-                <input name="cf_contact_website" type="text"
-                       className="expandable-form-input-field"/>
+                <input name="cf_pot_doithunao" type="text"
+                       className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
             </ExpandableFormComponent>
             <button className="create-opt-button" onClick={this.handleSubmit}>Tạo</button>
