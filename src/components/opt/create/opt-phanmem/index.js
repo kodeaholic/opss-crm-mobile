@@ -117,6 +117,23 @@ class OptPhanMemComponent extends Component {
     }
   }
 
+  validateMaxLength(value, name, length = 255) {
+    if (value.length <= length) return true
+    else {
+      this.addError(name, 'Vui lòng nhập ít hơn 255 kí tự')
+      return false
+    }
+  }
+
+  validateOnlyNumbers(value, name, length = 255) {
+    let onlyNumberRegex = /^[0-9]{1,255}$/g
+    if (value.length <= length && onlyNumberRegex.test(value)) return true
+    else {
+      this.addError(name, 'Vui lòng chỉ nhập số')
+      return false
+    }
+  }
+
   handleSubmit(e) {
     e.preventDefault()
     let contactData = this.props.contactData
@@ -157,7 +174,6 @@ class OptPhanMemComponent extends Component {
 
     /* validation - edit */
     let phoneRegex = /^[0-9]{1,255}$/g
-    let onlyNumberRegex = /^[0-9]{1,255}$/g
     let error = 0
 
     // Required combobox
@@ -173,39 +189,58 @@ class OptPhanMemComponent extends Component {
     if (!this.validateRequiredField(formData.cf_contact_street, 'cf_contact_street')) error++
     if (!this.validateRequiredField(formData.cf_email, 'cf_email')) error++
 
-    //
-    // if (formData.lastname === '') {
-    //   error++
-    //   this.addError('lastname', 'Vui lòng không để trống')
-    // }
-    // if (formData.mobile && !formData.mobile.match(phoneRegex)) {
-    //   error++
-    //   this.addError('cf_mobile', 'Vui lòng nhập đúng định dạng')
-    // }
-    // if (formData.phone && !formData.phone.match(phoneRegex)) {
-    //   error++
-    //   this.addError('cf_phone', 'Vui lòng nhập đúng định dạng')
-    // }
-    // if (formData.cf_pot_nganh_hang && formData.cf_pot_nganh_hang === {}) {
-    //   error++
-    //   this.addError('cf_pot_nganh_hang', 'Vui lòng không để trống')
-    // }
-    // if (formData.cf_pot_khu_vuc && formData.cf_pot_khu_vuc === {}) {
-    //   error++
-    //   this.addError('cf_pot_khu_vuc', 'Vui lòng không để trống')
-    // }
-    // if (formData.leadsource && formData.leadsource === {}) {
-    //   error++
-    //   this.addError('leadsource', 'Vui lòng không để trống')
-    // }
-    // let websiteRegex = /[^a-zA-Z0-9]/g
-    // if (formData.website && websiteRegex.test(formData.website)) {
-    //   error++
-    //   this.addError('website', 'Vui lòng không nhập khoảng trắng và kí tự đặc biệt')
-    // }
+    // website
+    let websiteRegex = /[^a-zA-Z0-9]/g
+    if (formData.cf_pot_website && (websiteRegex.test(formData.cf_pot_website) || formData.cf_pot_website.length >= 255)) {
+      error++
+      this.addError('cf_pot_website', 'Chỉ nhập số và chữ, không quá 255 kí tự')
+    }
+    let emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    if (formData.cf_email && !emailRegex.test(formData.cf_email)) {
+      error++
+      this.addError('cf_email', 'Vui lòng nhập đúng định dạng email')
+    }
+
+    // only numbers
+    if (formData.cf_passport && !this.validateOnlyNumbers(formData.cf_passport, 'cf_passport')) error++
+    if (formData.cf_mobile && !this.validateOnlyNumbers(formData.cf_mobile, 'cf_mobile')) error++
+    if (formData.cf_pot_thoihan && !this.validateOnlyNumbers(formData.cf_pot_thoihan, 'cf_pot_thoihan')) error++
+    if (formData.cf_pot_khuyenmai && !this.validateOnlyNumbers(formData.cf_pot_khuyenmai, 'cf_pot_khuyenmai')) error++
+    if (formData.amount && !this.validateOnlyNumbers(formData.amount, 'amount')) error++
+    if (formData.cf_pot_sochinhanh && !this.validateOnlyNumbers(formData.cf_pot_sochinhanh, 'cf_pot_sochinhanh')) error++
+
+    // max length
+    if (formData.cf_pot_website && !this.validateMaxLength(formData.cf_pot_website, 'cf_pot_website')) error++
+    if (formData.cf_passport_location && !this.validateMaxLength(formData.cf_passport_location, 'cf_passport_location')) error++
+    if (formData.cf_pot_motachung && !this.validateMaxLength(formData.cf_pot_motachung, 'cf_pot_motachung')) error++
+    if (formData.cf_mobile && !this.validateMaxLength(formData.cf_mobile, 'cf_mobile')) error++
+    if (formData.cf_contact_street && !this.validateMaxLength(formData.cf_contact_street, 'cf_contact_street')) error++
+    if (formData.cf_email && !this.validateMaxLength(formData.cf_email, 'cf_email')) error++
+    if (formData.cf_pot_lead_source_des && !this.validateMaxLength(formData.cf_pot_lead_source_des, 'cf_pot_lead_source_des')) error++
+    if (formData.cf_pot_thoihan && !this.validateMaxLength(formData.cf_pot_thoihan, 'cf_pot_thoihan')) error++
+    if (formData.cf_pot_khuyenmai && !this.validateMaxLength(formData.cf_pot_khuyenmai, 'cf_pot_khuyenmai')) error++
+    if (formData.cf_pot_contractid && !this.validateMaxLength(formData.cf_pot_contractid, 'cf_pot_contractid')) error++
+
+    if (formData.cf_pot_contractid && !this.validateMaxLength(formData.cf_pot_contractid, 'cf_pot_contractid')) error++
+    if (formData.cf_pot_ma_voucer && !this.validateMaxLength(formData.cf_pot_ma_voucer, 'cf_pot_ma_voucer')) error++
+    if (formData.represent && !this.validateMaxLength(formData.represent, 'represent')) error++
+    if (formData.amount && !this.validateMaxLength(formData.amount, 'amount')) error++
+    if (formData.cf_branch_address && !this.validateMaxLength(formData.cf_branch_address, 'cf_branch_address')) error++
+    if (formData.cf_pot_diachich && !this.validateMaxLength(formData.cf_pot_diachich, 'cf_pot_diachich')) error++
+    if (formData.cf_pot_note && !this.validateMaxLength(formData.cf_pot_note, 'cf_pot_note')) error++
+    if (formData.cf_871 && !this.validateMaxLength(formData.cf_871, 'cf_871')) error++
+    if (formData.cf_pot_tinhhinhkinhdoanh && !this.validateMaxLength(formData.cf_pot_tinhhinhkinhdoanh, 'cf_pot_tinhhinhkinhdoanh')) error++
+    if (formData.cf_pot_tinhnang && !this.validateMaxLength(formData.cf_pot_tinhnang, 'cf_pot_tinhnang')) error++
+    if (formData.cf_pot_hinhthuccongcu && !this.validateMaxLength(formData.cf_pot_hinhthuccongcu, 'cf_pot_hinhthuccongcu')) error++
+    if (formData.cf_pot_diemyeu && !this.validateMaxLength(formData.cf_pot_diemyeu, 'cf_pot_diemyeu')) error++
+    if (formData.cf_pot_khokhan && !this.validateMaxLength(formData.cf_pot_khokhan, 'cf_pot_khokhan')) error++
+    if (formData.cf_pot_tinhchudong && !this.validateMaxLength(formData.cf_pot_tinhchudong, 'cf_pot_tinhchudong')) error++
+    if (formData.cf_pot_ngancankh && !this.validateMaxLength(formData.cf_pot_ngancankh, 'cf_pot_ngancankh')) error++
+    if (formData.cf_pot_doithunao && !this.validateMaxLength(formData.cf_pot_doithunao, 'cf_pot_doithunao')) error++
+
     if (error > 0) {
       toast.error('Vui lòng hoàn thiện các trường chưa đúng', {
-        autoClose: 1500,
+        autoClose: 3000,
         draggable: false
       })
       return false
