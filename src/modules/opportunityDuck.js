@@ -3,27 +3,29 @@ import _ from 'lodash'
 import {expireSession} from './loginDuck'
 
 export const types = {
-  SEND_REQUEST_GET_OPPORTUNITY_DETAIL_BY_RECORD_ID: 'CONTACT/FETCH',
-  GET_OPPORTUNITY_SUCCESS: 'CONTACT/FETCH_SUCCESS',
-  GET_LEAD_FAILED: 'LEAD/FETCH_FAILED',
-  SEND_REQUEST_SAVE_RECORD: 'LEAD/SAVE_RECORD',
-  SAVE_RECORD_SUCCESS: 'LEAD/SAVE_RECORD_SUCCESS',
-  SAVE_RECORD_FAILED: 'LEAD/SAVE_RECORD_FAILED',
-  SHOW_FORM_ADD_LEAD: 'SHOW_FORM_ADD_LEAD',
+  SEND_REQUEST_GET_OPPORTUNITY_DETAIL_BY_RECORD_ID: 'OPPORTUNITY/FETCH',
+  GET_OPPORTUNITY_SUCCESS: 'OPPORTUNITY/FETCH_SUCCESS',
+  GET_OPPORTUNITY_FAILED: 'OPPORTUNITY/FETCH_FAILED',
+  SEND_REQUEST_SAVE_RECORD: 'OPPORTUNITY/SAVE_RECORD',
+  SAVE_RECORD_SUCCESS: 'OPPORTUNITY/SAVE_RECORD_SUCCESS',
+  SAVE_RECORD_FAILED: 'OPPORTUNITY/SAVE_RECORD_FAILED',
+  SHOW_FORM_ADD_OPPORTUNITY: 'SHOW_FORM_ADD_OPPORTUNITY',
 }
 
 /* Selectors */
 export const getLoadingStatus = state => _.get(state, 'opportunity.loading') || false
-export const getCurrentOption = state => _.get(state, 'opportunity.option') || undefined
+export const getFormSubmittingStatus = state => _.get(state, 'opportunity.formSubmittingStatus') || false
 export const getOpportunityData = state => _.get(state, 'opportunity.data') || {}
-export const getFormSubmitResponseStatus = state => _.get(state, 'lead.formSubmitResponseStatus')
+export const getFormSubmitResponseStatus = state => _.get(state, 'opportunity.formSubmitResponseStatus')
+export const getCurrentOption = state => _.get(state, 'opportunity.option')
 
 /* Initial state */
 const initialState = {
-  option: undefined, /* view, create, or update */
   loading: false,
   data: {},
-  formSubmitResponseStatus: false
+  formSubmitResponseStatus: false,
+  formSubmittingStatus: false,
+  option: undefined
 }
 
 /* Reducer */
@@ -52,15 +54,18 @@ export default (state = initialState, action) => {
       data.record = result.id
       state['data'] = data
       return state
-    case types.GET_LEAD_FAILED:
+    case types.GET_OPPORTUNITY_FAILED:
       state['loading'] = false
       return state
     case types.SEND_REQUEST_SAVE_RECORD:
+      state['option'] = _.get(action, 'payload.option')
       state['loading'] = true
+      state['formSubmittingStatus'] = true
       state['formSubmitResponseStatus'] = false
       return state
     case types.SAVE_RECORD_SUCCESS:
       state['loading'] = false
+      state['formSubmittingStatus'] = false
       let newState = _.get(action, 'payload')
       newState = { ...state['data'], ...newState}
       state['formSubmitResponseStatus'] = true
@@ -68,9 +73,10 @@ export default (state = initialState, action) => {
       return state
     case types.SAVE_RECORD_FAILED:
       state['loading'] = true
+      state['formSubmittingStatus'] = false
       state['formSubmitResponseStatus'] = false
       return state
-    case types.SHOW_FORM_ADD_LEAD:
+    case types.SHOW_FORM_ADD_OPPORTUNITY:
       state = initialState
       state['option'] = _.get(action, 'payload.option')
       return state
@@ -102,24 +108,24 @@ export const fetchOpportunityRecord = payload => {
       .then(response => {
         const { success, result } = response.data
         if (success) {
-          return dispatch(fetchContactSuccess(result))
+          return dispatch(fetchOpportunitySuccess(result))
         }
         else {
           let error = response.data.error
           if (error.code === 1501) {
             return dispatch(expireSession())
           }
-          return dispatch(fetchLeadFailed(error))
+          return dispatch(fetchOpportunityFailed(error))
         }
       })
       .catch(err => {
         console.log(err)
-        return dispatch(fetchContactSuccess(err))
+        return dispatch(fetchOpportunitySuccess(err))
       })
   }
 }
 
-export const requestSaveLead = payload => {
+export const requestSaveOpportunity = payload => {
   return function action(dispatch) {
     dispatch({ type: types.SEND_REQUEST_SAVE_RECORD, payload })
     let {session, data} = payload
@@ -132,7 +138,7 @@ export const requestSaveLead = payload => {
     const bodyFormData = new FormData()
     bodyFormData.append("_operation", 'saveRecord')
     bodyFormData.append("_session", session)
-    bodyFormData.append("module", 'Leads')
+    bodyFormData.append("module", 'Potentials')
     if (data.record) bodyFormData.append("record", formData.record)
     bodyFormData.append("values", JSON.stringify(formData))
     const request = axios({
@@ -147,45 +153,45 @@ export const requestSaveLead = payload => {
         if (success) {
           let record = _.get(result, 'record_id')
           if (record) data["record"] = record
-          return dispatch(saveLeadSuccess(data))
+          return dispatch(saveOpportunitySuccess(data))
         }
         else {
           console.log(response.data)
-          return dispatch(saveLeadFailed(response.data))
+          return dispatch(saveOpportunityFailed(response.data))
         }
       })
       .catch(err => {
         //handle error
-        return dispatch(saveLeadFailed(err))
+        return dispatch(saveOpportunityFailed(err))
       })
 
   }
 }
-export const showFormAddLead = payload => {
+export const showFormAddOpportunity = payload => {
   return function action(dispatch) {
-    dispatch({ type: types.SHOW_FORM_ADD_LEAD, payload })
+    dispatch({ type: types.SHOW_FORM_ADD_OPPORTUNITY, payload })
   }
 }
 
 
 
 /* Action declaration */
-export const fetchContactSuccess = payload => ({
+export const fetchOpportunitySuccess = payload => ({
   type: types.GET_OPPORTUNITY_SUCCESS,
   payload
 })
 
-export const fetchLeadFailed = payload => ({
-  type: types.GET_LEAD_FAILED,
+export const fetchOpportunityFailed = payload => ({
+  type: types.GET_OPPORTUNITY_FAILED,
   payload
 })
 
-export const saveLeadSuccess = payload => ({
+export const saveOpportunitySuccess = payload => ({
   type: types.SAVE_RECORD_SUCCESS,
   payload
 })
 
-export const saveLeadFailed = payload => ({
+export const saveOpportunityFailed = payload => ({
   type: types.SAVE_RECORD_FAILED,
   payload
 })

@@ -122,7 +122,7 @@ export const fetchContactRecord = payload => {
       })
       .catch(err => {
         console.log(err)
-        return dispatch(fetchContactSuccess(err))
+        return dispatch(fetchContactFailed(err))
       })
   }
 }

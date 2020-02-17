@@ -12,8 +12,14 @@ import {
   fetchContactRecord,
   getContactData,
   getLoadingStatus,
-  getFormSubmitResponseStatus, getCities, getMapCityState
+  getCities,
+  getMapCityState
 } from '../../../../modules/contactDuck'
+import {
+  requestSaveOpportunity,
+  getFormSubmittingStatus,
+  getFormSubmitResponseStatus
+} from '../../../../modules/opportunityDuck'
 import { getSessionStatus, getUserLoggedIn } from '../../../../modules/loginDuck'
 import ExpandableFormComponent from '../expandable-form'
 
@@ -26,13 +32,15 @@ const mapStateToProps = (state) => ({
   contactData: getContactData(state),
   loading: getLoadingStatus(state),
   formSubmitResponseStatus: getFormSubmitResponseStatus(state),
+  formSubmittingStatus: getFormSubmittingStatus(state),
   cities: getCities(state),
   mapCityState: getMapCityState(state)
 })
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      fetchContactRecord
+      fetchContactRecord,
+      requestSaveOpportunity
     },
     dispatch
   )
@@ -40,12 +48,28 @@ const mapDispatchToProps = dispatch => ({
 class OptPhanMemComponent extends Component {
   constructor (props){
     super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.onSelectChange = this.onSelectChange.bind(this)
+
     let pathName = props.location.pathname
     let array = pathName.split('/')
     let record = array.length > 2 ? array[2] : undefined
+    let city = _.get(props, 'contactData.cf_city') || undefined
+    let state = _.get(props, 'contactData.cf_state') || undefined
     this.state = {
       record: record,
-      session: undefined
+      session: undefined,
+      formData: {
+        record: record,
+        potentialname: 'Hợp đồng phần mềm',
+        contact_id: undefined,
+      },
+      currentCity: city,
+      currentState: state,
+      cities: _.get(props, 'contactData.cities'),
+      mapCityState: _.get(props, 'contactData.mapCityState'),
+      cityChanged: false
     }
   }
 
@@ -55,6 +79,54 @@ class OptPhanMemComponent extends Component {
       input.click() /* For mobile users */
       input.focus() /* For pc users */
     }
+  }
+
+  handleSubmit(e) {
+    e.preventDefault()
+    let session = this.props.session
+    let formData = this.state.formData
+    formData['contact_id'] = this.props.contactData.lastname
+    /* validation - edit */
+    // let phoneRegex = /^[0-9]{1,255}$/g
+    // let error = 0
+    // if (formData.lastname === '') {
+    //   error++
+    //   this.addError('lastname', 'Vui lòng không để trống')
+    // }
+    // if (formData.mobile && !formData.mobile.match(phoneRegex)) {
+    //   error++
+    //   this.addError('cf_mobile', 'Vui lòng nhập đúng định dạng')
+    // }
+    // if (formData.phone && !formData.phone.match(phoneRegex)) {
+    //   error++
+    //   this.addError('cf_phone', 'Vui lòng nhập đúng định dạng')
+    // }
+    // if (formData.cf_pot_nganh_hang && formData.cf_pot_nganh_hang === {}) {
+    //   error++
+    //   this.addError('cf_pot_nganh_hang', 'Vui lòng không để trống')
+    // }
+    // if (formData.cf_pot_khu_vuc && formData.cf_pot_khu_vuc === {}) {
+    //   error++
+    //   this.addError('cf_pot_khu_vuc', 'Vui lòng không để trống')
+    // }
+    // if (formData.leadsource && formData.leadsource === {}) {
+    //   error++
+    //   this.addError('leadsource', 'Vui lòng không để trống')
+    // }
+    // let websiteRegex = /[^a-zA-Z0-9]/g
+    // if (formData.website && websiteRegex.test(formData.website)) {
+    //   error++
+    //   this.addError('website', 'Vui lòng không nhập khoảng trắng và kí tự đặc biệt')
+    // }
+    // if (error > 0) {
+    //   toast.error('Vui lòng hoàn thiện các trường chưa đúng', {
+    //     autoClose: 1500,
+    //     draggable: false
+    //   })
+    //   return false
+    // }
+    // this.props.actions.requestSaveOpportunity({ session, data: formData })
+    console.log(formData)
   }
 
   componentWillMount() {
@@ -69,6 +141,28 @@ class OptPhanMemComponent extends Component {
     this.setState({ session: session })
     let record = this.state.record
     this.props.actions.fetchContactRecord({ session, record })
+  }
+  handleChange(e) {
+    const { name, value } = e.target
+    let data = this.state.formData
+    data[name] = value
+    // this.clearError(name)
+    this.setState({ formData: data })
+    // this.addChangeToURL()
+  }
+
+  onSelectChange(name, value) {
+    let data = this.state.formData
+    data[name] = value
+    // this.clearError(name)
+    if (name === 'cf_city') {
+      data.cf_state = undefined
+      this.setState({ formData: data, currentCity: value, currentState: null, cityChanged: true })
+    } else if (name === 'cf_state') {
+      this.setState({ formData: data, currentState: value })
+    }
+    this.setState({ formData: data })
+    // this.addChangeToURL()
   }
 
   render() {
@@ -97,7 +191,7 @@ class OptPhanMemComponent extends Component {
       )
     }
     else {
-      console.log(this.props.contactData)
+      /* Contact data loaded */
       if (this.props.formSubmitResponseStatus) {
         toast.success('Success', {
           autoClose: 2000,
@@ -108,15 +202,25 @@ class OptPhanMemComponent extends Component {
       }
       else {
         let contactData = this.props.contactData
+        let currentCity = this.state.currentCity ? this.state.currentCity : contactData.cf_city
+        let currentState = this.state.cityChanged ? this.state.currentState : contactData.cf_state
+        let cityOptions = this.props.cities
+        let mapCityStateOptions = this.props.mapCityState
+        let filterStateOptions = []
+        if (currentCity && currentCity.value) {
+          filterStateOptions = mapCityStateOptions.filter((map) => map.city === currentCity.value)[0].states
+        } else {
+          filterStateOptions = []
+        }
         return (
           <div className="form-add-opt-container">
             <ExpandableFormComponent title="Thông tin cơ bản" expanded={true}>
-              <div className="expandable-form-wrapper-field" id="type-wrapper">
+              <div className="expandable-form-wrapper-field" id="potentialname-wrapper">
                 <label className="expandable-form-label-field">Cơ hội <span className="require-field"> *</span></label>
-                <input name="type" type="text" className="expandable-form-input-field" defaultValue="Hợp đồng phần mềm" disabled
+                <input name="potentialname" type="text" className="expandable-form-input-field" defaultValue="Hợp đồng phần mềm" disabled
                        style={{ border: 'none', marginBottom: '0' }}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_hanh_chinh_xac_nhan-wrapper">
+              <div className="expandable-form-wrapper-field" id="approval_status-wrapper">
                 <label className="expandable-form-label-field">
                   Kế toán/ Admin xác nhận
                 </label>
@@ -270,9 +374,11 @@ class OptPhanMemComponent extends Component {
                 </label>
                 <Select
                   classNamePrefix="expandable-form-react-select"
-                  isSearchable={false}
-                  defaultValue={contactData.cf_city}
-                  onChange={() => { return false}}
+                  value={currentCity}
+                  options={cityOptions}
+                  placeholder="Tỉnh/ Thành phố"
+                  onChange={this.onSelectChange.bind(this, 'cf_city')}
+                  isSearchable={true}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
@@ -281,9 +387,11 @@ class OptPhanMemComponent extends Component {
                 </label>
                 <Select
                   classNamePrefix="expandable-form-react-select"
-                  isSearchable={false}
-                  defaultValue={contactData.cf_state}
-                  onChange={() => { return false}}
+                  value={currentState}
+                  options={filterStateOptions}
+                  placeholder="Quận/ Huyện"
+                  onChange={this.onSelectChange.bind(this, 'cf_state')}
+                  isSearchable={true}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
@@ -511,7 +619,7 @@ class OptPhanMemComponent extends Component {
                        className="expandable-form-input-field"/>
               </div>
             </ExpandableFormComponent>
-            <button className="create-opt-button">Tạo</button>
+            <button className="create-opt-button" onClick={this.handleSubmit}>Tạo</button>
           </div>
         )
       }
