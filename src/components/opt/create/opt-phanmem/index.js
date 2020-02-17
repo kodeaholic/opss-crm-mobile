@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import axios from 'axios'
 import withAuth from '../../../withAuth'
 import withLayout from '../../../withLayout'
 import compose from 'recompose/compose'
@@ -25,6 +25,7 @@ import ExpandableFormComponent from '../expandable-form'
 
 import './index.css'
 import Select from 'react-select'
+import AsyncSelect from 'react-select/async/dist/react-select.esm'
 
 const mapStateToProps = (state) => ({
   expired: getSessionStatus(state),
@@ -45,13 +46,21 @@ const mapDispatchToProps = dispatch => ({
     dispatch
   )
 })
+
 class OptPhanMemComponent extends Component {
-  constructor (props){
+  constructor(props) {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.onSelectChange = this.onSelectChange.bind(this)
-
+    this.getOptions = this.getOptions.bind(this)
+    this.fetchContactStatus = this.fetchContactStatus.bind(this)
+    this.fetchIndustries = this.fetchIndustries.bind(this)
+    this.fetchRegions = this.fetchRegions.bind(this)
+    this.fetchLeadSources = this.fetchLeadSources.bind(this)
+    this.fetchListGoiHD = this.fetchListGoiHD.bind(this)
+    this.fetchPaymentMethods = this.fetchPaymentMethods.bind(this)
+    this.fetchUsers = this.fetchUsers.bind(this)
     let pathName = props.location.pathname
     let array = pathName.split('/')
     let record = array.length > 2 ? array[2] : undefined
@@ -63,7 +72,7 @@ class OptPhanMemComponent extends Component {
       formData: {
         record: record,
         potentialname: 'Hợp đồng phần mềm',
-        contact_id: undefined,
+        contact_id: undefined
       },
       currentCity: city,
       currentState: state,
@@ -142,6 +151,7 @@ class OptPhanMemComponent extends Component {
     let record = this.state.record
     this.props.actions.fetchContactRecord({ session, record })
   }
+
   handleChange(e) {
     const { name, value } = e.target
     let data = this.state.formData
@@ -165,10 +175,71 @@ class OptPhanMemComponent extends Component {
     // this.addChangeToURL()
   }
 
+  /*
+  * Fetch data from API for dropdown select
+  */
+  getOptions = (source, search) => {
+    let { currentUser } = this.props
+    let session = null
+    if (currentUser) session = currentUser.session
+    if (_.isEmpty(session)) {
+      let userLoginData = localStorage.getItem('userLoggedInKV')
+      userLoginData = JSON.parse(userLoginData).result.login
+      session = userLoginData.session
+    }
+    const bodyFormData = new FormData()
+    bodyFormData.append('_operation', 'fetchDataList')
+    bodyFormData.append('_session', session)
+    bodyFormData.append('source', source)
+    bodyFormData.append('search', search)
+
+    const request = axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_URL_KVCRM,
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+
+    return request
+      .then(response => {
+        const { success, result } = response.data
+        if (success) {
+          return result
+        } else {
+          return []
+        }
+      })
+      .catch(err => {
+        return []
+      })
+  }
+
+  fetchContactStatus = (inputValue) => {
+    return this.getOptions('contactstatus', inputValue)
+  }
+  fetchIndustries = (inputValue) => {
+    return this.getOptions('industry', inputValue)
+  }
+  fetchRegions = (inputValue) => {
+    return this.getOptions('cf_pot_khu_vuc', inputValue)
+  }
+  fetchLeadSources = (inputValue) => {
+    return this.getOptions('leadsource', inputValue)
+  }
+  fetchListGoiHD = (inputValue) => {
+    return this.getOptions('cf_pot_goihd', inputValue)
+  }
+  fetchPaymentMethods = (inputValue) => {
+    return this.getOptions('cf_pot_hinhthuctt', inputValue)
+  }
+  fetchUsers = (inputValue) => {
+    return this.getOptions('users', inputValue)
+  }
+
   render() {
     /* For navigation back purpose */
     let pathBack = this.props.location.search
-    pathBack = pathBack.substring(pathBack.indexOf('pathBack=')+9)
+    pathBack = pathBack.substring(pathBack.indexOf('pathBack=') + 9)
     /* Session expired handler */
     if (this.props.expired) {
       localStorage.removeItem('userLoggedInKV')
@@ -189,8 +260,7 @@ class OptPhanMemComponent extends Component {
           </div>
         </div>
       )
-    }
-    else {
+    } else {
       /* Contact data loaded */
       if (this.props.formSubmitResponseStatus) {
         toast.success('Success', {
@@ -199,8 +269,7 @@ class OptPhanMemComponent extends Component {
         })
         return pathBack ? (<Redirect to={'/' + pathBack}/>) : (
           <Redirect to={'/contact-view/' + this.props.contactData.record}/>)
-      }
-      else {
+      } else {
         let contactData = this.props.contactData
         let currentCity = this.state.currentCity ? this.state.currentCity : contactData.cf_city
         let currentState = this.state.cityChanged ? this.state.currentState : contactData.cf_state
@@ -212,12 +281,14 @@ class OptPhanMemComponent extends Component {
         } else {
           filterStateOptions = []
         }
+        let assignedUserId = contactData.assigned_user_id
         return (
           <div className="form-add-opt-container">
             <ExpandableFormComponent title="Thông tin cơ bản" expanded={true}>
               <div className="expandable-form-wrapper-field" id="potentialname-wrapper">
                 <label className="expandable-form-label-field">Cơ hội <span className="require-field"> *</span></label>
-                <input name="potentialname" type="text" className="expandable-form-input-field" defaultValue="Hợp đồng phần mềm" disabled
+                <input name="potentialname" type="text" className="expandable-form-input-field"
+                       defaultValue="Hợp đồng phần mềm" disabled
                        style={{ border: 'none', marginBottom: '0' }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="approval_status-wrapper">
@@ -230,46 +301,57 @@ class OptPhanMemComponent extends Component {
                   defaultValue={{ 'label': 'Chờ xác nhận', 'value': 'Chờ xác nhận' }}
                   options={[
                     {
-                      "label": "Chờ xác nhận",
-                      "value": "Chờ xác nhận"
+                      'label': 'Chờ xác nhận',
+                      'value': 'Chờ xác nhận'
                     },
                     {
-                      "label": "Xác nhận",
-                      "value": "Xác nhận"
+                      'label': 'Xác nhận',
+                      'value': 'Xác nhận'
                     },
                     {
-                      "label": "Từ chối",
-                      "value": "Từ chối"
+                      'label': 'Từ chối',
+                      'value': 'Từ chối'
                     }
                   ]}
-                  onChange={() => { return false}}
+                  onChange={() => {
+                    return false
+                  }}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
                 <label className="expandable-form-label-field">
                   Tình trạng <span className="require-field"> *</span>
                 </label>
-                <Select
+                <AsyncSelect
                   classNamePrefix="expandable-form-react-select"
-                  isSearchable={false}
+                  cacheOptions
+                  defaultOptions
                   defaultValue={contactData.cf_887}
-                  onChange={() => { return false}}
+                  loadOptions={this.fetchContactStatus}
+                  placeholder="Tình trạng"
+                  onChange={this.onSelectChange.bind(this, 'sales_stage')}
+                  isSearchable={true}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="lastname-wrapper">
                 <label className="expandable-form-label-field">Họ tên khách hàng</label>
-                <input name="lastname" type="text" className="expandable-form-input-field" value={this.props.contactData.lastname} disabled
+                <input name="lastname" type="text" className="expandable-form-input-field"
+                       value={this.props.contactData.lastname} disabled
                        style={{ border: 'none', marginBottom: '0' }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
                 <label className="expandable-form-label-field">
                   Ngành hàng <span className="require-field"> *</span>
                 </label>
-                <Select
+                <AsyncSelect
                   classNamePrefix="expandable-form-react-select"
-                  isSearchable={false}
+                  cacheOptions
+                  defaultOptions
                   defaultValue={contactData.cf_contact_nganh_hang}
-                  onChange={() => { return false}}
+                  loadOptions={this.fetchIndustries}
+                  placeholder="Ngành hàng"
+                  onChange={this.onSelectChange.bind(this, 'cf_pot_nganh_hang')}
+                  isSearchable={true}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
@@ -289,22 +371,25 @@ class OptPhanMemComponent extends Component {
                   defaultValue={{ 'label': 'Cá nhân', 'value': 'Cá nhân' }}
                   options={[
                     {
-                      "label": "Cá nhân",
-                      "value": "Cá nhân"
+                      'label': 'Cá nhân',
+                      'value': 'Cá nhân'
                     },
                     {
-                      "label": "Công ty",
-                      "value": "Công ty"
+                      'label': 'Công ty',
+                      'value': 'Công ty'
                     }
                   ]}
-                  onChange={() => { return false}}
+                  onChange={() => {
+                    return false
+                  }}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
                 <label className="expandable-form-label-field">Ngày sinh </label>
                 <div className="expandable-form-input-date-wrapper">
                   <input name="cf_contact_website" type="date" className="expandable-form-input-field"/>
-                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput} style={{color: '#1492E6'}}/>
+                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}
+                     style={{ color: '#1492E6' }}/>
                 </div>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_gender-wrapper">
@@ -317,12 +402,12 @@ class OptPhanMemComponent extends Component {
                   placeholder="Lựa chọn giới tính"
                   options={[
                     {
-                      "label": "Nam",
-                      "value": "Nam"
+                      'label': 'Nam',
+                      'value': 'Nam'
                     },
                     {
-                      "label": "Nữ",
-                      "value": "Nữ"
+                      'label': 'Nữ',
+                      'value': 'Nữ'
                     }
                   ]}
                 />
@@ -343,27 +428,31 @@ class OptPhanMemComponent extends Component {
               </div>
               <div className="expandable-form-wrapper-field" id="description-wrapper">
                 <label className="expandable-form-label-field">Mô tả chung về khách hàng </label>
-                <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập mô tả chung về khách hàng"/>
+                <textarea name="description" className="expandable-form-input-field" rows="5"
+                          placeholder="Nhập mô tả chung về khách hàng"/>
               </div>
             </ExpandableFormComponent>
             <ExpandableFormComponent title="Thông tin liên hệ">
               <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
                 <label
-                  className="expandable-form-label-field">Số điện thoại <span className="require-field"> *</span></label>
+                  className="expandable-form-label-field">Số điện thoại <span
+                  className="require-field"> *</span></label>
                 <input name="cf_contact_website" type="text"
                        className="expandable-form-input-field"
                        placeholder="Nhập số điện thoại" defaultValue={contactData.mobile}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
                 <label
-                  className="expandable-form-label-field">Địa chỉ chi tiết <span className="require-field"> *</span></label>
+                  className="expandable-form-label-field">Địa chỉ chi tiết <span
+                  className="require-field"> *</span></label>
                 <input name="cf_contact_website" type="text"
                        className="expandable-form-input-field"
                        placeholder="Nhập địa chỉ chi tiết" defaultValue={contactData.cf_contact_street}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
                 <label
-                  className="expandable-form-label-field">Primary Email <span className="require-field"> *</span></label>
+                  className="expandable-form-label-field">Primary Email <span
+                  className="require-field"> *</span></label>
                 <input name="cf_contact_website" type="text"
                        className="expandable-form-input-field"
                        placeholder="Nhập địa chỉ email" defaultValue={contactData.email}/>
@@ -398,27 +487,36 @@ class OptPhanMemComponent extends Component {
                 <label className="expandable-form-label-field">
                   Khu vực <span className="require-field"> *</span>
                 </label>
-                <Select
+                <AsyncSelect
                   classNamePrefix="expandable-form-react-select"
-                  isSearchable={false}
+                  cacheOptions
+                  defaultOptions
                   defaultValue={contactData.cf_contact_khu_vuc}
-                  onChange={() => { return false}}
+                  loadOptions={this.fetchRegions}
+                  placeholder="Khu vực"
+                  onChange={this.onSelectChange.bind(this, 'cf_pot_khu_vuc')}
+                  isSearchable={true}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
                 <label className="expandable-form-label-field">
                   Nguồn khách hàng <span className="require-field"> *</span>
                 </label>
-                <Select
+                <AsyncSelect
                   classNamePrefix="expandable-form-react-select"
-                  isSearchable={false}
+                  cacheOptions
+                  defaultOptions
                   defaultValue={contactData.leadsource}
-                  onChange={() => { return false}}
+                  loadOptions={this.fetchLeadSources}
+                  placeholder="Nguồn khách hàng"
+                  onChange={this.onSelectChange.bind(this, 'leadsource')}
+                  isSearchable={true}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="description-wrapper">
                 <label className="expandable-form-label-field">Mô tả nguồn khách hàng </label>
-                <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập mô tả nguồn khách hàng"/>
+                <textarea name="description" className="expandable-form-input-field" rows="5"
+                          placeholder="Nhập mô tả nguồn khách hàng"/>
               </div>
             </ExpandableFormComponent>
             <ExpandableFormComponent title="Thông tin hợp đồng">
@@ -447,24 +545,30 @@ class OptPhanMemComponent extends Component {
                 <label className="expandable-form-label-field">
                   Gói hợp đồng
                 </label>
-                <Select
+                <AsyncSelect
                   classNamePrefix="expandable-form-react-select"
-                  isSearchable={false}
+                  cacheOptions
+                  defaultOptions
+                  loadOptions={this.fetchListGoiHD}
                   placeholder="Lựa chọn gói"
+                  onChange={this.onSelectChange.bind(this, 'cf_pot_goihd')}
+                  isSearchable={true}
                 />
               </div>
               <div className="row-col-2">
                 <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
                   <label className="expandable-form-label-field">Ngày bắt đầu </label>
                   <div className="expandable-form-input-date-wrapper">
-                    <input name="cf_contact_website" type="date" className="expandable-form-input-field" style={{width: '88%'}}/>
+                    <input name="cf_contact_website" type="date" className="expandable-form-input-field"
+                           style={{ width: '88%' }}/>
                     <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                   </div>
                 </div>
                 <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
                   <label className="expandable-form-label-field">Ngày kết thúc </label>
                   <div className="expandable-form-input-date-wrapper">
-                    <input name="cf_contact_website" type="date" className="expandable-form-input-field" style={{width: '88%'}}/>
+                    <input name="cf_contact_website" type="date" className="expandable-form-input-field"
+                           style={{ width: '88%' }}/>
                     <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                   </div>
                 </div>
@@ -487,17 +591,22 @@ class OptPhanMemComponent extends Component {
                 <label className="expandable-form-label-field">
                   Hình thức thanh toán
                 </label>
-                <Select
+                <AsyncSelect
                   classNamePrefix="expandable-form-react-select"
-                  isSearchable={false}
+                  cacheOptions
+                  defaultOptions
+                  loadOptions={this.fetchPaymentMethods}
                   placeholder="Lựa chọn hình thức thanh toán"
+                  onChange={this.onSelectChange.bind(this, 'cf_pot_hinhthuctt')}
+                  isSearchable={true}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
                 <label
                   className="expandable-form-label-field">Thanh toán</label>
                 <span className="input-vnd-unit">
-              <input name="cf_contact_website" type="text" className="expandable-form-input-field" placeholder="Nhập số tiền thanh toán" defaultValue="0"/>
+              <input name="cf_contact_website" type="text" className="expandable-form-input-field"
+                     placeholder="Nhập số tiền thanh toán" defaultValue="0"/>
             </span>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_contact_website-wrapper">
@@ -530,7 +639,8 @@ class OptPhanMemComponent extends Component {
               </div>
               <div className="expandable-form-wrapper-field" id="description-wrapper">
                 <label className="expandable-form-label-field">Ghi chú </label>
-                <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập ghi chú"/>
+                <textarea name="description" className="expandable-form-input-field" rows="5"
+                          placeholder="Nhập ghi chú"/>
               </div>
             </ExpandableFormComponent>
             <ExpandableFormComponent title="Thông tin CSKH">
@@ -538,10 +648,15 @@ class OptPhanMemComponent extends Component {
                 <label className="expandable-form-label-field">
                   Người xử lý <span className="require-field"> *</span>
                 </label>
-                <Select
+                <AsyncSelect
                   classNamePrefix="expandable-form-react-select"
-                  isSearchable={false}
+                  cacheOptions
+                  defaultOptions
+                  defaultValue={contactData.assigned_user_id}
+                  loadOptions={this.fetchUsers}
                   placeholder="Chọn người xử lý"
+                  onChange={this.onSelectChange.bind(this, 'assigned_user_id')}
+                  isSearchable={true}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
@@ -551,7 +666,18 @@ class OptPhanMemComponent extends Component {
                 <Select
                   classNamePrefix="expandable-form-react-select"
                   isSearchable={false}
-                  defaultValue={{label: 'Chưa gọi', value: 'Chưa gọi'}}
+                  defaultValue={{ label: 'Chưa gọi', value: 'Chưa gọi' }}
+                  options={[
+                    {
+                      "label": "Chưa gọi",
+                      "value": "Chưa gọi"
+                    },
+                    {
+                      "label": "Đã gọi",
+                      "value": "Đã gọi"
+                    }
+                  ]
+                  }
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_status-wrapper">
@@ -562,11 +688,26 @@ class OptPhanMemComponent extends Component {
                   classNamePrefix="expandable-form-react-select"
                   isSearchable={false}
                   placeholder="Chọn đánh giá"
+                  options={[
+                    {
+                      "label": "Rất quan tâm",
+                      "value": "Rất quan tâm"
+                    },
+                    {
+                      "label": "Quan tâm",
+                      "value": "Quan tâm"
+                    },
+                    {
+                      "label": "Ít quan tâm",
+                      "value": "Ít quan tâm"
+                    }
+                  ]}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="description-wrapper">
                 <label className="expandable-form-label-field">Phản hồi CSKH </label>
-                <textarea name="description" className="expandable-form-input-field" rows="5" placeholder="Nhập phản hồi CSKH"/>
+                <textarea name="description" className="expandable-form-input-field" rows="5"
+                          placeholder="Nhập phản hồi CSKH"/>
               </div>
             </ExpandableFormComponent>
             <ExpandableFormComponent title="Câu hỏi thường gặp">
