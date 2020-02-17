@@ -78,7 +78,8 @@ class OptPhanMemComponent extends Component {
       currentState: state,
       cities: _.get(props, 'contactData.cities'),
       mapCityState: _.get(props, 'contactData.mapCityState'),
-      cityChanged: false
+      cityChanged: false,
+      stateChanged: false,
     }
   }
 
@@ -164,7 +165,7 @@ class OptPhanMemComponent extends Component {
     if (!formData.hasOwnProperty('cf_mobile')) formData['cf_mobile'] = contactData.mobile
     if (!formData.hasOwnProperty('cf_contact_street')) formData['cf_contact_street'] = contactData.cf_contact_street
     if (!formData.hasOwnProperty('cf_email')) formData['cf_email'] = contactData.email
-    if (!formData.hasOwnProperty('cf_city') && !formData.hasOwnProperty('cf_state')) {
+    if (!this.state.cityChanged && !this.state.stateChanged) {
       formData['cf_city'] = contactData.cf_city
       formData['cf_state'] = contactData.cf_state
     }
@@ -280,7 +281,7 @@ class OptPhanMemComponent extends Component {
       data.cf_state = undefined
       this.setState({ formData: data, currentCity: value, currentState: null, cityChanged: true })
     } else if (name === 'cf_state') {
-      this.setState({ formData: data, currentState: value })
+      this.setState({ formData: data, currentState: value, stateChanged: true })
     }
     this.setState({ formData: data })
   }
@@ -382,7 +383,7 @@ class OptPhanMemComponent extends Component {
       } else {
         let contactData = this.props.contactData
         let currentCity = this.state.currentCity ? this.state.currentCity : contactData.cf_city
-        let currentState = this.state.cityChanged ? this.state.currentState : contactData.cf_state
+        let currentState = (this.state.cityChanged || this.state.stateChanged) ? this.state.currentState : contactData.cf_state
         let cityOptions = this.props.cities
         let mapCityStateOptions = this.props.mapCityState
         let filterStateOptions = []
