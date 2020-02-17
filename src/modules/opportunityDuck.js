@@ -130,17 +130,21 @@ export const requestSaveOpportunity = payload => {
     dispatch({ type: types.SEND_REQUEST_SAVE_RECORD, payload })
     let {session, data} = payload
     let formData = {...data} /* clone */
-    if (formData.industry) formData.industry = formData.industry.value
-    if (formData.leadsource) formData.leadsource = formData.leadsource.value
-    if (formData.assigned_user_id) formData.assigned_user_id = formData.assigned_user_id.value
-    if (formData.leadstatus) formData.leadstatus = formData.leadstatus.value
-    if (formData.cf_lead_khu_vuc) formData.cf_lead_khu_vuc = formData.cf_lead_khu_vuc.value
+
     const bodyFormData = new FormData()
     bodyFormData.append("_operation", 'saveRecord')
     bodyFormData.append("_session", session)
     bodyFormData.append("module", 'Potentials')
     if (data.record) bodyFormData.append("record", formData.record)
-    bodyFormData.append("values", JSON.stringify(formData))
+    let prop = undefined
+    for (prop in formData) {
+      if (formData.hasOwnProperty(prop) && formData[prop]['value']) {
+        formData[prop] = formData[prop]['value']
+      }
+    }
+    let values = JSON.stringify(formData)
+    // console.log(values)
+    bodyFormData.append("values", values)
     const request = axios({
       method: 'POST',
       url: process.env.REACT_APP_API_URL_KVCRM,

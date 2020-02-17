@@ -245,8 +245,9 @@ class OptPhanMemComponent extends Component {
       })
       return false
     }
-    // this.props.actions.requestSaveOpportunity({ session, data: formData })
-    console.log(formData)
+    let session = this.props.currentUser.session
+    this.props.actions.requestSaveOpportunity({ session, data: formData })
+    // console.log(JSON.stringify(formData))
   }
 
   componentWillMount() {
@@ -486,6 +487,7 @@ class OptPhanMemComponent extends Component {
                     }
                   ]}
                   onChange={this.onSelectChange.bind(this, 'customer_type')}
+                  placeholder="Loại khách hàng"
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_birthday-wrapper">
@@ -534,7 +536,7 @@ class OptPhanMemComponent extends Component {
               <div className="expandable-form-wrapper-field" id="cf_passport_location-wrapper">
                 <label className="expandable-form-label-field">Nơi cấp </label>
                 <div className="expandable-form-input-date-wrapper">
-                  <input name="cf_passport_location" type="date" className="expandable-form-input-field" onChange={this.handleChange} placeholder="Nhập nơi cấp CMT/MST"/>
+                  <input name="cf_passport_location" type="text" className="expandable-form-input-field" onChange={this.handleChange} placeholder="Nhập nơi cấp CMT/MST"/>
                   <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                 </div>
               </div>
