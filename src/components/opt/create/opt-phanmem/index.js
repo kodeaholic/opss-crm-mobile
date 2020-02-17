@@ -438,7 +438,7 @@ class OptPhanMemComponent extends Component {
                   loadOptions={this.fetchContactStatus}
                   placeholder="Tình trạng"
                   onChange={this.onSelectChange.bind(this, 'sales_stage')}
-                  isSearchable={true}
+                  isSearchable={false}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="lastname-wrapper">
@@ -459,7 +459,7 @@ class OptPhanMemComponent extends Component {
                   loadOptions={this.fetchIndustries}
                   placeholder="Ngành hàng"
                   onChange={this.onSelectChange.bind(this, 'cf_pot_nganh_hang')}
-                  isSearchable={true}
+                  isSearchable={false}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_website-wrapper">
@@ -606,7 +606,7 @@ class OptPhanMemComponent extends Component {
                   loadOptions={this.fetchRegions}
                   placeholder="Khu vực"
                   onChange={this.onSelectChange.bind(this, 'cf_pot_khu_vuc')}
-                  isSearchable={true}
+                  isSearchable={false}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="leadsource-wrapper">
@@ -663,7 +663,7 @@ class OptPhanMemComponent extends Component {
                   loadOptions={this.fetchListGoiHD}
                   placeholder="Lựa chọn gói"
                   onChange={this.onSelectChange.bind(this, 'cf_pot_goihd')}
-                  isSearchable={true}
+                  isSearchable={false}
                 />
               </div>
               <div className="row-col-2">
@@ -709,7 +709,7 @@ class OptPhanMemComponent extends Component {
                   loadOptions={this.fetchPaymentMethods}
                   placeholder="Lựa chọn hình thức thanh toán"
                   onChange={this.onSelectChange.bind(this, 'cf_pot_hinhthuctt')}
-                  isSearchable={true}
+                  isSearchable={false}
                 />
               </div>
               <div className="expandable-form-wrapper-field" id="amount-wrapper">
