@@ -742,7 +742,7 @@ class OptPhanMemComponent extends Component {
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_sochinhanh-wrapper">
                 <label
-                  className="expandable-form-label-field">Số lượng cửa hàng</label>
+                  className="expandable-form-label-field">Số cửa hàng (Số)</label>
                 <input name="cf_pot_sochinhanh" type="text"
                        className="expandable-form-input-field"
                        placeholder="Nhập số lượng cửa hàng" onChange={this.handleChange}/>
@@ -839,49 +839,49 @@ class OptPhanMemComponent extends Component {
             <ExpandableFormComponent title="Câu hỏi thường gặp">
               <div className="expandable-form-wrapper-field" id="cf_pot_tinhhinhkinhdoanh-wrapper">
                 <label
-                  className="expandable-form-label-field">Tình hình kinh doanh hiện nay của khách hàng ?</label>
+                  className="expandable-form-label-field">Tình hình kinh doanh hiện nay của khách hàng?</label>
                 <input name="cf_pot_tinhhinhkinhdoanh" type="text"
                        className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_hinhthuccongcu-wrapper">
                 <label
-                  className="expandable-form-label-field">Hình thức công cụ quản lý hiện nay ?</label>
+                  className="expandable-form-label-field">Hình thức công cụ quản lý hiện nay?</label>
                 <input name="cf_pot_hinhthuccongcu" type="text"
                        className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_tinhnang-wrapper">
                 <label
-                  className="expandable-form-label-field">Tính năng của Kiot Việt là yếu tố quyết định ?</label>
+                  className="expandable-form-label-field">Tính năng của Kiot Việt là yếu tố quyết định?</label>
                 <input name="cf_pot_tinhnang" type="text"
                        className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_diemyeu-wrapper">
                 <label
-                  className="expandable-form-label-field">Điểm yếu nào của Kiot Việt khiến khách hàng cân nhắc ?</label>
+                  className="expandable-form-label-field">Điểm yếu nào của Kiot Việt khiến khách hàng cân nhắc?</label>
                 <input name="cf_pot_diemyeu" type="text"
                        className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_khokhan-wrapper">
                 <label
-                  className="expandable-form-label-field">Khó khăn khách hàng đang gặp phải ?</label>
+                  className="expandable-form-label-field">Khó khăn khách hàng đang gặp phải?</label>
                 <input name="cf_pot_khokhan" type="text"
                        className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_tinhchudong-wrapper">
                 <label
-                  className="expandable-form-label-field">Tính chủ động của khách hàng ?</label>
+                  className="expandable-form-label-field">Tính chủ động của khách hàng?</label>
                 <input name="cf_pot_tinhchudong" type="text"
                        className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_ngancankh-wrapper">
                 <label
-                  className="expandable-form-label-field">Yếu tố nào ngăn cản khách hàng quyết định ?</label>
+                  className="expandable-form-label-field">Yếu tố nào ngăn cản khách hàng quyết định?</label>
                 <input name="cf_pot_ngancankh" type="text"
                        className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_doithunao-wrapper">
                 <label
-                  className="expandable-form-label-field">Đối thủ nào đã tiếp cận khách hàng ?</label>
+                  className="expandable-form-label-field">Đối thủ nào đã tiếp cận khách hàng?</label>
                 <input name="cf_pot_doithunao" type="text"
                        className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
