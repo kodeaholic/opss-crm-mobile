@@ -277,6 +277,32 @@ class OptPhanMemComponent extends Component {
     let data = this.state.formData
     data[name] = value
     this.clearError(name)
+
+    /* CMB-162: tinh ngay ket thuc */
+    Date.prototype.yyyymmdd = function() {
+      var mm = this.getMonth() + 1 // getMonth() is zero-based
+      var dd = this.getDate()
+
+      return [this.getFullYear(),
+        (mm>9 ? '' : '0') + mm,
+        (dd>9 ? '' : '0') + dd
+      ].join('-')
+    }
+    let start_date_input = document.getElementById('cf_pot_startdate')
+    let end_date_input = document.getElementById('cf_pot_enddate')
+    let thoihan = document.getElementById('cf_pot_thoihan')
+    let khuyenmai = document.getElementById('cf_pot_khuyenmai')
+    let startDate = start_date_input.value
+    let duration = parseInt(thoihan.value)
+    let bonus = parseInt(khuyenmai.value)
+    if (startDate && (name === 'cf_pot_startdate' || name === 'cf_pot_thoihan' || name === 'cf_pot_khuyenmai')) {
+      let end = new Date(startDate)
+      let temp = end.setMonth(end.getMonth() + duration + bonus)
+      let endDateString = end.yyyymmdd()
+      end_date_input.value = endDateString
+      data['cf_pot_enddate'] = endDateString
+    }
+    /* end CMB-162 */
     this.setState({ formData: data })
   }
 
@@ -721,7 +747,7 @@ class OptPhanMemComponent extends Component {
                   className="expandable-form-label-field">Thời hạn (SỐ tháng)</label>
                 <input name="cf_pot_thoihan" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập thời hạn (SỐ tháng)" onChange={this.handleChange} onKeyDown={(e) => {
+                       placeholder="Nhập thời hạn (SỐ tháng)" onChange={this.handleChange} id="cf_pot_thoihan" onKeyDown={(e) => {
                   let key = e.nativeEvent.key
                   if (isNaN(key) && key !== 'Backspace') e.preventDefault()
                 }}/>
@@ -731,7 +757,7 @@ class OptPhanMemComponent extends Component {
                   className="expandable-form-label-field">Khuyến mại (SỐ tháng)</label>
                 <input name="cf_pot_khuyenmai" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập khuyến mại (SỐ tháng)" onChange={this.handleChange} onKeyDown={(e) => {
+                       placeholder="Nhập khuyến mại (SỐ tháng)" onChange={this.handleChange} id="cf_pot_khuyenmai" onKeyDown={(e) => {
                   let key = e.nativeEvent.key
                   if (isNaN(key) && key !== 'Backspace') e.preventDefault()
                 }}/>
@@ -756,7 +782,7 @@ class OptPhanMemComponent extends Component {
                   <label className="expandable-form-label-field">Ngày bắt đầu </label>
                   <div className="expandable-form-input-date-wrapper">
                     <input name="cf_pot_startdate" type="date" className="expandable-form-input-field"
-                           style={{ width: '88%' }} onChange={this.handleChange}/>
+                           style={{ width: '88%' }} onChange={this.handleChange} id="cf_pot_startdate"/>
                     <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                   </div>
                 </div>
@@ -764,7 +790,7 @@ class OptPhanMemComponent extends Component {
                   <label className="expandable-form-label-field">Ngày kết thúc </label>
                   <div className="expandable-form-input-date-wrapper">
                     <input name="cf_pot_enddate" type="date" className="expandable-form-input-field"
-                           style={{ width: '88%' }} onChange={this.handleChange}/>
+                           style={{ width: '88%' }} onChange={this.handleChange} id="cf_pot_enddate"/>
                     <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                   </div>
                 </div>
