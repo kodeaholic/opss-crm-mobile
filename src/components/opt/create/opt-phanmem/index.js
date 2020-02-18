@@ -292,19 +292,37 @@ class OptPhanMemComponent extends Component {
         (dd>9 ? '' : '0') + dd
       ].join('-')
     }
-    let start_date_input = document.getElementById('cf_pot_startdate')
-    let end_date_input = document.getElementById('cf_pot_enddate')
-    let thoihan = document.getElementById('cf_pot_thoihan')
-    let khuyenmai = document.getElementById('cf_pot_khuyenmai')
-    let startDate = start_date_input.value
-    let duration = parseInt(thoihan.value)
-    let bonus = parseInt(khuyenmai.value)
-    if (startDate && (name === 'cf_pot_startdate' || name === 'cf_pot_thoihan' || name === 'cf_pot_khuyenmai')) {
-      let end = new Date(startDate)
-      let temp = end.setMonth(end.getMonth() + duration + bonus)
-      let endDateString = end.yyyymmdd()
-      end_date_input.value = endDateString
-      data['cf_pot_enddate'] = endDateString
+    if (name === 'cf_pot_startdate' || name === 'cf_pot_thoihan' || name === 'cf_pot_khuyenmai') {
+      let end = undefined
+      if (name === 'cf_pot_startdate') {
+        if (_.isEmpty(value)) {
+          document.getElementById('cf_pot_enddate').value = ''
+          delete data['cf_pot_enddate']
+        }
+        else {
+          end = new Date(value)
+        }
+      }
+      else if (name === 'cf_pot_thoihan' || name === 'cf_pot_khuyenmai') {
+        let startDate = document.getElementById('cf_pot_startdate').value
+        if (!_.isEmpty(startDate)) end = new Date(startDate)
+        else end = undefined
+      }
+      if (end > 0) {
+        let duration = document.getElementById('cf_pot_thoihan').value
+        let bonus = document.getElementById('cf_pot_khuyenmai').value
+        duration = parseInt(duration)
+        bonus = parseInt(bonus)
+        if (isNaN(duration)) duration = 0
+        if (isNaN(bonus)) bonus = 0
+        let temp = end.setMonth(end.getMonth() + duration + bonus)
+        if ((duration + bonus) > 0) {
+          temp = end.setDate(end.getDate() - 1)
+        }
+        let endDateString = end.yyyymmdd()
+        document.getElementById('cf_pot_enddate').value = endDateString
+        data['cf_pot_enddate'] = endDateString
+      }
     }
     /* end CMB-162 */
     this.setState({ formData: data })
