@@ -79,7 +79,7 @@ class OptPhanMemComponent extends Component {
       cities: _.get(props, 'contactData.cities'),
       mapCityState: _.get(props, 'contactData.mapCityState'),
       cityChanged: false,
-      stateChanged: false,
+      stateChanged: false
     }
   }
 
@@ -145,7 +145,7 @@ class OptPhanMemComponent extends Component {
       label: this.props.contactData.lastname,
       value: formData.contactRecordId
     }
-    formData['potentialname'] = "Hợp đồng phần mềm"
+    formData['potentialname'] = 'Hợp đồng phần mềm'
 
     /* Required fields with default values from contact data */
     /**
@@ -161,14 +161,14 @@ class OptPhanMemComponent extends Component {
      */
     /* Check neu undefined, tuc la user khong dong den, khong thay doi gi, thi lay du lieu tu contact */
     if (!formData.hasOwnProperty('sales_stage')) formData['sales_stage'] = {
-      "label": "Bán hàng",
-      "value": "Sell"
+      'label': 'Bán hàng',
+      'value': 'Sell'
     }
     if (!formData.hasOwnProperty('customer_type')) formData['customer_type'] = {
       'label': 'Cá nhân',
       'value': 'Cá nhân'
     }
-      if (!formData.hasOwnProperty('cf_pot_nganh_hang')) formData['cf_pot_nganh_hang'] = contactData.cf_contact_nganh_hang
+    if (!formData.hasOwnProperty('cf_pot_nganh_hang')) formData['cf_pot_nganh_hang'] = contactData.cf_contact_nganh_hang
     if (!formData.hasOwnProperty('cf_mobile')) formData['cf_mobile'] = contactData.mobile
     if (!formData.hasOwnProperty('cf_contact_street')) formData['cf_contact_street'] = contactData.cf_contact_street
     if (!formData.hasOwnProperty('cf_email')) formData['cf_email'] = contactData.email
@@ -439,8 +439,8 @@ class OptPhanMemComponent extends Component {
                   cacheOptions
                   defaultOptions
                   defaultValue={{
-                    "label": "Bán hàng",
-                    "value": "Sell"
+                    'label': 'Bán hàng',
+                    'value': 'Sell'
                   }}
                   loadOptions={this.fetchContactStatus}
                   placeholder="Tình trạng"
@@ -506,7 +506,8 @@ class OptPhanMemComponent extends Component {
               <div className="expandable-form-wrapper-field" id="cf_birthday-wrapper">
                 <label className="expandable-form-label-field">Ngày sinh </label>
                 <div className="expandable-form-input-date-wrapper">
-                  <input name="cf_birthday" type="date" className="expandable-form-input-field" onChange={this.handleChange}/>
+                  <input name="cf_birthday" type="date" className="expandable-form-input-field"
+                         onChange={this.handleChange}/>
                   <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}
                      style={{ color: '#1492E6' }}/>
                 </div>
@@ -542,13 +543,15 @@ class OptPhanMemComponent extends Component {
               <div className="expandable-form-wrapper-field" id="cf_passport_date-wrapper">
                 <label className="expandable-form-label-field">Ngày cấp </label>
                 <div className="expandable-form-input-date-wrapper">
-                  <input name="cf_passport_date" type="date" className="expandable-form-input-field" onChange={this.handleChange}/>
+                  <input name="cf_passport_date" type="date" className="expandable-form-input-field"
+                         onChange={this.handleChange}/>
                   <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                 </div>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_passport_location-wrapper">
                 <label className="expandable-form-label-field">Nơi cấp </label>
-                <input name="cf_passport_location" type="text" className="expandable-form-input-field" onChange={this.handleChange} placeholder="Nhập nơi cấp CMT/MST"/>
+                <input name="cf_passport_location" type="text" className="expandable-form-input-field"
+                       onChange={this.handleChange} placeholder="Nhập nơi cấp CMT/MST"/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_motachung-wrapper">
                 <label className="expandable-form-label-field">Mô tả chung về khách hàng </label>
@@ -571,7 +574,8 @@ class OptPhanMemComponent extends Component {
                   className="require-field"> *</span></label>
                 <input name="cf_contact_street" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập địa chỉ chi tiết" defaultValue={contactData.cf_contact_street} onChange={this.handleChange}/>
+                       placeholder="Nhập địa chỉ chi tiết" defaultValue={contactData.cf_contact_street}
+                       onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_email-wrapper">
                 <label
@@ -702,14 +706,20 @@ class OptPhanMemComponent extends Component {
                   className="expandable-form-label-field">Thời hạn (số tháng)</label>
                 <input name="cf_pot_thoihan" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập thời hạn" onChange={this.handleChange}/>
+                       placeholder="Nhập thời hạn" onChange={this.handleChange} onKeyDown={(e) => {
+                  let key = e.nativeEvent.key
+                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
+                }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_khuyenmai-wrapper">
                 <label
                   className="expandable-form-label-field">Khuyến mãi (số tháng)</label>
                 <input name="cf_pot_khuyenmai" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập khuyến mãi" onChange={this.handleChange}/>
+                       placeholder="Nhập khuyến mãi" onChange={this.handleChange} onKeyDown={(e) => {
+                  let key = e.nativeEvent.key
+                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
+                }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_hinhthuctt-wrapper">
                 <label className="expandable-form-label-field">
@@ -730,13 +740,18 @@ class OptPhanMemComponent extends Component {
                   className="expandable-form-label-field">Thanh toán</label>
                 <span className="input-vnd-unit">
               <input name="amount" type="text" className="expandable-form-input-field"
-                     placeholder="Nhập số tiền thanh toán" defaultValue="0" onChange={this.handleChange}/>
+                     placeholder="Nhập số tiền thanh toán" defaultValue="0" onChange={this.handleChange}
+                     onKeyDown={(e) => {
+                       let key = e.nativeEvent.key
+                       if (isNaN(key) && key !== 'Backspace') e.preventDefault()
+                     }}/>
             </span>
               </div>
               <div className="expandable-form-wrapper-field" id="closedwon_date-wrapper">
                 <label className="expandable-form-label-field">Ngày kí hợp đồng </label>
                 <div className="expandable-form-input-date-wrapper">
-                  <input name="closedwon_date" type="date" className="expandable-form-input-field" onChange={this.handleChange}/>
+                  <input name="closedwon_date" type="date" className="expandable-form-input-field"
+                         onChange={this.handleChange}/>
                   <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                 </div>
               </div>
@@ -745,7 +760,10 @@ class OptPhanMemComponent extends Component {
                   className="expandable-form-label-field">Số cửa hàng (Số)</label>
                 <input name="cf_pot_sochinhanh" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập số cửa hàng (số)" onChange={this.handleChange}/>
+                       placeholder="Nhập số cửa hàng (số)" onChange={this.handleChange} onKeyDown={(e) => {
+                  let key = e.nativeEvent.key
+                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
+                }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_diachich-wrapper">
                 <label
@@ -793,12 +811,12 @@ class OptPhanMemComponent extends Component {
                   defaultValue={{ label: 'Chưa gọi', value: 'Chưa gọi' }}
                   options={[
                     {
-                      "label": "Chưa gọi",
-                      "value": "Chưa gọi"
+                      'label': 'Chưa gọi',
+                      'value': 'Chưa gọi'
                     },
                     {
-                      "label": "Đã gọi",
-                      "value": "Đã gọi"
+                      'label': 'Đã gọi',
+                      'value': 'Đã gọi'
                     }
                   ]
                   }
@@ -815,16 +833,16 @@ class OptPhanMemComponent extends Component {
                   placeholder="Chọn đánh giá"
                   options={[
                     {
-                      "label": "Rất quan tâm",
-                      "value": "Rất quan tâm"
+                      'label': 'Rất quan tâm',
+                      'value': 'Rất quan tâm'
                     },
                     {
-                      "label": "Quan tâm",
-                      "value": "Quan tâm"
+                      'label': 'Quan tâm',
+                      'value': 'Quan tâm'
                     },
                     {
-                      "label": "Ít quan tâm",
-                      "value": "Ít quan tâm"
+                      'label': 'Ít quan tâm',
+                      'value': 'Ít quan tâm'
                     }
                   ]}
                   onChange={this.onSelectChange.bind(this, 'cf_967')}
