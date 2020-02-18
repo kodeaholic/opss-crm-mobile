@@ -151,7 +151,7 @@ button.wrapper-footer-link:focus {
   margin-left: 15px;
   margin-right: 15px;
   text-decoration: none;
-  color: #B7B7B7;
+  color: #888888;
 }
 .opt-selection-row-content:before {
   content: '\2022\00a0\00a0\00a0\00a0';
