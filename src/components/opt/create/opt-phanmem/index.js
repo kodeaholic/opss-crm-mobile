@@ -695,13 +695,6 @@ class OptPhanMemComponent extends Component {
                        className="expandable-form-input-field"
                        placeholder="Nhập số hợp đồng" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_ma_voucer-wrapper">
-                <label
-                  className="expandable-form-label-field">Mã KM</label>
-                <input name="cf_pot_ma_voucer" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập mã KM" onChange={this.handleChange}/>
-              </div>
               <div className="expandable-form-wrapper-field" id="represent-wrapper">
                 <label
                   className="expandable-form-label-field">Người đại diện</label>
@@ -723,6 +716,41 @@ class OptPhanMemComponent extends Component {
                   isSearchable={false}
                 />
               </div>
+              <div className="expandable-form-wrapper-field" id="cf_pot_thoihan-wrapper">
+                <label
+                  className="expandable-form-label-field">Thời hạn (SỐ tháng)</label>
+                <input name="cf_pot_thoihan" type="text"
+                       className="expandable-form-input-field"
+                       placeholder="Nhập thời hạn (SỐ tháng)" onChange={this.handleChange} onKeyDown={(e) => {
+                  let key = e.nativeEvent.key
+                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
+                }}/>
+              </div>
+              <div className="expandable-form-wrapper-field" id="cf_pot_khuyenmai-wrapper">
+                <label
+                  className="expandable-form-label-field">Khuyến mại (SỐ tháng)</label>
+                <input name="cf_pot_khuyenmai" type="text"
+                       className="expandable-form-input-field"
+                       placeholder="Nhập khuyến mại (SỐ tháng)" onChange={this.handleChange} onKeyDown={(e) => {
+                  let key = e.nativeEvent.key
+                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
+                }}/>
+              </div>
+              <div className="expandable-form-wrapper-field" id="closedwon_date-wrapper">
+                <label className="expandable-form-label-field">Ngày ký hợp đồng </label>
+                <div className="expandable-form-input-date-wrapper">
+                  <input name="closedwon_date" type="date" className="expandable-form-input-field"
+                         onChange={this.handleChange}/>
+                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
+                </div>
+              </div>
+              <div className="expandable-form-wrapper-field" id="cf_pot_ma_voucer-wrapper">
+                <label
+                  className="expandable-form-label-field">Mã KM</label>
+                <input name="cf_pot_ma_voucer" type="text"
+                       className="expandable-form-input-field"
+                       placeholder="Nhập mã KM" onChange={this.handleChange}/>
+              </div>
               <div className="row-col-2">
                 <div className="expandable-form-wrapper-field" id="cf_pot_startdate-wrapper">
                   <label className="expandable-form-label-field">Ngày bắt đầu </label>
@@ -740,26 +768,6 @@ class OptPhanMemComponent extends Component {
                     <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
                   </div>
                 </div>
-              </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_thoihan-wrapper">
-                <label
-                  className="expandable-form-label-field">Thời hạn (số tháng)</label>
-                <input name="cf_pot_thoihan" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập thời hạn" onChange={this.handleChange} onKeyDown={(e) => {
-                  let key = e.nativeEvent.key
-                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
-                }}/>
-              </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_khuyenmai-wrapper">
-                <label
-                  className="expandable-form-label-field">Khuyến mại (SỐ tháng)</label>
-                <input name="cf_pot_khuyenmai" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập khuyến mại (SỐ tháng)" onChange={this.handleChange} onKeyDown={(e) => {
-                  let key = e.nativeEvent.key
-                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
-                }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_hinhthuctt-wrapper">
                 <label className="expandable-form-label-field">
@@ -786,14 +794,6 @@ class OptPhanMemComponent extends Component {
                        if (isNaN(key) && key !== 'Backspace') e.preventDefault()
                      }}/>
             </span>
-              </div>
-              <div className="expandable-form-wrapper-field" id="closedwon_date-wrapper">
-                <label className="expandable-form-label-field">Ngày ký hợp đồng </label>
-                <div className="expandable-form-input-date-wrapper">
-                  <input name="closedwon_date" type="date" className="expandable-form-input-field"
-                         onChange={this.handleChange}/>
-                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
-                </div>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_sochinhanh-wrapper">
                 <label
