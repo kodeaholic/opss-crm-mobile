@@ -290,6 +290,41 @@ class OptPhanMemComponent extends Component {
     } else if (name === 'cf_state') {
       this.setState({ formData: data, currentState: value, stateChanged: true })
     }
+
+    /* CMB-153 */
+    if (name === 'customer_type') {
+      // if 'congty', hide: cf_birthday, cf_gender, cf_passport_date, cf_passport_location
+      let birthday = document.getElementById('cf_birthday-wrapper')
+      let gender = document.getElementById('cf_gender-wrapper')
+      let passport_date = document.getElementById('cf_passport_date-wrapper')
+      let passport_location = document.getElementById('cf_passport_location-wrapper')
+      let company_name = document.getElementById('company_name-wrapper')
+      if (value.value === 'Công ty'){
+        if(company_name) company_name.classList.remove('display-none')
+        if(birthday) birthday.classList.add('display-none')
+        if(gender) gender.classList.add('display-none')
+        if(passport_date) passport_date.classList.add('display-none')
+        if(passport_location) passport_location.classList.add('display-none')
+
+        if (data['cf_birthday']) delete data['cf_birthday']
+        if (data['cf_gender']) delete data['cf_gender']
+        if (data['cf_passport_date']) delete data['cf_passport_date']
+        if (data['cf_passport_location']) delete data['cf_passport_location']
+      }
+      else {
+        if (value.value === 'Cá nhân'){
+          // hide company_name
+          if(company_name) company_name.classList.add('display-none')
+          if(birthday) birthday.classList.remove('display-none')
+          if(gender) gender.classList.remove('display-none')
+          if(passport_date) passport_date.classList.remove('display-none')
+          if(passport_location) passport_location.classList.remove('display-none')
+
+          if (data['company_name']) delete data['company_name']
+        }
+      }
+    }
+    /* end CMB-153 */
     this.setState({ formData: data })
   }
 
@@ -552,6 +587,11 @@ class OptPhanMemComponent extends Component {
                 <label className="expandable-form-label-field">Nơi cấp </label>
                 <input name="cf_passport_location" type="text" className="expandable-form-input-field"
                        onChange={this.handleChange} placeholder="Nhập nơi cấp CMT/MST"/>
+              </div>
+              <div className="expandable-form-wrapper-field display-none" id="company_name-wrapper">
+                <label className="expandable-form-label-field">Tên công ty </label>
+                <input name="company_name" type="text" className="expandable-form-input-field"
+                       onChange={this.handleChange} placeholder="Nhập tên công ty"/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_motachung-wrapper">
                 <label className="expandable-form-label-field">Mô tả chung về khách hàng </label>

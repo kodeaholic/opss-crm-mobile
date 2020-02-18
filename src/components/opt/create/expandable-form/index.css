@@ -192,3 +192,7 @@ button.create-opt-button:focus {
     font-style: italic;
     color: red;
 }
+
+.display-none {
+    display: none;
+}
