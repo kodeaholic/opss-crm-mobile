@@ -745,7 +745,7 @@ class OptPhanMemComponent extends Component {
                   className="expandable-form-label-field">Số cửa hàng (Số)</label>
                 <input name="cf_pot_sochinhanh" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập số lượng cửa hàng" onChange={this.handleChange}/>
+                       placeholder="Nhập số cửa hàng (số)" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_diachich-wrapper">
                 <label
