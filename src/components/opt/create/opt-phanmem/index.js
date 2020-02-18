@@ -160,8 +160,15 @@ class OptPhanMemComponent extends Component {
      * leadsource
      */
     /* Check neu undefined, tuc la user khong dong den, khong thay doi gi, thi lay du lieu tu contact */
-    if (!formData.hasOwnProperty('sales_stage')) formData['sales_stage'] = contactData.cf_887
-    if (!formData.hasOwnProperty('cf_pot_nganh_hang')) formData['cf_pot_nganh_hang'] = contactData.cf_contact_nganh_hang
+    if (!formData.hasOwnProperty('sales_stage')) formData['sales_stage'] = {
+      "label": "Bán hàng",
+      "value": "Sell"
+    }
+    if (!formData.hasOwnProperty('customer_type')) formData['customer_type'] = {
+      'label': 'Cá nhân',
+      'value': 'Cá nhân'
+    }
+      if (!formData.hasOwnProperty('cf_pot_nganh_hang')) formData['cf_pot_nganh_hang'] = contactData.cf_contact_nganh_hang
     if (!formData.hasOwnProperty('cf_mobile')) formData['cf_mobile'] = contactData.mobile
     if (!formData.hasOwnProperty('cf_contact_street')) formData['cf_contact_street'] = contactData.cf_contact_street
     if (!formData.hasOwnProperty('cf_email')) formData['cf_email'] = contactData.email
@@ -416,10 +423,6 @@ class OptPhanMemComponent extends Component {
                       'value': 'Chờ xác nhận'
                     },
                     {
-                      'label': 'Xác nhận',
-                      'value': 'Xác nhận'
-                    },
-                    {
                       'label': 'Từ chối',
                       'value': 'Từ chối'
                     }
@@ -435,7 +438,10 @@ class OptPhanMemComponent extends Component {
                   classNamePrefix="expandable-form-react-select"
                   cacheOptions
                   defaultOptions
-                  defaultValue={contactData.cf_887}
+                  defaultValue={{
+                    "label": "Bán hàng",
+                    "value": "Sell"
+                  }}
                   loadOptions={this.fetchContactStatus}
                   placeholder="Tình trạng"
                   onChange={this.onSelectChange.bind(this, 'sales_stage')}
@@ -477,6 +483,12 @@ class OptPhanMemComponent extends Component {
                 <Select
                   classNamePrefix="expandable-form-react-select"
                   isSearchable={false}
+                  defaultValue={
+                    {
+                      'label': 'Cá nhân',
+                      'value': 'Cá nhân'
+                    }
+                  }
                   options={[
                     {
                       'label': 'Cá nhân',
