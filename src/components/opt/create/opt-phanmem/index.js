@@ -208,6 +208,10 @@ class OptPhanMemComponent extends Component {
       error++
       this.addError('cf_email', 'Vui lòng nhập đúng định dạng email')
     }
+    if (formData.cf_pot_contractid && /\s/.test(formData.cf_pot_contractid)) {
+      error++
+      this.addError('cf_pot_contractid', 'Vui lòng không nhập dấu cách')
+    }
 
     // only numbers
     if (formData.cf_passport && !this.validateOnlyNumbers(formData.cf_passport, 'cf_passport')) error++
