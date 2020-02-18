@@ -43,11 +43,11 @@ button.wrapper-footer-link:focus {
     font-size: 12px;
     color: #757575;
 }
-@media (max-height: 500px) {
-  .wrapper-footer {
-    display: none;
-  }
-}
+/*@media (max-height: 480px) {*/
+/*  .wrapper-footer {*/
+/*    display: none;*/
+/*  }*/
+/*}*/
 .active {
   color: #006cad;
 }
