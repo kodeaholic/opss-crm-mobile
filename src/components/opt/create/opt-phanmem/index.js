@@ -400,7 +400,7 @@ class OptPhanMemComponent extends Component {
                 <label className="expandable-form-label-field">Cơ hội <span className="require-field"> *</span></label>
                 <input name="potentialname" type="text" className="expandable-form-input-field"
                        defaultValue="Hợp đồng phần mềm" disabled
-                       style={{ border: 'none', marginBottom: '0' }}/>
+                       style={{ border: 'none', marginBottom: '0', color: '#000000' }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="approval_status-wrapper">
                 <label className="expandable-form-label-field">
@@ -446,7 +446,7 @@ class OptPhanMemComponent extends Component {
                 <label className="expandable-form-label-field">Họ tên khách hàng</label>
                 <input name="lastname" type="text" className="expandable-form-input-field"
                        value={this.props.contactData.lastname} disabled
-                       style={{ border: 'none', marginBottom: '0' }}/>
+                       style={{ border: 'none', marginBottom: '0', color: '#000000' }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_nganh_hang-wrapper">
                 <label className="expandable-form-label-field">

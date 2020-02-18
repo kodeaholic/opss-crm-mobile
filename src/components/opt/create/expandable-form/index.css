@@ -100,6 +100,10 @@ textarea.expandable-form-input-field {
     font-size: 15px;
     -webkit-appearance: none;
 }
+input.expandable-form-input-field:disabled {
+    -webkit-text-fill-color: #000000;
+    opacity: 1; /* required on iOS */
+}
 
 ::placeholder {
     color: #a5a5a5;
