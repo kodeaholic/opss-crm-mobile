@@ -82,6 +82,12 @@ button.wrapper-footer-link:focus {
 .save-btn:focus {
   outline: none;
 }
+.responsive-footer-icon {
+  width: 16px;
+  height: 16px;
+  margin: 0 auto;
+  padding: 0;
+}
 .responsive-footer-icon.icon-active {
   filter: invert(24%) sepia(84%) saturate(1907%) hue-rotate(182deg) brightness(97%) contrast(101%);
   -webkit-filter: invert(24%) sepia(84%) saturate(1907%) hue-rotate(182deg) brightness(75%) contrast(101%);
