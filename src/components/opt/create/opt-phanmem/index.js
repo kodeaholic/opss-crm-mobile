@@ -257,9 +257,11 @@ class OptPhanMemComponent extends Component {
       })
       return false
     }
-    let session = this.props.currentUser.session
-    this.props.actions.requestSaveOpportunity({ session, data: formData })
-    // console.log(JSON.stringify(formData))
+    else {
+      e.target.disabled = true
+      let session = this.props.currentUser.session
+      this.props.actions.requestSaveOpportunity({ session, data: formData })
+    }
   }
 
   componentWillMount() {
@@ -464,7 +466,7 @@ class OptPhanMemComponent extends Component {
     } else {
       /* Contact data loaded */
       if (this.props.formSubmitResponseStatus) {
-        toast.success('Success', {
+        toast.success('Tạo thành công', {
           autoClose: 2000,
           draggable: false
         })
@@ -992,7 +994,14 @@ class OptPhanMemComponent extends Component {
                        className="expandable-form-input-field" onChange={this.handleChange}/>
               </div>
             </ExpandableFormComponent>
-            <button className="create-opt-button" onClick={this.handleSubmit}>Tạo</button>
+            <button className="create-opt-button" onClick={this.handleSubmit}>
+              {
+                !this.props.formSubmittingStatus && 'Tạo'
+              }
+              {
+                this.props.formSubmittingStatus && (<i className="fa fa-spinner fa-pulse fa-2x fa-fw" />)
+              }
+            </button>
           </div>
         )
       }
