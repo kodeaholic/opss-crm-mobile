@@ -697,10 +697,10 @@ class OptPhanMemComponent extends Component {
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_ma_voucer-wrapper">
                 <label
-                  className="expandable-form-label-field">Mã khuyến mãi</label>
+                  className="expandable-form-label-field">Mã KM</label>
                 <input name="cf_pot_ma_voucer" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập mã khuyến mãi" onChange={this.handleChange}/>
+                       placeholder="Nhập mã KM" onChange={this.handleChange}/>
               </div>
               <div className="expandable-form-wrapper-field" id="represent-wrapper">
                 <label
@@ -753,10 +753,10 @@ class OptPhanMemComponent extends Component {
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_khuyenmai-wrapper">
                 <label
-                  className="expandable-form-label-field">Khuyến mãi (số tháng)</label>
+                  className="expandable-form-label-field">Khuyến mại (SỐ tháng)</label>
                 <input name="cf_pot_khuyenmai" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập khuyến mãi" onChange={this.handleChange} onKeyDown={(e) => {
+                       placeholder="Nhập khuyến mại (SỐ tháng)" onChange={this.handleChange} onKeyDown={(e) => {
                   let key = e.nativeEvent.key
                   if (isNaN(key) && key !== 'Backspace') e.preventDefault()
                 }}/>
@@ -777,10 +777,10 @@ class OptPhanMemComponent extends Component {
               </div>
               <div className="expandable-form-wrapper-field" id="amount-wrapper">
                 <label
-                  className="expandable-form-label-field">Thanh toán</label>
+                  className="expandable-form-label-field">Thành tiền</label>
                 <span className="input-vnd-unit">
               <input name="amount" type="text" className="expandable-form-input-field"
-                     placeholder="Nhập số tiền thanh toán" defaultValue="0" onChange={this.handleChange}
+                     placeholder="Nhập thành tiền" defaultValue="0" onChange={this.handleChange}
                      onKeyDown={(e) => {
                        let key = e.nativeEvent.key
                        if (isNaN(key) && key !== 'Backspace') e.preventDefault()
@@ -788,7 +788,7 @@ class OptPhanMemComponent extends Component {
             </span>
               </div>
               <div className="expandable-form-wrapper-field" id="closedwon_date-wrapper">
-                <label className="expandable-form-label-field">Ngày kí hợp đồng </label>
+                <label className="expandable-form-label-field">Ngày ký hợp đồng </label>
                 <div className="expandable-form-input-date-wrapper">
                   <input name="closedwon_date" type="date" className="expandable-form-input-field"
                          onChange={this.handleChange}/>
