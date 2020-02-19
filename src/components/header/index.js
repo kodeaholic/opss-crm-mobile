@@ -58,10 +58,21 @@ const router = {
   },
   'ticket': {
     back: 'more'
-  }
-  // More
-
+  },
+  /* Tao moi opt */
+  'opt-phan-mem': {
+    back: 'contact-view',
+    title: 'Tạo mới hợp đồng phần mềm'
+  },
 }
+
+const pathNamesWithoutSearch = [
+  '/search',
+  'edit',
+  'convert',
+  'view',
+  '/opt-phan-mem',
+]
 
 class Header extends Component {
   constructor(props) {
@@ -267,7 +278,8 @@ class Header extends Component {
     let title = !_.isEmpty(objPathOnRouter)
       ? _.get(objPathOnRouter, 'title')
       : undefined
-    let hideSearch = this.props.location.pathname.indexOf('/search') !== -1 || this.props.location.pathname.indexOf('edit') !== -1 || this.props.location.pathname.indexOf('convert') !== -1 || this.props.location.pathname.indexOf('create') !== -1 || this.props.location.pathname.indexOf('view') !== -1
+    let pathNameToCheck = this.props.location.pathname
+    let hideSearch = pathNameToCheck.indexOf('/search') !== -1 || pathNameToCheck.indexOf('edit') !== -1 || pathNameToCheck.indexOf('convert') !== -1 || pathNameToCheck.indexOf('create') !== -1 || pathNameToCheck.indexOf('view') !== -1 || pathNameToCheck.indexOf('/opt-') !== -1
     return (
       <div className="wrapper-header" style={{ zIndex: 2 }}>
         <div className="wrapper-header-left">

@@ -25,6 +25,9 @@ import MetaTags from 'react-meta-tags'
 // import { messaging } from '../../init-fcm.js'
 import axios from 'axios'
 import './index.css'
+
+/* Opt component */
+import OptPhanMemComponent from '../opt/create/opt-phanmem'
 if ('Notification' in window) {
   console.log('Notification API supported')
   var messaging = require('../../init-fcm').messaging
@@ -266,6 +269,11 @@ class App extends React.Component {
           exact
           path="/add-to-home-screen"
           component={AddToHomeScreen}
+        />
+        <Route
+          exact
+          path="/opt-phan-mem/:id"
+          component={OptPhanMemComponent}
         />
         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
         <div id="snackbar">

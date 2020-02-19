@@ -59,6 +59,7 @@ export default (state = initialState, action) => {
       data['allowed_to_edit_lead_source'] = result.allowed_to_edit_lead_source
       data['allowed_to_edit_contact'] = result.allowed_to_edit_contact
       data['allowed_to_edit_phone'] = result.allowed_to_edit_phone
+      data['email'] = result.email
       state['cities'] = result.cities
       state['mapCityState'] = result.mapCityState
       state['data'] = data
@@ -121,7 +122,7 @@ export const fetchContactRecord = payload => {
       })
       .catch(err => {
         console.log(err)
-        return dispatch(fetchContactSuccess(err))
+        return dispatch(fetchContactFailed(err))
       })
   }
 }

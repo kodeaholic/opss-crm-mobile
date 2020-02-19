@@ -202,4 +202,5 @@ input#search {
   color: #ffffff;
   font-family: Roboto;
   font-weight: bold;
+  white-space: nowrap;
 }
