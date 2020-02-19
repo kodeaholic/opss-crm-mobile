@@ -46,7 +46,32 @@ const mapDispatchToProps = dispatch => ({
     dispatch
   )
 })
-
+let conditionalRequiredFields = {
+  'personal': {
+    'cf_birthday': 'Ngày sinh',
+    'cf_passport': 'Số CMT/MST',
+    'cf_passport_date': 'Ngày cấp',
+    'cf_passport_location': 'Nơi cấp',
+    'cf_pot_contractid': 'Số hợp đồng',
+    'cf_pot_goihd': 'Gói hợp đồng',
+    'cf_pot_diachich': 'Địa chỉ',
+    'cf_pot_startdate': 'Ngày bắt đầu',
+    'cf_pot_enddate': 'Ngày kết thúc',
+    'closedwon_date': 'Ngày ký hợp đồng',
+    'cf_pot_hinhthuctt': 'Hình thức thanh toán',
+  },
+  'company': {
+    'cf_passport': 'Số CMT/MST',
+    'company_name': 'Tên công ty',
+    'cf_pot_contractid': 'Số hợp đồng',
+    'cf_pot_goihd': 'Gói hợp đồng',
+    'cf_pot_diachich': 'Địa chỉ',
+    'cf_pot_startdate': 'Ngày bắt đầu',
+    'cf_pot_enddate': 'Ngày kết thúc',
+    'closedwon_date': 'Ngày ký hợp đồng',
+    'cf_pot_hinhthuctt': 'Hình thức thanh toán',
+  }
+}
 class OptPhanMemComponent extends Component {
   constructor(props) {
     super(props)
@@ -135,6 +160,49 @@ class OptPhanMemComponent extends Component {
     }
   }
 
+  /* CMB-155 */
+  checkConditionalRequiredFields = (formData) => {
+    let sales_stage = _.get(formData, 'sales_stage.value')
+    if (sales_stage) {
+      if (sales_stage === 'Chờ Xét Duyệt' || sales_stage === 'ClosedWon') {
+        let customer_type = _.get(formData, 'customer_type.value')
+        let fields = undefined
+        let requiredFields = []
+        let requiredIDs = []
+        if (customer_type) {
+          switch (customer_type) {
+            case 'Cá nhân':
+              fields = _.get(conditionalRequiredFields, 'personal')
+              break
+            case 'Công ty':
+              fields = _.get(conditionalRequiredFields, 'company')
+              break
+            default:
+              break
+          }
+        }
+        if (fields !== undefined) {
+          // check additional required fields
+          for (let prop in fields) {
+            if (fields.hasOwnProperty(prop) && _.isEmpty(formData[prop])) {
+              requiredFields.push(fields[prop])
+              requiredIDs.push(prop)
+            }
+          }
+        }
+        if (!_.isEmpty(requiredFields)) {
+          alert("Vui lòng nhập các trường dữ liệu sau: \r\n" + requiredFields.join("\r\n"))
+          let toFocus = requiredIDs[0]
+          let input = document.querySelectorAll('input[name$="' + toFocus + '"]')[0]
+          if (input) input.focus()
+          return "BREAKPOINT"
+        }
+        else return "CONTINUE"
+      }
+      else return "CONTINUE"
+    } else return "CONTINUE"
+  }
+
   handleSubmit(e) {
     e.preventDefault()
     let contactData = this.props.contactData
@@ -197,6 +265,8 @@ class OptPhanMemComponent extends Component {
     if (!this.validateRequiredField(formData.cf_contact_street, 'cf_contact_street')) error++
     if (!this.validateRequiredField(formData.cf_email, 'cf_email')) error++
 
+    let checkAdditionalFields = this.checkConditionalRequiredFields(formData)
+    if (checkAdditionalFields === "BREAKPOINT") return false
     // website
     let websiteRegex = /[^a-zA-Z0-9]/g
     if (formData.cf_pot_website && (websiteRegex.test(formData.cf_pot_website) || formData.cf_pot_website.length >= 255)) {
