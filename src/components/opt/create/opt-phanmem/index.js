@@ -192,9 +192,9 @@ class OptPhanMemComponent extends Component {
         }
         if (!_.isEmpty(requiredFields)) {
           alert("Vui lòng nhập các trường dữ liệu sau: \r\n" + requiredFields.join("\r\n"))
-          let toFocus = requiredIDs[0]
-          let input = document.querySelectorAll('input[name$="' + toFocus + '"]')[0]
-          if (input) input.focus()
+          // let toFocus = requiredIDs[0]
+          // let input = document.querySelectorAll('input[name$="' + toFocus + '"]')[0]
+          // if (input) input.focus()
           return "BREAKPOINT"
         }
         else return "CONTINUE"
