@@ -1,0 +1,198 @@
+.expandable-form {
+    width: 100%;
+    border-bottom: #E6E6E6 1px solid;
+}
+
+.expandable-form-heading {
+    height: 40px;
+    color: #006CAD;
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 15px;
+    margin-top: 5px;
+    padding-top: 8px;
+}
+
+.expandable-form-content {
+    margin-left: 15px;
+    margin-bottom: 15px;
+    margin-right: 15px;
+}
+
+.float-right-caret-icon {
+    float: right;
+    margin-right: 15px;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+
+/* Form Elements */
+.expandable-form-button {
+    padding: 0 12px;
+}
+
+/*.expandable-form-field {*/
+/*    padding-top: 15px;*/
+/*    background-color: #fff;*/
+/*    padding-bottom: 10px;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: center;*/
+/*}*/
+
+.expandable-form-wrapper-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.expandable-form-label-field {
+    flex: 1;
+    font-family: Roboto;
+    color: #000000;
+}
+
+.expandable-form-label-error {
+    font-size: 10px;
+    font-style: italic;
+    color: red;
+}
+
+.expandable-form-require-field {
+    color: red;
+}
+.expandable-form-input-field {
+    text-indent: 5px;
+}
+input.expandable-form-input-field {
+    flex: 0 0 40px;
+    background-color: white;
+    border: 1px solid #dddddd;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height: 40px;
+    width: auto;
+    padding-left: 3px;
+    margin-bottom: 5px;
+    font-size: 15px;
+    -webkit-appearance: none;
+}
+
+textarea.expandable-form-input-field {
+    background-color: #F9F9F9;
+    border: 1px solid #dddddd;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    width: auto;
+    padding-left: 3px;
+    margin-bottom: 5px;
+    font-size: 15px;
+    -webkit-appearance: none;
+}
+input.expandable-form-input-field:disabled {
+    -webkit-text-fill-color: #000000;
+    opacity: 1; /* required on iOS */
+}
+
+::placeholder {
+    color: #a5a5a5;
+    font-style: italic;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: normal;
+    text-indent: 5px !important;
+}
+
+div[class*="-placeholder"] {
+    color: #a5a5a5;
+    font-style: italic;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+/* select box */
+span[class*="indicatorSeparator"] {
+    display: none;
+}
+.expandable-form-react-select__control {
+    border: #dddddd 1px solid !important;
+}
+.expandable-form-react-select__single-value {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.expandable-form-input-date-wrapper > input {
+    width: 90%;
+    text-indent: 2px;
+}
+.expandable-form-input-date-wrapper > i {
+    margin-top: 12px;
+    color: #1492E6;
+}
+
+/* For input with right label (VND) */
+.input-vnd-unit {
+    position: relative;
+}
+.input-vnd-unit input {
+    width: 100%;
+}
+.input-vnd-unit:before {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    content:"VNĐ";
+    font-family: Roboto;
+    font-size: 14px;
+}
+
+/* Button */
+.create-opt-button {
+    margin: 15px;
+    width: calc(100% - 30px);
+    height: 40px;
+    background-color: #58BA47;
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #ffffff;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 3px 3px 0 rgba(17, 17, 17, 0.1);
+}
+button.create-opt-button:focus {
+    outline: none;
+}
+
+/* start-date & end-date */
+.row-col-2 {
+    margin-top: 0;
+    display: flex;
+    flex-direction: row;
+}
+.row-col-2 > div:nth-child(1) {
+    margin-right: 5px;
+}
+.expandable-form-label-error {
+    font-size: 10px;
+    font-style: italic;
+    color: red;
+}
+
+.display-none {
+    display: none;
+}
