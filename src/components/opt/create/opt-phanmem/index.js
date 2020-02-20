@@ -26,7 +26,18 @@ import ExpandableFormComponent from '../expandable-form'
 import './index.css'
 import Select from 'react-select'
 import AsyncSelect from 'react-select/async/dist/react-select.esm'
-
+import {
+  checkConditionalRequiredFields,
+  focusParentDateInput,
+  validateMaxLength,
+  validateOnlyNumbers,
+  validateRequiredField,
+  clearError,
+  addError,
+  emailRegex,
+  websiteRegex,
+  getSessionFromLocalStorage
+} from '../common/index'
 const mapStateToProps = (state) => ({
   expired: getSessionStatus(state),
   currentUser: getUserLoggedIn(state),
@@ -46,32 +57,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch
   )
 })
-let conditionalRequiredFields = {
-  'personal': {
-    'cf_birthday': 'Ngày sinh',
-    'cf_passport': 'Số CMT/MST',
-    'cf_passport_date': 'Ngày cấp',
-    'cf_passport_location': 'Nơi cấp',
-    'cf_pot_contractid': 'Số hợp đồng',
-    'cf_pot_goihd': 'Gói hợp đồng',
-    'cf_pot_diachich': 'Địa chỉ',
-    'cf_pot_startdate': 'Ngày bắt đầu',
-    'cf_pot_enddate': 'Ngày kết thúc',
-    'closedwon_date': 'Ngày ký hợp đồng',
-    'cf_pot_hinhthuctt': 'Hình thức thanh toán',
-  },
-  'company': {
-    'cf_passport': 'Số CMT/MST',
-    'company_name': 'Tên công ty',
-    'cf_pot_contractid': 'Số hợp đồng',
-    'cf_pot_goihd': 'Gói hợp đồng',
-    'cf_pot_diachich': 'Địa chỉ',
-    'cf_pot_startdate': 'Ngày bắt đầu',
-    'cf_pot_enddate': 'Ngày kết thúc',
-    'closedwon_date': 'Ngày ký hợp đồng',
-    'cf_pot_hinhthuctt': 'Hình thức thanh toán',
-  }
-}
+
 class OptPhanMemComponent extends Component {
   constructor(props) {
     super(props)
@@ -106,101 +92,6 @@ class OptPhanMemComponent extends Component {
       cityChanged: false,
       stateChanged: false
     }
-  }
-
-  focusParentDateInput = (e) => {
-    let input = e.target.previousSibling
-    if (input) {
-      input.click() /* For mobile users */
-      input.focus() /* For pc users */
-    }
-  }
-
-  addError = (name, content) => {
-    if (!document.getElementById(name + '-error')) {
-      let nameField = document.getElementById(name + '-wrapper')
-      let error = document.createElement('label')
-      error.setAttribute('class', 'expandable-form-label-error')
-      error.setAttribute('id', name + '-error')
-      let node = document.createTextNode(content)
-      error.appendChild(node)
-      nameField.appendChild(error)
-    }
-    return false
-  }
-  clearError = (name) => {
-    let labelError = document.getElementById(name + '-error')
-    if (labelError) labelError.remove()
-  }
-
-  validateRequiredField(value, name) {
-    /* value = value of field */
-    /* name = name of field */
-    if (!_.isEmpty(value)) return true
-    else {
-      this.addError(name, 'Vui lòng không để trống')
-      return false
-    }
-  }
-
-  validateMaxLength(value, name, length = 255) {
-    if (value.length <= length) return true
-    else {
-      this.addError(name, 'Vui lòng nhập ít hơn 255 kí tự')
-      return false
-    }
-  }
-
-  validateOnlyNumbers(value, name, length = 255) {
-    let onlyNumberRegex = /^[0-9]{1,255}$/g
-    if (value.length <= length && onlyNumberRegex.test(value)) return true
-    else {
-      this.addError(name, 'Vui lòng chỉ nhập số')
-      return false
-    }
-  }
-
-  /* CMB-155 */
-  checkConditionalRequiredFields = (formData) => {
-    let sales_stage = _.get(formData, 'sales_stage.value')
-    if (sales_stage) {
-      if (sales_stage === 'Chờ Xét Duyệt' || sales_stage === 'ClosedWon') {
-        let customer_type = _.get(formData, 'customer_type.value')
-        let fields = undefined
-        let requiredFields = []
-        let requiredIDs = []
-        if (customer_type) {
-          switch (customer_type) {
-            case 'Cá nhân':
-              fields = _.get(conditionalRequiredFields, 'personal')
-              break
-            case 'Công ty':
-              fields = _.get(conditionalRequiredFields, 'company')
-              break
-            default:
-              break
-          }
-        }
-        if (fields !== undefined) {
-          // check additional required fields
-          for (let prop in fields) {
-            if (fields.hasOwnProperty(prop) && _.isEmpty(formData[prop])) {
-              requiredFields.push(fields[prop])
-              requiredIDs.push(prop)
-            }
-          }
-        }
-        if (!_.isEmpty(requiredFields)) {
-          alert("Vui lòng nhập các trường dữ liệu sau: \r\n" + requiredFields.join("\r\n"))
-          // let toFocus = requiredIDs[0]
-          // let input = document.querySelectorAll('input[name$="' + toFocus + '"]')[0]
-          // if (input) input.focus()
-          return "BREAKPOINT"
-        }
-        else return "CONTINUE"
-      }
-      else return "CONTINUE"
-    } else return "CONTINUE"
   }
 
   handleSubmit(e) {
@@ -249,76 +140,75 @@ class OptPhanMemComponent extends Component {
     if (!formData.hasOwnProperty('assigned_user_id')) formData['assigned_user_id'] = contactData.assigned_user_id
 
     /* validation - edit */
-    let phoneRegex = /^[0-9]{1,255}$/g
     let error = 0
 
     // Required combobox
-    if (!this.validateRequiredField(formData.sales_stage, 'sales_stage')) error++
-    if (!this.validateRequiredField(formData.cf_pot_nganh_hang, 'cf_pot_nganh_hang')) error++
-    if (!this.validateRequiredField(formData.customer_type, 'customer_type')) error++
-    if (!this.validateRequiredField(formData.leadsource, 'leadsource')) error++
-    if (!this.validateRequiredField(formData.cf_city, 'cf_city')) error++
-    if (!this.validateRequiredField(formData.cf_state, 'cf_state')) error++
-    if (!this.validateRequiredField(formData.cf_pot_khu_vuc, 'cf_pot_khu_vuc')) error++
-    if (!this.validateRequiredField(formData.assigned_user_id, 'assigned_user_id')) error++
-    if (!this.validateRequiredField(formData.cf_mobile, 'cf_mobile')) error++
-    if (!this.validateRequiredField(formData.cf_contact_street, 'cf_contact_street')) error++
-    if (!this.validateRequiredField(formData.cf_email, 'cf_email')) error++
+    if (!validateRequiredField(formData.sales_stage, 'sales_stage')) error++
+    if (!validateRequiredField(formData.cf_pot_nganh_hang, 'cf_pot_nganh_hang')) error++
+    if (!validateRequiredField(formData.customer_type, 'customer_type')) error++
+    if (!validateRequiredField(formData.leadsource, 'leadsource')) error++
+    if (!validateRequiredField(formData.cf_city, 'cf_city')) error++
+    if (!validateRequiredField(formData.cf_state, 'cf_state')) error++
+    if (!validateRequiredField(formData.cf_pot_khu_vuc, 'cf_pot_khu_vuc')) error++
+    if (!validateRequiredField(formData.assigned_user_id, 'assigned_user_id')) error++
+    if (!validateRequiredField(formData.cf_mobile, 'cf_mobile')) error++
+    if (!validateRequiredField(formData.cf_contact_street, 'cf_contact_street')) error++
+    if (!validateRequiredField(formData.cf_email, 'cf_email')) error++
 
-    let checkAdditionalFields = this.checkConditionalRequiredFields(formData)
+    let checkAdditionalFields = checkConditionalRequiredFields(formData)
     if (checkAdditionalFields === "BREAKPOINT") return false
     // website
-    let websiteRegex = /[^a-zA-Z0-9]/g
     if (formData.cf_pot_website && (websiteRegex.test(formData.cf_pot_website) || formData.cf_pot_website.length >= 255)) {
       error++
-      this.addError('cf_pot_website', 'Chỉ nhập số và chữ, không quá 255 kí tự')
+      addError('cf_pot_website', 'Chỉ nhập số và chữ, không quá 255 kí tự')
     }
-    let emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
     if (formData.cf_email && !emailRegex.test(formData.cf_email)) {
       error++
-      this.addError('cf_email', 'Vui lòng nhập đúng định dạng email')
+      addError('cf_email', 'Vui lòng nhập đúng định dạng email')
     }
     if (formData.cf_pot_contractid && /\s/.test(formData.cf_pot_contractid)) {
       error++
-      this.addError('cf_pot_contractid', 'Vui lòng không nhập dấu cách')
+      addError('cf_pot_contractid', 'Vui lòng không nhập dấu cách')
     }
 
     // only numbers
-    if (formData.cf_passport && !this.validateOnlyNumbers(formData.cf_passport, 'cf_passport')) error++
-    if (formData.cf_mobile && !this.validateOnlyNumbers(formData.cf_mobile, 'cf_mobile')) error++
-    if (formData.cf_pot_thoihan && !this.validateOnlyNumbers(formData.cf_pot_thoihan, 'cf_pot_thoihan')) error++
-    if (formData.cf_pot_khuyenmai && !this.validateOnlyNumbers(formData.cf_pot_khuyenmai, 'cf_pot_khuyenmai')) error++
-    if (formData.amount && !this.validateOnlyNumbers(formData.amount, 'amount')) error++
-    if (formData.cf_pot_sochinhanh && !this.validateOnlyNumbers(formData.cf_pot_sochinhanh, 'cf_pot_sochinhanh')) error++
+    // if (formData.cf_passport && !validateOnlyNumbers(formData.cf_passport, 'cf_passport')) error++ // bo chan, cho nhap text thoai mai CMB-155#comment
+    if (formData.cf_mobile && !validateOnlyNumbers(formData.cf_mobile, 'cf_mobile')) error++
+    if (formData.cf_pot_thoihan && !validateOnlyNumbers(formData.cf_pot_thoihan, 'cf_pot_thoihan')) error++
+    if (formData.cf_pot_khuyenmai && !validateOnlyNumbers(formData.cf_pot_khuyenmai, 'cf_pot_khuyenmai')) error++
+    if (formData.amount && !validateOnlyNumbers(formData.amount, 'amount')) error++
+    if (formData.cf_pot_sochinhanh && !validateOnlyNumbers(formData.cf_pot_sochinhanh, 'cf_pot_sochinhanh')) error++
 
     // max length
-    if (formData.cf_pot_website && !this.validateMaxLength(formData.cf_pot_website, 'cf_pot_website')) error++
-    if (formData.cf_passport_location && !this.validateMaxLength(formData.cf_passport_location, 'cf_passport_location')) error++
-    if (formData.cf_pot_motachung && !this.validateMaxLength(formData.cf_pot_motachung, 'cf_pot_motachung')) error++
-    if (formData.cf_mobile && !this.validateMaxLength(formData.cf_mobile, 'cf_mobile')) error++
-    if (formData.cf_contact_street && !this.validateMaxLength(formData.cf_contact_street, 'cf_contact_street')) error++
-    if (formData.cf_email && !this.validateMaxLength(formData.cf_email, 'cf_email')) error++
-    if (formData.cf_pot_lead_source_des && !this.validateMaxLength(formData.cf_pot_lead_source_des, 'cf_pot_lead_source_des')) error++
-    if (formData.cf_pot_thoihan && !this.validateMaxLength(formData.cf_pot_thoihan, 'cf_pot_thoihan')) error++
-    if (formData.cf_pot_khuyenmai && !this.validateMaxLength(formData.cf_pot_khuyenmai, 'cf_pot_khuyenmai')) error++
-    if (formData.cf_pot_contractid && !this.validateMaxLength(formData.cf_pot_contractid, 'cf_pot_contractid')) error++
+    if (formData.cf_passport && !validateMaxLength(formData.cf_passport, 'cf_passport')) error++
+    if (formData.cf_pot_website && !validateMaxLength(formData.cf_pot_website, 'cf_pot_website')) error++
+    if (formData.cf_passport_location && !validateMaxLength(formData.cf_passport_location, 'cf_passport_location')) error++
+    if (formData.cf_pot_motachung && !validateMaxLength(formData.cf_pot_motachung, 'cf_pot_motachung')) error++
+    if (formData.cf_mobile && !validateMaxLength(formData.cf_mobile, 'cf_mobile')) error++
+    if (formData.cf_contact_street && !validateMaxLength(formData.cf_contact_street, 'cf_contact_street')) error++
+    if (formData.cf_email && !validateMaxLength(formData.cf_email, 'cf_email')) error++
+    if (formData.cf_pot_lead_source_des && !validateMaxLength(formData.cf_pot_lead_source_des, 'cf_pot_lead_source_des')) error++
+    if (formData.cf_pot_thoihan && !validateMaxLength(formData.cf_pot_thoihan, 'cf_pot_thoihan')) error++
+    if (formData.cf_pot_khuyenmai && !validateMaxLength(formData.cf_pot_khuyenmai, 'cf_pot_khuyenmai')) error++
+    if (formData.cf_pot_contractid && !validateMaxLength(formData.cf_pot_contractid, 'cf_pot_contractid')) error++
 
-    if (formData.cf_pot_contractid && !this.validateMaxLength(formData.cf_pot_contractid, 'cf_pot_contractid')) error++
-    if (formData.cf_pot_ma_voucer && !this.validateMaxLength(formData.cf_pot_ma_voucer, 'cf_pot_ma_voucer')) error++
-    if (formData.represent && !this.validateMaxLength(formData.represent, 'represent')) error++
-    if (formData.amount && !this.validateMaxLength(formData.amount, 'amount')) error++
-    if (formData.cf_branch_address && !this.validateMaxLength(formData.cf_branch_address, 'cf_branch_address')) error++
-    if (formData.cf_pot_diachich && !this.validateMaxLength(formData.cf_pot_diachich, 'cf_pot_diachich')) error++
-    if (formData.cf_pot_note && !this.validateMaxLength(formData.cf_pot_note, 'cf_pot_note')) error++
-    if (formData.cf_871 && !this.validateMaxLength(formData.cf_871, 'cf_871')) error++
-    if (formData.cf_pot_tinhhinhkinhdoanh && !this.validateMaxLength(formData.cf_pot_tinhhinhkinhdoanh, 'cf_pot_tinhhinhkinhdoanh')) error++
-    if (formData.cf_pot_tinhnang && !this.validateMaxLength(formData.cf_pot_tinhnang, 'cf_pot_tinhnang')) error++
-    if (formData.cf_pot_hinhthuccongcu && !this.validateMaxLength(formData.cf_pot_hinhthuccongcu, 'cf_pot_hinhthuccongcu')) error++
-    if (formData.cf_pot_diemyeu && !this.validateMaxLength(formData.cf_pot_diemyeu, 'cf_pot_diemyeu')) error++
-    if (formData.cf_pot_khokhan && !this.validateMaxLength(formData.cf_pot_khokhan, 'cf_pot_khokhan')) error++
-    if (formData.cf_pot_tinhchudong && !this.validateMaxLength(formData.cf_pot_tinhchudong, 'cf_pot_tinhchudong')) error++
-    if (formData.cf_pot_ngancankh && !this.validateMaxLength(formData.cf_pot_ngancankh, 'cf_pot_ngancankh')) error++
-    if (formData.cf_pot_doithunao && !this.validateMaxLength(formData.cf_pot_doithunao, 'cf_pot_doithunao')) error++
+    if (formData.cf_pot_contractid && !validateMaxLength(formData.cf_pot_contractid, 'cf_pot_contractid')) error++
+    if (formData.cf_pot_ma_voucer && !validateMaxLength(formData.cf_pot_ma_voucer, 'cf_pot_ma_voucer')) error++
+    if (formData.represent && !validateMaxLength(formData.represent, 'represent')) error++
+    if (formData.amount && !validateMaxLength(formData.amount, 'amount')) error++
+    if (formData.cf_branch_address && !validateMaxLength(formData.cf_branch_address, 'cf_branch_address')) error++
+    if (formData.cf_pot_diachich && !validateMaxLength(formData.cf_pot_diachich, 'cf_pot_diachich')) error++
+    if (formData.cf_pot_note && !validateMaxLength(formData.cf_pot_note, 'cf_pot_note')) error++
+    if (formData.cf_871 && !validateMaxLength(formData.cf_871, 'cf_871')) error++
+    if (formData.cf_pot_tinhhinhkinhdoanh && !validateMaxLength(formData.cf_pot_tinhhinhkinhdoanh, 'cf_pot_tinhhinhkinhdoanh')) error++
+    if (formData.cf_pot_tinhnang && !validateMaxLength(formData.cf_pot_tinhnang, 'cf_pot_tinhnang')) error++
+    if (formData.cf_pot_hinhthuccongcu && !validateMaxLength(formData.cf_pot_hinhthuccongcu, 'cf_pot_hinhthuccongcu')) error++
+    if (formData.cf_pot_diemyeu && !validateMaxLength(formData.cf_pot_diemyeu, 'cf_pot_diemyeu')) error++
+    if (formData.cf_pot_khokhan && !validateMaxLength(formData.cf_pot_khokhan, 'cf_pot_khokhan')) error++
+    if (formData.cf_pot_tinhchudong && !validateMaxLength(formData.cf_pot_tinhchudong, 'cf_pot_tinhchudong')) error++
+    if (formData.cf_pot_ngancankh && !validateMaxLength(formData.cf_pot_ngancankh, 'cf_pot_ngancankh')) error++
+    if (formData.cf_pot_doithunao && !validateMaxLength(formData.cf_pot_doithunao, 'cf_pot_doithunao')) error++
 
     if (error > 0) {
       toast.error('Vui lòng hoàn thiện các trường chưa đúng', {
@@ -339,9 +229,7 @@ class OptPhanMemComponent extends Component {
     let session = null
     if (currentUser) session = currentUser.session
     if (_.isEmpty(session)) {
-      let userLoginData = localStorage.getItem('userLoggedInKV')
-      userLoginData = JSON.parse(userLoginData).result.login
-      session = userLoginData.session
+      session = getSessionFromLocalStorage()
     }
     this.setState({ session: session })
     let record = this.state.record
@@ -352,7 +240,7 @@ class OptPhanMemComponent extends Component {
     const { name, value } = e.target
     let data = this.state.formData
     data[name] = value
-    this.clearError(name)
+    clearError(name)
 
     /* CMB-162: tinh ngay ket thuc */
     Date.prototype.yyyymmdd = function() {
@@ -403,7 +291,7 @@ class OptPhanMemComponent extends Component {
   onSelectChange(name, value) {
     let data = this.state.formData
     data[name] = value
-    this.clearError(name)
+    clearError(name)
     if (name === 'cf_city') {
       data.cf_state = undefined
       this.setState({ formData: data, currentCity: value, currentState: null, cityChanged: true })
@@ -663,7 +551,7 @@ class OptPhanMemComponent extends Component {
                 <div className="expandable-form-input-date-wrapper">
                   <input name="cf_birthday" type="date" className="expandable-form-input-field"
                          onChange={this.handleChange}/>
-                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}
+                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={focusParentDateInput}
                      style={{ color: '#1492E6' }}/>
                 </div>
               </div>
@@ -700,7 +588,7 @@ class OptPhanMemComponent extends Component {
                 <div className="expandable-form-input-date-wrapper">
                   <input name="cf_passport_date" type="date" className="expandable-form-input-field"
                          onChange={this.handleChange}/>
-                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
+                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={focusParentDateInput}/>
                 </div>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_passport_location-wrapper">
@@ -861,7 +749,7 @@ class OptPhanMemComponent extends Component {
                 <div className="expandable-form-input-date-wrapper">
                   <input name="closedwon_date" type="date" className="expandable-form-input-field"
                          onChange={this.handleChange}/>
-                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
+                  <i className="fa fa-calendar float-right" aria-hidden="true" onClick={focusParentDateInput}/>
                 </div>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_ma_voucer-wrapper">
@@ -877,7 +765,7 @@ class OptPhanMemComponent extends Component {
                   <div className="expandable-form-input-date-wrapper">
                     <input name="cf_pot_startdate" type="date" className="expandable-form-input-field"
                            style={{ width: '88%' }} onChange={this.handleChange} id="cf_pot_startdate"/>
-                    <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
+                    <i className="fa fa-calendar float-right" aria-hidden="true" onClick={focusParentDateInput}/>
                   </div>
                 </div>
                 <div className="expandable-form-wrapper-field" id="cf_pot_enddate-wrapper">
@@ -885,7 +773,7 @@ class OptPhanMemComponent extends Component {
                   <div className="expandable-form-input-date-wrapper">
                     <input name="cf_pot_enddate" type="date" className="expandable-form-input-field"
                            style={{ width: '88%' }} onChange={this.handleChange} id="cf_pot_enddate"/>
-                    <i className="fa fa-calendar float-right" aria-hidden="true" onClick={this.focusParentDateInput}/>
+                    <i className="fa fa-calendar float-right" aria-hidden="true" onClick={focusParentDateInput}/>
                   </div>
                 </div>
               </div>
