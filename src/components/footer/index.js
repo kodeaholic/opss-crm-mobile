@@ -111,7 +111,7 @@ const renderOptSelection = () => {
             <Link to={"#"} id="optPhanMem" className="opt-selection-row-content" href="#" onClick={showRightAngle} path="/opt-phan-mem">Hợp đồng phần mềm <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
-            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng phần cứng <span className="right-angle">&#8250;</span></Link>
+            <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle} path="/opt-phan-cung">Hợp đồng phần cứng <span className="right-angle">&#8250;</span></Link>
           </div>
           <div className="opt-selection-row">
             <Link to={"#"} className="opt-selection-row-content" href="#" onClick={showRightAngle}>Hợp đồng tái ký KPI <span className="right-angle">&#8250;</span></Link>

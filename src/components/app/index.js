@@ -28,6 +28,7 @@ import './index.css'
 
 /* Opt component */
 import OptPhanMemComponent from '../opt/create/opt-phanmem'
+import OptPhanCungComponent from '../opt/create/opt-phancung'
 if ('Notification' in window) {
   console.log('Notification API supported')
   var messaging = require('../../init-fcm').messaging
@@ -274,6 +275,11 @@ class App extends React.Component {
           exact
           path="/opt-phan-mem/:id"
           component={OptPhanMemComponent}
+        />
+        <Route
+          exact
+          path="/opt-phan-cung/:id"
+          component={OptPhanCungComponent}
         />
         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
         <div id="snackbar">
