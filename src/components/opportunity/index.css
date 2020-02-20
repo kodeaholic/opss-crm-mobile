@@ -1,0 +1,13 @@
+.wrapper-potential {
+    width: 100%;
+    padding-bottom: 55px;
+    padding-top: 50px;
+    height: 100%;
+    background-color: #ffffff;
+}
+
+.wrapper-list-potential {
+    background-color: #ededed;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
