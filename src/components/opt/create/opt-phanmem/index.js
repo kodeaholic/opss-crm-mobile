@@ -173,7 +173,7 @@ class OptPhanMemComponent extends Component {
     }
 
     // only numbers
-    if (formData.cf_passport && !validateOnlyNumbers(formData.cf_passport, 'cf_passport')) error++
+    // if (formData.cf_passport && !validateOnlyNumbers(formData.cf_passport, 'cf_passport')) error++ // bo chan, cho nhap text thoai mai CMB-155#comment
     if (formData.cf_mobile && !validateOnlyNumbers(formData.cf_mobile, 'cf_mobile')) error++
     if (formData.cf_pot_thoihan && !validateOnlyNumbers(formData.cf_pot_thoihan, 'cf_pot_thoihan')) error++
     if (formData.cf_pot_khuyenmai && !validateOnlyNumbers(formData.cf_pot_khuyenmai, 'cf_pot_khuyenmai')) error++
@@ -181,6 +181,7 @@ class OptPhanMemComponent extends Component {
     if (formData.cf_pot_sochinhanh && !validateOnlyNumbers(formData.cf_pot_sochinhanh, 'cf_pot_sochinhanh')) error++
 
     // max length
+    if (formData.cf_passport && !validateMaxLength(formData.cf_passport, 'cf_passport')) error++
     if (formData.cf_pot_website && !validateMaxLength(formData.cf_pot_website, 'cf_pot_website')) error++
     if (formData.cf_passport_location && !validateMaxLength(formData.cf_passport_location, 'cf_passport_location')) error++
     if (formData.cf_pot_motachung && !validateMaxLength(formData.cf_pot_motachung, 'cf_pot_motachung')) error++

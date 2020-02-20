@@ -7,6 +7,7 @@ export const phoneRegex = /^[0-9]{1,255}$/g
 
 export const conditionalRequiredFields = {
   'personal': {
+    'cf_gender': 'Giới tính',
     'cf_birthday': 'Ngày sinh',
     'cf_passport': 'Số CMT/MST',
     'cf_passport_date': 'Ngày cấp',
@@ -17,7 +18,10 @@ export const conditionalRequiredFields = {
     'cf_pot_startdate': 'Ngày bắt đầu',
     'cf_pot_enddate': 'Ngày kết thúc',
     'closedwon_date': 'Ngày ký hợp đồng',
-    'cf_pot_hinhthuctt': 'Hình thức thanh toán'
+    'cf_pot_khuyenmai': 'Khuyến mại',
+    'cf_pot_sochinhanh': 'Số chi nhánh',
+    'cf_pot_hinhthuctt': 'Hình thức thanh toán',
+    'amount': 'Thành tiền'
   },
   'company': {
     'cf_passport': 'Số CMT/MST',
@@ -28,7 +32,10 @@ export const conditionalRequiredFields = {
     'cf_pot_startdate': 'Ngày bắt đầu',
     'cf_pot_enddate': 'Ngày kết thúc',
     'closedwon_date': 'Ngày ký hợp đồng',
-    'cf_pot_hinhthuctt': 'Hình thức thanh toán'
+    'cf_pot_khuyenmai': 'Khuyến mại',
+    'cf_pot_sochinhanh': 'Số chi nhánh',
+    'cf_pot_hinhthuctt': 'Hình thức thanh toán',
+    'amount': 'Thành tiền'
   }
 }
 
