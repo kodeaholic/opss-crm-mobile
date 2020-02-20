@@ -4,6 +4,7 @@ import compose from 'recompose/compose'
 import Home from '../home'
 import Lead from '../lead'
 import Contact from '../contact'
+import Potentials from '../opportunity'
 import Search from '../search'
 import LeadComponent from '../lead-detail'
 import ContactComponent from '../contact-detail'
@@ -183,6 +184,7 @@ class App extends React.Component {
         <Route exact path="/home" component={Home}/>
         <Route exact path="/lead" component={Lead}/>
         <Route exact path="/contact" component={Contact}/>
+        <Route exact path="/opportunity" component={Potentials}/>
         <Route exact path="/search/:keyword" component={Search}/>
         <Route
           exact
@@ -228,11 +230,6 @@ class App extends React.Component {
         <Route
           exact
           path="/dashboard"
-          component={ComingSoonComponent}
-        />
-        <Route
-          exact
-          path="/opportunity"
           component={ComingSoonComponent}
         />
         <Route
