@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import './index.css'
 import AsyncSelect from 'react-select/async/dist/react-select.esm'
+import { addError, clearError} from '../../../common'
 export default class ProductForm extends Component {
   constructor(props) {
     super(props)
@@ -11,9 +12,26 @@ export default class ProductForm extends Component {
     this.props.onDelete()
   }
 
+  customAddError = (name, content) => {
+
+  }
+
   handleChange = (event) => {
     const {value, name} = event.target
     if (name.indexOf('price_') !== -1 || name.indexOf('quantity_') !== -1 || name.indexOf('discount_') !== -1) {
+      /* Check only number */
+      let regex = /[^0-9]/gm
+      if (regex.test(value)) {
+        if (name.indexOf('quantity_') !== -1 || name.indexOf('discount_') !== -1) {
+          // do nothing
+        }
+        else {
+          addError(name, 'Vui lòng chỉ nhập số')
+        }
+      }
+      else {
+        clearError(name)
+      }
       let elementID = name.replace(/.*_/g, '')
       this.updateTotalPrice(elementID)
     }
