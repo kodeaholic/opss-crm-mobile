@@ -38,6 +38,8 @@ import {
   websiteRegex,
   getSessionFromLocalStorage
 } from '../common/index'
+import ProductForm from '../expandable-form/child-form-component/product'
+
 const mapStateToProps = (state) => ({
   expired: getSessionStatus(state),
   currentUser: getUserLoggedIn(state),
@@ -72,6 +74,8 @@ class OptPhanCungComponent extends Component {
     this.fetchListGoiHD = this.fetchListGoiHD.bind(this)
     this.fetchPaymentMethods = this.fetchPaymentMethods.bind(this)
     this.fetchUsers = this.fetchUsers.bind(this)
+    this.addProductForm = this.addProductForm.bind(this)
+    this.deleteProductForm = this.deleteProductForm.bind(this)
     let pathName = props.location.pathname
     let array = pathName.split('/')
     let record = array.length > 2 ? array[2] : undefined
@@ -90,7 +94,8 @@ class OptPhanCungComponent extends Component {
       cities: _.get(props, 'contactData.cities'),
       mapCityState: _.get(props, 'contactData.mapCityState'),
       cityChanged: false,
-      stateChanged: false
+      stateChanged: false,
+      productIDs: [new Date().valueOf()]
     }
   }
 
@@ -156,7 +161,7 @@ class OptPhanCungComponent extends Component {
     if (!validateRequiredField(formData.cf_email, 'cf_email')) error++
 
     let checkAdditionalFields = checkConditionalRequiredFields(formData)
-    if (checkAdditionalFields === "BREAKPOINT") return false
+    if (checkAdditionalFields === 'BREAKPOINT') return false
     // website
     if (formData.cf_pot_website && (websiteRegex.test(formData.cf_pot_website) || formData.cf_pot_website.length >= 255)) {
       error++
@@ -216,8 +221,7 @@ class OptPhanCungComponent extends Component {
         draggable: false
       })
       return false
-    }
-    else {
+    } else {
       e.target.disabled = true
       let session = this.props.currentUser.session
       this.props.actions.requestSaveOpportunity({ session, data: formData })
@@ -248,8 +252,8 @@ class OptPhanCungComponent extends Component {
       var dd = this.getDate()
 
       return [this.getFullYear(),
-        (mm>9 ? '' : '0') + mm,
-        (dd>9 ? '' : '0') + dd
+        (mm > 9 ? '' : '0') + mm,
+        (dd > 9 ? '' : '0') + dd
       ].join('-')
     }
     if (name === 'cf_pot_startdate' || name === 'cf_pot_thoihan' || name === 'cf_pot_khuyenmai') {
@@ -258,12 +262,10 @@ class OptPhanCungComponent extends Component {
         if (_.isEmpty(value)) {
           document.getElementById('cf_pot_enddate').value = ''
           delete data['cf_pot_enddate']
-        }
-        else {
+        } else {
           end = new Date(value)
         }
-      }
-      else if (name === 'cf_pot_thoihan' || name === 'cf_pot_khuyenmai') {
+      } else if (name === 'cf_pot_thoihan' || name === 'cf_pot_khuyenmai') {
         let startDate = document.getElementById('cf_pot_startdate').value
         if (!_.isEmpty(startDate)) end = new Date(startDate)
         else end = undefined
@@ -307,26 +309,25 @@ class OptPhanCungComponent extends Component {
       let passport_date = document.getElementById('cf_passport_date-wrapper')
       let passport_location = document.getElementById('cf_passport_location-wrapper')
       let company_name = document.getElementById('company_name-wrapper')
-      if (value.value === 'Công ty'){
-        if(company_name) company_name.classList.remove('display-none')
-        if(birthday) birthday.classList.add('display-none')
-        if(gender) gender.classList.add('display-none')
-        if(passport_date) passport_date.classList.add('display-none')
-        if(passport_location) passport_location.classList.add('display-none')
+      if (value.value === 'Công ty') {
+        if (company_name) company_name.classList.remove('display-none')
+        if (birthday) birthday.classList.add('display-none')
+        if (gender) gender.classList.add('display-none')
+        if (passport_date) passport_date.classList.add('display-none')
+        if (passport_location) passport_location.classList.add('display-none')
 
         if (data['cf_birthday']) delete data['cf_birthday']
         if (data['cf_gender']) delete data['cf_gender']
         if (data['cf_passport_date']) delete data['cf_passport_date']
         if (data['cf_passport_location']) delete data['cf_passport_location']
-      }
-      else {
-        if (value.value === 'Cá nhân'){
+      } else {
+        if (value.value === 'Cá nhân') {
           // hide company_name
-          if(company_name) company_name.classList.add('display-none')
-          if(birthday) birthday.classList.remove('display-none')
-          if(gender) gender.classList.remove('display-none')
-          if(passport_date) passport_date.classList.remove('display-none')
-          if(passport_location) passport_location.classList.remove('display-none')
+          if (company_name) company_name.classList.add('display-none')
+          if (birthday) birthday.classList.remove('display-none')
+          if (gender) gender.classList.remove('display-none')
+          if (passport_date) passport_date.classList.remove('display-none')
+          if (passport_location) passport_location.classList.remove('display-none')
 
           if (data['company_name']) delete data['company_name']
         }
@@ -397,6 +398,23 @@ class OptPhanCungComponent extends Component {
     return this.getOptions('users', inputValue)
   }
 
+  addProductForm = () => {
+    let productIDs = this.state.productIDs
+    let id = new Date().valueOf()
+    productIDs.push(id)
+    this.setState({productIDs: productIDs})
+  }
+  deleteProductForm = (id='') => {
+    let productIDs = this.state.productIDs
+    if (id) {
+      let find = productIDs.findIndex((element) => {return element === id})
+      if (find > -1) {
+        productIDs.splice(find, 1)
+        this.setState({productIDs: productIDs})
+      }
+    }
+  }
+
   render() {
     /* For navigation back purpose */
     let pathBack = this.props.location.search
@@ -442,7 +460,11 @@ class OptPhanCungComponent extends Component {
         } else {
           filterStateOptions = []
         }
-        let assignedUserId = contactData.assigned_user_id
+        const products = []
+        const productIDs = this.state.productIDs
+        for (let i = 0; i < productIDs.length; i++) {
+          products.push(<ProductForm key={productIDs[i]} id={productIDs[i]} onDelete={this.deleteProductForm.bind(this, productIDs[i])}/>)
+        }
         return (
           <div className="form-add-opt-container">
             <ExpandableFormComponent title="Thông tin cơ bản">
@@ -695,54 +717,10 @@ class OptPhanCungComponent extends Component {
                           placeholder="Nhập mô tả nguồn khách hàng" onChange={this.handleChange}/>
               </div>
             </ExpandableFormComponent>
-            <ExpandableFormComponent title="Thông tin phần cứng" expanded={true}>
-              <div className="expandable-form-wrapper-field" id="cf_pot_contractid-wrapper">
-                <label
-                  className="expandable-form-label-field">Tên sản phẩm</label>
-                <input name="cf_pot_contractid" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập tên sản phẩm" onChange={this.handleChange}/>
-              </div>
-              <div className="expandable-form-wrapper-field" id="represent-wrapper">
-                <label
-                  className="expandable-form-label-field">Serial</label>
-                <input name="represent" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập số serial" onChange={this.handleChange}/>
-              </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_thoihan-wrapper">
-                <label
-                  className="expandable-form-label-field">Đơn giá</label>
-                <input name="cf_pot_thoihan" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập đơn giá" onChange={this.handleChange} id="cf_pot_thoihan" onKeyDown={(e) => {
-                  let key = e.nativeEvent.key
-                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
-                }}/>
-              </div>
-              <div className="row-col-2">
-                <div className="expandable-form-wrapper-field" id="cf_pot_startdate-wrapper" style={{marginRight: '5px'}}>
-                  <label className="expandable-form-label-field">Chiết khấu (%) </label>
-                  <div className="expandable-form-input-wrapper">
-                    <input name="cf_pot_startdate" type="number" className="expandable-form-input-field"
-                           onChange={this.handleChange} id="cf_pot_startdate" style={{width: '100%'}}/>
-                  </div>
-                </div>
-                <div className="expandable-form-wrapper-field" id="cf_pot_enddate-wrapper" style={{marginLeft: '5px'}}>
-                  <label className="expandable-form-label-field">Số lượng </label>
-                  <div className="expandable-form-input-wrapper">
-                    <input name="cf_pot_enddate" type="number" className="expandable-form-input-field"
-                           onChange={this.handleChange} id="cf_pot_enddate" style={{width: '100%'}}/>
-                  </div>
-                </div>
-              </div>
-              <div className="expandable-form-wrapper-field" id="amount-wrapper">
-                <label
-                  className="expandable-form-label-field">Thành tiền</label>
-                <span className="input-vnd-unit">
-              <input name="amount" type="text" className="expandable-form-input-field"
-                     placeholder="Nhập thành tiền" defaultValue="0" disabled/>
-            </span>
+            <ExpandableFormComponent title="Thông tin phần cứng" expanded={true} noMarginBottom={true}>
+              {productIDs.length > 0 ? products : ''}
+              <div className="btn-add-product-wrapper">
+                <button className="btn-add-product" onClick={this.addProductForm}>Thêm sản phẩm</button>
               </div>
             </ExpandableFormComponent>
             <ExpandableFormComponent title="Thông tin hợp đồng">
@@ -779,20 +757,22 @@ class OptPhanCungComponent extends Component {
                   className="expandable-form-label-field">Thời hạn (SỐ tháng)</label>
                 <input name="cf_pot_thoihan" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập thời hạn (SỐ tháng)" onChange={this.handleChange} id="cf_pot_thoihan" onKeyDown={(e) => {
-                  let key = e.nativeEvent.key
-                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
-                }}/>
+                       placeholder="Nhập thời hạn (SỐ tháng)" onChange={this.handleChange} id="cf_pot_thoihan"
+                       onKeyDown={(e) => {
+                         let key = e.nativeEvent.key
+                         if (isNaN(key) && key !== 'Backspace') e.preventDefault()
+                       }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_khuyenmai-wrapper">
                 <label
                   className="expandable-form-label-field">Khuyến mại (SỐ tháng)</label>
                 <input name="cf_pot_khuyenmai" type="text"
                        className="expandable-form-input-field"
-                       placeholder="Nhập khuyến mại (SỐ tháng)" onChange={this.handleChange} id="cf_pot_khuyenmai" onKeyDown={(e) => {
-                  let key = e.nativeEvent.key
-                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
-                }}/>
+                       placeholder="Nhập khuyến mại (SỐ tháng)" onChange={this.handleChange} id="cf_pot_khuyenmai"
+                       onKeyDown={(e) => {
+                         let key = e.nativeEvent.key
+                         if (isNaN(key) && key !== 'Backspace') e.preventDefault()
+                       }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="closedwon_date-wrapper">
                 <label className="expandable-form-label-field">Ngày ký hợp đồng </label>
@@ -1007,7 +987,7 @@ class OptPhanCungComponent extends Component {
                 !this.props.formSubmittingStatus && 'Tạo'
               }
               {
-                this.props.formSubmittingStatus && (<i className="fa fa-spinner fa-pulse fa-2x fa-fw" />)
+                this.props.formSubmittingStatus && (<i className="fa fa-spinner fa-pulse fa-2x fa-fw"/>)
               }
             </button>
           </div>

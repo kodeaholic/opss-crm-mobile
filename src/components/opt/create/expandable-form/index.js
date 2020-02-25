@@ -54,7 +54,8 @@ const ExpandableFormComponent = (props) => {
   }
   const caretClass = props.expanded !== undefined ? "fa fa-caret-up" : "fa fa-caret-down"
   const formClass = props.expanded !== undefined ? "expandable-form expanded" : "expandable-form"
-  const contentClass = props.expanded !== undefined ? "expandable-form-content visible" : "expandable-form-content hidden"
+  let contentClass = props.expanded !== undefined ? "expandable-form-content visible" : "expandable-form-content hidden"
+  contentClass = props.noMarginBottom !== undefined ? contentClass + " no-margin-bottom" : contentClass
   return (
     <div className={formClass}>
       <div className="expandable-form-heading" onClick={clickToToggle}>

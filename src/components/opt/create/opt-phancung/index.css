@@ -8,14 +8,3 @@
     -webkit-overflow-scrolling: touch; /* for smooth on ios */
     background-color: #ffffff;
 }
-
-/* input number caret */
-input.expandable-form-input-field::-webkit-outer-spin-button,
-input.expandable-form-input-field::-webkit-inner-spin-button {
-    -webkit-appearance: caret;
-}
-
-/* Firefox */
-input.expandable-form-input-field {
-    -moz-appearance: caret;
-}

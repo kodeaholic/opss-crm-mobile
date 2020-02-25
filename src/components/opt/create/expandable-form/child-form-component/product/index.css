@@ -1,0 +1,39 @@
+.product-wrapper {
+}
+.horizontal-separated-div {
+    width: 100vw;
+    height: 5px;
+    background-color: #EFEFEF;
+    margin-left: -15px;
+}
+.delete-product-button {
+    background-color: transparent;
+    border: none;
+    color: #ff3737;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: bold;
+}
+.btn-add-product-wrapper {
+    width: 100vw;
+    height: 50px;
+    background-color: #EFEFEF;
+    margin-left: -15px;
+    padding-left: 15px;
+    padding-top: 12px;
+}
+.btn-add-product {
+    width: auto;
+    height: 26px;
+    border-radius: 4px;
+    box-shadow: 0 3px 3px 0 rgba(36, 173, 255, 0.25);
+    background-color: #24adff;
+    color: white;
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+}
+.btn-add-product:focus {
+    outline: none;
+}
