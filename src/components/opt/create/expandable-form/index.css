@@ -190,12 +190,25 @@ button.create-opt-button:focus {
 .row-col-2 > div:nth-child(1) {
     margin-right: 5px;
 }
+.row-col-2.error > div {
+    margin-bottom: 0 !important;
+}
 .expandable-form-label-error {
     font-size: 10px;
     font-style: italic;
     color: red;
 }
+.expandable-form-label-error.right {
+    float: right;
+}
+.expandable-form-label-error.left {
+    float: left;
+}
 
 .display-none {
     display: none;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0 !important;
 }

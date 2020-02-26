@@ -13,7 +13,28 @@ export default class ProductForm extends Component {
   }
 
   customAddError = (name, content) => {
-
+    let wrapperId = name.indexOf('quantity_') !== -1 ? name.replace('quantity_', '') : name.replace('discount_', '')
+    let errorClass = name.indexOf('quantity_') !== -1 ? ' right' : ''
+    let type = name.indexOf('quantity_') !== -1 ? 'quantity' : 'discount'
+    let wrapper = document.getElementById('quantity_discount_' + wrapperId + "-wrapper")
+    wrapper.classList.add('error')
+    let error = document.getElementById(type + "_"+ wrapperId + '-error')
+    if (wrapper && !error) {
+      error = document.createElement('label')
+      error.setAttribute('class', 'expandable-form-label-error' + errorClass)
+      error.setAttribute('id', type + "_"+ wrapperId + '-error')
+      let node = document.createTextNode(content)
+      error.appendChild(node)
+      wrapper.parentNode.insertBefore(error, wrapper.nextSibling)
+    }
+  }
+  customClearError = (name) => {
+    let wrapperId = name.indexOf('quantity_') !== -1 ? name.replace('quantity_', '') : name.replace('discount_', '')
+    let type = name.indexOf('quantity_') !== -1 ? 'quantity' : 'discount'
+    let wrapper = document.getElementById('quantity_discount_' + wrapperId + "-wrapper")
+    wrapper.classList.remove('error')
+    let error = document.getElementById(type + "_"+ wrapperId + '-error')
+    if (error) error.remove()
   }
 
   handleChange = (event) => {
@@ -23,7 +44,7 @@ export default class ProductForm extends Component {
       let regex = /[^0-9]/gm
       if (regex.test(value)) {
         if (name.indexOf('quantity_') !== -1 || name.indexOf('discount_') !== -1) {
-          // do nothing
+          this.customAddError(name, "Vui lòng chỉ nhập số")
         }
         else {
           addError(name, 'Vui lòng chỉ nhập số')
@@ -31,6 +52,9 @@ export default class ProductForm extends Component {
       }
       else {
         clearError(name)
+        if (name.indexOf('quantity_') !== -1 || name.indexOf('discount_') !== -1) {
+          this.customClearError(name)
+        }
       }
       let elementID = name.replace(/.*_/g, '')
       this.updateTotalPrice(elementID)
@@ -68,6 +92,10 @@ export default class ProductForm extends Component {
     const { value, label, price } = option
     this.updateStockPrice(elementID, price)
     this.updateTotalPrice(elementID)
+
+    /* Update hidden input value */
+    let input = document.getElementById('prd_id_' + elementID)
+    if (input) input.value = label
   }
 
   /*
@@ -135,7 +163,7 @@ export default class ProductForm extends Component {
                  className="expandable-form-input-field"
                  placeholder="Nhập đơn giá" onChange={this.handleChange}/>
         </div>
-        <div className="row-col-2">
+        <div className="row-col-2" id={"quantity_discount_" + id + "-wrapper"}>
           <div className="expandable-form-wrapper-field" id={"discount_" +id+"-wrapper"}
                style={{ marginRight: '5px' }}>
             <label className="expandable-form-label-field">Chiết khấu (%) </label>
