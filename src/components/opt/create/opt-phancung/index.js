@@ -972,6 +972,7 @@ class OptPhanCungComponent extends Component {
                           placeholder="Nhập phản hồi CSKH" onChange={this.handleChange}/>
               </div>
             </ExpandableFormComponent>
+            <ExpandableFormComponent title="Câu hỏi thường gặp"/>
             <button className="create-opt-button" onClick={this.handleSubmit}>
               {
                 !this.props.formSubmittingStatus && 'Tạo'
