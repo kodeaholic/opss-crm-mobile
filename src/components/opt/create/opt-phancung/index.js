@@ -238,18 +238,17 @@ class OptPhanCungComponent extends Component {
     let productFormIDs = this.getProductFormIDs()
     let products = []
     let n = productFormIDs.length
-    for (let i = 0; i<n; i++) {
+    for (let i = 0; i < n; i++) {
       let id = productFormIDs[i]
-      let value = document.getElementById('prd_id_'+id).value
-      let serial = document.getElementById('serial_'+id).value
-      let price = document.getElementById('price_'+id).value
-      let discount = document.getElementById('discount_'+id).value
-      let quantity = document.getElementById('quantity_'+id).value
-      let warranty = document.getElementById('warranty_'+id).value
-      let total = document.getElementById('total_'+id).value
-      products.push({value, serial, price, discount, quantity, warranty, total})
+      let name = document.getElementById('prd_id_' + id).value
+      let serial = document.getElementById('serial_' + id).value
+      let price = document.getElementById('price_' + id).value
+      let discount = document.getElementById('discount_' + id).value
+      let quantity = document.getElementById('quantity_' + id).value
+      let warranty = document.getElementById('warranty_' + id).value
+      let total = document.getElementById('total_' + id).value
+      products.push({ name, serial, price, discount, quantity, warranty, total })
     }
-    console.log(products)
     return products
   }
 
@@ -277,14 +276,14 @@ class OptPhanCungComponent extends Component {
       error++
       validateRequiredField(prdId, 'prdName_' + id)
     }
-    if (serial && !validateOnlyNumbers(serial, 'serial_' + id) && !validateMaxLength(serial, 'serial_' + id)) error ++
-    if (price && !validateOnlyNumbers(price, 'price_' + id) && !validateMaxLength(price, 'price_' + id)) error ++
-    if (discount && !validateOnlyNumbers(discount, 'discount_' + id) && !validateMaxLength(discount, 'discount_' + id)) error ++
-    if (quantity && !validateOnlyNumbers(quantity, 'quantity_' + id) && !validateMaxLength(quantity, 'quantity_' + id)) error ++
-    if (warranty && !validateMaxLength(warranty, 'warranty_' + id)) error ++
+    if (serial && !validateOnlyNumbers(serial, 'serial_' + id) && !validateMaxLength(serial, 'serial_' + id)) error++
+    if (price && !validateOnlyNumbers(price, 'price_' + id) && !validateMaxLength(price, 'price_' + id)) error++
+    if (discount && !validateOnlyNumbers(discount, 'discount_' + id) && !validateMaxLength(discount, 'discount_' + id)) error++
+    if (quantity && !validateOnlyNumbers(quantity, 'quantity_' + id) && !validateMaxLength(quantity, 'quantity_' + id)) error++
+    if (warranty && !validateMaxLength(warranty, 'warranty_' + id)) error++
     if (discount && parseInt(discount) > 100) {
       error++
-      customAddError('discount_' + id, "Vui lòng không nhập nhiều hơn 100%")
+      customAddError('discount_' + id, 'Vui lòng không nhập nhiều hơn 100%')
     }
     return error === 0
   }
@@ -473,15 +472,17 @@ class OptPhanCungComponent extends Component {
     let productIDs = this.state.productIDs
     let id = new Date().valueOf()
     productIDs.push(id)
-    this.setState({productIDs: productIDs})
+    this.setState({ productIDs: productIDs })
   }
-  deleteProductForm = (id='') => {
+  deleteProductForm = (id = '') => {
     let productIDs = this.state.productIDs
     if (id) {
-      let find = productIDs.findIndex((element) => {return element === id})
+      let find = productIDs.findIndex((element) => {
+        return element === id
+      })
       if (find > -1) {
         productIDs.splice(find, 1)
-        this.setState({productIDs: productIDs})
+        this.setState({ productIDs: productIDs })
       }
     }
   }
@@ -534,7 +535,8 @@ class OptPhanCungComponent extends Component {
         const products = []
         const productIDs = this.state.productIDs
         for (let i = 0; i < productIDs.length; i++) {
-          products.push(<ProductForm key={productIDs[i]} id={productIDs[i]} onDelete={this.deleteProductForm.bind(this, productIDs[i])}/>)
+          products.push(<ProductForm key={productIDs[i]} id={productIDs[i]}
+                                     onDelete={this.deleteProductForm.bind(this, productIDs[i])}/>)
         }
         return (
           <div className="form-add-opt-container">
@@ -852,6 +854,32 @@ class OptPhanCungComponent extends Component {
                          onChange={this.handleChange}/>
                   <i className="fa fa-calendar float-right" aria-hidden="true" onClick={focusParentDateInput}/>
                 </div>
+              </div>
+              <div className="expandable-form-wrapper-field" id="hardware_type-wrapper">
+                <label className="expandable-form-label-field">
+                  Loại phần cứng
+                </label>
+                <Select
+                  classNamePrefix="expandable-form-react-select"
+                  isSearchable={false}
+                  options={[
+                    {
+                      'label': 'Phần cứng tặng',
+                      'value': 'Phần cứng tặng'
+                    },
+                    {
+                      'label': 'Phần cứng bán',
+                      'value': 'Phần cứng bán'
+                    },
+                    {
+                      'label': 'Phần cứng giảm giá',
+                      'value': 'Phần cứng giảm giá'
+                    }
+                  ]
+                  }
+                  onChange={this.onSelectChange.bind(this, 'hardware_type')}
+                  placeholder="Loại phần cứng"
+                />
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_ma_voucer-wrapper">
                 <label

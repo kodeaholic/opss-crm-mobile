@@ -142,8 +142,12 @@ export const requestSaveOpportunity = payload => {
         formData[prop] = formData[prop]['value']
       }
     }
+    /* opt phan cung */
+    let { productsOptPhanCung } = payload
+    if (productsOptPhanCung) {
+      formData["products"] = productsOptPhanCung
+    }
     let values = JSON.stringify(formData)
-    // console.log(values)
     bodyFormData.append("values", values)
     const request = axios({
       method: 'POST',
