@@ -215,7 +215,7 @@ class OptPhanCungComponent extends Component {
     if (formData.cf_pot_ngancankh && !validateMaxLength(formData.cf_pot_ngancankh, 'cf_pot_ngancankh')) error++
     if (formData.cf_pot_doithunao && !validateMaxLength(formData.cf_pot_doithunao, 'cf_pot_doithunao')) error++
 
-    if (this.validateProducts()) {
+    if (!this.validateProducts()) {
       error++
     }
     if (error > 0) {
@@ -291,9 +291,10 @@ class OptPhanCungComponent extends Component {
   validateProducts = () => {
     let error = 0
     let productFormIDs = this.getProductFormIDs()
+    if (productFormIDs.length === 0) return true
     let n = productFormIDs.length
     for (let i = 0; i < n; i++) {
-      if (this.validateSingleProduct(productFormIDs[i])) error++
+      if (!this.validateSingleProduct(productFormIDs[i])) error++
     }
     return error === 0
   }
