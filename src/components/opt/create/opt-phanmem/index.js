@@ -220,6 +220,12 @@ class OptPhanMemComponent extends Component {
     else {
       e.target.disabled = true
       let session = this.props.currentUser.session
+
+      /* CMB-168 */
+      let company_source = document.getElementById('company_source')
+      if (company_source) {
+        formData.company_source = company_source.value
+      }
       this.props.actions.requestSaveOpportunity({ session, data: formData })
     }
   }
@@ -601,6 +607,16 @@ class OptPhanMemComponent extends Component {
                 <input name="company_name" type="text" className="expandable-form-input-field"
                        onChange={this.handleChange} placeholder="Nhập tên công ty"/>
               </div>
+              { contactData.isSaleKhuVuc ? (<div className="expandable-form-wrapper-field" id="company_source-wrapper">
+                <label className="expandable-form-label-field">Khách do công ty cung cấp </label>
+                <input type="checkbox" className="expandable-form-input-field" onChange={() => {
+                  let input = document.getElementById('company_source')
+                  if (input) {
+                    input.value = 1 - input.value
+                  }
+                }}/>
+                <input type="hidden" id="company_source" name="company_source" defaultValue={0}/>
+              </div>) : ''}
               <div className="expandable-form-wrapper-field" id="cf_pot_motachung-wrapper">
                 <label className="expandable-form-label-field">Mô tả chung về khách hàng </label>
                 <textarea name="cf_pot_motachung" className="expandable-form-input-field" rows="5"

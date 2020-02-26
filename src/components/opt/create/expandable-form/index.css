@@ -212,3 +212,9 @@ button.create-opt-button:focus {
 .no-margin-bottom {
     margin-bottom: 0 !important;
 }
+input[type=checkbox].expandable-form-input-field {
+    flex: 16px;
+    width: 16px;
+    height: 16px;
+    -webkit-appearance: checkbox;
+}
