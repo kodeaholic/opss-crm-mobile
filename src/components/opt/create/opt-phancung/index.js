@@ -811,41 +811,31 @@ class OptPhanCungComponent extends Component {
                        className="expandable-form-input-field"
                        placeholder="Nhập người đại diện" onChange={this.handleChange}/>
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_goihd-wrapper">
+              <div className="expandable-form-wrapper-field" id="cf_pot_hinhthuctt-wrapper">
                 <label className="expandable-form-label-field">
-                  Gói hợp đồng
+                  Hình thức thanh toán
                 </label>
                 <AsyncSelect
                   classNamePrefix="expandable-form-react-select"
                   cacheOptions
                   defaultOptions
-                  loadOptions={this.fetchListGoiHD}
-                  placeholder="Lựa chọn gói"
-                  onChange={this.onSelectChange.bind(this, 'cf_pot_goihd')}
+                  loadOptions={this.fetchPaymentMethods}
+                  placeholder="Lựa chọn hình thức thanh toán"
+                  onChange={this.onSelectChange.bind(this, 'cf_pot_hinhthuctt')}
                   isSearchable={false}
                 />
               </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_thoihan-wrapper">
+              <div className="expandable-form-wrapper-field" id="amount-wrapper">
                 <label
-                  className="expandable-form-label-field">Thời hạn (SỐ tháng)</label>
-                <input name="cf_pot_thoihan" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập thời hạn (SỐ tháng)" onChange={this.handleChange} id="cf_pot_thoihan"
-                       onKeyDown={(e) => {
-                         let key = e.nativeEvent.key
-                         if (isNaN(key) && key !== 'Backspace') e.preventDefault()
-                       }}/>
-              </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_khuyenmai-wrapper">
-                <label
-                  className="expandable-form-label-field">Khuyến mại (SỐ tháng)</label>
-                <input name="cf_pot_khuyenmai" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập khuyến mại (SỐ tháng)" onChange={this.handleChange} id="cf_pot_khuyenmai"
-                       onKeyDown={(e) => {
-                         let key = e.nativeEvent.key
-                         if (isNaN(key) && key !== 'Backspace') e.preventDefault()
-                       }}/>
+                  className="expandable-form-label-field">Thành tiền</label>
+                <span className="input-vnd-unit">
+              <input name="amount" type="text" className="expandable-form-input-field"
+                     placeholder="Nhập thành tiền" defaultValue="0" onChange={this.handleChange}
+                     onKeyDown={(e) => {
+                       let key = e.nativeEvent.key
+                       if (isNaN(key) && key !== 'Backspace') e.preventDefault()
+                     }}/>
+            </span>
               </div>
               <div className="expandable-form-wrapper-field" id="closedwon_date-wrapper">
                 <label className="expandable-form-label-field">Ngày ký hợp đồng </label>
@@ -880,67 +870,6 @@ class OptPhanCungComponent extends Component {
                   onChange={this.onSelectChange.bind(this, 'hardware_type')}
                   placeholder="Loại phần cứng"
                 />
-              </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_ma_voucer-wrapper">
-                <label
-                  className="expandable-form-label-field">Mã KM</label>
-                <input name="cf_pot_ma_voucer" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập mã KM" onChange={this.handleChange}/>
-              </div>
-              <div className="row-col-2">
-                <div className="expandable-form-wrapper-field" id="cf_pot_startdate-wrapper">
-                  <label className="expandable-form-label-field">Ngày bắt đầu </label>
-                  <div className="expandable-form-input-date-wrapper">
-                    <input name="cf_pot_startdate" type="date" className="expandable-form-input-field"
-                           style={{ width: '88%' }} onChange={this.handleChange} id="cf_pot_startdate"/>
-                    <i className="fa fa-calendar float-right" aria-hidden="true" onClick={focusParentDateInput}/>
-                  </div>
-                </div>
-                <div className="expandable-form-wrapper-field" id="cf_pot_enddate-wrapper">
-                  <label className="expandable-form-label-field">Ngày kết thúc </label>
-                  <div className="expandable-form-input-date-wrapper">
-                    <input name="cf_pot_enddate" type="date" className="expandable-form-input-field"
-                           style={{ width: '88%' }} onChange={this.handleChange} id="cf_pot_enddate"/>
-                    <i className="fa fa-calendar float-right" aria-hidden="true" onClick={focusParentDateInput}/>
-                  </div>
-                </div>
-              </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_hinhthuctt-wrapper">
-                <label className="expandable-form-label-field">
-                  Hình thức thanh toán
-                </label>
-                <AsyncSelect
-                  classNamePrefix="expandable-form-react-select"
-                  cacheOptions
-                  defaultOptions
-                  loadOptions={this.fetchPaymentMethods}
-                  placeholder="Lựa chọn hình thức thanh toán"
-                  onChange={this.onSelectChange.bind(this, 'cf_pot_hinhthuctt')}
-                  isSearchable={false}
-                />
-              </div>
-              <div className="expandable-form-wrapper-field" id="amount-wrapper">
-                <label
-                  className="expandable-form-label-field">Thành tiền</label>
-                <span className="input-vnd-unit">
-              <input name="amount" type="text" className="expandable-form-input-field"
-                     placeholder="Nhập thành tiền" defaultValue="0" onChange={this.handleChange}
-                     onKeyDown={(e) => {
-                       let key = e.nativeEvent.key
-                       if (isNaN(key) && key !== 'Backspace') e.preventDefault()
-                     }}/>
-            </span>
-              </div>
-              <div className="expandable-form-wrapper-field" id="cf_pot_sochinhanh-wrapper">
-                <label
-                  className="expandable-form-label-field">Số cửa hàng (Số)</label>
-                <input name="cf_pot_sochinhanh" type="text"
-                       className="expandable-form-input-field"
-                       placeholder="Nhập số cửa hàng (số)" onChange={this.handleChange} onKeyDown={(e) => {
-                  let key = e.nativeEvent.key
-                  if (isNaN(key) && key !== 'Backspace') e.preventDefault()
-                }}/>
               </div>
               <div className="expandable-form-wrapper-field" id="cf_pot_diachich-wrapper">
                 <label
