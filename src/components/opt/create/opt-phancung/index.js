@@ -36,7 +36,7 @@ import {
   addError,
   emailRegex,
   websiteRegex,
-  getSessionFromLocalStorage
+  getSessionFromLocalStorage, customAddError
 } from '../common/index'
 import ProductForm from '../expandable-form/child-form-component/product'
 
@@ -215,6 +215,9 @@ class OptPhanCungComponent extends Component {
     if (formData.cf_pot_ngancankh && !validateMaxLength(formData.cf_pot_ngancankh, 'cf_pot_ngancankh')) error++
     if (formData.cf_pot_doithunao && !validateMaxLength(formData.cf_pot_doithunao, 'cf_pot_doithunao')) error++
 
+    if (this.validateProducts()) {
+      error++
+    }
     if (error > 0) {
       toast.error('Vui lòng hoàn thiện các trường chưa đúng', {
         autoClose: 3000,
@@ -224,8 +227,76 @@ class OptPhanCungComponent extends Component {
     } else {
       e.target.disabled = true
       let session = this.props.currentUser.session
-      this.props.actions.requestSaveOpportunity({ session, data: formData })
+
+      /* Get products data*/
+      let products = this.getProductsDataForSubmit()
+      this.props.actions.requestSaveOpportunity({ session, data: formData, productsOptPhanCung: products })
     }
+  }
+
+  getProductsDataForSubmit = () => {
+    let productFormIDs = this.getProductFormIDs()
+    let products = []
+    let n = productFormIDs.length
+    for (let i = 0; i<n; i++) {
+      let id = productFormIDs[i]
+      let value = document.getElementById('prd_id_'+id).value
+      let serial = document.getElementById('serial_'+id).value
+      let price = document.getElementById('price_'+id).value
+      let discount = document.getElementById('discount_'+id).value
+      let quantity = document.getElementById('quantity_'+id).value
+      let warranty = document.getElementById('warranty_'+id).value
+      let total = document.getElementById('total_'+id).value
+      products.push({value, serial, price, discount, quantity, warranty, total})
+    }
+    console.log(products)
+    return products
+  }
+
+  getProductFormIDs = () => {
+    let productWrappers = document.getElementsByClassName('product-wrapper')
+    let n = productWrappers.length
+    let array = []
+    for (let i = 0; i < n; i++) {
+      let id = productWrappers[i].id
+      id = id.replace('prdWrapper_', '')
+      array.push(id)
+    }
+    return array
+  }
+
+  validateSingleProduct = (id) => {
+    let error = 0
+    let serial = document.getElementById('serial_' + id).value
+    let price = document.getElementById('price_' + id).value
+    let discount = document.getElementById('discount_' + id).value
+    let quantity = document.getElementById('quantity_' + id).value
+    let warranty = document.getElementById('warranty_' + id).value
+    let prdId = document.getElementById('prd_id_' + id).value
+    if (!prdId) {
+      error++
+      validateRequiredField(prdId, 'prdName_' + id)
+    }
+    if (serial && !validateOnlyNumbers(serial, 'serial_' + id) && !validateMaxLength(serial, 'serial_' + id)) error ++
+    if (price && !validateOnlyNumbers(price, 'price_' + id) && !validateMaxLength(price, 'price_' + id)) error ++
+    if (discount && !validateOnlyNumbers(discount, 'discount_' + id) && !validateMaxLength(discount, 'discount_' + id)) error ++
+    if (quantity && !validateOnlyNumbers(quantity, 'quantity_' + id) && !validateMaxLength(quantity, 'quantity_' + id)) error ++
+    if (warranty && !validateMaxLength(warranty, 'warranty_' + id)) error ++
+    if (discount && parseInt(discount) > 100) {
+      error++
+      customAddError('discount_' + id, "Vui lòng không nhập nhiều hơn 100%")
+    }
+    return error === 0
+  }
+
+  validateProducts = () => {
+    let error = 0
+    let productFormIDs = this.getProductFormIDs()
+    let n = productFormIDs.length
+    for (let i = 0; i < n; i++) {
+      if (this.validateSingleProduct(productFormIDs[i])) error++
+    }
+    return error === 0
   }
 
   componentWillMount() {

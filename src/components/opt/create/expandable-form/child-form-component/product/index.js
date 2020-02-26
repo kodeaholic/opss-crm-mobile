@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import './index.css'
 import AsyncSelect from 'react-select/async/dist/react-select.esm'
-import { addError, clearError} from '../../../common'
+import { addError, clearError, customAddError, customClearError } from '../../../common'
 export default class ProductForm extends Component {
   constructor(props) {
     super(props)
@@ -12,31 +12,6 @@ export default class ProductForm extends Component {
     this.props.onDelete()
   }
 
-  customAddError = (name, content) => {
-    let wrapperId = name.indexOf('quantity_') !== -1 ? name.replace('quantity_', '') : name.replace('discount_', '')
-    let errorClass = name.indexOf('quantity_') !== -1 ? ' right' : ''
-    let type = name.indexOf('quantity_') !== -1 ? 'quantity' : 'discount'
-    let wrapper = document.getElementById('quantity_discount_' + wrapperId + "-wrapper")
-    wrapper.classList.add('error')
-    let error = document.getElementById(type + "_"+ wrapperId + '-error')
-    if (wrapper && !error) {
-      error = document.createElement('label')
-      error.setAttribute('class', 'expandable-form-label-error' + errorClass)
-      error.setAttribute('id', type + "_"+ wrapperId + '-error')
-      let node = document.createTextNode(content)
-      error.appendChild(node)
-      wrapper.parentNode.insertBefore(error, wrapper.nextSibling)
-    }
-  }
-  customClearError = (name) => {
-    let wrapperId = name.indexOf('quantity_') !== -1 ? name.replace('quantity_', '') : name.replace('discount_', '')
-    let type = name.indexOf('quantity_') !== -1 ? 'quantity' : 'discount'
-    let wrapper = document.getElementById('quantity_discount_' + wrapperId + "-wrapper")
-    wrapper.classList.remove('error')
-    let error = document.getElementById(type + "_"+ wrapperId + '-error')
-    if (error) error.remove()
-  }
-
   handleChange = (event) => {
     const {value, name} = event.target
     if (name.indexOf('price_') !== -1 || name.indexOf('quantity_') !== -1 || name.indexOf('discount_') !== -1) {
@@ -44,7 +19,7 @@ export default class ProductForm extends Component {
       let regex = /[^0-9]/gm
       if (regex.test(value)) {
         if (name.indexOf('quantity_') !== -1 || name.indexOf('discount_') !== -1) {
-          this.customAddError(name, "Vui lòng chỉ nhập số")
+          customAddError(name, "Vui lòng chỉ nhập số")
         }
         else {
           addError(name, 'Vui lòng chỉ nhập số')
@@ -53,7 +28,7 @@ export default class ProductForm extends Component {
       else {
         clearError(name)
         if (name.indexOf('quantity_') !== -1 || name.indexOf('discount_') !== -1) {
-          this.customClearError(name)
+          customClearError(name)
         }
       }
       let elementID = name.replace(/.*_/g, '')
@@ -96,6 +71,9 @@ export default class ProductForm extends Component {
     /* Update hidden input value */
     let input = document.getElementById('prd_id_' + elementID)
     if (input) input.value = label
+
+    /* clear error if any */
+    clearError(name)
   }
 
   /*

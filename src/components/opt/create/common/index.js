@@ -135,3 +135,28 @@ export const getSessionFromLocalStorage = () => {
   userLoginData = JSON.parse(userLoginData).result.login
   return userLoginData.session
 }
+
+export const customAddError = (name, content) => {
+  let wrapperId = name.indexOf('quantity_') !== -1 ? name.replace('quantity_', '') : name.replace('discount_', '')
+  let errorClass = name.indexOf('quantity_') !== -1 ? ' right' : ''
+  let type = name.indexOf('quantity_') !== -1 ? 'quantity' : 'discount'
+  let wrapper = document.getElementById('quantity_discount_' + wrapperId + "-wrapper")
+  wrapper.classList.add('error')
+  let error = document.getElementById(type + "_"+ wrapperId + '-error')
+  if (wrapper && !error) {
+    error = document.createElement('label')
+    error.setAttribute('class', 'expandable-form-label-error' + errorClass)
+    error.setAttribute('id', type + "_"+ wrapperId + '-error')
+    let node = document.createTextNode(content)
+    error.appendChild(node)
+    wrapper.parentNode.insertBefore(error, wrapper.nextSibling)
+  }
+}
+export const customClearError = (name) => {
+  let wrapperId = name.indexOf('quantity_') !== -1 ? name.replace('quantity_', '') : name.replace('discount_', '')
+  let type = name.indexOf('quantity_') !== -1 ? 'quantity' : 'discount'
+  let wrapper = document.getElementById('quantity_discount_' + wrapperId + "-wrapper")
+  wrapper.classList.remove('error')
+  let error = document.getElementById(type + "_"+ wrapperId + '-error')
+  if (error) error.remove()
+}
