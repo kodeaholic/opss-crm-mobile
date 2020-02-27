@@ -147,7 +147,7 @@ export default class ProductForm extends Component {
             <label className="expandable-form-label-field">Chiết khấu (%) </label>
             <div className="expandable-form-input-wrapper">
               <input name={"discount_" +id} id={"discount_" +id} type="text" className="expandable-form-input-field"
-                     onChange={this.handleChange} style={{ width: '100%' }}/>
+                     onChange={this.handleChange} style={{ width: '100%' }} defaultValue={0}/>
             </div>
           </div>
           <div className="expandable-form-wrapper-field" id={"quantity_"+id+"-wrapper"}

@@ -276,14 +276,14 @@ class OptPhanCungComponent extends Component {
     let quantity = document.getElementById('quantity_' + id).value
     let warranty = document.getElementById('warranty_' + id).value
     let prdId = document.getElementById('prd_id_' + id).value
-    if (!serial || !price || !quantity) {
+    if (!prdId || !serial || !price || !quantity) {
       return 'EMPTY_FIELD_HARDWARE'
     }
     if (!prdId) {
       error++
       validateRequiredField(prdId, 'prdName_' + id)
     }
-    if (serial && !validateOnlyNumbers(serial, 'serial_' + id) && !validateMaxLength(serial, 'serial_' + id)) error++
+    if (serial && !validateMaxLength(serial, 'serial_' + id)) error++
     if (price && !validateOnlyNumbers(price, 'price_' + id) && !validateMaxLength(price, 'price_' + id)) error++
     if (discount && !validateOnlyNumbers(discount, 'discount_' + id) && !validateMaxLength(discount, 'discount_' + id)) error++
     if (quantity && !validateOnlyNumbers(quantity, 'quantity_' + id) && !validateMaxLength(quantity, 'quantity_' + id)) error++
