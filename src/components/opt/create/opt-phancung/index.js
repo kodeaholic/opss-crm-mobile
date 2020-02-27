@@ -36,7 +36,7 @@ import {
   addError,
   emailRegex,
   websiteRegex,
-  getSessionFromLocalStorage, customAddError
+  getSessionFromLocalStorage, customAddError, POTENTIAL_TYPES
 } from '../common/index'
 import ProductForm from '../expandable-form/child-form-component/product'
 
@@ -160,7 +160,7 @@ class OptPhanCungComponent extends Component {
     if (!validateRequiredField(formData.cf_contact_street, 'cf_contact_street')) error++
     if (!validateRequiredField(formData.cf_email, 'cf_email')) error++
 
-    let checkAdditionalFields = checkConditionalRequiredFields(formData)
+    let checkAdditionalFields = checkConditionalRequiredFields(formData, POTENTIAL_TYPES.optPhanCung)
     if (checkAdditionalFields === 'BREAKPOINT') return false
     // website
     if (formData.cf_pot_website && (websiteRegex.test(formData.cf_pot_website) || formData.cf_pot_website.length >= 255)) {

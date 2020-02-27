@@ -5,7 +5,7 @@ export const websiteRegex = /[^a-zA-Z0-9]/g
 export const onlyNumberRegex = /^[0-9]{1,255}$/g
 export const phoneRegex = /^[0-9]{1,255}$/g
 
-export const conditionalRequiredFields = {
+export const conditionalRequiredFieldsForOptPhanMem = {
   'personal': {
     'cf_gender': 'Giới tính',
     'cf_birthday': 'Ngày sinh',
@@ -39,7 +39,57 @@ export const conditionalRequiredFields = {
   }
 }
 
-export const checkConditionalRequiredFields = (data) => {
+export const conditionalRequiredFieldsForOptPhanCung = {
+  'personal': {
+    'cf_gender': 'Giới tính',
+    'cf_birthday': 'Ngày sinh',
+    'cf_passport': 'Số CMT/MST',
+    // 'cf_passport_date': 'Ngày cấp',
+    // 'cf_passport_location': 'Nơi cấp',
+    'cf_pot_contractid': 'Số hợp đồng',
+    // 'cf_pot_goihd': 'Gói hợp đồng',
+    // 'cf_pot_diachich': 'Địa chỉ',
+    // 'cf_pot_startdate': 'Ngày bắt đầu',
+    // 'cf_pot_enddate': 'Ngày kết thúc',
+    // 'closedwon_date': 'Ngày ký hợp đồng',
+    // 'cf_pot_khuyenmai': 'Khuyến mại',
+    // 'cf_pot_sochinhanh': 'Số chi nhánh',
+    // 'cf_pot_hinhthuctt': 'Hình thức thanh toán',
+    'amount': 'Thành tiền'
+  },
+  'company': {
+    'cf_passport': 'Số CMT/MST',
+    'company_name': 'Tên công ty',
+    'cf_pot_contractid': 'Số hợp đồng',
+    // 'cf_pot_goihd': 'Gói hợp đồng',
+    // 'cf_pot_diachich': 'Địa chỉ',
+    // 'cf_pot_startdate': 'Ngày bắt đầu',
+    // 'cf_pot_enddate': 'Ngày kết thúc',
+    // 'closedwon_date': 'Ngày ký hợp đồng',
+    // 'cf_pot_khuyenmai': 'Khuyến mại',
+    // 'cf_pot_sochinhanh': 'Số chi nhánh',
+    // 'cf_pot_hinhthuctt': 'Hình thức thanh toán',
+    'amount': 'Thành tiền'
+  }
+}
+
+export const POTENTIAL_TYPES = {
+  optPhanMem: "OPT_PHAN_MEM",
+  optPhanCung: "OPT_PHAN_CUNG"
+}
+
+export const checkConditionalRequiredFields = (data, potentialType= POTENTIAL_TYPES.optPhanMem) => {
+  let additionalFields = undefined
+  switch (potentialType) {
+    case POTENTIAL_TYPES.optPhanMem:
+      additionalFields = conditionalRequiredFieldsForOptPhanMem
+      break
+    case POTENTIAL_TYPES.optPhanCung:
+      additionalFields = conditionalRequiredFieldsForOptPhanCung
+      break;
+    default:
+      break
+  }
   let sales_stage = _.get(data, 'sales_stage.value')
   if (sales_stage) {
     if (sales_stage === 'Chờ Xét Duyệt' || sales_stage === 'ClosedWon') {
@@ -49,10 +99,10 @@ export const checkConditionalRequiredFields = (data) => {
       if (customer_type) {
         switch (customer_type) {
           case 'Cá nhân':
-            fields = _.get(conditionalRequiredFields, 'personal')
+            fields = _.get(additionalFields, 'personal')
             break
           case 'Công ty':
-            fields = _.get(conditionalRequiredFields, 'company')
+            fields = _.get(additionalFields, 'company')
             break
           default:
             break
