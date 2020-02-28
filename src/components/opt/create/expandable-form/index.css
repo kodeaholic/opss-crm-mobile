@@ -218,3 +218,9 @@ input[type=checkbox].expandable-form-input-field {
     height: 16px;
     -webkit-appearance: checkbox;
 }
+
+input.expandable-form-input-field:disabled {
+    border: none;
+    margin-bottom: 0;
+    color: #000000 !important;
+}

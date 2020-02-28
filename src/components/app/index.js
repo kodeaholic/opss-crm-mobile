@@ -8,7 +8,7 @@ import Potentials from '../opportunity'
 import Search from '../search'
 import LeadComponent from '../lead-detail'
 import ContactComponent from '../contact-detail'
-import OpportunityComponent from '../opportunity-detail'
+import PotentialDetailComponent from '../opt/detail'
 import ComingSoonComponent from '../comingsoon'
 import ComingSoonNoFooter from '../comingsoon/nofooter/comingsoon-nofooter'
 import MoreComponent from '../more'
@@ -220,7 +220,7 @@ class App extends React.Component {
         <Route
           exact
           path="/opportunity-view/:id"
-          component={OpportunityComponent}
+          component={PotentialDetailComponent}
         />
 
         <Route

@@ -139,18 +139,19 @@ class Potentials extends Component {
 
   renderItemList = (item, key) => {
     if (item){
-      const { assigned_user_id, lastname, createdtime, sales_stage } = item
+      const { assigned_user_id, lastname, createdtime, sales_stage, potentialname } = item
       const { label } = assigned_user_id
       return (
         <Link
           className="link-on-list"
           key={key}
-          to={'/lead-view/' + item.id}>
+          to={'/opportunity-view/' + item.id}>
           <div className="wrapper-80vw-border">
             <div className="wrapper-list-item">
               <div className="wrapper-item-row">
                 <label className="label-item-list item-name">{lastname}</label>
                 <label className="label-item-list text-bold">{sales_stage}</label>
+                <label className="label-item-list">{potentialname}</label>
               </div>
               <div className="wrapper-item-row">
                 <label className="label-item-list text-grey">{label}</label>
