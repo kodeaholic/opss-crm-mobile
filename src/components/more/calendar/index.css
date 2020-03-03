@@ -55,6 +55,7 @@
     top: 120px;
     width: 100%;
     height: calc(100% - 190px);
+    padding-bottom: 10px;
     background-color: #FBFBFB;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
@@ -78,7 +79,7 @@
     align-items: center;
     border-radius: 6px;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
-    background-color: var(--white);
+    background-color: #ffffff;
     border-right: 3px solid #24adff;
 }
 .task-avatar {
@@ -173,10 +174,18 @@ abbr {
 }
 .react-calendar__tile {
     border: 1px solid transparent !important;
+    height: 40px;
+}
+.react-calendar__tile--active {
+    border-radius: 5px;
 }
 .react-calendar__tile--active.today-date {
     border: 1px solid #30CDB7 !important;
 }
-.react-calendar__tile--active {
-    border-radius: 5px;
+.task-indicator {
+    margin-top: 8px;
+    margin-left: 5px;
+    height: 1px;
+    width: calc(100% - 10px);
+    border: 1px solid #1087ff;
 }

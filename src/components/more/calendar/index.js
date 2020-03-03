@@ -43,8 +43,14 @@ class CalendarComponent extends Component {
     )
   }
 
+  areEqualDays = (a, b) => {
+    return a.getDate() === b.getDate() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()
+  }
+
   renderVisualCalendar = () => {
     let today = new Date()
+    const eventDay = new Date('2020-03-05')
+    const taskDay = new Date('2020-03-15')
     return (
       <Calendar
         className="my-calendar"
@@ -61,6 +67,10 @@ class CalendarComponent extends Component {
             return view === "month" &&  toCheck.getDate() === today.getDate() && toCheck.getMonth() === today.getMonth() && toCheck.getFullYear() === today.getFullYear()  ? 'today-date' : ''
           }
         }
+        tileContent={(date) => {
+          let toCheck = date.date
+          return this.areEqualDays(toCheck, eventDay) ? (<div className="task-indicator"/>) : ('')
+        }}
       />
     )
   }
@@ -68,6 +78,12 @@ class CalendarComponent extends Component {
     return (
       <div className="calendar-body">
         {this.renderVisualCalendar()}
+        {this.renderTask()}
+        {this.renderTask()}
+        {this.renderTask()}
+        {this.renderTask()}
+        {this.renderTask()}
+        {this.renderTask()}
         {this.renderTask()}
         {this.renderTask()}
       </div>
