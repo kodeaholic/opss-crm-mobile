@@ -171,3 +171,12 @@ abbr {
     font-family: Roboto;
     color: #888888;
 }
+.react-calendar__tile {
+    border: 1px solid transparent !important;
+}
+.react-calendar__tile--active.today-date {
+    border: 1px solid #30CDB7 !important;
+}
+.react-calendar__tile--active {
+    border-radius: 5px;
+}
