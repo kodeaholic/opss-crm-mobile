@@ -93,7 +93,7 @@ class MoreComponent extends Component {
         </div>
         <div className="more-list">
           {this.renderItemList('Ticket', '/ticket', 'fa fa-ticket', '#ff5500')}
-          {this.renderItemList('Calendar', '/calendar', 'fa fa-calendar', '#F1AD10')}
+          {this.renderItemList('Calendar', '/more/calendar', 'fa fa-calendar', '#F1AD10')}
           {this.renderItemList('Logout', '/logout', 'fa fa-sign-out', '#00c2a7')}
         </div>
       </div>

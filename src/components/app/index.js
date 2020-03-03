@@ -30,6 +30,7 @@ import './index.css'
 /* Opt component */
 import OptPhanMemComponent from '../opt/create/opt-phanmem'
 import OptPhanCungComponent from '../opt/create/opt-phancung'
+import CalendarComponent from '../more/calendar'
 if ('Notification' in window) {
   console.log('Notification API supported')
   var messaging = require('../../init-fcm').messaging
@@ -245,11 +246,6 @@ class App extends React.Component {
         />
         <Route
           exact
-          path="/calendar"
-          component={ComingSoonComponent}
-        />
-        <Route
-          exact
           path="/notifications"
           component={ComingSoonComponent}
         />
@@ -277,6 +273,11 @@ class App extends React.Component {
           exact
           path="/opt-phan-cung/:id"
           component={OptPhanCungComponent}
+        />
+        <Route
+          exact
+          path="/more/calendar"
+          component={CalendarComponent}
         />
         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
         <div id="snackbar">
