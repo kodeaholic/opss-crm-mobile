@@ -1,0 +1,132 @@
+.calendar-header {
+    z-index: 1;
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    height: 70px;
+    background-color: #006cad;
+    color: #ffffff;
+    border: none;
+    text-align: center;
+    padding: 0;
+}
+.calendar-title {
+    margin: 0 auto 5px auto;
+    width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.calendar-type-selection {
+    height: 30px;
+    width: calc(100% - 30px);
+    display: flex;
+    flex-direction: row;
+    margin: 0 15px 0 15px;
+    border-radius: 5px;
+    background-color: #006cad;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #4D99C6;
+}
+.calendar-option {
+    flex: 1;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    padding-top: 5px;
+}
+.calendar-option:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: 1px solid #4D99C6;
+}
+.calendar-option:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 1px solid #4D99C6;
+}
+.calendar-option.active {
+    background-color: #58BA47;
+    color: #ffffff;
+}
+.calendar-body {
+    position: fixed;
+    top: 120px;
+    width: 100%;
+    height: calc(100% - 190px);
+    background-color: #FBFBFB;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+.task {
+    width: calc(100% - 30px);
+    margin: 15px 15px 0 15px;
+    height: auto;
+}
+.task-time {
+    width: 100%;
+    height: 20px;
+    color: #000000;
+}
+.task-card {
+    margin-top: 5px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
+    background-color: var(--white);
+    border-right: 3px solid #24adff;
+}
+.task-avatar {
+    flex: 1;
+    margin-left: 10px;
+}
+.task-avatar-wrapper {
+    width: 32px;
+    height: 32px;
+    background-color: #006CAD;
+    text-align: center;
+    border: none;
+    border-radius: 50%;
+}
+.avatar-vertical-helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.task-avatar-img {
+    filter: brightness(0) invert(1);
+}
+.task-content {
+    width: 100%;
+    text-align: left;
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 5px;
+}
+.task-content > div {
+    flex: 1;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+.task-title {
+    color: #333333;
+}
+.task-assigned-user {
+    float: right;
+    /*font-style: italic;*/
+    /*font-size: 12px;*/
+    color: #888888;
+}
+.task-text-bold {
+    font-weight: bold;
+    color: #000000;
+}
+.task-type {
+    color: #555555;
+}
