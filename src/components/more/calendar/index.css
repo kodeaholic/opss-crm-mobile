@@ -130,3 +130,44 @@
 .task-type {
     color: #555555;
 }
+
+/* Custom style for Calendar */
+.my-calendar {
+    width: calc(100% - 30px) !important;
+    margin: 15px;
+    border: 1px solid #ECECEC !important;
+    border-radius: 5px;
+}
+.today-date {
+    color: #30CDB7 !important;
+    font-weight: bold !important;
+    background-color: #ECF9FF !important;
+    border-radius: 5px;
+}
+abbr {
+    border-bottom: none !important;
+    text-decoration: none !important;
+}
+.react-calendar__navigation__label::first-letter {
+    text-transform: uppercase;
+}
+.react-calendar__navigation {
+    margin-bottom: 0 !important;
+    border-bottom: 1px solid #ECECEC !important;;
+}
+.react-calendar__navigation__prev2-button {
+    /*display: none !important;*/
+    visibility: hidden;
+}
+.react-calendar__navigation__next2-button {
+    /*display: none !important;*/
+    visibility: hidden;
+}
+.react-calendar__navigation__label {
+    color: #000000;
+    font-family: Roboto;
+}
+.react-calendar__month-view__weekdays__weekday {
+    font-family: Roboto;
+    color: #888888;
+}

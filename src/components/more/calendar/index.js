@@ -1,8 +1,11 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 import './index.css'
 import compose from 'recompose/compose'
 import withLayout from '../../withLayout'
+// import Calendar from 'react-calendar/dist/entry.nostyle'
+import Calendar from 'react-calendar'
+
 class CalendarComponent extends Component {
   constructor(props) {
     super(props)
@@ -25,13 +28,13 @@ class CalendarComponent extends Component {
           Lịch làm việc
         </div>
         <div className="calendar-type-selection">
-          <div className="calendar-option active" onClick={this.onCalendarTypeSelected} id={"dayOption"}>
+          <div className="calendar-option active" onClick={this.onCalendarTypeSelected} id={'dayOption'}>
             Ngày
           </div>
-          <div className="calendar-option" onClick={this.onCalendarTypeSelected} id={"weekOption"}>
+          <div className="calendar-option" onClick={this.onCalendarTypeSelected} id={'weekOption'}>
             Tuần
           </div>
-          <div className="calendar-option" onClick={this.onCalendarTypeSelected} id={"monthOption"}>
+          <div className="calendar-option" onClick={this.onCalendarTypeSelected} id={'monthOption'}>
             Tháng
           </div>
 
@@ -41,7 +44,25 @@ class CalendarComponent extends Component {
   }
 
   renderVisualCalendar = () => {
-
+    let today = new Date()
+    return (
+      <Calendar
+        className="my-calendar"
+        view="month"
+        calendarType='US'
+        value={today}
+        showNeighboringMonth={false}
+        selectRange={false}
+        showDoubleView={false}
+        tileClassName={
+          (date) => {
+            const toCheck = date.date
+            const view = date.view
+            return view === "month" &&  toCheck.getDate() === today.getDate() && toCheck.getMonth() === today.getMonth() && toCheck.getFullYear() === today.getFullYear()  ? 'today-date' : ''
+          }
+        }
+      />
+    )
   }
   renderCalenderBody = () => {
     return (
@@ -62,9 +83,9 @@ class CalendarComponent extends Component {
         <div className="task-card">
           <div className="task-avatar">
             <div className="task-avatar-wrapper">
-              <span className={"avatar-vertical-helper"}/>
+              <span className={'avatar-vertical-helper'}/>
               <img
-                alt={""}
+                alt={''}
                 src={require('../../../static/icons/lead.png')}
                 className="task-avatar-img"
               />
@@ -98,6 +119,5 @@ class CalendarComponent extends Component {
 }
 
 export default compose(
-
   withLayout()
 )(CalendarComponent)
