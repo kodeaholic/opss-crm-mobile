@@ -10,6 +10,7 @@ import contactDuck from './contactDuck'
 import opportunityDuck from './opportunityDuck'
 import contactsDuck from './contactsDuck'
 import opportunitiesDuck from './opportunitiesDuck'
+import calendarDuck from './calendar/calendarDuck'
 
 export default combineReducers({
   counter,
@@ -22,5 +23,6 @@ export default combineReducers({
   contact: contactDuck,
   opportunity: opportunityDuck,
   contacts: contactsDuck,
-  potentials: opportunitiesDuck
+  potentials: opportunitiesDuck,
+  calendar: calendarDuck
 })
