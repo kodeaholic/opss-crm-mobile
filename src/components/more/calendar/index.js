@@ -5,7 +5,7 @@ import compose from 'recompose/compose'
 import withLayout from '../../withLayout'
 import withAuth from '../../withAuth'
 import Calendar from 'react-calendar'
-import { getSessionFromLocalStorage, dateToString } from '../../common'
+import { getSessionFromLocalStorage, dateToString, getWeekDayFromTimeString } from '../../common'
 /* Redux */
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -38,6 +38,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch
   )
 })
+
 class CalendarComponent extends Component {
   constructor(props) {
     super(props)
@@ -46,7 +47,7 @@ class CalendarComponent extends Component {
 
   componentWillMount() {
     let session = getSessionFromLocalStorage()
-    this.props.actions.fetchCalendar({session: session, type: calendarType.DAY})
+    this.props.actions.fetchCalendar({ session: session, type: calendarType.DAY })
   }
 
   onCalendarTypeSelected = (e) => {
@@ -55,7 +56,7 @@ class CalendarComponent extends Component {
       selectedDiv.classList.add('active')
       let type = selectedDiv.getAttribute('data-calendar-type')
       let session = getSessionFromLocalStorage()
-      this.props.actions.fetchCalendar({session: session, type: type})
+      this.props.actions.fetchCalendar({ session: session, type: type })
     }
   }
 
@@ -70,13 +71,16 @@ class CalendarComponent extends Component {
           Lịch làm việc
         </div>
         <div className="calendar-type-selection">
-          <div className={"calendar-option" + day} onClick={this.onCalendarTypeSelected} id={'dayOption'} data-calendar-type={calendarType.DAY}>
+          <div className={'calendar-option' + day} onClick={this.onCalendarTypeSelected} id={'dayOption'}
+               data-calendar-type={calendarType.DAY}>
             Ngày
           </div>
-          <div className={"calendar-option" + week} onClick={this.onCalendarTypeSelected} id={'weekOption'} data-calendar-type={calendarType.WEEK}>
+          <div className={'calendar-option' + week} onClick={this.onCalendarTypeSelected} id={'weekOption'}
+               data-calendar-type={calendarType.WEEK}>
             Tuần
           </div>
-          <div className={"calendar-option" + month} onClick={this.onCalendarTypeSelected} id={'monthOption'} data-calendar-type={calendarType.MONTH}>
+          <div className={'calendar-option' + month} onClick={this.onCalendarTypeSelected} id={'monthOption'}
+               data-calendar-type={calendarType.MONTH}>
             Tháng
           </div>
 
@@ -105,7 +109,7 @@ class CalendarComponent extends Component {
           (date) => {
             const toCheck = date.date
             const view = date.view
-            return view === "month" &&  toCheck.getDate() === today.getDate() && toCheck.getMonth() === today.getMonth() && toCheck.getFullYear() === today.getFullYear()  ? 'today-date' : ''
+            return view === 'month' && toCheck.getDate() === today.getDate() && toCheck.getMonth() === today.getMonth() && toCheck.getFullYear() === today.getFullYear() ? 'today-date' : ''
           }
         }
         tileContent={(date) => {
@@ -121,41 +125,7 @@ class CalendarComponent extends Component {
     return (
       <div className="calendar-body">
         {currentCalendarType === calendarType.MONTH && this.renderVisualCalendar()}
-        <Tasks items={items}/>
-      </div>
-    )
-  }
-
-  renderTask = () => {
-    return (
-      <div className="task">
-        <div className="task-time">
-          10:00 - 12:00
-        </div>
-        <div className="task-card">
-          <div className="task-avatar">
-            <div className="task-avatar-wrapper">
-              <span className={'avatar-vertical-helper'}/>
-              <img
-                alt={''}
-                src={require('../../../static/icons/lead.png')}
-                className="task-avatar-img"
-              />
-            </div>
-          </div>
-          <div className="task-content">
-            <div className="task-title">
-              Chưa gặp
-              <span className="task-assigned-user">Vu Minh Duc - OPSS</span>
-            </div>
-            <div className="task-text-bold">
-              0976551122 | Cô Thảo
-            </div>
-            <div className="task-type">
-              Hỗ trợ nhập liệu
-            </div>
-          </div>
-        </div>
+        <TaskGroup items={items} type={currentCalendarType} label="Label"/>
       </div>
     )
   }
@@ -166,8 +136,7 @@ class CalendarComponent extends Component {
       return (
         <div className="loading">Loading&#8230;</div>
       )
-    }
-    else {
+    } else {
       let items = this.props.items
       if (items.length > 0) {
         return (
@@ -176,13 +145,13 @@ class CalendarComponent extends Component {
             {this.renderCalenderBody()}
           </>
         )
-      }
-      else {
+      } else {
         return (
           <>
             {this.renderHeader()}
             <div className="calendar-body">
-              <div style={{textAlign: 'center', marginTop: '15px', fontFamily: 'Roboto', fontSize: '14px'}}>Empty</div>
+              <div style={{ textAlign: 'center', marginTop: '15px', fontFamily: 'Roboto', fontSize: '14px' }}>Empty
+              </div>
             </div>
           </>
         )
@@ -193,11 +162,32 @@ class CalendarComponent extends Component {
 
 function Tasks(props) {
   const items = props.items
-  const listItems = items.map((item) =>
-    <div className="task" key={item.id}>
-      <div className="task-time">
-        {item.start.split(" ")[1] + " - " + item.end.split(" ")[1]}
-      </div>
+  const type = props.type
+  const days = props.scheduledDays
+  return items.map((item) =>
+    <Task item={item} type={type} key={item.id}/>
+  )
+}
+
+function TaskGroup(props){
+  const items = props.items
+  const label = props.label
+  const type = props.type
+  const result = []
+  result.push(<div className="task-group-label">
+    {label}
+  </div>)
+  result.push(items.map((item) =>
+    <Task item={item} type={type} key={item.id}/>
+  ))
+  return result
+}
+
+function Task (props) {
+  const item = props.item
+  const type = props.type
+  return (
+    <div className="task">
       <div className="task-card">
         <div className="task-avatar">
           <div className="task-avatar-wrapper">
@@ -224,7 +214,6 @@ function Tasks(props) {
       </div>
     </div>
   )
-  return listItems
 }
 
 export default compose(

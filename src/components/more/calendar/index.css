@@ -62,7 +62,7 @@
 }
 .task {
     width: calc(100% - 30px);
-    margin: 15px 15px 0 15px;
+    margin: 5px 15px 0 15px;
     height: auto;
 }
 .task-time {
@@ -188,4 +188,10 @@ abbr {
     height: 1px;
     width: calc(100% - 10px);
     border: 1px solid #1087ff;
+}
+.task-group-label {
+    width: calc(100% - 30px);
+    margin-left: 15px;
+    margin-top: 15px;
+    margin-bottom: 0;
 }
